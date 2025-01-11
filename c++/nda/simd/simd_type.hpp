@@ -14,14 +14,14 @@
 
 
 namespace nda {
-    template<typename T, size_t Width>
+    template<typename T, int WIDTH>
     struct invalid_simd_type {
     };
 
-    template<typename T, size_t Width>
+    template<typename T, int WIDTH>
     struct simd_type {
-        using intrinsic_type = typename invalid_simd_type<T, Width>::intrinsic_type;
-        using base_type = typename invalid_simd_type<T,Width>::base_type;
+        using intrinsic_type = typename invalid_simd_type<T, WIDTH>::intrinsic_type;
+        using base_type = typename invalid_simd_type<T,WIDTH>::base_type;
     };
 
     template<>
