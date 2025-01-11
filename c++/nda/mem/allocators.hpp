@@ -27,6 +27,7 @@
 #include "./malloc.hpp"
 #include "./memset.hpp"
 #include "../macros.hpp"
+#include "../simd/simd_type.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -114,6 +115,66 @@ namespace nda::mem {
         memset<AdrSp>(ptr, 0, s);
         return {ptr, s};
       }
+    }
+
+    /**
+     * @brief Deallocate memory using nda::mem::free.
+     * @param b nda::mem::blk_t memory block to deallocate.
+     */
+    static void deallocate(blk_t b) noexcept { free<AdrSp>((void *)b.ptr); }
+  };
+
+  /**
+   * @brief Custom allocator that uses nda::mem::aligned_malloc to allocate aligned memory for simd types.
+   * @tparam AdrSp nda::mem::AddressSpace in which the memory is allocated.
+   */
+  template <AddressSpace AdrSp = Host>
+  class mallocator_simd {
+    public:
+    /// Default constructor.
+    mallocator_simd() = default;
+
+    /// Deleted copy constructor.
+    mallocator_simd(mallocator_simd const &) = delete;
+
+    /// Default move constructor.
+    mallocator_simd(mallocator_simd &&) = default;
+
+    /// Deleted copy assignment operator.
+    mallocator_simd &operator=(mallocator_simd const &) = delete;
+
+    /// Default move assignment operator.
+    mallocator_simd &operator=(mallocator_simd &&) = default;
+
+    /// nda::mem::AddressSpace in which the memory is allocated.
+    static constexpr auto address_space = AdrSp;
+
+    /**
+     * @brief Allocate memory using nda::mem::malloc.
+     *
+     * @param s Size in bytes of the memory to allocate.
+     * @param a Required Aligment in bytes
+     * @return nda::mem::blk_t memory block with given aligment and with size equal to nearest next integral multiple of a.
+     */
+    static blk_t allocate(size_t s, size_t a = SIMD_WIDTH * 4) noexcept {
+      size_t required_size = (s + a - 1) * a;
+      return {(char *)aligned_alloc<AdrSp>(a, required_size), s}; //TODO ask if s should be required_size or not.
+    }
+
+    /**
+     * @brief Allocate memory and set it to zero.
+     *
+     * @details The behavior depends on the address space:
+     * - It uses std::calloc for `Host` nda::mem::AddressSpace.
+     * - Otherwise it uses nda::mem::malloc and nda::mem::memset.
+     *
+     * @param s Size in bytes of the memory to allocate.
+     * @return nda::mem::blk_t memory block.
+     */
+    static blk_t allocate_zero(size_t s, size_t a = SIMD_WIDTH * 4) noexcept {
+      blk_t b = allocate(s,a);
+      memset<AdrSp>((void * )b.ptr, 0, s);
+      return b;
     }
 
     /**

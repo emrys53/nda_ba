@@ -25,7 +25,6 @@
 #include "../device.hpp"
 
 #include <cstdlib>
-
 namespace nda::mem {
 
   /**
@@ -54,6 +53,34 @@ namespace nda::mem {
     if constexpr (AdrSp == Host) {
       ptr = std::malloc(size); // NOLINT (we want to return a void*)
     } else if constexpr (AdrSp == Device) {
+      device_error_check(cudaMalloc((void **)&ptr, size), "cudaMalloc");
+    } else {
+      device_error_check(cudaMallocManaged((void **)&ptr, size), "cudaMallocManaged");
+    }
+    return ptr;
+  }
+  /**
+   * @brief Call the correct `aligned_malloc` function based on the given address space.
+   *
+   * @details It makes the following function calls depending on the address space:
+   * - `std::aligned_malloc` for `Host`.
+   * - `cudaMalloc` for `Device`.
+   * - `cudaMallocManaged` for `Unified`.
+   *
+   * @tparam AdrSp nda::mem::AddressSpace.
+   * @tparam aligment Aligment in bytes of the allocated memory.
+   * @param size Size in bytes to be allocated.
+   * @return Pointer to the allocated memory.
+   */
+  template <AddressSpace AdrSp>
+  void *aligned_alloc(size_t alignment, size_t size) {
+    check_adr_sp_valid<AdrSp>();
+    static_assert(nda::have_device == nda::have_cuda, "Adjust function for new device types");
+
+    void *ptr = nullptr;
+    if constexpr (AdrSp == Host) {
+      ptr = std::aligned_alloc(alignment, size); // NOLINT (we want to return a void*)
+    } else if constexpr (AdrSp == Device) { // Always aligned to at least 256 bytes, which is more than what we need (https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#device-memory-accesses)
       device_error_check(cudaMalloc((void **)&ptr, size), "cudaMalloc");
     } else {
       device_error_check(cudaMallocManaged((void **)&ptr, size), "cudaMallocManaged");
