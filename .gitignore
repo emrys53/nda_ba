@@ -6,5 +6,5 @@ doc/html
 .*.swp
 .*.swo
 .*.swn
-.idea*
+.idea*-
 /cmake-build-debug/

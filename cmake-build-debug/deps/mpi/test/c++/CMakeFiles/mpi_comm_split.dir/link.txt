@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/mpi_comm_split.dir/mpi_comm_split.cpp.o -o mpi_comm_split  -Wl,-rpath,/usr/lib/x86_64-linux-gnu/openmpi/lib ../../../../lib/libgtest_main.a /usr/lib/x86_64-linux-gnu/openmpi/lib/libmpi_cxx.so /usr/lib/x86_64-linux-gnu/openmpi/lib/libmpi.so -fopenmp ../../../../lib/libgtest.a
