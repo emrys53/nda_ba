@@ -172,8 +172,8 @@ namespace nda::mem {
      * @return nda::mem::blk_t memory block.
      */
     static blk_t allocate_zero(size_t s, size_t a = SIMD_WIDTH * 4) noexcept {
-      blk_t b = allocate(s,a);
-      memset<AdrSp>((void * )b.ptr, 0, s);
+      blk_t b = allocate(s, a);
+      memset<AdrSp>((void *)b.ptr, 0, s);
       return b;
     }
 

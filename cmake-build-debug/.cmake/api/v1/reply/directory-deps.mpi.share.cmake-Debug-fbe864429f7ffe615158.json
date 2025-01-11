@@ -1,0 +1,72 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"cmake-build-debug/deps/mpi_src/share/cmake/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 3,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 10,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "lib/cmake/mpi",
+			"paths" : 
+			[
+				"cmake-build-debug/deps/mpi/share/cmake/mpi-config.cmake",
+				"cmake-build-debug/deps/mpi/share/cmake/mpi-config-version.cmake"
+			],
+			"type" : "file"
+		},
+		{
+			"backtrace" : 2,
+			"component" : "Unspecified",
+			"destination" : "lib/cmake/mpi",
+			"exportName" : "mpi-targets",
+			"exportTargets" : 
+			[
+				{
+					"id" : "mpi_c::@159b92cdddb35b06cecc",
+					"index" : 0
+				},
+				{
+					"id" : "mpi::@159b92cdddb35b06cecc",
+					"index" : 0
+				}
+			],
+			"paths" : 
+			[
+				"deps/mpi/share/cmake/CMakeFiles/Export/62a5f921a575d4741fc2462fe842f246/mpi-targets.cmake"
+			],
+			"type" : "export"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "deps/mpi/share/cmake",
+		"source" : "cmake-build-debug/deps/mpi_src/share/cmake"
+	}
+}

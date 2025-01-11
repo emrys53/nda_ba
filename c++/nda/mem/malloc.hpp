@@ -25,6 +25,7 @@
 #include "../device.hpp"
 
 #include <cstdlib>
+
 namespace nda::mem {
 
   /**
@@ -68,7 +69,7 @@ namespace nda::mem {
    * - `cudaMallocManaged` for `Unified`.
    *
    * @tparam AdrSp nda::mem::AddressSpace.
-   * @tparam aligment Aligment in bytes of the allocated memory.
+   * @param alignment Alignment in bytes of the allocated memory.
    * @param size Size in bytes to be allocated.
    * @return Pointer to the allocated memory.
    */
@@ -80,7 +81,7 @@ namespace nda::mem {
     void *ptr = nullptr;
     if constexpr (AdrSp == Host) {
       ptr = std::aligned_alloc(alignment, size); // NOLINT (we want to return a void*)
-    } else if constexpr (AdrSp == Device) { // Always aligned to at least 256 bytes, which is more than what we need (https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#device-memory-accesses)
+    } else if constexpr (AdrSp == Device) {      // Always aligned to at least 256 bytes, which is more than what we need
       device_error_check(cudaMalloc((void **)&ptr, size), "cudaMalloc");
     } else {
       device_error_check(cudaMallocManaged((void **)&ptr, size), "cudaMallocManaged");

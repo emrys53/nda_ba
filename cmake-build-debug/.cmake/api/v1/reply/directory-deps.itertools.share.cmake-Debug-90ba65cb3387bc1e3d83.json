@@ -1,0 +1,68 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"cmake-build-debug/deps/itertools_src/share/cmake/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 3,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 10,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "lib/cmake/itertools",
+			"paths" : 
+			[
+				"cmake-build-debug/deps/itertools/share/cmake/itertools-config.cmake",
+				"cmake-build-debug/deps/itertools/share/cmake/itertools-config-version.cmake"
+			],
+			"type" : "file"
+		},
+		{
+			"backtrace" : 2,
+			"component" : "Unspecified",
+			"destination" : "lib/cmake/itertools",
+			"exportName" : "itertools-targets",
+			"exportTargets" : 
+			[
+				{
+					"id" : "itertools_c::@6ac6edfe751b26e58751",
+					"index" : 0
+				}
+			],
+			"paths" : 
+			[
+				"deps/itertools/share/cmake/CMakeFiles/Export/8f7d8d7c675fa7f70472e67aec87e81c/itertools-targets.cmake"
+			],
+			"type" : "export"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "deps/itertools/share/cmake",
+		"source" : "cmake-build-debug/deps/itertools_src/share/cmake"
+	}
+}

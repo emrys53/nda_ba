@@ -1,0 +1,46 @@
+/snap/clion/310/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -S /home/emrys/bachelor_thesis/nda.src -B /home/emrys/bachelor_thesis/nda.src/cmake-build-debug
+-- -------- nda version and git hash detection -------------
+-- nda version : 1.3.0
+-- nda Git hash: b3bc458cba076c1e819361e73c45d0f997e44e15
+-- -------- CMAKE_INSTALL_PREFIX: /usr/local --------
+-- -------- BUILD-TYPE: Debug --------
+--  =============== Configuring Dependency GTest =============== 
+-- The C compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+--  =============== End GTest Configuration =============== 
+--  =============== Configuring Dependency itertools =============== 
+-- itertools version : 1.3.0
+-- itertools Git hash: 17c6cf46aa9a26137efb2ad89fe528624b4c36e6
+-- Dependency GTest was already resolved.
+--  =============== End itertools Configuration =============== 
+--  =============== Configuring Dependency h5 =============== 
+-- h5 version : 1.3.0
+-- h5 Git hash: edb02b336d38f5de78662fa41d92cb100eec9ee9
+-- Dependency GTest was already resolved.
+-- -------- HDF5 detection -------------
+-- Found HDF5: /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so;/usr/lib/x86_64-linux-gnu/libcrypto.so;/usr/lib/x86_64-linux-gnu/libcurl.so;/usr/lib/x86_64-linux-gnu/libpthread.a;/usr/lib/x86_64-linux-gnu/libsz.so;/usr/lib/x86_64-linux-gnu/libz.so;/usr/lib/x86_64-linux-gnu/libdl.a;/usr/lib/x86_64-linux-gnu/libm.so (found version "1.10.10") found components: C HL
+--  =============== End h5 Configuration =============== 
+--  =============== Configuring Dependency mpi =============== 
+-- mpi version : 1.3.0
+-- mpi Git hash: a22f9a8c9c8755498743c1edb465ae4b0e0ef38e
+-- Dependency GTest was already resolved.
+-- Dependency itertools was already resolved.
+-- -------- MPI detection -------------
+-- Found MPI_CXX: /usr/lib/x86_64-linux-gnu/openmpi/lib/libmpi_cxx.so (found version "3.1")
+-- Found MPI: TRUE (found version "3.1") found components: CXX
+-- Found OpenMP_CXX: -fopenmp (found version "4.5")
+-- Found OpenMP: TRUE (found version "4.5") found components: CXX
+--  =============== End mpi Configuration =============== 
+-- -------- Lapack detection -------------
+-- Found BLAS: /usr/lib/x86_64-linux-gnu/libblas.so
+-- Found LAPACK: /usr/lib/x86_64-linux-gnu/liblapack.so;/usr/lib/x86_64-linux-gnu/libblas.so
+-- Configuring done (16.2s)
+-- Generating done (0.2s)
+-- Build files have been written to: /home/emrys/bachelor_thesis/nda.src/cmake-build-debug
