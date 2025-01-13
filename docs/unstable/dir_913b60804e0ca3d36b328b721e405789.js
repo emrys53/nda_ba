@@ -7,6 +7,7 @@ var dir_913b60804e0ca3d36b328b721e405789 =
     [ "linalg", "dir_6ac268accbf4e19c7c99f7c0bc41765a.html", "dir_6ac268accbf4e19c7c99f7c0bc41765a" ],
     [ "mem", "dir_728b0d99ce6be166c7b5ed2091e3f3fa.html", "dir_728b0d99ce6be166c7b5ed2091e3f3fa" ],
     [ "mpi", "dir_064e4b4af870ca0f71794f16c050428b.html", "dir_064e4b4af870ca0f71794f16c050428b" ],
+    [ "simd", "dir_610ce7643641b9aab1ccf9513379c3d7.html", "dir_610ce7643641b9aab1ccf9513379c3d7" ],
     [ "stdutil", "dir_3ce0108121f0de9d553b49ae8833d511.html", "dir_3ce0108121f0de9d553b49ae8833d511" ],
     [ "_impl_basic_array_view_common.hpp", "__impl__basic__array__view__common_8hpp_source.html", null ],
     [ "accessors.hpp", "accessors_8hpp.html", null ],
