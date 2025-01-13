@@ -1,6 +1,9 @@
 #pragma once
 
+
+#if defined(__x86_64__)
 #include <immintrin.h>
+#endif
 
 // Default Simd with in Bytes.
 #if defined(__AVX512F__)
