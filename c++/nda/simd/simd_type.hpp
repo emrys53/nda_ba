@@ -4,6 +4,7 @@
 #if defined(__x86_64__)
 #include <immintrin.h>
 #endif
+//TODO ask what about macos
 
 // Default Simd with in Bytes.
 #if defined(__AVX512F__)
