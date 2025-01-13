@@ -2,14 +2,15 @@
 
 #include <immintrin.h>
 
+// Default Simd with in Bytes.
 #if defined(__AVX512F__)
-#define SIMD_WIDTH 16
+#define SIMD_WIDTH 64
 #elif defined(__AVX2__) || defined(__AVX__)
-#define SIMD_WIDTH 8
+#define SIMD_WIDTH 32
 #elif defined(__SSE4_2__)
-#define SIMD_WIDTH 4
+#define SIMD_WIDTH 16
 #else
-#define SIMD_WIDTH 1
+#define SIMD_WIDTH 4
 #endif
 
 namespace nda {
@@ -18,8 +19,8 @@ namespace nda {
 
   template <typename T, int WIDTH>
   struct simd_type {
-    using intrinsic_type = typename invalid_simd_type<T, WIDTH>::intrinsic_type;
-    using base_type      = typename invalid_simd_type<T, WIDTH>::base_type;
+    using intrinsic_type       = typename invalid_simd_type<T, WIDTH>::intrinsic_type;
+    using base_type            = typename invalid_simd_type<T, WIDTH>::base_type;
     static constexpr int width = WIDTH;
   };
 

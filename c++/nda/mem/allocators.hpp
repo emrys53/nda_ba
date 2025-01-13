@@ -150,28 +150,24 @@ namespace nda::mem {
     static constexpr auto address_space = AdrSp;
 
     /**
-     * @brief Allocate memory using nda::mem::malloc.
+     * @brief Allocate aligned memory using nda::mem::malloc.
      *
      * @param s Size in bytes of the memory to allocate.
-     * @param a Required Aligment in bytes
-     * @return nda::mem::blk_t memory block with given aligment and with size equal to nearest next integral multiple of a.
+     * @param a Required Alignment in bytes
+     * @return nda::mem::blk_t memory block with given alignment and with size equal to nearest next integral multiple of a.
      */
-    static blk_t allocate(size_t s, size_t a = SIMD_WIDTH * 4) noexcept {
-      size_t required_size = (s + a - 1) * a;
+    static blk_t allocate(size_t s, size_t a = SIMD_WIDTH) noexcept {
+      size_t required_size = ((s + a - 1) / a) * a;
       return {(char *)aligned_alloc<AdrSp>(a, required_size), s}; //TODO ask if s should be required_size or not.
     }
 
     /**
-     * @brief Allocate memory and set it to zero.
-     *
-     * @details The behavior depends on the address space:
-     * - It uses std::calloc for `Host` nda::mem::AddressSpace.
-     * - Otherwise it uses nda::mem::malloc and nda::mem::memset.
+     * @brief Allocate aligned memory and set it to zero.
      *
      * @param s Size in bytes of the memory to allocate.
      * @return nda::mem::blk_t memory block.
      */
-    static blk_t allocate_zero(size_t s, size_t a = SIMD_WIDTH * 4) noexcept {
+    static blk_t allocate_zero(size_t s, size_t a = SIMD_WIDTH) noexcept {
       blk_t b = allocate(s, a);
       memset<AdrSp>((void *)b.ptr, 0, s);
       return b;
@@ -185,7 +181,7 @@ namespace nda::mem {
   };
 
   /**
-   * @brief Custom allocator that allocates a bucket of memory on the heap consisting of 64 chunks.
+   * @brief Custom allocator that allocates a bucket of memory on the heax  p consisting of 64 chunks.
    *
    * @details The allocator keeps track of which chunks are free using a bitmask. Once all chunks have been allocated,
    * it will call std::abort on any further allocation requests.
