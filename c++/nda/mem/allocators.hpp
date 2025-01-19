@@ -156,7 +156,7 @@ namespace nda::mem {
      * @return nda::mem::blk_t memory block with given alignment and size.
      */
     static blk_t allocate(size_t s, size_t a) noexcept {
-      return {(char *)aligned_alloc<AdrSp>(s, a), s}; //TODO ask if s should be required_size or not.
+      return {(char *)aligned_alloc<AdrSp>(s, a), s};
     }
 
     /**
