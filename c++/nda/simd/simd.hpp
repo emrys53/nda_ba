@@ -157,13 +157,13 @@ namespace nda {
     /// (aq-bw) (aw+bq) (ce-dr) (cr+de) (et-fy) (ey+ft) (gu-hi) (gi+hu)
     simd<std::complex<T>> operator*(const simd<std::complex<T>> &other) {
       // https://bitbucket.org/blaze-lib/blaze/src/master/blaze/math/simd/Mult.h
-      if constexpr (NDA_X86_64) {
-        simd<std::complex<T>> result;
-        if constexpr (std::is_same_v<T, double>) {
-          if constexpr (size() == 1) {
-            /// SSE3
-            __m128d a, b, x, y, z;
-            this->copy_to_not_aligned(reinterpret_cast<double *>(&a));
+      simd<std::complex<T>> result;
+#if defined(__x86_64__)
+      if constexpr (std::is_same_v<T, double>) {
+        if constexpr (size() == 1) {
+          /// SSE3
+          __m128d a, b, x, y, z;
+          this->copy_to_not_aligned(reinterpret_cast<double *>(&a));
             other.copy_to_not_aligned(reinterpret_cast<double *>(&b));
             x = _mm_shuffle_pd(a, a, 0);
             z = _mm_mul_pd(x, b);
@@ -307,8 +307,7 @@ namespace nda {
             return result;
           }
         }
-      }
-
+#endif
       std::array<T, size() * 2> first, second, third, fourth, fifth;
       this->copy_to_not_aligned(first.data());
       other.copy_to_not_aligned(second.data());
@@ -323,7 +322,7 @@ namespace nda {
       std::experimental::native_simd<T> y(third.data(), std::experimental::element_aligned);
       std::experimental::native_simd<T> z(fourth.data(), std::experimental::element_aligned);
       std::experimental::native_simd<T> w(fifth.data(), std::experimental::element_aligned);
-      simd<std::complex<T>> result{other.value * y + z * w};
+      result = simd<std::complex<T>>{other.value * y + z * w};
       return result;
     }
 
