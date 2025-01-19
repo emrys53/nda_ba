@@ -81,7 +81,6 @@ namespace nda::mem {
 
     void *ptr = nullptr;
     if constexpr (AdrSp == Host) {
-      // This doesn't work on Windows.
       ptr = std::aligned_alloc(alignment, size); // NOLINT (we want to return a void*)
     } else if constexpr (AdrSp == Device) {      // Always aligned to at least 256 bytes, which is more than what we need
       device_error_check(cudaMalloc((void **)&ptr, size), "cudaMalloc");

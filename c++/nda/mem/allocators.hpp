@@ -128,22 +128,22 @@ namespace nda::mem {
    * @tparam AdrSp nda::mem::AddressSpace in which the memory is allocated.
    */
   template <AddressSpace AdrSp = Host>
-  class mallacator_aligned {
+  class mallocator_aligned {
     public:
     /// Default constructor.
-    mallacator_aligned() = default;
+    mallocator_aligned() = default;
 
     /// Deleted copy constructor.
-    mallacator_aligned(mallacator_aligned const &) = delete;
+    mallocator_aligned(mallocator_aligned const &) = delete;
 
     /// Default move constructor.
-    mallacator_aligned(mallacator_aligned &&) = default;
+    mallocator_aligned(mallocator_aligned &&) = default;
 
     /// Deleted copy assignment operator.
-    mallacator_aligned &operator=(mallacator_aligned const &) = delete;
+    mallocator_aligned &operator=(mallocator_aligned const &) = delete;
 
     /// Default move assignment operator.
-    mallacator_aligned &operator=(mallacator_aligned &&) = default;
+    mallocator_aligned &operator=(mallocator_aligned &&) = default;
 
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = AdrSp;
