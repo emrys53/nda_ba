@@ -6,6 +6,9 @@
 
 #if defined(__x86_64__)
 #include <immintrin.h>
+#define NDA_X86_64 1
+#else
+#define NDA_X86_64 0
 #endif
 
 namespace nda {
@@ -154,7 +157,7 @@ namespace nda {
     /// (aq-bw) (aw+bq) (ce-dr) (cr+de) (et-fy) (ey+ft) (gu-hi) (gi+hu)
     simd<std::complex<T>> operator*(const simd<std::complex<T>> &other) {
       // https://bitbucket.org/blaze-lib/blaze/src/master/blaze/math/simd/Mult.h
-      if constexpr (__x86_64__) {
+      if constexpr (NDA_X86_64) {
         simd<std::complex<T>> result;
         if constexpr (std::is_same_v<T, double>) {
           if constexpr (size() == 1) {
