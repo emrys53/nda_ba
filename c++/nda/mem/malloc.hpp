@@ -69,17 +69,19 @@ namespace nda::mem {
    * - `cudaMallocManaged` for `Unified`.
    *
    * @tparam AdrSp nda::mem::AddressSpace.
-   * @param alignment Alignment in bytes of the allocated memory.
-   * @param size Size in bytes to be allocated.
+   * @param size Size in bytes to be allocated. It needs to be integral multiple of alignment.
+   * @param alignment Alignment in bytes of the allocated memory. Alignment is at least 8 bytes and needs to be power of 2
    * @return Pointer to the allocated memory.
    */
   template <AddressSpace AdrSp>
-  void *aligned_alloc(size_t alignment, size_t size) {
+  void *aligned_alloc(size_t size, size_t alignment) {
     check_adr_sp_valid<AdrSp>();
     static_assert(nda::have_device == nda::have_cuda, "Adjust function for new device types");
+    alignment = alignment < sizeof(void*) ? sizeof(void*) : alignment;
 
     void *ptr = nullptr;
     if constexpr (AdrSp == Host) {
+      // This doesn't work on Windows.
       ptr = std::aligned_alloc(alignment, size); // NOLINT (we want to return a void*)
     } else if constexpr (AdrSp == Device) {      // Always aligned to at least 256 bytes, which is more than what we need
       device_error_check(cudaMalloc((void **)&ptr, size), "cudaMalloc");

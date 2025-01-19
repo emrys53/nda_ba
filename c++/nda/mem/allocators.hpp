@@ -27,7 +27,6 @@
 #include "./malloc.hpp"
 #include "./memset.hpp"
 #include "../macros.hpp"
-#include "../simd/simd_type.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -129,22 +128,22 @@ namespace nda::mem {
    * @tparam AdrSp nda::mem::AddressSpace in which the memory is allocated.
    */
   template <AddressSpace AdrSp = Host>
-  class mallocator_simd {
+  class mallacator_aligned {
     public:
     /// Default constructor.
-    mallocator_simd() = default;
+    mallacator_aligned() = default;
 
     /// Deleted copy constructor.
-    mallocator_simd(mallocator_simd const &) = delete;
+    mallacator_aligned(mallacator_aligned const &) = delete;
 
     /// Default move constructor.
-    mallocator_simd(mallocator_simd &&) = default;
+    mallacator_aligned(mallacator_aligned &&) = default;
 
     /// Deleted copy assignment operator.
-    mallocator_simd &operator=(mallocator_simd const &) = delete;
+    mallacator_aligned &operator=(mallacator_aligned const &) = delete;
 
     /// Default move assignment operator.
-    mallocator_simd &operator=(mallocator_simd &&) = default;
+    mallacator_aligned &operator=(mallacator_aligned &&) = default;
 
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = AdrSp;
@@ -152,13 +151,12 @@ namespace nda::mem {
     /**
      * @brief Allocate aligned memory using nda::mem::malloc.
      *
-     * @param s Size in bytes of the memory to allocate.
-     * @param a Required Alignment in bytes
-     * @return nda::mem::blk_t memory block with given alignment and with size equal to nearest next integral multiple of a.
+     * @param s Size in bytes of the memory to allocate. Size needs to be a multiple of alignment.
+     * @param a Required Alignment in bytes. Must be power of 2 and at least 8 bytes.
+     * @return nda::mem::blk_t memory block with given alignment and size.
      */
-    static blk_t allocate(size_t s, size_t a = SIMD_WIDTH) noexcept {
-      size_t required_size = ((s + a - 1) / a) * a;
-      return {(char *)aligned_alloc<AdrSp>(a, required_size), s}; //TODO ask if s should be required_size or not.
+    static blk_t allocate(size_t s, size_t a) noexcept {
+      return {(char *)aligned_alloc<AdrSp>(s, a), s}; //TODO ask if s should be required_size or not.
     }
 
     /**
@@ -167,7 +165,7 @@ namespace nda::mem {
      * @param s Size in bytes of the memory to allocate.
      * @return nda::mem::blk_t memory block.
      */
-    static blk_t allocate_zero(size_t s, size_t a = SIMD_WIDTH) noexcept {
+    static blk_t allocate_zero(size_t s, size_t a) noexcept {
       blk_t b = allocate(s, a);
       memset<AdrSp>((void *)b.ptr, 0, s);
       return b;
