@@ -10,8 +10,9 @@ var searchData=
   ['ndasymmetry_7',['NdaSymmetry',['../conceptnda_1_1_nda_symmetry.html',1,'nda']]],
   ['ndims_8',['ndims',['../classnda_1_1sym__grp.html#af86e39464c505e114e9017a906299a1c',1,'nda::sym_grp']]],
   ['negate_9',['negate',['../structnda_1_1clef_1_1tags_1_1negate.html',1,'nda::clef::tags']]],
-  ['no_5falias_5faccessor_10',['no_alias_accessor',['../structnda_1_1no__alias__accessor.html',1,'nda']]],
-  ['none_11',['None',['../address__space_8hpp.html#a6adf97f83acf6453d4a6a4b1070f3754',1,'nda::mem']]],
-  ['norm_2ehpp_12',['norm.hpp',['../norm_8hpp.html',1,'']]],
-  ['num_5fclasses_13',['num_classes',['../classnda_1_1sym__grp.html#a2f0f65bcc46beced34af1335acc344cf',1,'nda::sym_grp']]]
+  ['next_5fmultiple_10',['next_multiple',['../group__mem__utils.html#ga444dea4845906b4ccf510b45da50c1fe',1,'nda::mem']]],
+  ['no_5falias_5faccessor_11',['no_alias_accessor',['../structnda_1_1no__alias__accessor.html',1,'nda']]],
+  ['none_12',['None',['../address__space_8hpp.html#a6adf97f83acf6453d4a6a4b1070f3754',1,'nda::mem']]],
+  ['norm_2ehpp_13',['norm.hpp',['../norm_8hpp.html',1,'']]],
+  ['num_5fclasses_14',['num_classes',['../classnda_1_1sym__grp.html#a2f0f65bcc46beced34af1335acc344cf',1,'nda::sym_grp']]]
 ];

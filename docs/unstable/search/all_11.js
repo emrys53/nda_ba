@@ -39,9 +39,11 @@ var searchData=
   ['hdf5_20mpi_20and_20symmetry_20support_20for_20matrices_20and_20vectors_36',['HDF5, MPI and symmetry support for matrices and vectors',['../ex8.html#ex8_p5',1,'']]],
   ['hdf5_20support_37',['HDF5 support',['../ex5.html',1,'Example 5: HDF5 support'],['../group__av__hdf5.html',1,'HDF5 support']]],
   ['heap_38',['heap',['../group__mem__pols.html#ga4c4f5b0a09f480782bf1353ca308e640',1,'nda']]],
-  ['heap_5fbasic_39',['heap_basic',['../structnda_1_1heap__basic.html',1,'nda']]],
-  ['heap_5fbasic_3c_20mem_3a_3amallocator_3c_20adrsp_20_3e_20_3e_40',['heap_basic&lt; mem::mallocator&lt; AdrSp &gt; &gt;',['../structnda_1_1heap__basic.html',1,'nda']]],
-  ['histogram_41',['histogram',['../classnda_1_1mem_1_1stats.html#a2d8868aaf2e00f6bc7ded214870be5fc',1,'nda::mem::stats']]],
-  ['host_42',['Host',['../address__space_8hpp.html#ac2ca16d048ec66e04bca283eab048ec2',1,'nda::mem']]],
-  ['hyperslab_5fand_5fshape_5ffrom_5fslice_43',['hyperslab_and_shape_from_slice',['../group__av__hdf5.html#gab6fea3ef30e10b8ab043fe8fcfe26138',1,'nda']]]
+  ['heap_5faligned_39',['heap_aligned',['../group__mem__pols.html#gad0338018f94b156d3ab2ec61771e905d',1,'nda']]],
+  ['heap_5fbasic_40',['heap_basic',['../structnda_1_1heap__basic.html',1,'nda']]],
+  ['heap_5fbasic_3c_20mem_3a_3amallocator_3c_20adrsp_20_3e_20_3e_41',['heap_basic&lt; mem::mallocator&lt; AdrSp &gt; &gt;',['../structnda_1_1heap__basic.html',1,'nda']]],
+  ['heap_5fbasic_3c_20mem_3a_3amallocator_5faligned_3c_20adrsp_20_3e_20_3e_42',['heap_basic&lt; mem::mallocator_aligned&lt; AdrSp &gt; &gt;',['../structnda_1_1heap__basic.html',1,'nda']]],
+  ['histogram_43',['histogram',['../classnda_1_1mem_1_1stats.html#a2d8868aaf2e00f6bc7ded214870be5fc',1,'nda::mem::stats']]],
+  ['host_44',['Host',['../address__space_8hpp.html#ac2ca16d048ec66e04bca283eab048ec2',1,'nda::mem']]],
+  ['hyperslab_5fand_5fshape_5ffrom_5fslice_45',['hyperslab_and_shape_from_slice',['../group__av__hdf5.html#gab6fea3ef30e10b8ab043fe8fcfe26138',1,'nda']]]
 ];

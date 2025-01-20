@@ -141,6 +141,10 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga4c4f5b0a09f480782bf1353ca308e640"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ga4c4f5b0a09f480782bf1353ca308e640">nda::heap</a> = <a class="el" href="structnda_1_1heap__basic.html">heap_basic</a>&lt;<a class="el" href="classnda_1_1mem_1_1mallocator.html">mem::mallocator</a>&lt;AdrSp&gt;&gt;</td></tr>
 <tr class="memdesc:ga4c4f5b0a09f480782bf1353ca308e640"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias template of the <a class="el" href="structnda_1_1heap__basic.html" title="Memory policy using an nda::mem::handle_heap.">nda::heap_basic</a> policy using an <a class="el" href="classnda_1_1mem_1_1mallocator.html" title="Custom allocator that uses nda::mem::malloc to allocate memory.">nda::mem::mallocator</a>.  <br /></td></tr>
 <tr class="separator:ga4c4f5b0a09f480782bf1353ca308e640"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad0338018f94b156d3ab2ec61771e905d" id="r_gad0338018f94b156d3ab2ec61771e905d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005ebfc907bde9e0d">mem::AddressSpace</a> AdrSp = mem::Host&gt; </td></tr>
+<tr class="memitem:gad0338018f94b156d3ab2ec61771e905d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#gad0338018f94b156d3ab2ec61771e905d">nda::heap_aligned</a> = <a class="el" href="structnda_1_1heap__basic.html">heap_basic</a>&lt;<a class="el" href="classnda_1_1mem_1_1mallocator__aligned.html">mem::mallocator_aligned</a>&lt;AdrSp&gt;&gt;</td></tr>
+<tr class="memdesc:gad0338018f94b156d3ab2ec61771e905d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias template of the <a class="el" href="structnda_1_1heap__basic.html" title="Memory policy using an nda::mem::handle_heap.">nda::heap_basic</a> policy using an <a class="el" href="classnda_1_1mem_1_1mallocator__aligned.html" title="Custom allocator that uses nda::mem::aligned_alloc to allocate memory.">nda::mem::mallocator_aligned</a>.  <br /></td></tr>
+<tr class="separator:gad0338018f94b156d3ab2ec61771e905d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ga4c4f5b0a09f480782bf1353ca308e640" name="ga4c4f5b0a09f480782bf1353ca308e640"></a>
@@ -168,6 +172,34 @@ template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005eb
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="mem_2policies_8hpp_source.html#l00063">63</a> of file <a class="el" href="mem_2policies_8hpp_source.html">policies.hpp</a>.</p>
+
+</div>
+</div>
+<a id="gad0338018f94b156d3ab2ec61771e905d" name="gad0338018f94b156d3ab2ec61771e905d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad0338018f94b156d3ab2ec61771e905d">&#9670;&#160;</a></span>heap_aligned</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005ebfc907bde9e0d">mem::AddressSpace</a> AdrSp = mem::Host&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#gad0338018f94b156d3ab2ec61771e905d">nda::heap_aligned</a> = <a class="el" href="structnda_1_1heap__basic.html">heap_basic</a>&lt;<a class="el" href="classnda_1_1mem_1_1mallocator__aligned.html">mem::mallocator_aligned</a>&lt;AdrSp&gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="mem_2policies_8hpp.html">nda/mem/policies.hpp</a>&gt;</code></p>
+
+<p>Alias template of the <a class="el" href="structnda_1_1heap__basic.html" title="Memory policy using an nda::mem::handle_heap.">nda::heap_basic</a> policy using an <a class="el" href="classnda_1_1mem_1_1mallocator__aligned.html" title="Custom allocator that uses nda::mem::aligned_alloc to allocate memory.">nda::mem::mallocator_aligned</a>. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">AdrSp</td><td><a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005ebfc907bde9e0d" title="Enum providing identifiers for the different memory address spaces.">nda::mem::AddressSpace</a> in which the memory is allocated. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="mem_2policies_8hpp_source.html#l00070">70</a> of file <a class="el" href="mem_2policies_8hpp_source.html">policies.hpp</a>.</p>
 
 </div>
 </div>

@@ -120,7 +120,7 @@ $(function(){initNavTree('classnda_1_1mem_1_1mallocator__aligned.html',''); init
 <p><code>#include &lt;<a class="el" href="allocators_8hpp_source.html">nda/mem/allocators.hpp</a>&gt;</code></p>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005ebfc907bde9e0d">AddressSpace</a> AdrSp = Host&gt;<br />
-class nda::mem::mallocator_aligned&lt; AdrSp &gt;</div><p>Custom allocator that uses nda::mem::aligned_malloc to allocate aligned memory for simd types. </p>
+class nda::mem::mallocator_aligned&lt; AdrSp &gt;</div><p>Custom allocator that uses <a class="el" href="group__mem__utils.html#ga24522854863d4ca3db544ef3a2d60b4a" title="Call the correct aligned_alloc function based on the given address space.">nda::mem::aligned_alloc</a> to allocate memory. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">AdrSp</td><td><a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005ebfc907bde9e0d" title="Enum providing identifiers for the different memory address spaces.">nda::mem::AddressSpace</a> in which the memory is allocated. </td></tr>
@@ -128,7 +128,7 @@ class nda::mem::mallocator_aligned&lt; AdrSp &gt;</div><p>Custom allocator that 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00131">131</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00132">132</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -155,14 +155,14 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aa68f9c5f3a7e3bd703272838803e4a5f" id="r_aa68f9c5f3a7e3bd703272838803e4a5f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa68f9c5f3a7e3bd703272838803e4a5f">allocate</a> (size_t s, size_t a) noexcept</td></tr>
-<tr class="memdesc:aa68f9c5f3a7e3bd703272838803e4a5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate aligned memory using <a class="el" href="group__mem__utils.html#gaa77fca41a4098984342fef6546d7975e" title="Call the correct malloc function based on the given address space.">nda::mem::malloc</a>.  <br /></td></tr>
-<tr class="separator:aa68f9c5f3a7e3bd703272838803e4a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9075a637abe6ddc1557b370482673ee" id="r_aa9075a637abe6ddc1557b370482673ee"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9075a637abe6ddc1557b370482673ee">allocate_zero</a> (size_t s, size_t a) noexcept</td></tr>
-<tr class="memdesc:aa9075a637abe6ddc1557b370482673ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate aligned memory and set it to zero.  <br /></td></tr>
-<tr class="separator:aa9075a637abe6ddc1557b370482673ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1526d8cb489d1ba55d2ef00128db118a" id="r_a1526d8cb489d1ba55d2ef00128db118a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1526d8cb489d1ba55d2ef00128db118a">allocate</a> (size_t alignment, size_t s) noexcept</td></tr>
+<tr class="memdesc:a1526d8cb489d1ba55d2ef00128db118a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory using <a class="el" href="group__mem__utils.html#gaa77fca41a4098984342fef6546d7975e" title="Call the correct malloc function based on the given address space.">nda::mem::malloc</a>.  <br /></td></tr>
+<tr class="separator:a1526d8cb489d1ba55d2ef00128db118a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac90702feb0acefa5e01eb5389a174f28" id="r_ac90702feb0acefa5e01eb5389a174f28"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac90702feb0acefa5e01eb5389a174f28">allocate_zero</a> (size_t alignment, size_t s) noexcept</td></tr>
+<tr class="memdesc:ac90702feb0acefa5e01eb5389a174f28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory and set it to zero.  <br /></td></tr>
+<tr class="separator:ac90702feb0acefa5e01eb5389a174f28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1632e0384bf8207b723a2aa43e8ff34f" id="r_a1632e0384bf8207b723a2aa43e8ff34f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1632e0384bf8207b723a2aa43e8ff34f">deallocate</a> (<a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> b) noexcept</td></tr>
-<tr class="memdesc:a1632e0384bf8207b723a2aa43e8ff34f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deallocate memory using <a class="el" href="group__mem__utils.html#gaf1e86f1f528f277d3ed2c126566b27b3" title="Call the correct free function based on the given address space.">nda::mem::free</a>.  <br /></td></tr>
+<tr class="memdesc:a1632e0384bf8207b723a2aa43e8ff34f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deallocate memory using <a class="el" href="group__mem__utils.html#ga0159f498c9b8c9f661e64461063d8420" title="Call the correct free function based on the given address space.">nda::mem::aligned_free</a>.  <br /></td></tr>
 <tr class="separator:a1632e0384bf8207b723a2aa43e8ff34f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -173,8 +173,8 @@ static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>addr
 <tr class="separator:a98d911eb30a64a0c3a1f2e10b1d4edb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa68f9c5f3a7e3bd703272838803e4a5f" name="aa68f9c5f3a7e3bd703272838803e4a5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa68f9c5f3a7e3bd703272838803e4a5f">&#9670;&#160;</a></span>allocate()</h2>
+<a id="a1526d8cb489d1ba55d2ef00128db118a" name="a1526d8cb489d1ba55d2ef00128db118a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1526d8cb489d1ba55d2ef00128db118a">&#9670;&#160;</a></span>allocate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -187,12 +187,12 @@ template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005eb
         <tr>
           <td class="memname">static <a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> <a class="el" href="classnda_1_1mem_1_1mallocator__aligned.html">nda::mem::mallocator_aligned</a>&lt; AdrSp &gt;::allocate </td>
           <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>alignment</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>a</em></span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -202,22 +202,22 @@ template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005eb
 </table>
 </div><div class="memdoc">
 
-<p>Allocate aligned memory using <a class="el" href="group__mem__utils.html#gaa77fca41a4098984342fef6546d7975e" title="Call the correct malloc function based on the given address space.">nda::mem::malloc</a>. </p>
+<p>Allocate memory using <a class="el" href="group__mem__utils.html#gaa77fca41a4098984342fef6546d7975e" title="Call the correct malloc function based on the given address space.">nda::mem::malloc</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">s</td><td>Size in bytes of the memory to allocate. Size needs to be a multiple of alignment. </td></tr>
-    <tr><td class="paramname">a</td><td>Required Alignment in bytes. Must be power of 2 and at least 8 bytes. </td></tr>
+    <tr><td class="paramname">alignment</td><td>Alignment in bytes. </td></tr>
+    <tr><td class="paramname">s</td><td>Size in bytes of the memory to allocate. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structnda_1_1mem_1_1blk__t.html" title="Memory block consisting of a pointer and its size.">nda::mem::blk_t</a> memory block with given alignment and size. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structnda_1_1mem_1_1blk__t.html" title="Memory block consisting of a pointer and its size.">nda::mem::blk_t</a> memory block. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00158">158</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00153">153</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aa9075a637abe6ddc1557b370482673ee" name="aa9075a637abe6ddc1557b370482673ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9075a637abe6ddc1557b370482673ee">&#9670;&#160;</a></span>allocate_zero()</h2>
+<a id="ac90702feb0acefa5e01eb5389a174f28" name="ac90702feb0acefa5e01eb5389a174f28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac90702feb0acefa5e01eb5389a174f28">&#9670;&#160;</a></span>allocate_zero()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -230,12 +230,12 @@ template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005eb
         <tr>
           <td class="memname">static <a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> <a class="el" href="classnda_1_1mem_1_1mallocator__aligned.html">nda::mem::mallocator_aligned</a>&lt; AdrSp &gt;::allocate_zero </td>
           <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>alignment</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>a</em></span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -245,16 +245,20 @@ template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005eb
 </table>
 </div><div class="memdoc">
 
-<p>Allocate aligned memory and set it to zero. </p>
+<p>Allocate memory and set it to zero. </p>
+<p>The behavior depends on the address space:</p><ul>
+<li>Otherwise it uses <a class="el" href="group__mem__utils.html#ga24522854863d4ca3db544ef3a2d60b4a" title="Call the correct aligned_alloc function based on the given address space.">nda::mem::aligned_alloc</a> and <a class="el" href="group__mem__utils.html#gab7634be7c4215b12fbd7d21f22e7dc94" title="Call the correct memset function based on the given address space.">nda::mem::memset</a>.</li>
+</ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">alignment</td><td>Alignment in bytes. </td></tr>
     <tr><td class="paramname">s</td><td>Size in bytes of the memory to allocate. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structnda_1_1mem_1_1blk__t.html" title="Memory block consisting of a pointer and its size.">nda::mem::blk_t</a> memory block. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00168">168</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00164">164</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
 
 </div>
 </div>
@@ -283,7 +287,7 @@ template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005eb
 </table>
 </div><div class="memdoc">
 
-<p>Deallocate memory using <a class="el" href="group__mem__utils.html#gaf1e86f1f528f277d3ed2c126566b27b3" title="Call the correct free function based on the given address space.">nda::mem::free</a>. </p>
+<p>Deallocate memory using <a class="el" href="group__mem__utils.html#ga0159f498c9b8c9f661e64461063d8420" title="Call the correct free function based on the given address space.">nda::mem::aligned_free</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">b</td><td><a class="el" href="structnda_1_1mem_1_1blk__t.html" title="Memory block consisting of a pointer and its size.">nda::mem::blk_t</a> memory block to deallocate. </td></tr>
@@ -291,7 +295,7 @@ template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005eb
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00178">178</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00173">173</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
 
 </div>
 </div>

@@ -1,4 +1,5 @@
 var mem_2policies_8hpp =
 [
-    [ "nda::heap", "group__mem__pols.html#ga4c4f5b0a09f480782bf1353ca308e640", null ]
+    [ "nda::heap", "group__mem__pols.html#ga4c4f5b0a09f480782bf1353ca308e640", null ],
+    [ "nda::heap_aligned", "group__mem__pols.html#gad0338018f94b156d3ab2ec61771e905d", null ]
 ];

@@ -1,6 +1,8 @@
 var dir_728b0d99ce6be166c7b5ed2091e3f3fa =
 [
     [ "address_space.hpp", "address__space_8hpp.html", "address__space_8hpp" ],
+    [ "aligned_alloc.hpp", "aligned__alloc_8hpp.html", "aligned__alloc_8hpp" ],
+    [ "alignment.hpp", "alignment_8hpp.html", "alignment_8hpp" ],
     [ "allocators.hpp", "allocators_8hpp.html", null ],
     [ "handle.hpp", "handle_8hpp.html", "handle_8hpp" ],
     [ "malloc.hpp", "malloc_8hpp.html", "malloc_8hpp" ],

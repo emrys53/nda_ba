@@ -119,7 +119,7 @@ $(function(){initNavTree('classnda_1_1mem_1_1bucket.html',''); initResizable(tru
 <p><code>#include &lt;<a class="el" href="allocators_8hpp_source.html">nda/mem/allocators.hpp</a>&gt;</code></p>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;int ChunkSize&gt;<br />
-class nda::mem::bucket&lt; ChunkSize &gt;</div><p>Custom allocator that allocates a bucket of memory on the heax p consisting of 64 chunks. </p>
+class nda::mem::bucket&lt; ChunkSize &gt;</div><p>Custom allocator that allocates a bucket of memory on the heap consisting of 64 chunks. </p>
 <p>The allocator keeps track of which chunks are free using a bitmask. Once all chunks have been allocated, it will call std::abort on any further allocation requests.</p>
 <dl class="section note"><dt>Note</dt><dd>Only works with <code>Host</code> <a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005ebfc907bde9e0d" title="Enum providing identifiers for the different memory address spaces.">nda::mem::AddressSpace</a>.</dd></dl>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
@@ -129,7 +129,7 @@ class nda::mem::bucket&lt; ChunkSize &gt;</div><p>Custom allocator that allocate
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00192">192</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00187">187</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -224,7 +224,7 @@ template&lt;int ChunkSize&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structnda_1_1mem_1_1blk__t.html" title="Memory block consisting of a pointer and its size.">nda::mem::blk_t</a> memory block. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00234">234</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00229">229</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
 
 </div>
 </div>
@@ -262,7 +262,7 @@ template&lt;int ChunkSize&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structnda_1_1mem_1_1blk__t.html" title="Memory block consisting of a pointer and its size.">nda::mem::blk_t</a> memory block. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00257">257</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00252">252</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
 
 </div>
 </div>
@@ -294,7 +294,7 @@ template&lt;int ChunkSize&gt; </div>
 <p>Get a pointer to the start of the bucket. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the chunk with the lowest memory address. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00291">291</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00286">286</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
 
 </div>
 </div>
@@ -331,7 +331,7 @@ template&lt;int ChunkSize&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00267">267</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00262">262</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
 
 </div>
 </div>
@@ -363,7 +363,7 @@ template&lt;int ChunkSize&gt; </div>
 <p>Check if the bucket is empty. </p>
 <dl class="section return"><dt>Returns</dt><dd>True if all chunks are free, i.e. the bitmask is all ones. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00285">285</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00280">280</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
 
 </div>
 </div>
@@ -395,7 +395,7 @@ template&lt;int ChunkSize&gt; </div>
 <p>Check if the bucket is full. </p>
 <dl class="section return"><dt>Returns</dt><dd>True if there are no free chunks left, i.e. the bitmask is all zeros. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00279">279</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00274">274</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
 
 </div>
 </div>
@@ -427,7 +427,7 @@ template&lt;int ChunkSize&gt; </div>
 <p>Get the bitmask of the bucket. </p>
 <dl class="section return"><dt>Returns</dt><dd>Bitmask in the form of a <code>uint64_t</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00297">297</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00292">292</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
 
 </div>
 </div>
@@ -465,7 +465,7 @@ template&lt;int ChunkSize&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the memory block is owned by the bucket. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00305">305</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="allocators_8hpp_source.html#l00300">300</a> of file <a class="el" href="allocators_8hpp_source.html">allocators.hpp</a>.</p>
 
 </div>
 </div>
