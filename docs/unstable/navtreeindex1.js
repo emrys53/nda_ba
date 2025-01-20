@@ -53,7 +53,6 @@ var NAVTREEINDEX1 =
 "scatter_8hpp.html":[4,7,0,6,3],
 "scatter_8hpp_source.html":[4,7,0,6,3],
 "simd_8hpp_source.html":[4,7,0,7,0],
-"simd__type_8hpp_source.html":[4,7,0,7,1],
 "slice__static_8hpp.html":[4,7,0,3,6],
 "slice__static_8hpp_source.html":[4,7,0,3,6],
 "stdutil_2concepts_8hpp.html":[4,7,0,8,2],

@@ -153,10 +153,10 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga24522854863d4ca3db544ef3a2d60b4a" id="r_ga24522854863d4ca3db544ef3a2d60b4a"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005ebfc907bde9e0d">AddressSpace</a> AdrSp&gt; </td></tr>
-<tr class="memitem:ga24522854863d4ca3db544ef3a2d60b4a"><td class="memTemplItemLeft" align="right" valign="top">void *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ga24522854863d4ca3db544ef3a2d60b4a">nda::mem::aligned_alloc</a> (size_t alignment, size_t size)</td></tr>
-<tr class="memdesc:ga24522854863d4ca3db544ef3a2d60b4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call the correct <code>aligned_malloc</code> function based on the given address space.  <br /></td></tr>
-<tr class="separator:ga24522854863d4ca3db544ef3a2d60b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga52375c1072f185d63c15fb20f3ba01e2" id="r_ga52375c1072f185d63c15fb20f3ba01e2"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005ebfc907bde9e0d">AddressSpace</a> AdrSp&gt; </td></tr>
+<tr class="memitem:ga52375c1072f185d63c15fb20f3ba01e2"><td class="memTemplItemLeft" align="right" valign="top">void *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ga52375c1072f185d63c15fb20f3ba01e2">nda::mem::aligned_alloc</a> (size_t size, size_t alignment)</td></tr>
+<tr class="memdesc:ga52375c1072f185d63c15fb20f3ba01e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call the correct <code>aligned_malloc</code> function based on the given address space.  <br /></td></tr>
+<tr class="separator:ga52375c1072f185d63c15fb20f3ba01e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3cb1540052805a4b852cc39bc48799cd" id="r_ga3cb1540052805a4b852cc39bc48799cd"><td class="memTemplParams" colspan="2"><a id="ga3cb1540052805a4b852cc39bc48799cd" name="ga3cb1540052805a4b852cc39bc48799cd"></a>
 template&lt;bool flag = false&gt; </td></tr>
 <tr class="memitem:ga3cb1540052805a4b852cc39bc48799cd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>nda::compile_error_no_gpu</b> ()</td></tr>
@@ -211,8 +211,8 @@ static constexpr <a class="el" href="structnda_1_1mem_1_1init__zero__t.html">ini
 <tr class="separator:gabf4dea07520885de6532a41633a5b5c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga24522854863d4ca3db544ef3a2d60b4a" name="ga24522854863d4ca3db544ef3a2d60b4a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga24522854863d4ca3db544ef3a2d60b4a">&#9670;&#160;</a></span>aligned_alloc()</h2>
+<a id="ga52375c1072f185d63c15fb20f3ba01e2" name="ga52375c1072f185d63c15fb20f3ba01e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga52375c1072f185d63c15fb20f3ba01e2">&#9670;&#160;</a></span>aligned_alloc()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -222,12 +222,12 @@ template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005eb
         <tr>
           <td class="memname">void * nda::mem::aligned_alloc </td>
           <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>alignment</em></span>, </td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>size</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>alignment</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -248,8 +248,8 @@ template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005eb
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">alignment</td><td>Alignment in bytes of the allocated memory. </td></tr>
-    <tr><td class="paramname">size</td><td>Size in bytes to be allocated. </td></tr>
+    <tr><td class="paramname">size</td><td>Size in bytes to be allocated. It needs to be integral multiple of alignment. </td></tr>
+    <tr><td class="paramname">alignment</td><td>Alignment in bytes of the allocated memory. Alignment is at least 8 bytes and needs to be power of 2 </td></tr>
   </table>
   </dd>
 </dl>
@@ -296,7 +296,7 @@ template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005eb
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="malloc_8hpp_source.html#l00103">103</a> of file <a class="el" href="malloc_8hpp_source.html">malloc.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="malloc_8hpp_source.html#l00106">106</a> of file <a class="el" href="malloc_8hpp_source.html">malloc.hpp</a>.</p>
 
 </div>
 </div>

@@ -117,7 +117,6 @@ $(function(){initNavTree('allocators_8hpp.html',''); initResizable(true); });
 <code>#include &quot;<a class="el" href="malloc_8hpp_source.html">./malloc.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="memset_8hpp_source.html">./memset.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="macros_8hpp_source.html">../macros.hpp</a>&quot;</code><br />
-<code>#include &quot;../simd/simd_type.hpp&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
@@ -147,8 +146,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnda_1_1mem_1_1mallocator.html">nda::mem::mallocator&lt; AdrSp &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Custom allocator that uses <a class="el" href="group__mem__utils.html#gaa77fca41a4098984342fef6546d7975e" title="Call the correct malloc function based on the given address space.">nda::mem::malloc</a> to allocate memory.  <a href="classnda_1_1mem_1_1mallocator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnda_1_1mem_1_1mallocator__simd.html">nda::mem::mallocator_simd&lt; AdrSp &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Custom allocator that uses nda::mem::aligned_malloc to allocate aligned memory for simd types.  <a href="classnda_1_1mem_1_1mallocator__simd.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnda_1_1mem_1_1mallocator__aligned.html">nda::mem::mallocator_aligned&lt; AdrSp &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Custom allocator that uses nda::mem::aligned_malloc to allocate aligned memory for simd types.  <a href="classnda_1_1mem_1_1mallocator__aligned.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnda_1_1mem_1_1multi__bucket.html">nda::mem::multi_bucket&lt; ChunkSize &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Custom allocator that uses multiple <a class="el" href="classnda_1_1mem_1_1bucket.html" title="Custom allocator that allocates a bucket of memory on the heax p consisting of 64 chunks.">nda::mem::bucket</a> allocators.  <a href="classnda_1_1mem_1_1multi__bucket.html#details">More...</a><br /></td></tr>
