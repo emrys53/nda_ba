@@ -24,6 +24,7 @@
 #pragma once
 
 #include "./address_space.hpp"
+#include "./aligned_alloc.hpp"
 #include "./malloc.hpp"
 #include "./memset.hpp"
 #include "../macros.hpp"
@@ -57,7 +58,7 @@ namespace nda::mem {
   /// Memory block consisting of a pointer and its size.
   struct blk_t {
     /// Pointer to the memory block.
-    char *ptr = nullptr;
+    char *  __restrict ptr = nullptr;
 
     /// Size of the memory block in bytes.
     size_t s = 0;
@@ -124,7 +125,7 @@ namespace nda::mem {
   };
 
   /**
-   * @brief Custom allocator that uses nda::mem::aligned_malloc to allocate aligned memory for simd types.
+   * @brief Custom allocator that uses nda::mem::aligned_alloc to allocate memory.
    * @tparam AdrSp nda::mem::AddressSpace in which the memory is allocated.
    */
   template <AddressSpace AdrSp = Host>
@@ -149,37 +150,38 @@ namespace nda::mem {
     static constexpr auto address_space = AdrSp;
 
     /**
-     * @brief Allocate aligned memory using nda::mem::malloc.
-     *
-     * @param s Size in bytes of the memory to allocate. Size needs to be a multiple of alignment.
-     * @param a Required Alignment in bytes. Must be power of 2 and at least 8 bytes.
-     * @return nda::mem::blk_t memory block with given alignment and size.
-     */
-    static blk_t allocate(size_t s, size_t a) noexcept {
-      return {(char *)aligned_alloc<AdrSp>(s, a), s};
-    }
-
-    /**
-     * @brief Allocate aligned memory and set it to zero.
+     * @brief Allocate memory using nda::mem::malloc.
      *
      * @param s Size in bytes of the memory to allocate.
      * @return nda::mem::blk_t memory block.
      */
-    static blk_t allocate_zero(size_t s, size_t a) noexcept {
-      blk_t b = allocate(s, a);
-      memset<AdrSp>((void *)b.ptr, 0, s);
-      return b;
+    static blk_t allocate(size_t alignment, size_t s) noexcept { return {(char *)aligned_alloc<AdrSp>(alignment, s), s}; }
+
+    /**
+     * @brief Allocate memory and set it to zero.
+     *
+     * @details The behavior depends on the address space:
+     * - It uses std::calloc for `Host` nda::mem::AddressSpace.
+     * - Otherwise it uses nda::mem::malloc and nda::mem::memset.
+     *
+     * @param s Size in bytes of the memory to allocate.
+     * @return nda::mem::blk_t memory block.
+     */
+    static blk_t allocate_zero(size_t alignment, size_t s) noexcept {
+      auto blk = allocate(alignment, s);
+      memset<AdrSp>(blk.ptr, 0, blk.s);
+      return blk;
     }
 
     /**
-     * @brief Deallocate memory using nda::mem::free.
+     * @brief Deallocate memory using nda::mem::aligned_free.
      * @param b nda::mem::blk_t memory block to deallocate.
      */
-    static void deallocate(blk_t b) noexcept { free<AdrSp>((void *)b.ptr); }
+    static void deallocate(blk_t b) noexcept { aligned_free<AdrSp>((void *)b.ptr); }
   };
 
   /**
-   * @brief Custom allocator that allocates a bucket of memory on the heax  p consisting of 64 chunks.
+   * @brief Custom allocator that allocates a bucket of memory on the heap consisting of 64 chunks.
    *
    * @details The allocator keeps track of which chunks are free using a bitmask. Once all chunks have been allocated,
    * it will call std::abort on any further allocation requests.
