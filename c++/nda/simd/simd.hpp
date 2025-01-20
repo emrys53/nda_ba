@@ -1,4 +1,7 @@
 #pragma once
+/// To include experimental headers with libc++ and clang
+#define _LIBCPP_ENABLE_EXPERIMENTAL
+
 #include <experimental/simd>
 #include <complex>
 #include <array>
@@ -6,9 +9,6 @@
 
 #if defined(__x86_64__)
 #include <immintrin.h>
-#define NDA_X86_64 1
-#else
-#define NDA_X86_64 0
 #endif
 
 namespace nda {
@@ -25,7 +25,9 @@ namespace nda {
       size_t index;
 
       public:
-      simd_proxy(std::experimental::native_simd<T> &parent, size_t index) : parent(parent), index(index) {}
+      simd_proxy(std::experimental::native_simd<T> &parent, size_t index)
+        : parent(parent),
+          index(index) {}
 
       simd_proxy &operator=(const T &val) {
         parent[index] = val;
@@ -36,9 +38,11 @@ namespace nda {
     };
 
     public:
-    simd() : value() {}
+    simd()
+      : value() {}
 
-    explicit simd(T v) : value(v) {}
+    explicit simd(T v)
+      : value(v) {}
 
     explicit simd(T *v) { this->copy_from_aligned(v); }
 
@@ -102,7 +106,9 @@ namespace nda {
       size_t index;
 
       public:
-      simd_complex_proxy(std::experimental::native_simd<T> &parent, size_t index) : parent(parent), index(index) {}
+      simd_complex_proxy(std::experimental::native_simd<T> &parent, size_t index)
+        : parent(parent),
+          index(index) {}
 
       simd_complex_proxy &operator=(const std::complex<T> &c) {
         parent[index]     = c.real();
@@ -114,9 +120,11 @@ namespace nda {
     };
 
     public:
-    simd() : value() {};
+    simd()
+      : value() {};
 
-    explicit simd(std::experimental::native_simd<T> v) : value(v) {}
+    explicit simd(std::experimental::native_simd<T> v)
+      : value(v) {}
 
     explicit simd(std::complex<T> v) {
       for (int i = 0; i < size(); ++i) {
@@ -157,156 +165,87 @@ namespace nda {
     /// (aq-bw) (aw+bq) (ce-dr) (cr+de) (et-fy) (ey+ft) (gu-hi) (gi+hu)
     simd<std::complex<T>> operator*(const simd<std::complex<T>> &other) {
       // https://bitbucket.org/blaze-lib/blaze/src/master/blaze/math/simd/Mult.h
-      simd<std::complex<T>> result;
+      alignas(64) simd<std::complex<T>> result;
 #if defined(__x86_64__)
       if constexpr (std::is_same_v<T, double>) {
         if constexpr (size() == 1) {
           /// SSE3
-          __m128d a, b, x, y, z;
-          this->copy_to_not_aligned(reinterpret_cast<double *>(&a));
-            other.copy_to_not_aligned(reinterpret_cast<double *>(&b));
-            x = _mm_shuffle_pd(a, a, 0);
-            z = _mm_mul_pd(x, b);
-            x = _mm_shuffle_pd(a, a, 3);
-            y = _mm_shuffle_pd(b, b, 1);
-            y = _mm_mul_pd(x, y);
-            z = _mm_addsub_pd(z, y);
-            result.copy_from_not_aligned(reinterpret_cast<double *>(&z));
-            return result;
-          } else if constexpr (size() == 2) {
-            /// AVX
-            __m256d a, b, x, y, z;
-            this->copy_to_not_aligned(reinterpret_cast<double *>(&a));
-            other.copy_to_not_aligned(reinterpret_cast<double *>(&b));
-            x = _mm256_shuffle_pd(a, a, 0);
-            z = _mm256_mul_pd(x, b);
-            x = _mm256_shuffle_pd(a, a, 15);
-            y = _mm256_shuffle_pd(b, b, 5);
-            y = _mm256_mul_pd(x, y);
-            z = _mm256_addsub_pd(z, y);
-            result.copy_from_not_aligned(reinterpret_cast<double *>(&z));
-            return result;
-          } else if constexpr (size() == 4) {
-            /// AVX512
-            __m512d a, b;
-            this->copy_to_not_aligned(reinterpret_cast<double *>(&a));
-            other.copy_to_not_aligned(reinterpret_cast<double *>(&b));
-            const __m512d a_ii = _mm512_permute_pd(a, 0b1'1'1'1'1'1'1'1);
-            const __m512d b_ri = _mm512_permute_pd(b, 0b0'1'0'1'0'1'0'1);
-            const __m512d a_rr = _mm512_permute_pd(a, 0);
-            a                  = _mm512_fmaddsub_pd(a_rr, b, _mm512_mul_pd(a_ii, b_ri));
-            result.copy_from_not_aligned(reinterpret_cast<double *>(&a));
-            return result;
-          }
-        } else if constexpr (std::is_same_v<T, float>) {
-          if constexpr (size() == 2) {
-            /// SSE3
-            __m128 a, b, x, y, z;
-            this->copy_to_not_aligned(reinterpret_cast<float *>(&a));
-            other.copy_to_not_aligned(reinterpret_cast<float *>(&b));
-            x = _mm_shuffle_ps(a, a, 0xA0);
-            z = _mm_mul_ps(x, b);
-            x = _mm_shuffle_ps(a, a, 0xF5);
-            y = _mm_shuffle_ps(b, b, 0xB1);
-            y = _mm_mul_ps(x, y);
-            z = _mm_addsub_ps(z, y);
-            result.copy_from_not_aligned(reinterpret_cast<float *>(&z));
-            return result;
-          } else if constexpr (size() == 4) {
-            /// AVX
-            __m256 a, b, x, y, z;
-            this->copy_to_not_aligned(reinterpret_cast<float *>(&a));
-            other.copy_to_not_aligned(reinterpret_cast<float *>(&b));
-            x = _mm256_shuffle_ps(a, a, 0xA0);
-            z = _mm256_mul_ps(x, b);
-            x = _mm256_shuffle_ps(a, a, 0xF5);
-            y = _mm256_shuffle_ps(b, b, 0xB1);
-            y = _mm256_mul_ps(x, y);
-            z = _mm256_addsub_ps(z, y);
-            result.copy_from_not_aligned(reinterpret_cast<float *>(&z));
-            return result;
-          } else if constexpr (size() == 8) {
-            /// AVX512
-            __m512 a, b;
-            this->copy_to_not_aligned(reinterpret_cast<float *>(&a));
-            other.copy_to_not_aligned(reinterpret_cast<float *>(&b));
-            const __m512 a_ii = _mm512_permute_ps(a, 0b11'11'01'01);
-            const __m512 b_ri = _mm512_permute_ps(b, 0b10'11'00'01);
-            const __m512 a_rr = _mm512_permute_ps(a, 0b10'10'00'00);
-            a                 = _mm512_fmaddsub_ps(a_rr, b, _mm512_mul_ps(a_ii, b_ri));
-            result.copy_from_not_aligned(reinterpret_cast<float *>(&a));
-            return result;
-          }
-        } else if constexpr (std::is_integral_v<T> && std::is_signed_v<T> && sizeof(T) == 8) {
-          // int64_t types
-          if constexpr (size() == 1) {
-            /*
-             *TODO: IMPLEMENT
-             */
-          } else if constexpr (size() == 2) {
-            /*
-             * TODO IMPLEMENT
-             */
-          } else if constexpr (size() == 4) {
-            __m512i a, b;
-            this->copy_to_not_aligned(reinterpret_cast<T *>(&a));
-            other.copy_to_not_aligned(reinterpret_cast<T *>(&b));
-            const __m512i a_ii             = _mm512_shuffle_epi32(a, 0b11'10'11'10);
-            const __m512i b_ri             = _mm512_shuffle_epi32(b, 0b01'00'11'10);
-            const __m512i a_rr             = _mm512_shuffle_epi32(a, 0b01'00'01'00);
-            const __m512i a_rr_b           = _mm512_mullo_epi64(a_rr, b);
-            const __m512i a_ii_b_ri        = _mm512_mullo_epi64(a_ii, b_ri);
-            const __m512i a_ii_b_ri_signed = _mm512_mask_sub_epi64(a_ii_b_ri, 0b01010101, _mm512_setzero_si512(), a_ii_b_ri);
-            a                              = _mm512_add_epi64(a_rr_b, a_ii_b_ri_signed);
-            result.copy_from_not_aligned(reinterpret_cast<T *>(&a));
-            return result;
-          }
-        } else if constexpr (std::is_integral_v<T> && std::is_signed_v<T> && sizeof(T) == 4) {
-          // int32_t types
-          if constexpr (size() == 2) {
-            __m128i a, b, x, y, z;
-            const __m128i neg(_mm_set_epi32(1, -1, 1, -1));
-            this->copy_to_not_aligned(reinterpret_cast<T *>(&a));
-            other.copy_to_not_aligned(reinterpret_cast<T *>(&b));
-            x = _mm_shuffle_epi32(a, 0xA0);
-            z = _mm_mullo_epi32(x, b);
-            x = _mm_shuffle_epi32(a, 0xF5);
-            y = _mm_shuffle_epi32(b, 0xB1);
-            y = _mm_mullo_epi32(x, y);
-            y = _mm_mullo_epi32(y, neg);
-            z = _mm_add_epi32(z, y);
-            result.copy_from_not_aligned(reinterpret_cast<T *>(&z));
-            return result;
-          } else if constexpr (size() == 4) {
-            __m256i a, b, x, y, z;
-            const __m256i neg(_mm256_set_epi32(1, -1, 1, -1, 1, -1, 1, -1));
-            this->copy_to_not_aligned(reinterpret_cast<T *>(&a));
-            other.copy_to_not_aligned(reinterpret_cast<T *>(&b));
-
-            x = _mm256_shuffle_epi32(a, 0xA0);
-            z = _mm256_mullo_epi32(x, b);
-            x = _mm256_shuffle_epi32(a, 0xF5);
-            y = _mm256_shuffle_epi32(b, 0xB1);
-            y = _mm256_mullo_epi32(x, y);
-            y = _mm256_mullo_epi32(y, neg);
-            z = _mm256_add_epi32(z, y);
-            result.copy_from_not_aligned(reinterpret_cast<T *>(&z));
-            return result;
-          } else if constexpr (size() == 8) {
-            __m512i a, b;
-            this->copy_to_not_aligned(reinterpret_cast<T *>(&a));
-            other.copy_to_not_aligned(reinterpret_cast<T *>(&b));
-            const __m512i a_ii             = _mm512_shuffle_epi32(a, _MM_PERM_DDBB);
-            const __m512i b_ri             = _mm512_shuffle_epi32(b, _MM_PERM_CDAB);
-            const __m512i a_rr             = _mm512_shuffle_epi32(a, _MM_PERM_CCAA);
-            const __m512i a_rr_b           = _mm512_mullo_epi32(a_rr, b);
-            const __m512i a_ii_b_ri        = _mm512_mullo_epi32(a_ii, b_ri);
-            const __m512i a_ii_b_ri_signed = _mm512_mask_sub_epi32(a_ii_b_ri, 0b0101010101010101, _mm512_setzero_si512(), a_ii_b_ri);
-            a                              = _mm512_add_epi32(a_rr_b, a_ii_b_ri_signed);
-            result.copy_from_not_aligned(reinterpret_cast<T *>(&a));
-            return result;
-          }
+          alignas(16) __m128d a, b, x, y, z;
+          a = _mm_load_pd((double *)&this->value);
+          b = _mm_load_pd((double *)&other.value);
+          x = _mm_shuffle_pd(a, a, 0);
+          z = _mm_mul_pd(x, b);
+          x = _mm_shuffle_pd(a, a, 3);
+          y = _mm_shuffle_pd(b, b, 1);
+          y = _mm_mul_pd(x, y);
+          z = _mm_addsub_pd(z, y);
+          _mm_store_pd((double *)&result, z);
+          return result;
+        } else if constexpr (size() == 2) {
+          /// AVX
+          alignas(32) __m256d a, b, x, y, z;
+          a = _mm256_load_pd((double *)&this->value);
+          b = _mm256_load_pd((double *)&other.value);
+          x = _mm256_shuffle_pd(a, a, 0);
+          z = _mm256_mul_pd(x, b);
+          x = _mm256_shuffle_pd(a, a, 15);
+          y = _mm256_shuffle_pd(b, b, 5);
+          y = _mm256_mul_pd(x, y);
+          z = _mm256_addsub_pd(z, y);
+          _mm256_store_pd((double *)&result, z);
+          return result;
+        } else if constexpr (size() == 4) {
+          /// AVX512
+          alignas(64) __m512d a, b;
+          a                  = _mm512_load_pd((double *)&this->value);
+          b                  = _mm512_load_pd((double *)&other.value);
+          const __m512d a_ii = _mm512_permute_pd(a, 0b1'1'1'1'1'1'1'1);
+          const __m512d b_ri = _mm512_permute_pd(b, 0b0'1'0'1'0'1'0'1);
+          const __m512d a_rr = _mm512_permute_pd(a, 0);
+          a                  = _mm512_fmaddsub_pd(a_rr, b, _mm512_mul_pd(a_ii, b_ri));
+          _mm512_store_pd((double *)&result, a);
+          return result;
         }
+      } else if constexpr (std::is_same_v<T, float>) {
+        if constexpr (size() == 2) {
+          /// SSE3
+          alignas(16) __m128 a, b, x, y, z;
+          a = _mm_load_ps((float *)&this->value);
+          b = _mm_load_ps((float *)&other.value);
+          x = _mm_shuffle_ps(a, a, 0xA0);
+          z = _mm_mul_ps(x, b);
+          x = _mm_shuffle_ps(a, a, 0xF5);
+          y = _mm_shuffle_ps(b, b, 0xB1);
+          y = _mm_mul_ps(x, y);
+          z = _mm_addsub_ps(z, y);
+          _mm_store_ps((float *)&result, z);
+          return result;
+        } else if constexpr (size() == 4) {
+          /// AVX
+          alignas(32) __m256 a, b, x, y, z;
+          a = _mm256_load_ps((float *)&this->value);
+          b = _mm256_load_ps((float *)&other.value);
+          x = _mm256_shuffle_ps(a, a, 0xA0);
+          z = _mm256_mul_ps(x, b);
+          x = _mm256_shuffle_ps(a, a, 0xF5);
+          y = _mm256_shuffle_ps(b, b, 0xB1);
+          y = _mm256_mul_ps(x, y);
+          z = _mm256_addsub_ps(z, y);
+          _mm256_store_ps((float *)&result, z);
+          return result;
+        } else if constexpr (size() == 8) {
+          /// AVX512
+          alignas(64) __m512 a, b;
+          a                 = _mm512_load_ps((float *)&this->value);
+          b                 = _mm512_load_ps((float *)&other.value);
+          const __m512 a_ii = _mm512_permute_ps(a, 0b11'11'01'01);
+          const __m512 b_ri = _mm512_permute_ps(b, 0b10'11'00'01);
+          const __m512 a_rr = _mm512_permute_ps(a, 0b10'10'00'00);
+          a                 = _mm512_fmaddsub_ps(a_rr, b, _mm512_mul_ps(a_ii, b_ri));
+          _mm512_store_ps((float *)&result, a);
+          return result;
+        }
+      }
 #endif
       std::array<T, size() * 2> first, second, third, fourth, fifth;
       this->copy_to_not_aligned(first.data());
