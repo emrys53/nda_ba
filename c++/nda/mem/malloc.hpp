@@ -78,6 +78,8 @@ namespace nda::mem {
     check_adr_sp_valid<AdrSp>();
     static_assert(nda::have_device == nda::have_cuda, "Adjust function for new device types");
     alignment = alignment < sizeof(void*) ? sizeof(void*) : alignment;
+    // Check if the size is integral multiple of alignment.
+    if (size % alignment != 0) { return nullptr; }
 
     void *ptr = nullptr;
     if constexpr (AdrSp == Host) {
