@@ -60,37 +60,6 @@ namespace nda::mem {
     }
     return ptr;
   }
-  /**
-   * @brief Call the correct `aligned_malloc` function based on the given address space.
-   *
-   * @details It makes the following function calls depending on the address space:
-   * - `std::aligned_malloc` for `Host`.
-   * - `cudaMalloc` for `Device`.
-   * - `cudaMallocManaged` for `Unified`.
-   *
-   * @tparam AdrSp nda::mem::AddressSpace.
-   * @param size Size in bytes to be allocated. It needs to be integral multiple of alignment.
-   * @param alignment Alignment in bytes of the allocated memory. Alignment is at least 8 bytes and needs to be power of 2
-   * @return Pointer to the allocated memory.
-   */
-  template <AddressSpace AdrSp>
-  void *aligned_alloc(size_t size, size_t alignment) {
-    check_adr_sp_valid<AdrSp>();
-    static_assert(nda::have_device == nda::have_cuda, "Adjust function for new device types");
-    alignment = alignment < sizeof(void*) ? sizeof(void*) : alignment;
-    // Check if the size is integral multiple of alignment.
-    if (size % alignment != 0) { return nullptr; }
-
-    void *ptr = nullptr;
-    if constexpr (AdrSp == Host) {
-      ptr = std::aligned_alloc(alignment, size); // NOLINT (we want to return a void*)
-    } else if constexpr (AdrSp == Device) {      // Always aligned to at least 256 bytes, which is more than what we need
-      device_error_check(cudaMalloc((void **)&ptr, size), "cudaMalloc");
-    } else {
-      device_error_check(cudaMallocManaged((void **)&ptr, size), "cudaMallocManaged");
-    }
-    return ptr;
-  }
 
   /**
    * @brief Call the correct `free` function based on the given address space.

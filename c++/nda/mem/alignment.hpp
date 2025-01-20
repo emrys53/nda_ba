@@ -34,7 +34,7 @@ namespace nda::mem {
    * @tparam T integral type
    * @tparam U integral type
    * @param value Value to be rounded up.
-   * @param factor Factor of the next mutiple.
+   * @param factor Factor of the next multiple.
    */
   template <typename T, typename U>
   constexpr auto next_multiple(T value, U factor) {
