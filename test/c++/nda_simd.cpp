@@ -18,12 +18,16 @@ void check_real_binary_operations() {
     for (size_t i = 0; i < width; i++) {
       first[i]  = uniform(re);
       second[i] = uniform(re);
+      while (first[i] == 0) { first[i] = uniform(re); }
+      while (second[i] == 0) { second[i] = uniform(re); }
     }
   } else {
     std::uniform_real_distribution<T> uniform(-10000, 10000);
     for (size_t i = 0; i < width; i++) {
       first[i]  = uniform(re);
       second[i] = uniform(re);
+      while (first[i] == 0) { first[i] = uniform(re); }
+      while (second[i] == 0) { second[i] = uniform(re); }
     }
   }
 
@@ -69,6 +73,17 @@ void check_complex_binary_operations() {
     first[i]  = uniform(re);
     second[i] = uniform(re);
   }
+  for (size_t i = 0; i < width / 2; i++) {
+    while (first[2 * i] == 0 && first[2 * i + 1] == 0) {
+      first[2 * i]     = uniform(re);
+      first[2 * i + 1] = uniform(re);
+    }
+    while (second[2 * i] == 0 && second[2 * i + 1] == 0) {
+      second[2 * i]     = uniform(re);
+      second[2 * i + 1] = uniform(re);
+    }
+  }
+
   simd<std::complex<T>> x(first);
   simd<std::complex<T>> y(second);
   simd<std::complex<T>> plus     = x + y;
