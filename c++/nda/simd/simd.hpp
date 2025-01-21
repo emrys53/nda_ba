@@ -46,6 +46,8 @@ namespace nda {
 
     explicit simd(T *v) { this->copy_from_aligned(v); }
 
+    explicit simd(std::experimental::native_simd<T> v) : value(v) {}
+
     simd(const simd<T> &other) noexcept   = default; // Copy constructor
     simd(simd<T> &&other) noexcept        = default; // Move constructor
     simd &operator=(const simd<T> &other) = default; // Copy assignment
