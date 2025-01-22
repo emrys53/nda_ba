@@ -54,12 +54,9 @@ namespace nda::mem {
     void *ptr = nullptr;
     if constexpr (AdrSp == Host) {
       if (alignment >= 8UL) {
+        // TODO: macos gcc gives bad_alloc errors.
         size = next_multiple(size, alignment);
-        try {
-         ptr = std::aligned_alloc(alignment, size);
-        }catch (std::bad_alloc &e) {
-          std::cerr << e.what() << " aligned_alloc.hpp" << std::endl;
-        }
+        ptr = std::aligned_alloc(alignment, size);
       } else {
         ptr = std::malloc(size); // NOLINT (we want to return a void*)
       }
