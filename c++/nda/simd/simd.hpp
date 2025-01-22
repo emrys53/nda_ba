@@ -10,7 +10,7 @@
 #if defined(__x86_64__)
 #include <immintrin.h>
 #endif
-
+#ifndef __clang__
 namespace nda {
   /*
    * Width in bytes.
@@ -307,3 +307,4 @@ namespace nda {
     }
   };
 } // namespace nda
+#endif
