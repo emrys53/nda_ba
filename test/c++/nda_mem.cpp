@@ -245,7 +245,7 @@ TEST(NDA, MemoryMallocatorAligned) {
   EXPECT_GE(capacity, size);
   EXPECT_EQ(capacity % alignment, 0);
   auto alloc = mem::mallocator_aligned<mem::Host>();
-  auto blk = alloc.allocate_zero(alignment, capacity);
+  auto blk = alloc.allocate_zero(capacity, alignment);
   EXPECT_EQ(blk.s, capacity);
   for (int i = 0; i < capacity; ++i) EXPECT_EQ(blk.ptr[i], 0);
   alloc.deallocate(blk);

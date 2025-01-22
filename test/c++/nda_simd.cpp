@@ -233,6 +233,7 @@ TEST(NDA, RealBinaryOperations) {
   check_real_binary_operations<long long>();
   check_real_binary_operations<float>();
   check_real_binary_operations<double>();
+
 }
 
 TEST(NDA, ComplexBinaryOperations) {

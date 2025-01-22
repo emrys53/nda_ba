@@ -603,9 +603,9 @@ namespace nda {
   // Class template argument deduction guides.
   template <MemoryArray A>
   basic_array(A &&a) -> basic_array<get_value_t<A>, get_rank<A>, get_contiguous_layout_policy<get_rank<A>, get_layout_info<A>.stride_order>,
-                                    get_algebra<A>, heap<mem::get_addr_space<A>>>;
+                                    get_algebra<A>, heap_aligned<mem::get_addr_space<A>>>;
 
   template <Array A>
-  basic_array(A &&a) -> basic_array<get_value_t<A>, get_rank<A>, C_layout, get_algebra<A>, heap<>>;
+  basic_array(A &&a) -> basic_array<get_value_t<A>, get_rank<A>, C_layout, get_algebra<A>, heap_aligned<>>;
 
 } // namespace nda

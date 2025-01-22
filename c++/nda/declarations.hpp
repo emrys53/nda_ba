@@ -71,7 +71,7 @@ namespace nda {
    * @tparam Layout Layout policy of the array.
    * @tparam ContainerPolicy Memory policy of the array.
    */
-  template <typename ValueType, int Rank, typename Layout = C_layout, typename ContainerPolicy = heap<>>
+  template <typename ValueType, int Rank, typename Layout = C_layout, typename ContainerPolicy = heap_aligned<>>
   using array = basic_array<ValueType, Rank, Layout, 'A', ContainerPolicy>;
 
   /**
@@ -124,7 +124,7 @@ namespace nda {
    * @tparam Layout Layout policy of the matrix.
    * @tparam ContainerPolicy Memory policy of the matrix.
    */
-  template <typename ValueType, typename Layout = C_layout, typename ContainerPolicy = heap<>>
+  template <typename ValueType, typename Layout = C_layout, typename ContainerPolicy = heap_aligned<>>
   using matrix = basic_array<ValueType, 2, Layout, 'M', ContainerPolicy>;
 
   /**
@@ -152,7 +152,7 @@ namespace nda {
    * @tparam ValueType Value type of the vector.
    * @tparam ContainerPolicy Memory policy of the vector.
    */
-  template <typename ValueType, typename ContainerPolicy = heap<>>
+  template <typename ValueType, typename ContainerPolicy = heap_aligned<>>
   using vector = basic_array<ValueType, 1, C_layout, 'V', ContainerPolicy>;
 
   /**

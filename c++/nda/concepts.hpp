@@ -164,8 +164,18 @@ namespace nda {
      */
     template <typename A>
     concept Allocator = requires(A &a) {
-      { a.allocate(size_t{}) } noexcept -> std::same_as<blk_t>;
-      { a.allocate_zero(size_t{}) } noexcept -> std::same_as<blk_t>;
+      requires (requires(size_t size) {
+                 { a.allocate(size) } noexcept -> std::same_as<blk_t>;
+             } ||
+             requires(size_t alignment, size_t size) {
+                 { a.allocate(size, alignment) } noexcept -> std::same_as<blk_t>;
+             });
+      requires (requires(size_t size) {
+                 { a.allocate_zero(size) } noexcept -> std::same_as<blk_t>;
+             } ||
+             requires(size_t size, size_t alignment) {
+                 { a.allocate_zero(size, alignment) } noexcept -> std::same_as<blk_t>;
+             });
       { a.deallocate(std::declval<blk_t>()) } noexcept;
       { A::address_space } -> std::same_as<AddressSpace const &>;
     };

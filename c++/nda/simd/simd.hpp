@@ -56,6 +56,8 @@ namespace nda {
 
     static constexpr size_t size() { return std::experimental::native_simd<T>::size(); }
 
+    static constexpr size_t alignment(){return size() * sizeof(T); }
+
     void copy_from_aligned(T *data) { value.copy_from(data, std::experimental::vector_aligned); }
 
     void copy_to_aligned(T *data) const { value.copy_to(data, std::experimental::vector_aligned); }
@@ -144,6 +146,8 @@ namespace nda {
     ~simd()                                                              = default; // Destructor
 
     static constexpr size_t size() { return std::experimental::native_simd<T>::size() / 2; }
+
+    static constexpr size_t alignment() { return simd<T>::alignment();}
 
     void copy_from_aligned(T *data) { value.copy_from(data, std::experimental::vector_aligned); }
 

@@ -28,6 +28,7 @@
 #include "./malloc.hpp"
 #include "./memset.hpp"
 #include "../macros.hpp"
+#include "../simd/simd.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -146,23 +147,23 @@ namespace nda::mem {
     /**
      * @brief Allocate memory using nda::mem::malloc.
      *
-     * @param alignment Alignment in bytes.
      * @param s Size in bytes of the memory to allocate.
+     * @param alignment Alignment in bytes.
      * @return nda::mem::blk_t memory block.
      */
-    static blk_t allocate(size_t alignment, size_t s) noexcept { return {(char *)aligned_alloc<AdrSp>(alignment, s), s}; }
+    static blk_t allocate(size_t s, size_t alignment = nda::simd<int>::alignment()) noexcept { return {(char *)aligned_alloc<AdrSp>(alignment, s), s}; }
     /**
      * @brief Allocate memory and set it to zero.
      *
      * @details The behavior depends on the address space:
      * - Otherwise it uses nda::mem::aligned_alloc and nda::mem::memset.
      *
-     * @param alignment Alignment in bytes.
      * @param s Size in bytes of the memory to allocate.
+     * @param alignment Alignment in bytes.
      * @return nda::mem::blk_t memory block.
      */
-    static blk_t allocate_zero(size_t alignment, size_t s) noexcept {
-      auto blk = allocate(alignment, s);
+    static blk_t allocate_zero(size_t s, size_t alignment = nda::simd<int>::alignment()) noexcept {
+      auto blk = allocate(s, alignment);
       memset<AdrSp>(blk.ptr, 0, blk.s);
       return blk;
     }
