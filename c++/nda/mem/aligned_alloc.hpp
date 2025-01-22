@@ -55,7 +55,11 @@ namespace nda::mem {
     if constexpr (AdrSp == Host) {
       if (alignment >= 8UL) {
         size = next_multiple(size, alignment);
-        ptr = std::aligned_alloc(alignment, size); // NOLINT (we want to return a void*)
+        try {
+         ptr = std::aligned_alloc(alignment, size);
+        }catch (std::bad_alloc &e) {
+          std::cerr << e.what() << " aligned_alloc.hpp" << std::endl;
+        }
       } else {
         ptr = std::malloc(size); // NOLINT (we want to return a void*)
       }
