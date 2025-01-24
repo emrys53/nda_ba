@@ -10,12 +10,14 @@
 #if defined(__x86_64__)
 #include <immintrin.h>
 #endif
+
+#include "../concepts.hpp"
 #ifndef __clang__
 namespace nda {
   /*
    * Width in bytes.
    */
-  template <typename T>
+  template <Vectorizable T>
   class simd {
     std::experimental::native_simd<T> value;
 
@@ -101,7 +103,7 @@ namespace nda {
     }
   };
 
-  template <typename T>
+  template <Vectorizable T>
   class simd<std::complex<T>> {
     std::experimental::native_simd<T> value;
 

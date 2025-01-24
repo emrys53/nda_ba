@@ -24,6 +24,7 @@
 #include "./stdutil/concepts.hpp"
 #include "./traits.hpp"
 
+#include <experimental/simd>
 #include <array>
 #include <concepts>
 #include <type_traits>
@@ -119,6 +120,13 @@ namespace nda {
   concept Scalar = nda::is_scalar_v<S>;
 
   /**
+   * @brief Check if a given type is supported by simd class or complex type. // TODO: Change it when new simd library is used.
+   * @tparam S Type to check.
+   */
+  template <typename S>
+  concept Vectorizable = requires { std::experimental::native_simd<S>(); } or nda::is_complex_v<S>;
+
+  /**
    * @brief Check if a given type is either a double or complex type.
    * @tparam S Type to check.
    */
@@ -164,18 +172,8 @@ namespace nda {
      */
     template <typename A>
     concept Allocator = requires(A &a) {
-      requires (requires(size_t size) {
-                 { a.allocate(size) } noexcept -> std::same_as<blk_t>;
-             } ||
-             requires(size_t alignment, size_t size) {
-                 { a.allocate(size, alignment) } noexcept -> std::same_as<blk_t>;
-             });
-      requires (requires(size_t size) {
-                 { a.allocate_zero(size) } noexcept -> std::same_as<blk_t>;
-             } ||
-             requires(size_t size, size_t alignment) {
-                 { a.allocate_zero(size, alignment) } noexcept -> std::same_as<blk_t>;
-             });
+      { a.allocate(size_t{}, size_t{}) } noexcept -> std::same_as<blk_t>;
+      { a.allocate_zero(size_t{}, size_t{}) } noexcept -> std::same_as<blk_t>;
       { a.deallocate(std::declval<blk_t>()) } noexcept;
       { A::address_space } -> std::same_as<AddressSpace const &>;
     };

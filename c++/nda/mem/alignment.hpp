@@ -49,7 +49,7 @@ namespace nda::mem {
     static constexpr std::size_t width     = 0;
   };
 
-  template <Scalar T>
+  template <Vectorizable T>
   struct type_alignment_info<T> {
     // Alignment in bytes.
     static constexpr std::size_t alignment = simd<T>::alignment();
