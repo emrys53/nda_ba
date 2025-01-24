@@ -20,6 +20,7 @@
  */
 
 #pragma once
+#include "../simd/simd.hpp"
 
 namespace nda::mem {
 
@@ -41,6 +42,15 @@ namespace nda::mem {
      return ( value + ( factor - ( value % factor ) ) % factor );
   }
 
+
+  // TODO do structs with template speciailization or fix the function properly(unlikely prefer struct)
+  template<typename T>
+  static constexpr size_t alignment() {
+    if constexpr(std::is_integral_v<T> || std::is_floating_point_v<T>) {
+      return simd<T>::alignment();
+    }
+    return 0;
+  }
   /** @} */
 
 } // namespace nda::mem

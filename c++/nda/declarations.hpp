@@ -71,8 +71,20 @@ namespace nda {
    * @tparam Layout Layout policy of the array.
    * @tparam ContainerPolicy Memory policy of the array.
    */
-  template <typename ValueType, int Rank, typename Layout = C_layout, typename ContainerPolicy = heap_aligned<>>
+  template <typename ValueType, int Rank, typename Layout = C_layout, typename ContainerPolicy = heap<>>
   using array = basic_array<ValueType, Rank, Layout, 'A', ContainerPolicy>;
+
+  /**
+   * @brief Alias template of an nda::basic_array with an 'A' algebra and aligned allocator.
+   *
+   * @tparam ValueType Value type of the array.
+   * @tparam Rank Rank of the array.
+   * @tparam Layout Layout policy of the array.
+   * @tparam ContainerPolicy Memory policy of the array.
+   */
+  template <typename ValueType, int Rank, typename Layout = C_layout, typename ContainerPolicy = heap_aligned<>>
+  using array_aligned = basic_array<ValueType, Rank, Layout, 'A', ContainerPolicy>;
+
 
   /**
    * @brief Alias template of an nda::basic_array_view with an 'A' algebra, nda::default_accessor and nda::borrowed
@@ -124,8 +136,20 @@ namespace nda {
    * @tparam Layout Layout policy of the matrix.
    * @tparam ContainerPolicy Memory policy of the matrix.
    */
-  template <typename ValueType, typename Layout = C_layout, typename ContainerPolicy = heap_aligned<>>
+  template <typename ValueType, typename Layout = C_layout, typename ContainerPolicy = heap<>>
   using matrix = basic_array<ValueType, 2, Layout, 'M', ContainerPolicy>;
+
+
+  /**
+  * @brief Alias template of an nda::basic_array with rank 2 and an 'M' algebra and aligned allocator.
+  *
+  * @tparam ValueType Value type of the matrix.
+  * @tparam Layout Layout policy of the matrix.
+  * @tparam ContainerPolicy Memory policy of the matrix.
+  */
+  template <typename ValueType, typename Layout = C_layout, typename ContainerPolicy = heap_aligned<>>
+  using matrix_aligned = basic_array<ValueType, 2, Layout, 'M', ContainerPolicy>;
+
 
   /**
    * @brief Alias template of an nda::basic_array_view with rank 2, an 'M' algebra, nda::default_accessor and
@@ -152,8 +176,17 @@ namespace nda {
    * @tparam ValueType Value type of the vector.
    * @tparam ContainerPolicy Memory policy of the vector.
    */
-  template <typename ValueType, typename ContainerPolicy = heap_aligned<>>
+  template <typename ValueType, typename ContainerPolicy = heap<>>
   using vector = basic_array<ValueType, 1, C_layout, 'V', ContainerPolicy>;
+
+  /**
+   * @brief Alias template of an nda::basic_array with rank 1 and a 'V' algebra and aligned_allocator
+   *
+   * @tparam ValueType Value type of the vector.
+   * @tparam ContainerPolicy Memory policy of the vector.
+   */
+  template <typename ValueType, typename ContainerPolicy = heap_aligned<>>
+  using vector_aligned = basic_array<ValueType, 1, C_layout, 'V', ContainerPolicy>;
 
   /**
    * @brief Alias template of an nda::basic_array_view with rank 1, a 'V' algebra, nda::default_accessor and

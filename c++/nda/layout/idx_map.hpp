@@ -71,7 +71,7 @@ namespace nda {
    * @details It stores the shape of the array, i.e. the length of each dimension, and the strides of each dimension.
    * The stride of dimension `i` is the number of elements to skip in memory when the index of dimension `i` is
    * incremented by one. For example:
-   * - To iterate over every element of a 5x5x5 array in C-order use the strides `(25, 5, 1)`.
+   * - To iterate over every element of a 5x5x5 array in C-order use the strides `(25, 5, 1)`. a[i][j][k] = 25 * i + 8  * j + k
    * - To iterate over every 2nd element of a 1D array use the stride `(2)`.
    * - To iterate over every 2nd column of a 10x10 array in Fortran-order use the strides `(1, 20)`.
    * - To iterate over every 2nd row of a 10x10 array in Fortran-order use the strides `(2, 10)`.
@@ -168,11 +168,13 @@ namespace nda {
       // the layout might have to be also updated to work with aligned objects.
       long width = simd<T>::size();
       if constexpr(Rank == 1) {
+        // TODO: next multiple
         return (len[0] + width -1) / width * width;
       }
       if constexpr(StrideOrder == C_stride_order<Rank>) {
         return std::accumulate(len.cbegin(), len.cend()-1, (len[Rank-1] + width - 1) / width * width, std::multiplies<>{});
       }
+      //TODO: add else if and else branch for else either calculate or do static_assert.
       // F_Stride_Order
       return std::accumulate(len.cbegin()+1, len.cend(), (len[0] + width -1) / width * width, std::multiplies<>{});
     }

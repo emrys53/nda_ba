@@ -151,6 +151,7 @@ namespace nda::mem {
      * @param alignment Alignment in bytes.
      * @return nda::mem::blk_t memory block.
      */
+    // TODO: no default value
     static blk_t allocate(size_t s, size_t alignment = nda::simd<int>::alignment()) noexcept { return {(char *)aligned_alloc<AdrSp>(alignment, s), s}; }
     /**
      * @brief Allocate memory and set it to zero.
