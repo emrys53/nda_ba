@@ -20,11 +20,13 @@
 
 #include <nda/mem.hpp>
 
+#include <experimental/simd>
 #include <bitset>
 #include <cstddef>
 #include <iostream>
 #include <utility>
 #include <vector>
+#include <nda/declarations.hpp>
 
 using namespace nda;
 
@@ -486,4 +488,54 @@ TEST(NDA, MemoryHandleShared) {
   mem::handle_shared<int> s2{h};
   s = s2;
   EXPECT_EQ(s.refcount(), 3);
+}
+
+TEST(NDA, TypeAlignmentInfoAlignment) {
+  constexpr auto correct_alignment = std::experimental::native_simd<int>::size() * sizeof(int);
+
+  auto x = mem::type_alignment_info<int>::alignment;
+  EXPECT_EQ(x,correct_alignment);
+
+  x = mem::type_alignment_info<int*>::alignment;
+  EXPECT_EQ(x,0);
+
+  x = mem::type_alignment_info<void>::alignment;
+  EXPECT_EQ(x,0);
+
+  x = mem::type_alignment_info<std::complex<float>>::alignment;
+  EXPECT_EQ(x,correct_alignment);
+
+  x = mem::type_alignment_info<std::complex<double>>::alignment;
+  EXPECT_EQ(x,correct_alignment);
+
+  x = mem::type_alignment_info<const double>::alignment;
+  EXPECT_EQ(x,correct_alignment);
+
+  x = mem::type_alignment_info<std::complex<const float>>::alignment;
+  EXPECT_EQ(x,correct_alignment);
+
+  x = mem::type_alignment_info<array<int,4>>::alignment;
+  EXPECT_EQ(x , 0);
+}
+
+TEST(NDA, TypeAlignmentInfoWidth) {
+  constexpr auto correct_alignment = std::experimental::native_simd<int>::size() * sizeof(int);
+
+  auto x = mem::type_alignment_info<int>::width;
+  EXPECT_EQ(x,correct_alignment / sizeof(int));
+
+  x = mem::type_alignment_info<void>::width;
+  EXPECT_EQ(x, 0);
+
+  x = mem::type_alignment_info<std::complex<float>>::width;
+  EXPECT_EQ(x,correct_alignment/sizeof(std::complex<float>));
+
+  x = mem::type_alignment_info<std::complex<double>>::width;
+  EXPECT_EQ(x,correct_alignment/sizeof(std::complex<double>));
+
+  x = mem::type_alignment_info<const double>::width;
+  EXPECT_EQ(x,correct_alignment/sizeof(const double));
+
+  x = mem::type_alignment_info<array<int,4>>::width;
+  EXPECT_EQ(x , 0);
 }

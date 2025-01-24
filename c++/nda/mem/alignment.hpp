@@ -21,6 +21,7 @@
 
 #pragma once
 #include "../simd/simd.hpp"
+#include "../concepts.hpp"
 
 namespace nda::mem {
 
@@ -42,15 +43,18 @@ namespace nda::mem {
      return ( value + ( factor - ( value % factor ) ) % factor );
   }
 
+  template <typename T>
+  struct type_alignment_info {
+    static constexpr std::size_t alignment = 0;
+    static constexpr std::size_t width     = 0;
+  };
 
-  // TODO do structs with template speciailization or fix the function properly(unlikely prefer struct)
-  template<typename T>
-  static constexpr size_t alignment() {
-    if constexpr(std::is_integral_v<T> || std::is_floating_point_v<T>) {
-      return simd<T>::alignment();
-    }
-    return 0;
-  }
-  /** @} */
+  template <Scalar T>
+  struct type_alignment_info<T> {
+    // Alignment in bytes.
+    static constexpr std::size_t alignment = simd<T>::alignment();
+    // Maximum of elements I can fit into simd register of type T.
+    static constexpr std::size_t width     = alignment / sizeof(T);
+  };
 
 } // namespace nda::mem
