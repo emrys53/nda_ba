@@ -40,7 +40,7 @@ namespace nda::mem {
    */
   template <typename T, typename U>
   constexpr auto next_multiple(T value, U factor) {
-     return ( value + ( factor - ( value % factor ) ) % factor );
+    return (value + (factor - (value % factor)) % factor);
   }
 
   template <typename T>
@@ -54,7 +54,24 @@ namespace nda::mem {
     // Alignment in bytes.
     static constexpr std::size_t alignment = simd<T>::alignment();
     // Maximum of elements I can fit into simd register of type T.
-    static constexpr std::size_t width     = alignment / sizeof(T);
+    static constexpr std::size_t width = alignment / sizeof(T);
   };
 
+  struct stride_padding {
+    public:
+    size_t padding;
+    explicit stride_padding(size_t padding) : padding(padding) {};
+
+    explicit stride_padding() : padding(0) {};
+
+    const size_t &get_padding() const { return padding; }
+
+    void set_padding(size_t value) { padding = value; }
+
+    stride_padding(const stride_padding &)                = default;
+    stride_padding &operator=(const stride_padding &)     = default;
+    stride_padding(stride_padding &&) noexcept            = default;
+    stride_padding &operator=(stride_padding &&) noexcept = default;
+    ~stride_padding()                                     = default;
+  };
 } // namespace nda::mem
