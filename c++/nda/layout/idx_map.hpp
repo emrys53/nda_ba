@@ -362,6 +362,7 @@ namespace nda {
         for (int u = 0; u < Rank; ++u) len[u] = static_extents[u];
         compute_strides_contiguous();
       }
+      init_default_str();
     }
     //TODO: implementing this causes many problem because sometimes layout constructor is called like with value {100}. Instead of converting this
     // to std::array<long,1> and calling it with shape constructoor compiler tries to call this constructor which breaks down the code. Ask what to do
@@ -395,6 +396,7 @@ namespace nda {
           EXPECTS_WITH_MESSAGE(idxm.is_strided_1d(), "Error in nda::idx_map: Constructing a strided_1d from a non-strided_1d layout");
         }
       }
+      init_default_str();
     }
 
     /**
@@ -505,11 +507,11 @@ namespace nda {
      * by the corresponding dynamic extent.
      *
      * @param shape std::array with the dynamic extents only.
-     * @param width Alignment requirement for fastest dimension.
+     * @param padding Padding required for the fastest dimension.
      */
-    idx_map(std::array<long, n_dynamic_extents> const &shape, size_t width) noexcept
+    idx_map(std::array<long, n_dynamic_extents> const &shape, mem::stride_padding padding) noexcept
       requires((n_dynamic_extents != Rank) and (n_dynamic_extents != 0))
-       : idx_map(merge_static_and_dynamic_extents(shape), width) {}
+       : idx_map(merge_static_and_dynamic_extents(shape), padding) {}
 
     /**
      * @brief Construct a new map from an existing map with a different stride order.
@@ -567,7 +569,7 @@ namespace nda {
         return arg;
       } else {
         // otherwise multiply the argument by the stride of the current dimension
-        return arg * std::get<I>(str);
+        return arg * std::get<I>(default_str);
       }
     }
 
@@ -587,7 +589,7 @@ namespace nda {
           return (myget<true, Is>(static_cast<long>(args)) + ...);
         } else {
           // arbitrary layouts
-          return ((args * std::get<Is>(str)) + ...);
+          return ((args * std::get<Is>(default_str)) + ...);
         }
       } else {
         // empty ellipsis is present and needs to be skipped
@@ -650,12 +652,12 @@ namespace nda {
       // compute residues starting from slowest index
       std::array<long, Rank> residues;
       residues[0] = lin_idx;
-      for (auto i : range(1, Rank)) { residues[i] = residues[i - 1] % str[stride_order[i - 1]]; }
+      for (auto i : range(1, Rank)) { residues[i] = residues[i - 1] % default_str[stride_order[i - 1]]; }
 
       // convert residues to indices, ordered from slowest to fastest
       std::array<long, Rank> idx;
-      idx[Rank - 1] = residues[Rank - 1] / str[stride_order[Rank - 1]];
-      for (auto i : range(Rank - 2, -1, -1)) { idx[i] = (residues[i] - residues[i + 1]) / str[stride_order[i]]; }
+      idx[Rank - 1] = residues[Rank - 1] / default_str[stride_order[Rank - 1]];
+      for (auto i : range(Rank - 2, -1, -1)) { idx[i] = (residues[i] - residues[i + 1]) / default_str[stride_order[i]]; }
 
       // reorder indices according to stride order
       return permutations::apply_inverse(stride_order, idx);
