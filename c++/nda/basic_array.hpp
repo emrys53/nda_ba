@@ -139,6 +139,7 @@ namespace nda {
     /// Number of dimensions of the array.
     static constexpr int rank = Rank;
 
+
     // Compile-time check.
     static_assert(has_contiguous(layout_t::layout_prop), "Error in nda::basic_array: Memory layout has to be contiguous");
 
