@@ -26,7 +26,7 @@
     </tr>
     <tr>
       <th scope="row">Date:</th>
-      <td>2025-01-26 00:42:27</td>
+      <td>2025-01-26 17:29:25</td>
     </tr>
   </table>
 </div>
@@ -102,12 +102,12 @@
     <tr><td><a href="#l608">nda::mem::leak_check&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt;::get_memory_used() const (line 608)</a></td><td>called 5 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l523">nda::mem::leak_check&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt;::leak_check() (line 523)</a></td><td>called 1 time</td><td>100.0%</td></tr>
     <tr><td><a href="#l541">nda::mem::leak_check&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt;::~leak_check() (line 541)</a></td><td>called 4 times</td><td>43.0%</td></tr>
-    <tr><td><a href="#l98">nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt;::allocate(unsigned long, unsigned long) (line 98)</a></td><td>called 3978335 times</td><td>100.0%</td></tr>
+    <tr><td><a href="#l98">nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt;::allocate(unsigned long, unsigned long) (line 98)</a></td><td>called 3978337 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l110">nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt;::allocate_zero(unsigned long, unsigned long) (line 110)</a></td><td>called 681 times</td><td>100.0%</td></tr>
-    <tr><td><a href="#l124">nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt;::deallocate(nda::mem::blk_t) (line 124)</a></td><td>called 3979016 times</td><td>100.0%</td></tr>
-    <tr><td><a href="#l153">nda::mem::mallocator_aligned&lt;(nda::mem::AddressSpace)1&gt;::allocate(unsigned long, unsigned long) (line 153)</a></td><td>called 1 time</td><td>100.0%</td></tr>
+    <tr><td><a href="#l124">nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt;::deallocate(nda::mem::blk_t) (line 124)</a></td><td>called 3979018 times</td><td>100.0%</td></tr>
+    <tr><td><a href="#l153">nda::mem::mallocator_aligned&lt;(nda::mem::AddressSpace)1&gt;::allocate(unsigned long, unsigned long) (line 153)</a></td><td>called 2 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l164">nda::mem::mallocator_aligned&lt;(nda::mem::AddressSpace)1&gt;::allocate_zero(unsigned long, unsigned long) (line 164)</a></td><td>called 1 time</td><td>100.0%</td></tr>
-    <tr><td><a href="#l173">nda::mem::mallocator_aligned&lt;(nda::mem::AddressSpace)1&gt;::deallocate(nda::mem::blk_t) (line 173)</a></td><td>called 1 time</td><td>100.0%</td></tr>
+    <tr><td><a href="#l173">nda::mem::mallocator_aligned&lt;(nda::mem::AddressSpace)1&gt;::deallocate(nda::mem::blk_t) (line 173)</a></td><td>called 2 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l358">nda::mem::multi_bucket&lt;800&gt;::allocate(unsigned long, unsigned long) (line 358)</a></td><td>called 1 time</td><td>85.0%</td></tr>
     <tr><td><a href="#l384">nda::mem::multi_bucket&lt;800&gt;::deallocate(nda::mem::blk_t) (line 384)</a></td><td>called 1 time</td><td>21.0%</td></tr>
     <tr><td><a href="#l325">nda::mem::multi_bucket&lt;800&gt;::find_non_full_bucket() (line 325)</a></td><td>not called</td><td>0.0%</td></tr>
@@ -825,7 +825,7 @@
       <td class="lineno"><a id="l98" href="#l98">98</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">3978335</td>
+      <td class="linecount coveredLine">3978337</td>
       <td class="src coveredLine"><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">blk_t</span><span class="w"> </span><span class="nf">allocate</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">{(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="o">&lt;</span><span class="n">AdrSp</span><span class="o">&gt;</span><span class="p">(</span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="n">s</span><span class="p">};</span><span class="w"> </span><span class="p">}</span></td>
     </tr>
     <tr class="source-line">
@@ -1007,7 +1007,7 @@
       <td class="lineno"><a id="l124" href="#l124">124</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">3979016</td>
+      <td class="linecount coveredLine">3979018</td>
       <td class="src coveredLine"><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">deallocate</span><span class="p">(</span><span class="n">blk_t</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">free</span><span class="o">&lt;</span><span class="n">AdrSp</span><span class="o">&gt;</span><span class="p">((</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">b</span><span class="p">.</span><span class="n">ptr</span><span class="p">);</span><span class="w"> </span><span class="p">}</span></td>
     </tr>
     <tr class="source-line">
@@ -1210,7 +1210,7 @@
       <td class="lineno"><a id="l153" href="#l153">153</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">1</td>
+      <td class="linecount coveredLine">2</td>
       <td class="src coveredLine"><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">blk_t</span><span class="w"> </span><span class="nf">allocate</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">alignment</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">{(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">aligned_alloc</span><span class="o">&lt;</span><span class="n">AdrSp</span><span class="o">&gt;</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="n">s</span><span class="p">};</span><span class="w"> </span><span class="p">}</span></td>
     </tr>
     <tr class="source-line">
@@ -1350,7 +1350,7 @@
       <td class="lineno"><a id="l173" href="#l173">173</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">1</td>
+      <td class="linecount coveredLine">2</td>
       <td class="src coveredLine"><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">deallocate</span><span class="p">(</span><span class="n">blk_t</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">aligned_free</span><span class="o">&lt;</span><span class="n">AdrSp</span><span class="o">&gt;</span><span class="p">((</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">b</span><span class="p">.</span><span class="n">ptr</span><span class="p">);</span><span class="w"> </span><span class="p">}</span></td>
     </tr>
     <tr class="source-line">
