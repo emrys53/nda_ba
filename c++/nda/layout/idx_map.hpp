@@ -96,7 +96,7 @@ namespace nda {
    * in memory (see nda::layout_prop_e).
    *
    * @tparam Rank Number of dimensions.
-   * @tparam StaticExtent Compile-time known shape (zero if fully dynamic).
+   * @tparam StaticExtents Compile-time known shape (zero if fully dynamic).
    * @tparam StrideOrder Order in which the dimensions are stored in memory.
    * @tparam LayoutProp Compile-time guarantees about the layout of the data in memory.
    */
@@ -177,7 +177,7 @@ namespace nda {
         return std::accumulate(len.cbegin() + 1, len.cend(), mem::next_multiple(len[0], required_padding), std::multiplies<>{});
       } else {
         long init = mem::next_multiple(len[stride_order[Rank - 1]], required_padding);
-        for (int i = Rank - 2; i > 0; --i) { init *= stride_order[i]; }
+        for (int i = Rank - 2; i > 0; --i) { init *= len[stride_order[i]]; }
         return init;
       }
     }
@@ -204,7 +204,7 @@ namespace nda {
      * @brief Get the strides of all dimensions.
      * @return `std::array<long, Rank>` containing the stride of each dimension.
      */
-    [[nodiscard]] std::array<long, Rank> const &strides() const noexcept { return str; }
+    [[nodiscard]] std::array<long, Rank> const &strides() const noexcept { return default_str; }
 
     /**
      * @brief Get the padding of idx_map.
@@ -216,7 +216,7 @@ namespace nda {
      * @brief Get the value of the smallest stride (positive or negative).
      * @return Stride of the fastest varying dimension.
      */
-    [[nodiscard]] long min_stride() const noexcept { return str[stride_order[Rank - 1]]; }
+    [[nodiscard]] long min_stride() const noexcept { return default_str[stride_order[Rank - 1]]; }
 
     /**
      * @brief Is the data contiguous in memory?
@@ -237,7 +237,7 @@ namespace nda {
      * @brief Are all strides positive?
      * @return True if all strides are positive, false otherwise.
      */
-    [[nodiscard]] bool has_positive_strides() const noexcept { return (*std::min_element(str.cbegin(), str.cend()) >= 0); }
+    [[nodiscard]] bool has_positive_strides() const noexcept { return (*std::min_element(default_str.cbegin(), default_str.cend()) >= 0); }
 
     /**
      * @brief Is the data strided in memory with a constant stride?
@@ -337,9 +337,15 @@ namespace nda {
       // If padding is not 0, that means we need padding. Pad the fastest dimension array and default_stride should be padded_str to access memory.
       // Else there is no padding default_str is just the original str.
       if (get_padding() != 0) {
-        padded_str                         = str;
-        padded_str[stride_order[Rank - 1]] = nda::mem::next_multiple(padded_str[stride_order[Rank - 1]], get_padding());
-        default_str                        = padded_str;
+        // Padding exists only in aligned memory layout therefor minimum stride has to be 1.
+        padded_str[stride_order[Rank - 1]] = 1;
+        long init                          = mem::next_multiple(len[stride_order[Rank - 1]], padding.get_padding());
+        for (int i = rank() - 2; i >= 0; --i) {
+          std::cout << init << std::endl;
+          padded_str[stride_order[i]] = init;
+          init *= len[stride_order[i]];
+        }
+        default_str = padded_str;
       } else {
         default_str = str;
       }
@@ -568,7 +574,7 @@ namespace nda {
         return arg;
       } else {
         // otherwise multiply the argument by the stride of the current dimension
-        return arg * std::get<I>(default_str);
+        return arg * std::get<I>(strides());
       }
     }
 
@@ -647,16 +653,17 @@ namespace nda {
      * @param lin_idx Linear/Flat index.
      * @return Multi-dimensional index.
      */
+    // TODO: I think here we have to use unpadded strides.
     std::array<long, Rank> to_idx(long lin_idx) const {
       // compute residues starting from slowest index
       std::array<long, Rank> residues;
       residues[0] = lin_idx;
-      for (auto i : range(1, Rank)) { residues[i] = residues[i - 1] % default_str[stride_order[i - 1]]; }
+      for (auto i : range(1, Rank)) { residues[i] = residues[i - 1] % str[stride_order[i - 1]]; }
 
       // convert residues to indices, ordered from slowest to fastest
       std::array<long, Rank> idx;
-      idx[Rank - 1] = residues[Rank - 1] / default_str[stride_order[Rank - 1]];
-      for (auto i : range(Rank - 2, -1, -1)) { idx[i] = (residues[i] - residues[i + 1]) / default_str[stride_order[i]]; }
+      idx[Rank - 1] = residues[Rank - 1] / str[stride_order[Rank - 1]];
+      for (auto i : range(Rank - 2, -1, -1)) { idx[i] = (residues[i] - residues[i + 1]) / str[stride_order[i]]; }
 
       // reorder indices according to stride order
       return permutations::apply_inverse(stride_order, idx);
@@ -753,7 +760,7 @@ namespace nda {
       static constexpr std::array<int, Rank> permu              = decode<Rank>(Permutation);
       static constexpr std::array<int, Rank> new_stride_order   = permutations::compose(permu, stride_order);
       static constexpr std::array<int, Rank> new_static_extents = permutations::apply_inverse(permu, static_extents);
-
+      //TODO: Think more later whether to use default_str or str.
       return idx_map<Rank, encode(new_static_extents), encode(new_stride_order), LayoutProp>{permutations::apply_inverse(permu, lengths()),
                                                                                              permutations::apply_inverse(permu, strides())};
     }

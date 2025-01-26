@@ -963,6 +963,38 @@ TEST_F(NDAArrayAndView, StrideOrderOfArrays) {
   EXPECT_TRUE(v_c.indexmap().is_stride_order_C());
   EXPECT_TRUE(v_f.indexmap().is_stride_order_C());
 }
+/*
+ * [1, 2]
+ * [3, 4]
+ * [5, 6]
+ *
+ */
+TEST_F(NDAArrayAndView, ArrayAligned) {
+  nda::array_aligned<int,2,nda::C_layout> M = {{1, 2}, {3, 4}, {5, 6}};
+  // EXPECT_EQ(M.shape(), (shape_t<2>{3, 2}));
+  // for (int i = 1; auto x : M) EXPECT_EQ(x, i++);
+  // for (int i = 0 ; i < 2; ++i) {
+  //   for (int j = 0 ;j < 2; ++j) {
+  //     std::cout << M(i, j) << " ";
+  //   }
+  //   std::cout << std::endl;
+  // }
+  nda::simd<int> x(&M(0,0));
+  nda::simd<int> y(&M(1,0));
+  nda::simd<int> z(&M(2,0));
+
+
+  for (int i = 0 ; i < 8 ; ++i) {
+  std::cout << "x: " << x[i] << std::endl;
+  }
+  for (int i = 0 ; i < 8 ; ++i) {
+    std::cout << "y: " << y[i] << std::endl;
+  }
+  for (int i = 0 ; i < 8 ; ++i) {
+    std::cout << "z: " << z[i] << std::endl;
+  }
+
+}
 
 #if defined(__has_feature)
 #if !__has_feature(address_sanitizer)

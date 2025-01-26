@@ -139,6 +139,7 @@ namespace nda {
     /// Number of dimensions of the array.
     static constexpr int rank = Rank;
 
+    static constexpr size_t padding = std::is_same_v<ContainerPolicy, heap_aligned<>> ? mem::type_alignment_info<ValueType>::width : 0;
 
     // Compile-time check.
     static_assert(has_contiguous(layout_t::layout_prop), "Error in nda::basic_array: Memory layout has to be contiguous");
@@ -167,7 +168,8 @@ namespace nda {
 
     // Construct an array with a given shape and initialize the memory with zeros.
     template <std::integral Int = long>
-    basic_array(std::array<Int, Rank> const &shape, mem::init_zero_t) : lay{shape}, sto{lay.size(), mem::init_zero} {}
+    basic_array(std::array<Int, Rank> const &shape, mem::init_zero_t)
+       : lay{shape, mem::stride_padding(padding)}, sto{lay.capacity(), mem::init_zero} {}
 
     public:
     /**
@@ -214,6 +216,7 @@ namespace nda {
      * @tparam CP Container policy of the other array.
      * @param a Other array.
      */
+    // TODO: Think more whether it is ok to pass padding in lay initialization.
     template <char A, typename CP>
     explicit basic_array(basic_array<ValueType, Rank, LayoutPolicy, A, CP> a) noexcept : lay(a.indexmap()), sto(std::move(a.storage())) {}
 
@@ -230,8 +233,8 @@ namespace nda {
       requires(sizeof...(Ints) == Rank)
     explicit basic_array(Ints... is) {
       // setting the layout and storage in the constructor body improves error messages for wrong # of args
-      lay = layout_t{std::array{long(is)...}}; // NOLINT (for better error messages)
-      sto = storage_t{lay.size()};             // NOLINT (for better error messages)
+      lay = layout_t{std::array{long(is)...}, mem::stride_padding(padding)}; // NOLINT (for better error messages)
+      sto = storage_t{lay.capacity()};                                       // NOLINT (for better error messages)
     }
 
     /**
@@ -245,7 +248,7 @@ namespace nda {
     template <std::integral Int, typename RHS>
     explicit basic_array(Int sz, RHS const &val)
       requires((Rank == 1 and is_scalar_for_v<RHS, basic_array>))
-       : lay(layout_t{std::array{long(sz)}}), sto{lay.size()} {
+       : lay(layout_t{std::array{long(sz)}, mem::stride_padding(padding)}), sto{lay.capacity()} {
       assign_from_scalar(val);
     }
 
@@ -260,7 +263,7 @@ namespace nda {
     template <std::integral Int = long>
     explicit basic_array(std::array<Int, Rank> const &shape)
       requires(std::is_default_constructible_v<ValueType>)
-       : lay(shape), sto(lay.size()) {}
+       : lay(shape, mem::stride_padding(padding)), sto(lay.capacity()) {}
 
     /**
      * @brief Construct an array with the given memory layout.
@@ -271,7 +274,7 @@ namespace nda {
      */
     explicit basic_array(layout_t const &layout)
       requires(std::is_default_constructible_v<ValueType>)
-       : lay{layout}, sto{lay.size()} {}
+       : lay{layout}, sto{lay.capacity()} {}
 
     /**
      * @brief Construct an array with the given memory layout and with an existing memory handle/storage.
@@ -291,7 +294,7 @@ namespace nda {
      */
     template <ArrayOfRank<Rank> A>
       requires(HasValueTypeConstructibleFrom<A, ValueType>)
-    basic_array(A const &a) : lay(a.shape()), sto{lay.size(), mem::do_not_initialize} {
+    basic_array(A const &a) : lay(a.shape(), mem::stride_padding(padding)), sto{lay.capacity(), mem::do_not_initialize} {
       static_assert(std::is_constructible_v<ValueType, get_value_t<A>>, "Error in nda::basic_array: Incompatible value types in constructor");
       if constexpr (std::is_trivial_v<ValueType> or is_complex_v<ValueType>) {
         // trivial and complex value types can use the optimized assign_from_ndarray
@@ -339,7 +342,7 @@ namespace nda {
      */
     basic_array(std::initializer_list<ValueType> const &l)
       requires(Rank == 1)
-       : lay(std::array<long, 1>{long(l.size())}), sto{lay.size(), mem::do_not_initialize} {
+       : lay(std::array<long, 1>{long(l.size())}, mem::stride_padding(padding)), sto{lay.capacity(), mem::do_not_initialize} {
       long i = 0;
       for (auto const &x : l) { new (sto.data() + lay(i++)) ValueType{x}; }
     }
@@ -350,7 +353,7 @@ namespace nda {
      */
     basic_array(std::initializer_list<std::initializer_list<ValueType>> const &l2)
       requires(Rank == 2)
-       : lay(shape_from_init_list(l2)), sto{lay.size(), mem::do_not_initialize} {
+       : lay(shape_from_init_list(l2), mem::stride_padding(padding)), sto{lay.capacity(), mem::do_not_initialize} {
       long i = 0, j = 0;
       for (auto const &l1 : l2) {
         for (auto const &x : l1) { new (sto.data() + lay(i, j++)) ValueType{x}; }
@@ -365,7 +368,7 @@ namespace nda {
      */
     basic_array(std::initializer_list<std::initializer_list<std::initializer_list<ValueType>>> const &l3)
       requires(Rank == 3)
-       : lay(shape_from_init_list(l3)), sto{lay.size(), mem::do_not_initialize} {
+       : lay(shape_from_init_list(l3), mem::stride_padding(padding)), sto{lay.capacity(), mem::do_not_initialize} {
       long i = 0, j = 0, k = 0;
       for (auto const &l2 : l3) {
         for (auto const &l1 : l2) {
@@ -594,7 +597,8 @@ namespace nda {
      */
     [[gnu::noinline]] void resize(std::array<long, Rank> const &shape) {
       lay = layout_t(shape);
-      if (sto.is_null() or (sto.size() != lay.size())) sto = storage_t{lay.size()};
+      // TODO: think more whether to change these sizes to capacity.
+      if (sto.is_null() or (sto.size() != lay.size())) sto = storage_t{lay.capacity()};
     }
 
 // include common functionality of arrays and views
