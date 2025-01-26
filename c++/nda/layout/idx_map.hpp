@@ -177,7 +177,7 @@ namespace nda {
         return std::accumulate(len.cbegin() + 1, len.cend(), mem::next_multiple(len[0], required_padding), std::multiplies<>{});
       } else {
         long init = mem::next_multiple(len[stride_order[Rank - 1]], required_padding);
-        for (int i = Rank - 2; i > 0; --i) { init *= len[stride_order[i]]; }
+        for (int i = Rank - 2; i >= 0; --i) { init *= len[stride_order[i]]; }
         return init;
       }
     }
