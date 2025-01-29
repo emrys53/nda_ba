@@ -370,38 +370,38 @@ namespace nda {
   template <>
   class simd_type<std::complex<float>, 2> {
     using intrinsic_t = __m128;
-    using complex_t   = std::complex<float>;
-    using value_t     = float;
+    using value_t   = std::complex<float>;
+    using complex_t     = float;
 
     intrinsic_t value;
     simd_type(intrinsic_t v) : value(v) {}
 
     public:
     static constexpr size_t size() { return 2UL; };
-    static constexpr size_t alignment() { return size() * sizeof(complex_t); }
+    static constexpr size_t alignment() { return size() * sizeof(value_t); }
 
     simd_type(const simd_type &other)            = default;
     simd_type &operator=(const simd_type &other) = default;
     simd_type(simd_type &&other)                 = default;
     simd_type &operator=(simd_type &&other)      = default;
 
-    void load(const value_t *from) { value = _mm_load_ps(from); }
-    void load(const complex_t *from) { value = _mm_load_ps(reinterpret_cast<const value_t *>(from)); }
-    void load_unaligned(const value_t *from) { value = _mm_loadu_ps(from); }
-    void load_unaligned(const complex_t *from) { value = _mm_loadu_ps(reinterpret_cast<const value_t *>(from)); }
+    void load(const complex_t *from) { value = _mm_load_ps(from); }
+    void load(const value_t *from) { value = _mm_load_ps(reinterpret_cast<const complex_t *>(from)); }
+    void load_unaligned(const complex_t *from) { value = _mm_loadu_ps(from); }
+    void load_unaligned(const value_t *from) { value = _mm_loadu_ps(reinterpret_cast<const complex_t *>(from)); }
 
-    void store(value_t *to) const { _mm_store_ps(to, value); }
-    void store(complex_t *to) const { _mm_store_ps(reinterpret_cast<value_t *>(to), value); }
-    void store_unaligned(value_t *to) const { _mm_storeu_ps(to, value); }
-    void store_unaligned(complex_t *to) const { _mm_storeu_ps(reinterpret_cast<value_t *>(to), value); }
+    void store(complex_t *to) const { _mm_store_ps(to, value); }
+    void store(value_t *to) const { _mm_store_ps(reinterpret_cast<complex_t *>(to), value); }
+    void store_unaligned(complex_t *to) const { _mm_storeu_ps(to, value); }
+    void store_unaligned(value_t *to) const { _mm_storeu_ps(reinterpret_cast<complex_t *>(to), value); }
 
     simd_type() : value(_mm_setzero_ps()) {}
 
-    explicit simd_type(const complex_t v) : value(_mm_set_ps(v.imag(), v.real(), v.imag(), v.real())) {}
+    explicit simd_type(const value_t v) : value(_mm_set_ps(v.imag(), v.real(), v.imag(), v.real())) {}
 
-    explicit simd_type(const value_t v) : value(_mm_set1_ps(v)) {}
+    explicit simd_type(const complex_t v) : value(_mm_set1_ps(v)) {}
 
-    simd_type(std::initializer_list<complex_t> l) {
+    simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != 2) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
@@ -411,7 +411,7 @@ namespace nda {
       load_unaligned(l.begin());
     }
 
-    simd_type(std::initializer_list<value_t> l) {
+    simd_type(std::initializer_list<complex_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != 4) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
@@ -499,8 +499,8 @@ namespace nda {
   template <>
   class simd_type<std::complex<double>, 1> {
     using intrinsic_t = __m128d;
-    using complex_t   = std::complex<double>;
-    using value_t     = double;
+    using value_t   = std::complex<double>;
+    using complex_t     = double;
 
     intrinsic_t value;
 
@@ -508,42 +508,42 @@ namespace nda {
 
     public:
     static constexpr size_t size() { return 1UL; };
-    static constexpr size_t alignment() { return size() * sizeof(complex_t); }
+    static constexpr size_t alignment() { return size() * sizeof(value_t); }
 
     simd_type(const simd_type &other)            = default;
     simd_type &operator=(const simd_type &other) = default;
     simd_type(simd_type &&other)                 = default;
     simd_type &operator=(simd_type &&other)      = default;
 
-    void load(const value_t *from) { value = _mm_load_pd(from); }
-    void load(const complex_t *from) { value = _mm_load_pd(reinterpret_cast<const value_t *>(from)); }
+    void load(const complex_t *from) { value = _mm_load_pd(from); }
+    void load(const value_t *from) { value = _mm_load_pd(reinterpret_cast<const complex_t *>(from)); }
 
-    void load_unaligned(const value_t *from) { value = _mm_loadu_pd(from); }
-    void load_unaligned(const complex_t *from) { value = _mm_loadu_pd(reinterpret_cast<const value_t *>(from)); }
+    void load_unaligned(const complex_t *from) { value = _mm_loadu_pd(from); }
+    void load_unaligned(const value_t *from) { value = _mm_loadu_pd(reinterpret_cast<const complex_t *>(from)); }
 
-    void store(value_t *to) const { _mm_store_pd(to, value); }
-    void store(complex_t *to) const { _mm_store_pd(reinterpret_cast<value_t *>(to), value); }
+    void store(complex_t *to) const { _mm_store_pd(to, value); }
+    void store(value_t *to) const { _mm_store_pd(reinterpret_cast<complex_t *>(to), value); }
 
-    void store_unaligned(value_t *to) const { _mm_storeu_pd(to, value); }
-    void store_unaligned(complex_t *to) const { _mm_storeu_pd(reinterpret_cast<value_t *>(to), value); }
+    void store_unaligned(complex_t *to) const { _mm_storeu_pd(to, value); }
+    void store_unaligned(value_t *to) const { _mm_storeu_pd(reinterpret_cast<complex_t *>(to), value); }
 
     simd_type() : value(_mm_setzero_pd()) {}
 
-    explicit simd_type(const complex_t v) : value(_mm_set_pd(v.imag(), v.real())) {}
+    explicit simd_type(const value_t v) : value(_mm_set_pd(v.imag(), v.real())) {}
 
-    explicit simd_type(const value_t v) : value(_mm_set1_pd(v)) {}
+    explicit simd_type(const complex_t v) : value(_mm_set1_pd(v)) {}
 
-    simd_type(std::initializer_list<complex_t> l) {
+    simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != 1) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
                                  + " is not equal to size of register: " + std::to_string(size()));
       }
 #endif
-      load_unaligned(reinterpret_cast<const complex_t *>(l.begin()));
+      load_unaligned(reinterpret_cast<const value_t *>(l.begin()));
     }
 
-    simd_type(std::initializer_list<value_t> l) {
+    simd_type(std::initializer_list<complex_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != 2) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
