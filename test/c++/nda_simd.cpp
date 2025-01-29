@@ -249,8 +249,8 @@ TEST(NDA, LimitCases) {
 }
 
 TEST(NDA, OurSIMD) {
-  simd_cd2 x = {1, 2, 3, 4,5,6,7,8};
-  simd_cd2 y = {9,10,11,12,13,14,15,16};
+  simd_cd2 x = {111, 234, 356, -478,5,6,7,8};
+  simd_cd2 y = {9,10,-11,12,13,14,15,16};
   alignas(32) std::array<std::complex<double>, x.size()> test;
   auto test2 = x /y;
   test2.store(test.data());

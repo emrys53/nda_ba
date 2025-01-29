@@ -6,6 +6,7 @@
 #include <complex>
 #include <array>
 #include <type_traits>
+#include "arch/type.hpp"
 
 #if defined(__x86_64__)
 #include <immintrin.h>
