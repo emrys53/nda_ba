@@ -1,29 +1,24 @@
 #pragma once
 #ifdef __SSE2__
-#include "../type.hpp"
+#include "../abi.hpp"
+#include "../macros.hpp"
 #include "immintrin.h"
 
 #include <complex>
 #include <cstddef>
 #include <initializer_list>
 
-#define NDA_SHUFFLE_MASK4(x, y, z, t) (((t) << 6) | ((z) << 4) | ((y) << 2) | (x))
-
-#define NDA_SHUFFLE_MASK2(x, y) (((y) << 1) | (x))
 
 namespace nda {
   template <>
-  class simd_type<int32_t, 4> {
+  class simd_type<int32_t, 4, abi_tag::SSE> {
     using intrinsic_t = __m128i;
     using value_t     = int32_t;
 
     intrinsic_t value{};
-    explicit simd_type(intrinsic_t v) : value(v) {}
 
     public:
-    //TODO fix size return 4;
-    // Use aliases for value and intrinsic_type
-    // CRTP
+    explicit simd_type(intrinsic_t v) : value(v) {}
 
     static constexpr size_t size() { return 4UL; };
 
@@ -75,35 +70,33 @@ namespace nda {
     }
 
     simd_type operator/(const simd_type &other) const {
-      // We do scalar division. TODO:Try to vectorize it.
-      // https://github.com/vectorclass/version2/blob/f4617df57e17efcd754f5bbe0ec87883e0ed9ce6/vectori128.h#L6189
-      alignas(alignment()) std::array<int, size()> x{};
-      alignas(alignment()) std::array<int, size()> y{};
-      this->store(x.data());
-      other.store(y.data());
-      for (int i = 0; i < size(); i++) { x[i] = x[i] / y[i]; }
-      return simd_type{x.data()};
+#ifdef __AVX__
+      return simd_type{_mm256_cvttpd_epi32(_mm256_div_pd(_mm256_cvtepi32_pd(value), _mm256_cvtepi32_pd(other.value)))};
+#else
+      intrinsic_t q_lo = _mm_cvttpd_epi32(_mm_div_pd(_mm_cvtepi32_pd(value), _mm_cvtepi32_pd(other.value)));
+      intrinsic_t q_hi = _mm_cvttpd_epi32(_mm_div_pd(_mm_cvtepi32_pd(_mm_shuffle_epi32(value, NDA_SHUFFLE_MASK4(2, 3, 0, 1))),
+                                                     _mm_cvtepi32_pd(_mm_shuffle_epi32(other.value, NDA_SHUFFLE_MASK4(2, 3, 0, 1)))));
+      return simd_type{_mm_shuffle_epi32(_mm_unpacklo_epi32(q_lo, q_hi), NDA_SHUFFLE_MASK4(2, 1, 0, 3))};
+#endif
     }
 
     simd_type &operator+=(const simd_type &other) {
-      value = _mm_add_epi32(value, other.value);
+      value = (*this + other).value;
       return *this;
     }
 
     simd_type &operator-=(const simd_type &other) {
-      value = _mm_sub_epi32(value, other.value);
+      value = (*this - other).value;
       return *this;
     }
 
     simd_type &operator*=(const simd_type &other) {
-      simd_type temp{*this * other};
-      value = temp.value;
+      value = (*this * other).value;
       return *this;
     }
 
     simd_type &operator/=(const simd_type &other) {
-      simd_type temp{*this / other};
-      value = temp.value;
+      value = (*this / other).value;
       return *this;
     }
 
@@ -112,21 +105,23 @@ namespace nda {
       return _mm_movemask_epi8(cmp) == 0xFFFF;
     }
 
-    bool operator!=(const simd_type &other) const { return not(*this == other); };
+    bool operator!=(const simd_type &other) const { return not (*this == other); };
+
+    operator intrinsic_t() const { return value; }
   };
 
   template <>
-  class simd_type<int64_t, 2> {
+  class simd_type<int64_t, 2, abi_tag::SSE> {
     using intrinsic_t = __m128i;
     using value_t     = int64_t;
 
     intrinsic_t value{};
-    explicit simd_type(intrinsic_t v) : value(v) {}
 
     public:
-    static constexpr size_t size() { return 2UL; };
+    explicit simd_type(intrinsic_t v) : value(v) {}
 
-    static constexpr size_t alignment() { return size() * sizeof(value_t); };
+    static constexpr size_t size() { return 2UL; }
+    static constexpr size_t alignment() { return size() * sizeof(value_t); }
 
     simd_type(const simd_type &other)            = default;
     simd_type &operator=(const simd_type &other) = default;
@@ -189,24 +184,22 @@ namespace nda {
     }
 
     simd_type &operator+=(const simd_type &other) {
-      value = _mm_add_epi64(value, other.value);
+      value = (*this + other).value;
       return *this;
     }
 
     simd_type &operator-=(const simd_type &other) {
-      value = _mm_sub_epi64(value, other.value);
+      value = (*this - other).value;
       return *this;
     }
 
     simd_type &operator*=(const simd_type &other) {
-      simd_type temp{*this * other};
-      value = temp.value;
+      value = (*this * other).value;
       return *this;
     }
 
     simd_type &operator/=(const simd_type &other) {
-      simd_type temp{*this / other};
-      value = temp.value;
+      value = (*this / other).value;
       return *this;
     }
 
@@ -215,18 +208,20 @@ namespace nda {
       return _mm_movemask_epi8(cmp) == 0xFFFF;
     }
 
-    bool operator!=(const simd_type &other) const { return !(*this == other); }
+    bool operator!=(const simd_type &other) const { return not (*this == other); }
+    operator intrinsic_t() const { return value; }
   };
 
   template <>
-  class simd_type<float, 4> {
+  class simd_type<float, 4, abi_tag::SSE> {
     using intrinsic_t = __m128;
     using value_t     = float;
 
     intrinsic_t value{};
-    explicit simd_type(intrinsic_t v) : value(v) {}
 
     public:
+    explicit simd_type(intrinsic_t v) : value(v) {}
+
     static constexpr size_t size() { return 4UL; };
     static constexpr size_t alignment() { return size() * sizeof(value_t); };
 
@@ -265,42 +260,44 @@ namespace nda {
     simd_type operator/(const simd_type &other) const { return simd_type{_mm_div_ps(value, other.value)}; }
 
     simd_type &operator+=(const simd_type &other) {
-      value = _mm_add_ps(value, other.value);
+      value = (*this + other).value;
       return *this;
     }
 
     simd_type &operator-=(const simd_type &other) {
-      value = _mm_sub_ps(value, other.value);
+      value = (*this - other).value;
       return *this;
     }
 
     simd_type &operator*=(const simd_type &other) {
-      value = _mm_mul_ps(value, other.value);
+      value = (*this * other).value;
       return *this;
     }
 
     simd_type &operator/=(const simd_type &other) {
-      value = _mm_div_ps(value, other.value);
+      value = (*this / other).value;
       return *this;
     }
 
     bool operator==(const simd_type &other) const {
-      const __m128 cmp = _mm_cmpeq_ps(value, other.value);
+      const intrinsic_t cmp = _mm_cmpeq_ps(value, other.value);
       return _mm_movemask_ps(cmp) == 0xF;
     }
 
-    bool operator!=(const simd_type &other) const { return !(*this == other); }
+    bool operator!=(const simd_type &other) const { return not (*this == other); }
+
+    operator intrinsic_t() const { return value; }
   };
 
   template <>
-  class simd_type<double, 2> {
+  class simd_type<double, 2, abi_tag::SSE> {
     using intrinsic_t = __m128d;
     using value_t     = double;
 
     intrinsic_t value{};
-    explicit simd_type(intrinsic_t v) : value(v) {}
 
     public:
+    explicit simd_type(intrinsic_t v) : value(v) {}
     static constexpr size_t size() { return 2UL; }
     static constexpr size_t alignment() { return size() * sizeof(value_t); }
 
@@ -339,44 +336,47 @@ namespace nda {
     simd_type operator/(const simd_type &other) const { return simd_type{_mm_div_pd(value, other.value)}; }
 
     simd_type &operator+=(const simd_type &other) {
-      value = _mm_add_pd(value, other.value);
+      value = (*this + other).value;
       return *this;
     }
 
     simd_type &operator-=(const simd_type &other) {
-      value = _mm_sub_pd(value, other.value);
+      value = (*this - other).value;
       return *this;
     }
 
     simd_type &operator*=(const simd_type &other) {
-      value = _mm_mul_pd(value, other.value);
+      value = (*this * other).value;
       return *this;
     }
 
     simd_type &operator/=(const simd_type &other) {
-      value = _mm_div_pd(value, other.value);
+      value = (*this / other).value;
       return *this;
     }
 
     bool operator==(const simd_type &other) const {
-      const __m128d cmp = _mm_cmpeq_pd(value, other.value);
+      const intrinsic_t cmp = _mm_cmpeq_pd(value, other.value);
       return _mm_movemask_pd(cmp) == 0x3;
     }
 
-    bool operator!=(const simd_type &other) const { return !(*this == other); }
+    bool operator!=(const simd_type &other) const { return not (*this == other); }
+
+    operator intrinsic_t() const { return value; }
   };
 
   // c = a * b +  c
   template <>
-  class simd_type<std::complex<float>, 2> {
+  class simd_type<std::complex<float>, 2, abi_tag::SSE> {
     using intrinsic_t = __m128;
     using value_t   = std::complex<float>;
     using complex_t     = float;
 
     intrinsic_t value;
-    simd_type(intrinsic_t v) : value(v) {}
 
     public:
+    explicit simd_type(intrinsic_t v) : value(v) {}
+
     static constexpr size_t size() { return 2UL; };
     static constexpr size_t alignment() { return size() * sizeof(value_t); }
 
@@ -403,7 +403,7 @@ namespace nda {
 
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
-      if (l.size() != 2) {
+      if (l.size() != size()) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
                                  + " is not equal to size of register: " + std::to_string(size()));
       }
@@ -413,7 +413,7 @@ namespace nda {
 
     simd_type(std::initializer_list<complex_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
-      if (l.size() != 4) {
+      if (l.size() != 2 * size()) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
                                  + " is not equal to size of register: " + std::to_string(size() * 2));
       }
@@ -448,7 +448,7 @@ namespace nda {
       intrinsic_t result = _mm_fmaddsub_ps(tmp2, other.value, tmp1);
 #else
 #ifdef __SSE3__
-      intrinsic_t result = result = _mm_addsub_ps(_mm_mul_ps(tmp2, other.value), tmp1);
+      intrinsic_t result = _mm_addsub_ps(_mm_mul_ps(tmp2, other.value), tmp1);
 #else
       const intrinsic_t mask = _mm_setr_ps(-0.0f, 0.0f, -0.0f, 0.0f);
       intrinsic_t result     = _mm_add_ps(_mm_mul_ps(tmp2, other.value), _mm_xor_ps(tmp1, mask));
@@ -493,20 +493,21 @@ namespace nda {
       return _mm_movemask_ps(cmp) == 0xF;
     }
 
-    bool operator!=(const simd_type &other) const { return !(*this == other); }
+    bool operator!=(const simd_type &other) const { return not (*this == other); }
+
+    operator intrinsic_t() const { return value; }
   };
 
   template <>
-  class simd_type<std::complex<double>, 1> {
+  class simd_type<std::complex<double>, 1, abi_tag::SSE> {
     using intrinsic_t = __m128d;
     using value_t   = std::complex<double>;
     using complex_t     = double;
 
     intrinsic_t value;
 
-    simd_type(intrinsic_t v) : value(v) {}
-
     public:
+    explicit simd_type(intrinsic_t v) : value(v) {}
     static constexpr size_t size() { return 1UL; };
     static constexpr size_t alignment() { return size() * sizeof(value_t); }
 
@@ -535,7 +536,7 @@ namespace nda {
 
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
-      if (l.size() != 1) {
+      if (l.size() != size()) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
                                  + " is not equal to size of register: " + std::to_string(size()));
       }
@@ -545,7 +546,7 @@ namespace nda {
 
     simd_type(std::initializer_list<complex_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
-      if (l.size() != 2) {
+      if (l.size() != 2 * size()) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
                                  + " is not equal to size of register: " + std::to_string(size() * 2));
       }
@@ -582,7 +583,11 @@ namespace nda {
       simd_type conj         = simd_type{_mm_xor_pd(other.value, mask)};
       simd_type upper        = (*this) * conj;
       intrinsic_t flip       = _mm_shuffle_pd(other.value, other.value, 0x1);
-      intrinsic_t lower      = _mm_add_pd(_mm_mul_pd(other.value, other.value), _mm_mul_pd(flip, flip));
+#ifdef __FMA__
+      intrinsic_t lower = _mm_fmadd_pd(other.value, other.value, _mm_mul_pd(flip, flip));
+#else
+      intrinsic_t lower = _mm_add_pd(_mm_mul_pd(other.value, other.value), _mm_mul_pd(flip, flip));
+#endif
       return simd_type{_mm_div_pd(upper.value, lower)};
     }
 
@@ -611,14 +616,10 @@ namespace nda {
       return _mm_movemask_pd(cmp) == 0x3;
     }
 
-    bool operator!=(const simd_type &other) const { return !(*this == other); }
+    bool operator!=(const simd_type &other) const { return not (*this == other); }
+
+    operator intrinsic_t() const { return value; }
   };
 
-  using simd_128f  = simd_type<float, 4>;
-  using simd_128d  = simd_type<double, 2>;
-  using simd_128i  = simd_type<int32_t, 4>;
-  using simd_128l  = simd_type<int64_t, 2>;
-  using simd_128cf = simd_type<std::complex<float>, 2>;
-  using simd_128cd = simd_type<std::complex<double>, 1>;
 } // namespace nda
 #endif

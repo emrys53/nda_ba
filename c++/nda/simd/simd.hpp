@@ -10,8 +10,9 @@
 #if defined(__x86_64__)
 #include <immintrin.h>
 #endif
-#include "arch/SSE/type.hpp"
 #include "arch/type.hpp"
+#include "arch/SSE/type.hpp"
+#include "arch/AVX/type.hpp"
 
 #include "../concepts.hpp"
 #ifndef __clang__

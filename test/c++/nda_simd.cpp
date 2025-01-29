@@ -249,19 +249,12 @@ TEST(NDA, LimitCases) {
 }
 
 TEST(NDA, OurSIMD) {
-  alignas(16) std::array<double, 4> y{0, 0, 0, 0};
-  simd_type<std::complex<double>, 1> a{5, 6};
-  simd_type<std::complex<double>, 1> b{9, -10};
-  // simd_type<int,4> test = b / a ;
-  // test += a * a;
-  // test /= b;
-  // a = b;
-  // 5 6 7 8
-  // 9 10 11 12
-  simd_type<std::complex<double>, 1> test2(a / b);
-  // test2.value = _mm_shuffle_ps(a.value, b.value, NDA_SHUFFLE_MASK(0,0,1,2));
-  test2.store(y.data());
-  for (int i = 0; i < 2; i++) { std::cout << y[i] << std::endl; }
+  simd_cd2 x = {1, 2, 3, 4,5,6,7,8};
+  simd_cd2 y = {9,10,11,12,13,14,15,16};
+  alignas(32) std::array<std::complex<double>, x.size()> test;
+  auto test2 = x /y;
+  test2.store(test.data());
+  for (int i = 0; i < x.size(); i++) { std::cout << test[i] << std::endl; }
 }
 
 #endif
