@@ -52,7 +52,7 @@ namespace nda::mem {
   template <Vectorizable T>
   struct type_alignment_info<T> {
     // Alignment in bytes.
-    static constexpr std::size_t alignment = simd<T>::alignment();
+    static constexpr std::size_t alignment = native_simd<T>::alignment();
     // Maximum of elements I can fit into simd register of type T.
     static constexpr std::size_t width = alignment / sizeof(T);
   };
