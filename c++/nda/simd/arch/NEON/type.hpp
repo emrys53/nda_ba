@@ -383,6 +383,10 @@ namespace nda {
 
     explicit simd_type(const complex_t v) : value(vdupq_n_f32(v)) {}
 
+    explicit simd_type(const value_t *v) { load(v); }
+
+    explicit simd_type(const complex_t *v) { load(v); }
+
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != size()) {
@@ -505,6 +509,10 @@ namespace nda {
     explicit simd_type(const value_t v) { load_unaligned(&v); }
 
     explicit simd_type(const complex_t v) : value(vdupq_n_f64(v)) {}
+
+    explicit simd_type(const value_t *v) { load(v); }
+
+    explicit simd_type(const complex_t *v) { load(v); }
 
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK

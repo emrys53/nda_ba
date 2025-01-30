@@ -427,7 +427,7 @@ namespace nda {
     using complex_t   = float;
 
     private:
-    intrinsic_t value;
+    intrinsic_t value{};
 
     public:
     explicit simd_type(intrinsic_t v) : value(v) {}
@@ -455,6 +455,10 @@ namespace nda {
     explicit simd_type(const value_t v) : value(_mm256_set_ps(v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real())) {}
 
     explicit simd_type(const complex_t v) : value(_mm256_set1_ps(v)) {}
+
+    explicit simd_type(const value_t *v) { load(v); }
+
+    explicit simd_type(const complex_t *v) { load(v); }
 
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
@@ -577,6 +581,10 @@ namespace nda {
     explicit simd_type(const value_t v) : value(_mm256_set_pd(v.imag(), v.real(), v.imag(), v.real())) {}
 
     explicit simd_type(const complex_t v) : value(_mm256_set1_pd(v)) {}
+
+    explicit simd_type(const value_t *v) { load(v); }
+
+    explicit simd_type(const complex_t *v) { load(v); }
 
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK

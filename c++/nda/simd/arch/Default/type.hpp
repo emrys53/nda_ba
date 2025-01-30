@@ -6,7 +6,7 @@
 
 namespace nda {
 
-  template <typename T>
+  template <typename  T>
   class simd_type<T, 1, abi_tag::Default> {
     public:
     using intrinsic_t = T;
@@ -19,7 +19,7 @@ namespace nda {
     explicit simd_type(intrinsic_t v) : value(v) {}
 
     static constexpr size_t size() { return 1UL; };
-    static constexpr size_t alignment() { return 0; };
+    static constexpr size_t alignment() { return 0UL; };
 
     simd_type(const simd_type &other)            = default;
     simd_type &operator=(const simd_type &other) = default;

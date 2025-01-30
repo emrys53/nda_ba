@@ -407,6 +407,10 @@ namespace nda {
 
     explicit simd_type(const complex_t v) : value(_mm_set1_ps(v)) {}
 
+    explicit simd_type(const value_t *v) { load(v); }
+
+    explicit simd_type(const complex_t *v) { load(v); }
+
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != size()) {
@@ -546,6 +550,10 @@ namespace nda {
     explicit simd_type(const value_t v) : value(_mm_set_pd(v.imag(), v.real())) {}
 
     explicit simd_type(const complex_t v) : value(_mm_set1_pd(v)) {}
+
+    explicit simd_type(const value_t *v) { load(v); }
+
+    explicit simd_type(const complex_t *v) { load(v); }
 
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK

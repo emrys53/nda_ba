@@ -979,19 +979,23 @@ TEST_F(NDAArrayAndView, ArrayAligned) {
   //   }
   //   std::cout << std::endl;
   // }
-  nda::simd<int> x(&M(0,0));
-  nda::simd<int> y(&M(1,0));
-  nda::simd<int> z(&M(2,0));
+  nda::native_simd<int> x(&M(0,0));
+  nda::native_simd<int> y(&M(1,0));
+  nda::native_simd<int> z(&M(2,0));
+  alignas(x.alignment()) std::array<int,x.size()> test;
+  x.store(test.data());
 
+  for (int i = 0 ; i < 8 ; ++i) {
+  std::cout << "x: " << test[i] << std::endl;
+  }
+  y.store(test.data());
 
   for (int i = 0 ; i < 8 ; ++i) {
-  std::cout << "x: " << x[i] << std::endl;
+  std::cout << "y: " << test[i] << std::endl;
   }
+  z.store(test.data());
   for (int i = 0 ; i < 8 ; ++i) {
-    std::cout << "y: " << y[i] << std::endl;
-  }
-  for (int i = 0 ; i < 8 ; ++i) {
-    std::cout << "z: " << z[i] << std::endl;
+  std::cout << "z: " << test[i] << std::endl;
   }
 
 }
