@@ -84,7 +84,7 @@ namespace nda {
     }
 
     bool operator==(const simd_type &other) const {
-      const intrinsic_t cmp = vceqq_s32(value, other.value);
+      intrinsic_t cmp = vceqq_s32(value, other.value);
       return vminvq_u32(cmp) == 0xFFFFFFFF; // Check the integers values as unsigned and if the minimum is full F. Then they are all equal
     }
 
@@ -253,7 +253,7 @@ namespace nda {
     }
 
     bool operator==(const simd_type &other) const {
-      const intrinsic_t cmp = vceqq_f32(value, other.value);
+      intrinsic_t cmp = vceqq_f32(value, other.value);
       return vminvq_u32(cmp) == 0xFFFFFFFF;
     }
 
@@ -332,7 +332,7 @@ namespace nda {
     }
 
     bool operator==(const simd_type &other) const {
-      const intrinsic_t cmp = vceqq_f64(value, other.value);
+      intrinsic_t cmp = vceqq_f64(value, other.value);
       value_t x             = vgetq_lane_s64(cmp, 0);
       value_t y             = vgetq_lane_s64(cmp, 1);
       return x == y and y == 0xFFFFFFFFFFFFFFFF;
@@ -413,7 +413,7 @@ namespace nda {
 
     simd_type operator*(const simd_type &other) const {
 #ifdef __ARM_FEATURE_COMPLEX
-      const intrinsic_t zero = vdupq_n_f32(0.0f);
+      intrinsic_t zero = vdupq_n_f32(0.0f);
       intrinsic_t result     = vcmlaq_f32(zero, value, other.value);
       result                 = vcmlaq_rot90_f32(result, value, other.value);
 #else
@@ -461,7 +461,7 @@ namespace nda {
     }
 
     bool operator==(const simd_type &other) const {
-      const intrinsic_t cmp = vceqq_f64(value, other.value);
+      intrinsic_t cmp = vceqq_f64(value, other.value);
       value_t x             = vgetq_lane_s64(cmp, 0);
       value_t y             = vgetq_lane_s64(cmp, 1);
       return x == y and y == 0xFFFFFFFFFFFFFFFF;
@@ -591,7 +591,7 @@ namespace nda {
     }
 
     bool operator==(const simd_type &other) const {
-      const intrinsic_t cmp = vceqq_f64(value, other.value);
+      intrinsic_t cmp = vceqq_f64(value, other.value);
       value_t x             = vgetq_lane_s64(cmp, 0);
       value_t y             = vgetq_lane_s64(cmp, 1);
       return x == y and y == 0xFFFFFFFFFFFFFFFF;
