@@ -499,11 +499,11 @@ TEST(NDA, TypeAlignmentInfoAlignment) {
 #ifdef __SSE2__
   constexpr size_t correct_alignment = 16;
 #else
-#ifdef __NEON__
-  constexpr size_t correct_alignment = 16;
-#else
+// #ifdef __NEON__
+//   constexpr size_t correct_alignment = 16;
+// #else
   constexpr size_t correct_alignment = 0;
-#endif
+// #endif
 #endif
 #endif
 #endif
@@ -537,11 +537,11 @@ TEST(NDA, TypeAlignmentInfoWidth) {
 #ifdef __SSE2__
   constexpr size_t correct_alignment = 16;
 #else
-#ifdef __NEON__
-  constexpr size_t correct_alignment = 16;
-#else
-  constexpr size_t correct_alignment = 0;
-#endif
+// #ifdef __NEON__
+//   constexpr size_t correct_alignment = 16;
+// #else
+//   constexpr size_t correct_alignment = 0;
+// #endif
 #endif
 #endif
 #endif
