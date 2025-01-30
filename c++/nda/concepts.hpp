@@ -119,7 +119,7 @@ namespace nda {
   concept Scalar = nda::is_scalar_v<S>;
 
   /**
-   * @brief Check if a given type is supported by simd class or complex type. // TODO: Change it when new simd library is used.
+   * @brief Check if a given type is supported by simd class or complex type.
    * @tparam S Type to check.
    */
   template <typename S>
