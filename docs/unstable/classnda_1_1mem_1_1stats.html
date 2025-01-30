@@ -148,12 +148,12 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>~stats</b> ()</td></tr>
 <tr class="memdesc:a73e0a66c426d8bc699a8259bb0a5abad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor that outputs the statistics about the memory allocation in debug mode. <br /></td></tr>
 <tr class="separator:a73e0a66c426d8bc699a8259bb0a5abad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a084f59eb45656868b2d5b5f3db8677d2" id="r_a084f59eb45656868b2d5b5f3db8677d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a084f59eb45656868b2d5b5f3db8677d2">allocate</a> (uint64_t s)</td></tr>
-<tr class="memdesc:a084f59eb45656868b2d5b5f3db8677d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory and update the histogram.  <br /></td></tr>
-<tr class="separator:a084f59eb45656868b2d5b5f3db8677d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a690d5e0339fa527205edbda7e827eca9" id="r_a690d5e0339fa527205edbda7e827eca9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a690d5e0339fa527205edbda7e827eca9">allocate_zero</a> (uint64_t s)</td></tr>
-<tr class="memdesc:a690d5e0339fa527205edbda7e827eca9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory, set it to zero and update the histogram.  <br /></td></tr>
-<tr class="separator:a690d5e0339fa527205edbda7e827eca9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67389af17285522ceda4e2148918bc96" id="r_a67389af17285522ceda4e2148918bc96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67389af17285522ceda4e2148918bc96">allocate</a> (uint64_t s, uint64_t a=0)</td></tr>
+<tr class="memdesc:a67389af17285522ceda4e2148918bc96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory and update the histogram.  <br /></td></tr>
+<tr class="separator:a67389af17285522ceda4e2148918bc96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a441801ff55dd2dabc37e25ff16e400f1" id="r_a441801ff55dd2dabc37e25ff16e400f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a441801ff55dd2dabc37e25ff16e400f1">allocate_zero</a> (uint64_t s, uint64_t a=0)</td></tr>
+<tr class="memdesc:a441801ff55dd2dabc37e25ff16e400f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory, set it to zero and update the histogram.  <br /></td></tr>
+<tr class="separator:a441801ff55dd2dabc37e25ff16e400f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92775bf66e2cab8160e72e6bcafced09" id="r_a92775bf66e2cab8160e72e6bcafced09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92775bf66e2cab8160e72e6bcafced09">deallocate</a> (<a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> b) noexcept</td></tr>
 <tr class="memdesc:a92775bf66e2cab8160e72e6bcafced09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deallocate memory.  <br /></td></tr>
 <tr class="separator:a92775bf66e2cab8160e72e6bcafced09"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,8 +183,8 @@ static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>addr
 <tr class="separator:a04749047d765ede1055990d151d6c4f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a084f59eb45656868b2d5b5f3db8677d2" name="a084f59eb45656868b2d5b5f3db8677d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a084f59eb45656868b2d5b5f3db8677d2">&#9670;&#160;</a></span>allocate()</h2>
+<a id="a67389af17285522ceda4e2148918bc96" name="a67389af17285522ceda4e2148918bc96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67389af17285522ceda4e2148918bc96">&#9670;&#160;</a></span>allocate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,8 +197,12 @@ template&lt;Allocator A&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> <a class="el" href="classnda_1_1mem_1_1stats.html">nda::mem::stats</a>&lt; A &gt;::allocate </td>
           <td>(</td>
-          <td class="paramtype">uint64_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td class="paramtype">uint64_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint64_t</td>          <td class="paramname"><span class="paramname"><em>a</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -221,8 +225,8 @@ template&lt;Allocator A&gt; </div>
 
 </div>
 </div>
-<a id="a690d5e0339fa527205edbda7e827eca9" name="a690d5e0339fa527205edbda7e827eca9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a690d5e0339fa527205edbda7e827eca9">&#9670;&#160;</a></span>allocate_zero()</h2>
+<a id="a441801ff55dd2dabc37e25ff16e400f1" name="a441801ff55dd2dabc37e25ff16e400f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a441801ff55dd2dabc37e25ff16e400f1">&#9670;&#160;</a></span>allocate_zero()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -235,8 +239,12 @@ template&lt;Allocator A&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> <a class="el" href="classnda_1_1mem_1_1stats.html">nda::mem::stats</a>&lt; A &gt;::allocate_zero </td>
           <td>(</td>
-          <td class="paramtype">uint64_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td class="paramtype">uint64_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint64_t</td>          <td class="paramname"><span class="paramname"><em>a</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>

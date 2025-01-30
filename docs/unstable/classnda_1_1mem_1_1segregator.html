@@ -146,12 +146,12 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>segregator</b> (<a class="el" href="classnda_1_1mem_1_1segregator.html">segregator</a> const &amp;)=delete</td></tr>
 <tr class="memdesc:a3824abd0507931007918ac7a7d4dec06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deleted copy constructor. <br /></td></tr>
 <tr class="separator:a3824abd0507931007918ac7a7d4dec06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae64dc09e3160b72d1c32d7ec4a965724" id="r_ae64dc09e3160b72d1c32d7ec4a965724"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae64dc09e3160b72d1c32d7ec4a965724">allocate</a> (size_t s) noexcept</td></tr>
-<tr class="memdesc:ae64dc09e3160b72d1c32d7ec4a965724"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory using the small allocator if the size is less than or equal to the <code>Threshold</code>, otherwise use the big allocator.  <br /></td></tr>
-<tr class="separator:ae64dc09e3160b72d1c32d7ec4a965724"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2199fa83c0f4aab55184b985825ce1e5" id="r_a2199fa83c0f4aab55184b985825ce1e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2199fa83c0f4aab55184b985825ce1e5">allocate_zero</a> (size_t s) noexcept</td></tr>
-<tr class="memdesc:a2199fa83c0f4aab55184b985825ce1e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory and set the memory to zero using the small allocator if the size is less than or equal to the <code>Threshold</code>, otherwise use the big allocator.  <br /></td></tr>
-<tr class="separator:a2199fa83c0f4aab55184b985825ce1e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe137d314fbc65560f1cf0b29a9c26ed" id="r_abe137d314fbc65560f1cf0b29a9c26ed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe137d314fbc65560f1cf0b29a9c26ed">allocate</a> (size_t s, size_t a=0) noexcept</td></tr>
+<tr class="memdesc:abe137d314fbc65560f1cf0b29a9c26ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory using the small allocator if the size is less than or equal to the <code>Threshold</code>, otherwise use the big allocator.  <br /></td></tr>
+<tr class="separator:abe137d314fbc65560f1cf0b29a9c26ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab24687b8c36e0cb079ea9cc9d972221c" id="r_ab24687b8c36e0cb079ea9cc9d972221c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab24687b8c36e0cb079ea9cc9d972221c">allocate_zero</a> (size_t s, size_t a=0) noexcept</td></tr>
+<tr class="memdesc:ab24687b8c36e0cb079ea9cc9d972221c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory and set the memory to zero using the small allocator if the size is less than or equal to the <code>Threshold</code>, otherwise use the big allocator.  <br /></td></tr>
+<tr class="separator:ab24687b8c36e0cb079ea9cc9d972221c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4045193173cebddb8fb0d657f7f53a65" id="r_a4045193173cebddb8fb0d657f7f53a65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4045193173cebddb8fb0d657f7f53a65">deallocate</a> (<a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> b) noexcept</td></tr>
 <tr class="memdesc:a4045193173cebddb8fb0d657f7f53a65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deallocate memory using the small allocator if the size is less than or equal to the <code>Threshold</code>, otherwise use the big allocator.  <br /></td></tr>
 <tr class="separator:a4045193173cebddb8fb0d657f7f53a65"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -175,8 +175,8 @@ static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>addr
 <tr class="separator:ab7c83f4667d19773d008fdb947811de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae64dc09e3160b72d1c32d7ec4a965724" name="ae64dc09e3160b72d1c32d7ec4a965724"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae64dc09e3160b72d1c32d7ec4a965724">&#9670;&#160;</a></span>allocate()</h2>
+<a id="abe137d314fbc65560f1cf0b29a9c26ed" name="abe137d314fbc65560f1cf0b29a9c26ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe137d314fbc65560f1cf0b29a9c26ed">&#9670;&#160;</a></span>allocate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -189,8 +189,12 @@ template&lt;size_t Threshold, Allocator A, Allocator B&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> <a class="el" href="classnda_1_1mem_1_1segregator.html">nda::mem::segregator</a>&lt; Threshold, A, B &gt;::allocate </td>
           <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>a</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -213,8 +217,8 @@ template&lt;size_t Threshold, Allocator A, Allocator B&gt; </div>
 
 </div>
 </div>
-<a id="a2199fa83c0f4aab55184b985825ce1e5" name="a2199fa83c0f4aab55184b985825ce1e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2199fa83c0f4aab55184b985825ce1e5">&#9670;&#160;</a></span>allocate_zero()</h2>
+<a id="ab24687b8c36e0cb079ea9cc9d972221c" name="ab24687b8c36e0cb079ea9cc9d972221c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab24687b8c36e0cb079ea9cc9d972221c">&#9670;&#160;</a></span>allocate_zero()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -227,8 +231,12 @@ template&lt;size_t Threshold, Allocator A, Allocator B&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> <a class="el" href="classnda_1_1mem_1_1segregator.html">nda::mem::segregator</a>&lt; Threshold, A, B &gt;::allocate_zero </td>
           <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>a</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>

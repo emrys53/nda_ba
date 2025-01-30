@@ -155,12 +155,12 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aa0893dbbb409fdcbcfaedf7331971367" id="r_aa0893dbbb409fdcbcfaedf7331971367"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa0893dbbb409fdcbcfaedf7331971367">allocate</a> (size_t s) noexcept</td></tr>
-<tr class="memdesc:aa0893dbbb409fdcbcfaedf7331971367"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory using <a class="el" href="group__mem__utils.html#gaa77fca41a4098984342fef6546d7975e" title="Call the correct malloc function based on the given address space.">nda::mem::malloc</a>.  <br /></td></tr>
-<tr class="separator:aa0893dbbb409fdcbcfaedf7331971367"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c1470e5eb9d09bbe02540cc7e5357f0" id="r_a9c1470e5eb9d09bbe02540cc7e5357f0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9c1470e5eb9d09bbe02540cc7e5357f0">allocate_zero</a> (size_t s) noexcept</td></tr>
-<tr class="memdesc:a9c1470e5eb9d09bbe02540cc7e5357f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory and set it to zero.  <br /></td></tr>
-<tr class="separator:a9c1470e5eb9d09bbe02540cc7e5357f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af03d5b795636892594fd9511538e2583" id="r_af03d5b795636892594fd9511538e2583"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af03d5b795636892594fd9511538e2583">allocate</a> (size_t s, size_t a=0) noexcept</td></tr>
+<tr class="memdesc:af03d5b795636892594fd9511538e2583"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory using <a class="el" href="group__mem__utils.html#gaa77fca41a4098984342fef6546d7975e" title="Call the correct malloc function based on the given address space.">nda::mem::malloc</a>.  <br /></td></tr>
+<tr class="separator:af03d5b795636892594fd9511538e2583"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f0f7cd996ef64160025d7664f04fc15" id="r_a8f0f7cd996ef64160025d7664f04fc15"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f0f7cd996ef64160025d7664f04fc15">allocate_zero</a> (size_t s, size_t a=0) noexcept</td></tr>
+<tr class="memdesc:a8f0f7cd996ef64160025d7664f04fc15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory and set it to zero.  <br /></td></tr>
+<tr class="separator:a8f0f7cd996ef64160025d7664f04fc15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a316d3426dedeb7e22a138db109f44b57" id="r_a316d3426dedeb7e22a138db109f44b57"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a316d3426dedeb7e22a138db109f44b57">deallocate</a> (<a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> b) noexcept</td></tr>
 <tr class="memdesc:a316d3426dedeb7e22a138db109f44b57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deallocate memory using <a class="el" href="group__mem__utils.html#gaf1e86f1f528f277d3ed2c126566b27b3" title="Call the correct free function based on the given address space.">nda::mem::free</a>.  <br /></td></tr>
 <tr class="separator:a316d3426dedeb7e22a138db109f44b57"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,8 +173,8 @@ static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>addr
 <tr class="separator:abcf075556e9f6040371df10755f228d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa0893dbbb409fdcbcfaedf7331971367" name="aa0893dbbb409fdcbcfaedf7331971367"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0893dbbb409fdcbcfaedf7331971367">&#9670;&#160;</a></span>allocate()</h2>
+<a id="af03d5b795636892594fd9511538e2583" name="af03d5b795636892594fd9511538e2583"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af03d5b795636892594fd9511538e2583">&#9670;&#160;</a></span>allocate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -187,8 +187,12 @@ template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005eb
         <tr>
           <td class="memname">static <a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> <a class="el" href="classnda_1_1mem_1_1mallocator.html">nda::mem::mallocator</a>&lt; AdrSp &gt;::allocate </td>
           <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>a</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -211,8 +215,8 @@ template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005eb
 
 </div>
 </div>
-<a id="a9c1470e5eb9d09bbe02540cc7e5357f0" name="a9c1470e5eb9d09bbe02540cc7e5357f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c1470e5eb9d09bbe02540cc7e5357f0">&#9670;&#160;</a></span>allocate_zero()</h2>
+<a id="a8f0f7cd996ef64160025d7664f04fc15" name="a8f0f7cd996ef64160025d7664f04fc15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f0f7cd996ef64160025d7664f04fc15">&#9670;&#160;</a></span>allocate_zero()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -225,8 +229,12 @@ template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005eb
         <tr>
           <td class="memname">static <a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> <a class="el" href="classnda_1_1mem_1_1mallocator.html">nda::mem::mallocator</a>&lt; AdrSp &gt;::allocate_zero </td>
           <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>a</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>

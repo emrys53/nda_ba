@@ -1,6 +1,7 @@
 var declarations_8hpp =
 [
     [ "nda::array", "group__av__types.html#ga72f3fdf9760fa22c35442cdf2eb6768d", null ],
+    [ "nda::array_aligned", "group__av__types.html#ga673af7d4ee8a13a06a879994de3b4235", null ],
     [ "nda::array_const_view", "group__av__types.html#ga70e5d7cb42b86d11b8a5077fe36eafa3", null ],
     [ "nda::array_contiguous_const_view", "group__av__types.html#ga5ce3e65f078495b71a931c4e62eeff67", null ],
     [ "nda::array_contiguous_view", "group__av__types.html#ga50bbcec67a4e7f544363667e28558741", null ],
@@ -20,12 +21,14 @@ var declarations_8hpp =
     [ "nda::get_regular_unified_t", "group__av__utils.html#ga0f1cec42d939589d4da2f2c6cb7b7895", null ],
     [ "nda::get_view_t", "group__av__utils.html#ga88421cbcafa4ce63f798df8145e822e4", null ],
     [ "nda::matrix", "group__av__types.html#gacf63083a75025ccec1ee927d1bade8d1", null ],
+    [ "nda::matrix_aligned", "group__av__types.html#ga2bbccaf136cc9a365240e7804426a7ea", null ],
     [ "nda::matrix_const_view", "group__av__types.html#gaacb71b609cc4cef927c27c69cdb49916", null ],
     [ "nda::matrix_view", "group__av__types.html#ga58a262cfedf67b57f0dc1347150bdce6", null ],
     [ "nda::stack_array", "group__av__types.html#gae424b882b567801b96cf52856f48b7cb", null ],
     [ "nda::stack_matrix", "group__av__types.html#ga1e3647528b86195964f8c60f1537fb37", null ],
     [ "nda::stack_vector", "group__av__types.html#ga74dcf7eb7d9dc405eab171bcb34075f4", null ],
     [ "nda::vector", "group__av__types.html#gaa8a5e1f016d2e5977c61ad2325b95c68", null ],
+    [ "nda::vector_aligned", "group__av__types.html#ga3332cb5990c2b341aa97b9d69b597473", null ],
     [ "nda::vector_const_view", "group__av__types.html#gaa79ab442f2c6817ea1748d4208dccf21", null ],
     [ "nda::vector_view", "group__av__types.html#ga032616a51fb8b6ed94dd01bfe7804258", null ],
     [ "nda::static_extents", "group__av__utils.html#ga3b2b4deac1bfd2ead0323752d2cec806", null ],

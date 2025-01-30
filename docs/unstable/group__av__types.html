@@ -122,6 +122,10 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga72f3fdf9760fa22c35442cdf2eb6768d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ga72f3fdf9760fa22c35442cdf2eb6768d">nda::array</a> = <a class="el" href="classnda_1_1basic__array.html">basic_array</a>&lt;ValueType, Rank, Layout, 'A', ContainerPolicy&gt;</td></tr>
 <tr class="memdesc:ga72f3fdf9760fa22c35442cdf2eb6768d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias template of an <a class="el" href="classnda_1_1basic__array.html" title="A generic multi-dimensional array.">nda::basic_array</a> with an 'A' algebra.  <br /></td></tr>
 <tr class="separator:ga72f3fdf9760fa22c35442cdf2eb6768d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga673af7d4ee8a13a06a879994de3b4235" id="r_ga673af7d4ee8a13a06a879994de3b4235"><td class="memTemplParams" colspan="2">template&lt;typename ValueType, int Rank, typename Layout = C_layout, typename ContainerPolicy = heap_aligned&lt;&gt;&gt; </td></tr>
+<tr class="memitem:ga673af7d4ee8a13a06a879994de3b4235"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ga673af7d4ee8a13a06a879994de3b4235">nda::array_aligned</a> = <a class="el" href="classnda_1_1basic__array.html">basic_array</a>&lt;ValueType, Rank, Layout, 'A', ContainerPolicy&gt;</td></tr>
+<tr class="memdesc:ga673af7d4ee8a13a06a879994de3b4235"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias template of an <a class="el" href="classnda_1_1basic__array.html" title="A generic multi-dimensional array.">nda::basic_array</a> with an 'A' algebra and aligned allocator.  <br /></td></tr>
+<tr class="separator:ga673af7d4ee8a13a06a879994de3b4235"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga70e5d7cb42b86d11b8a5077fe36eafa3" id="r_ga70e5d7cb42b86d11b8a5077fe36eafa3"><td class="memTemplParams" colspan="2">template&lt;typename ValueType, int Rank, typename Layout = C_stride_layout&gt; </td></tr>
 <tr class="memitem:ga70e5d7cb42b86d11b8a5077fe36eafa3"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ga70e5d7cb42b86d11b8a5077fe36eafa3">nda::array_const_view</a> = <a class="el" href="classnda_1_1basic__array__view.html">basic_array_view</a>&lt;ValueType const, Rank, Layout, 'A', <a class="el" href="structnda_1_1default__accessor.html">default_accessor</a>, <a class="el" href="structnda_1_1borrowed.html">borrowed</a>&lt;&gt;&gt;</td></tr>
 <tr class="memdesc:ga70e5d7cb42b86d11b8a5077fe36eafa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as <a class="el" href="#ga1c94319bb2a4d552dac28117b1788934" title="Alias template of an nda::basic_array_view with an &#39;A&#39; algebra, nda::default_accessor and nda::borrow...">nda::array_view</a> except for const value types.  <br /></td></tr>
@@ -178,6 +182,10 @@ Typedefs</h2></td></tr>
 <tr class="memitem:gacf63083a75025ccec1ee927d1bade8d1"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#gacf63083a75025ccec1ee927d1bade8d1">nda::matrix</a> = <a class="el" href="classnda_1_1basic__array.html">basic_array</a>&lt;ValueType, 2, Layout, 'M', ContainerPolicy&gt;</td></tr>
 <tr class="memdesc:gacf63083a75025ccec1ee927d1bade8d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias template of an <a class="el" href="classnda_1_1basic__array.html" title="A generic multi-dimensional array.">nda::basic_array</a> with rank 2 and an 'M' algebra.  <br /></td></tr>
 <tr class="separator:gacf63083a75025ccec1ee927d1bade8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2bbccaf136cc9a365240e7804426a7ea" id="r_ga2bbccaf136cc9a365240e7804426a7ea"><td class="memTemplParams" colspan="2">template&lt;typename ValueType, typename Layout = C_layout, typename ContainerPolicy = heap_aligned&lt;&gt;&gt; </td></tr>
+<tr class="memitem:ga2bbccaf136cc9a365240e7804426a7ea"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ga2bbccaf136cc9a365240e7804426a7ea">nda::matrix_aligned</a> = <a class="el" href="classnda_1_1basic__array.html">basic_array</a>&lt;ValueType, 2, Layout, 'M', ContainerPolicy&gt;</td></tr>
+<tr class="memdesc:ga2bbccaf136cc9a365240e7804426a7ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias template of an <a class="el" href="classnda_1_1basic__array.html" title="A generic multi-dimensional array.">nda::basic_array</a> with rank 2 and an 'M' algebra and aligned allocator.  <br /></td></tr>
+<tr class="separator:ga2bbccaf136cc9a365240e7804426a7ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaacb71b609cc4cef927c27c69cdb49916" id="r_gaacb71b609cc4cef927c27c69cdb49916"><td class="memTemplParams" colspan="2">template&lt;typename ValueType, typename Layout = C_stride_layout&gt; </td></tr>
 <tr class="memitem:gaacb71b609cc4cef927c27c69cdb49916"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#gaacb71b609cc4cef927c27c69cdb49916">nda::matrix_const_view</a> = <a class="el" href="classnda_1_1basic__array__view.html">basic_array_view</a>&lt;ValueType const, 2, Layout, 'M', <a class="el" href="structnda_1_1default__accessor.html">default_accessor</a>, <a class="el" href="structnda_1_1borrowed.html">borrowed</a>&lt;&gt;&gt;</td></tr>
 <tr class="memdesc:gaacb71b609cc4cef927c27c69cdb49916"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as <a class="el" href="#ga58a262cfedf67b57f0dc1347150bdce6" title="Alias template of an nda::basic_array_view with rank 2, an &#39;M&#39; algebra, nda::default_accessor and nda...">nda::matrix_view</a> except for const value types.  <br /></td></tr>
@@ -202,6 +210,10 @@ Typedefs</h2></td></tr>
 <tr class="memitem:gaa8a5e1f016d2e5977c61ad2325b95c68"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#gaa8a5e1f016d2e5977c61ad2325b95c68">nda::vector</a> = <a class="el" href="classnda_1_1basic__array.html">basic_array</a>&lt;ValueType, 1, <a class="el" href="structnda_1_1_c__layout.html">C_layout</a>, 'V', ContainerPolicy&gt;</td></tr>
 <tr class="memdesc:gaa8a5e1f016d2e5977c61ad2325b95c68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias template of an <a class="el" href="classnda_1_1basic__array.html" title="A generic multi-dimensional array.">nda::basic_array</a> with rank 1 and a 'V' algebra.  <br /></td></tr>
 <tr class="separator:gaa8a5e1f016d2e5977c61ad2325b95c68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3332cb5990c2b341aa97b9d69b597473" id="r_ga3332cb5990c2b341aa97b9d69b597473"><td class="memTemplParams" colspan="2">template&lt;typename ValueType, typename ContainerPolicy = heap_aligned&lt;&gt;&gt; </td></tr>
+<tr class="memitem:ga3332cb5990c2b341aa97b9d69b597473"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ga3332cb5990c2b341aa97b9d69b597473">nda::vector_aligned</a> = <a class="el" href="classnda_1_1basic__array.html">basic_array</a>&lt;ValueType, 1, <a class="el" href="structnda_1_1_c__layout.html">C_layout</a>, 'V', ContainerPolicy&gt;</td></tr>
+<tr class="memdesc:ga3332cb5990c2b341aa97b9d69b597473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias template of an <a class="el" href="classnda_1_1basic__array.html" title="A generic multi-dimensional array.">nda::basic_array</a> with rank 1 and a 'V' algebra and aligned_allocator.  <br /></td></tr>
+<tr class="separator:ga3332cb5990c2b341aa97b9d69b597473"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa79ab442f2c6817ea1748d4208dccf21" id="r_gaa79ab442f2c6817ea1748d4208dccf21"><td class="memTemplParams" colspan="2">template&lt;typename ValueType, typename Layout = C_stride_layout&gt; </td></tr>
 <tr class="memitem:gaa79ab442f2c6817ea1748d4208dccf21"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#gaa79ab442f2c6817ea1748d4208dccf21">nda::vector_const_view</a> = <a class="el" href="classnda_1_1basic__array__view.html">basic_array_view</a>&lt;ValueType const, 1, Layout, 'V', <a class="el" href="structnda_1_1default__accessor.html">default_accessor</a>, <a class="el" href="structnda_1_1borrowed.html">borrowed</a>&lt;&gt;&gt;</td></tr>
 <tr class="memdesc:gaa79ab442f2c6817ea1748d4208dccf21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as <a class="el" href="#ga032616a51fb8b6ed94dd01bfe7804258" title="Alias template of an nda::basic_array_view with rank 1, a &#39;V&#39; algebra, nda::default_accessor and nda:...">nda::vector_view</a> except for const value types.  <br /></td></tr>
@@ -243,6 +255,37 @@ template&lt;typename ValueType, int Rank, typename Layout = C_layout, typename C
 
 </div>
 </div>
+<a id="ga673af7d4ee8a13a06a879994de3b4235" name="ga673af7d4ee8a13a06a879994de3b4235"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga673af7d4ee8a13a06a879994de3b4235">&#9670;&#160;</a></span>array_aligned</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ValueType, int Rank, typename Layout = C_layout, typename ContainerPolicy = heap_aligned&lt;&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#ga673af7d4ee8a13a06a879994de3b4235">nda::array_aligned</a> = <a class="el" href="classnda_1_1basic__array.html">basic_array</a>&lt;ValueType, Rank, Layout, 'A', ContainerPolicy&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="declarations_8hpp.html">nda/declarations.hpp</a>&gt;</code></p>
+
+<p>Alias template of an <a class="el" href="classnda_1_1basic__array.html" title="A generic multi-dimensional array.">nda::basic_array</a> with an 'A' algebra and aligned allocator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ValueType</td><td>Value type of the array. </td></tr>
+    <tr><td class="paramname">Rank</td><td>Rank of the array. </td></tr>
+    <tr><td class="paramname">Layout</td><td>Layout policy of the array. </td></tr>
+    <tr><td class="paramname">ContainerPolicy</td><td>Memory policy of the array. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00086">86</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+
+</div>
+</div>
 <a id="ga70e5d7cb42b86d11b8a5077fe36eafa3" name="ga70e5d7cb42b86d11b8a5077fe36eafa3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga70e5d7cb42b86d11b8a5077fe36eafa3">&#9670;&#160;</a></span>array_const_view</h2>
 
@@ -269,7 +312,7 @@ template&lt;typename ValueType, int Rank, typename Layout = C_stride_layout&gt; 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00096">96</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00108">108</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -299,7 +342,7 @@ template&lt;typename ValueType, int Rank, typename Layout = C_layout&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00118">118</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00130">130</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -329,7 +372,7 @@ template&lt;typename ValueType, int Rank, typename Layout = C_layout&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00107">107</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00119">119</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -359,7 +402,7 @@ template&lt;typename ValueType, int Rank, typename Layout = C_stride_layout&gt; 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00086">86</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00098">98</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -389,7 +432,7 @@ template&lt;typename ValueType, int Rank, typename Layout = C_layout&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00239">239</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00272">272</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -419,7 +462,7 @@ template&lt;typename ValueType, int Rank, typename Layout = C_stride_layout&gt; 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00259">259</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00292">292</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -449,7 +492,7 @@ template&lt;typename ValueType, int Rank, typename Layout = C_stride_layout&gt; 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00249">249</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00282">282</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -479,7 +522,7 @@ template&lt;typename ValueType, typename Layout = C_layout, typename ContainerPo
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00269">269</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00302">302</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -508,7 +551,7 @@ template&lt;typename ValueType, typename Layout = C_stride_layout&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00287">287</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00320">320</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -537,7 +580,7 @@ template&lt;typename ValueType, typename Layout = C_stride_layout&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00278">278</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00311">311</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -565,7 +608,7 @@ template&lt;typename ValueType&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00295">295</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00328">328</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -594,7 +637,7 @@ template&lt;typename ValueType, typename Layout = C_stride_layout&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00313">313</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00346">346</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -623,7 +666,7 @@ template&lt;typename ValueType, typename Layout = C_stride_layout&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00304">304</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00337">337</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -653,7 +696,37 @@ template&lt;typename ValueType, typename Layout = C_layout, typename ContainerPo
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00128">128</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00140">140</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ga2bbccaf136cc9a365240e7804426a7ea" name="ga2bbccaf136cc9a365240e7804426a7ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2bbccaf136cc9a365240e7804426a7ea">&#9670;&#160;</a></span>matrix_aligned</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ValueType, typename Layout = C_layout, typename ContainerPolicy = heap_aligned&lt;&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#ga2bbccaf136cc9a365240e7804426a7ea">nda::matrix_aligned</a> = <a class="el" href="classnda_1_1basic__array.html">basic_array</a>&lt;ValueType, 2, Layout, 'M', ContainerPolicy&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="declarations_8hpp.html">nda/declarations.hpp</a>&gt;</code></p>
+
+<p>Alias template of an <a class="el" href="classnda_1_1basic__array.html" title="A generic multi-dimensional array.">nda::basic_array</a> with rank 2 and an 'M' algebra and aligned allocator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ValueType</td><td>Value type of the matrix. </td></tr>
+    <tr><td class="paramname">Layout</td><td>Layout policy of the matrix. </td></tr>
+    <tr><td class="paramname">ContainerPolicy</td><td>Memory policy of the matrix. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00151">151</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -682,7 +755,7 @@ template&lt;typename ValueType, typename Layout = C_stride_layout&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00147">147</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00171">171</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -711,7 +784,7 @@ template&lt;typename ValueType, typename Layout = C_stride_layout&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00138">138</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00162">162</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -735,8 +808,8 @@ template&lt;typename ValueType, int N0, int... Ns&gt; </div>
 <div class="line">                      <a class="code hl_struct" href="structnda_1_1basic__layout.html">nda::basic_layout</a>&lt;<a class="code hl_function" href="group__av__utils.html#ga3b2b4deac1bfd2ead0323752d2cec806">nda::static_extents</a>(N0, Ns...), <a class="code hl_variable" href="group__layout__idx.html#ga9833d97778046affb309fa2405376543">nda::C_stride_order</a>&lt;1 + <span class="keyword">sizeof</span>...(Ns)&gt;, nda::layout_prop_e::contiguous&gt;, <span class="charliteral">&#39;A&#39;</span>,</div>
 <div class="line">                      <a class="code hl_struct" href="structnda_1_1stack.html">nda::stack</a>&lt;N0 *(Ns *... * 1)&gt;&gt;</div>
 <div class="ttc" id="aclassnda_1_1basic__array_html"><div class="ttname"><a href="classnda_1_1basic__array.html">nda::basic_array</a></div><div class="ttdoc">A generic multi-dimensional array.</div><div class="ttdef"><b>Definition</b> <a href="basic__array_8hpp_source.html#l00113">basic_array.hpp:113</a></div></div>
-<div class="ttc" id="agroup__av__utils_html_ga3b2b4deac1bfd2ead0323752d2cec806"><div class="ttname"><a href="group__av__utils.html#ga3b2b4deac1bfd2ead0323752d2cec806">nda::static_extents</a></div><div class="ttdeci">constexpr uint64_t static_extents(int i0, Is... is)</div><div class="ttdoc">Encode the given shape into a single integer using the nda::encode function.</div><div class="ttdef"><b>Definition</b> <a href="declarations_8hpp_source.html#l00187">declarations.hpp:187</a></div></div>
-<div class="ttc" id="agroup__layout__idx_html_ga9833d97778046affb309fa2405376543"><div class="ttname"><a href="group__layout__idx.html#ga9833d97778046affb309fa2405376543">nda::C_stride_order</a></div><div class="ttdeci">constexpr uint64_t C_stride_order</div><div class="ttdoc">C/Row-major stride order.</div><div class="ttdef"><b>Definition</b> <a href="idx__map_8hpp_source.html#l00065">idx_map.hpp:65</a></div></div>
+<div class="ttc" id="agroup__av__utils_html_ga3b2b4deac1bfd2ead0323752d2cec806"><div class="ttname"><a href="group__av__utils.html#ga3b2b4deac1bfd2ead0323752d2cec806">nda::static_extents</a></div><div class="ttdeci">constexpr uint64_t static_extents(int i0, Is... is)</div><div class="ttdoc">Encode the given shape into a single integer using the nda::encode function.</div><div class="ttdef"><b>Definition</b> <a href="declarations_8hpp_source.html#l00220">declarations.hpp:220</a></div></div>
+<div class="ttc" id="agroup__layout__idx_html_ga9833d97778046affb309fa2405376543"><div class="ttname"><a href="group__layout__idx.html#ga9833d97778046affb309fa2405376543">nda::C_stride_order</a></div><div class="ttdeci">constexpr uint64_t C_stride_order</div><div class="ttdoc">C/Row-major stride order.</div><div class="ttdef"><b>Definition</b> <a href="idx__map_8hpp_source.html#l00066">idx_map.hpp:66</a></div></div>
 <div class="ttc" id="astructnda_1_1basic__layout_html"><div class="ttname"><a href="structnda_1_1basic__layout.html">nda::basic_layout</a></div><div class="ttdoc">Generic layout policy with arbitrary order.</div><div class="ttdef"><b>Definition</b> <a href="layout_2policies_8hpp_source.html#l00115">policies.hpp:115</a></div></div>
 <div class="ttc" id="astructnda_1_1stack_html"><div class="ttname"><a href="structnda_1_1stack.html">nda::stack</a></div><div class="ttdoc">Memory policy using an nda::mem::handle_stack.</div><div class="ttdef"><b>Definition</b> <a href="mem_2policies_8hpp_source.html#l00091">policies.hpp:91</a></div></div>
 </div><!-- fragment -->
@@ -750,7 +823,7 @@ template&lt;typename ValueType, int N0, int... Ns&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00201">201</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00234">234</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -783,7 +856,7 @@ template&lt;typename ValueType, int N, int M&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00215">215</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00248">248</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -815,7 +888,7 @@ template&lt;typename ValueType, int N&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00227">227</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00260">260</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -844,7 +917,36 @@ template&lt;typename ValueType, typename ContainerPolicy = heap&lt;&gt;&gt; </di
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00156">156</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00180">180</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ga3332cb5990c2b341aa97b9d69b597473" name="ga3332cb5990c2b341aa97b9d69b597473"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3332cb5990c2b341aa97b9d69b597473">&#9670;&#160;</a></span>vector_aligned</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ValueType, typename ContainerPolicy = heap_aligned&lt;&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#ga3332cb5990c2b341aa97b9d69b597473">nda::vector_aligned</a> = <a class="el" href="classnda_1_1basic__array.html">basic_array</a>&lt;ValueType, 1, <a class="el" href="structnda_1_1_c__layout.html">C_layout</a>, 'V', ContainerPolicy&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="declarations_8hpp.html">nda/declarations.hpp</a>&gt;</code></p>
+
+<p>Alias template of an <a class="el" href="classnda_1_1basic__array.html" title="A generic multi-dimensional array.">nda::basic_array</a> with rank 1 and a 'V' algebra and aligned_allocator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ValueType</td><td>Value type of the vector. </td></tr>
+    <tr><td class="paramname">ContainerPolicy</td><td>Memory policy of the vector. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00189">189</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -873,7 +975,7 @@ template&lt;typename ValueType, typename Layout = C_stride_layout&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00175">175</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00208">208</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>
@@ -902,7 +1004,7 @@ template&lt;typename ValueType, typename Layout = C_stride_layout&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00166">166</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="declarations_8hpp_source.html#l00199">199</a> of file <a class="el" href="declarations_8hpp_source.html">declarations.hpp</a>.</p>
 
 </div>
 </div>

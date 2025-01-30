@@ -145,12 +145,12 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>bucket</b> (<a class="el" href="classnda_1_1mem_1_1bucket.html">bucket</a> const &amp;)=delete</td></tr>
 <tr class="memdesc:ab27b69290934ddf71abbb807a73abd8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deleted copy constructor. <br /></td></tr>
 <tr class="separator:ab27b69290934ddf71abbb807a73abd8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb3719516d1e29283b13a6f3b08e1df3" id="r_adb3719516d1e29283b13a6f3b08e1df3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb3719516d1e29283b13a6f3b08e1df3">allocate</a> (size_t s) noexcept</td></tr>
-<tr class="memdesc:adb3719516d1e29283b13a6f3b08e1df3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a chunk of memory in the bucket and update the bitmask.  <br /></td></tr>
-<tr class="separator:adb3719516d1e29283b13a6f3b08e1df3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af07ac563c47cfbab96495819c0ff1be4" id="r_af07ac563c47cfbab96495819c0ff1be4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af07ac563c47cfbab96495819c0ff1be4">allocate_zero</a> (size_t s) noexcept</td></tr>
-<tr class="memdesc:af07ac563c47cfbab96495819c0ff1be4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a chunk of memory in the bucket, set it to zero and update the bitmask.  <br /></td></tr>
-<tr class="separator:af07ac563c47cfbab96495819c0ff1be4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcf2b69e72db173f98c67edc641bb6a4" id="r_abcf2b69e72db173f98c67edc641bb6a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcf2b69e72db173f98c67edc641bb6a4">allocate</a> (size_t s, size_t a=0) noexcept</td></tr>
+<tr class="memdesc:abcf2b69e72db173f98c67edc641bb6a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a chunk of memory in the bucket and update the bitmask.  <br /></td></tr>
+<tr class="separator:abcf2b69e72db173f98c67edc641bb6a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadd7361a59420fcd70cb532e7c29df6e" id="r_aadd7361a59420fcd70cb532e7c29df6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aadd7361a59420fcd70cb532e7c29df6e">allocate_zero</a> (size_t s, size_t a=0) noexcept</td></tr>
+<tr class="memdesc:aadd7361a59420fcd70cb532e7c29df6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a chunk of memory in the bucket, set it to zero and update the bitmask.  <br /></td></tr>
+<tr class="separator:aadd7361a59420fcd70cb532e7c29df6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ea9a23ecedbc5b15c0b6a61f1faca1e" id="r_a6ea9a23ecedbc5b15c0b6a61f1faca1e"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ea9a23ecedbc5b15c0b6a61f1faca1e">data</a> () const noexcept</td></tr>
 <tr class="memdesc:a6ea9a23ecedbc5b15c0b6a61f1faca1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a pointer to the start of the bucket.  <br /></td></tr>
 <tr class="separator:a6ea9a23ecedbc5b15c0b6a61f1faca1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,8 +190,8 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>Total
 <tr class="separator:ae692fe4d13fd3801f5cd9d4b349d708b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="adb3719516d1e29283b13a6f3b08e1df3" name="adb3719516d1e29283b13a6f3b08e1df3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb3719516d1e29283b13a6f3b08e1df3">&#9670;&#160;</a></span>allocate()</h2>
+<a id="abcf2b69e72db173f98c67edc641bb6a4" name="abcf2b69e72db173f98c67edc641bb6a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcf2b69e72db173f98c67edc641bb6a4">&#9670;&#160;</a></span>allocate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -204,8 +204,12 @@ template&lt;int ChunkSize&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> <a class="el" href="classnda_1_1mem_1_1bucket.html">nda::mem::bucket</a>&lt; ChunkSize &gt;::allocate </td>
           <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>a</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -228,8 +232,8 @@ template&lt;int ChunkSize&gt; </div>
 
 </div>
 </div>
-<a id="af07ac563c47cfbab96495819c0ff1be4" name="af07ac563c47cfbab96495819c0ff1be4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af07ac563c47cfbab96495819c0ff1be4">&#9670;&#160;</a></span>allocate_zero()</h2>
+<a id="aadd7361a59420fcd70cb532e7c29df6e" name="aadd7361a59420fcd70cb532e7c29df6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadd7361a59420fcd70cb532e7c29df6e">&#9670;&#160;</a></span>allocate_zero()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -242,8 +246,12 @@ template&lt;int ChunkSize&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structnda_1_1mem_1_1blk__t.html">blk_t</a> <a class="el" href="classnda_1_1mem_1_1bucket.html">nda::mem::bucket</a>&lt; ChunkSize &gt;::allocate_zero </td>
           <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>a</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>

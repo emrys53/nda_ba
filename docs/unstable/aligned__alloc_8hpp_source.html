@@ -147,7 +147,7 @@ $(function(){initNavTree('aligned__alloc_8hpp_source.html',''); initResizable(tr
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordtype">void</span> *ptr = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (AdrSp == Host) {</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="keywordflow">if</span> (alignment &gt;= 8UL) {</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        ptr = std::aligned_alloc(alignment, size); <span class="comment">// NOLINT (we want to return a void*)</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        ptr = std::aligned_alloc(alignment, size);</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        ptr = std::malloc(size); <span class="comment">// NOLINT (we want to return a void*)</span></div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      }</div>
