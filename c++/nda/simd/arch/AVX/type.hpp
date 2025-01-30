@@ -643,12 +643,12 @@ namespace nda {
     }
 
     simd_type &operator*=(const simd_type &other) {
-      *this = *this * other;
+      value = (*this * other).value;
       return *this;
     }
 
     simd_type &operator/=(const simd_type &other) {
-      *this = *this / other;
+      value = (*this / other).value;
       return *this;
     }
 

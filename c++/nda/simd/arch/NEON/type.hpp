@@ -29,8 +29,8 @@ namespace nda {
 
     void load(const value_t *from) { value = vld1q_s32(from); }
     void load_unaligned(const value_t *from) { value = vld1q_s32(from); }
-    void store(value_t *to) const { vst1_s32(to, value); }
-    void store_unaligned(value_t *to) const { vst1_s32(to, value); }
+    void store(value_t *to) const { vst1q_s32(to, value); }
+    void store_unaligned(value_t *to) const { vst1q_s32(to, value); }
 
     simd_type() : value(vdupq_n_s32(0)) {}
 
@@ -441,22 +441,22 @@ namespace nda {
     }
 
     simd_type &operator+=(const simd_type &other) {
-      value = _mm_add_ps(value, other.value);
+      value = (*this + other).value;
       return *this;
     }
 
     simd_type &operator-=(const simd_type &other) {
-      value = _mm_sub_ps(value, other.value);
+      value = (*this - other).value;
       return *this;
     }
 
     simd_type &operator*=(const simd_type &other) {
-      *this = *this * other;
+      value = (*this * other).value;
       return *this;
     }
 
     simd_type &operator/=(const simd_type &other) {
-      *this = *this / other;
+      value = (*this / other).value;
       return *this;
     }
 
@@ -571,22 +571,22 @@ namespace nda {
     }
 
     simd_type &operator+=(const simd_type &other) {
-      value = _mm_add_pd(value, other.value);
+      value = (*this + other).value;
       return *this;
     }
 
     simd_type &operator-=(const simd_type &other) {
-      value = _mm_sub_pd(value, other.value);
+      value = (*this - other).value;
       return *this;
     }
 
     simd_type &operator*=(const simd_type &other) {
-      *this = *this * other;
+      value = (*this * other).value;
       return *this;
     }
 
     simd_type &operator/=(const simd_type &other) {
-      *this = *this / other;
+      value = (*this / other).value;
       return *this;
     }
 
