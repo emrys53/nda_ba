@@ -248,20 +248,20 @@ TEST(NDA, LimitCases) {
   check_limit_cases<double>();
 }
 
-TEST(NDA, OurSIMD) {
-  native_simd<long long int> hop;
-  std::cout << hop.size() <<std::endl;
-  simd_f8 q{1,2,3,4,5,6,7,8};
-  const __m256 mask = _mm256_setr_ps(0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f);
-  q = simd_f8{_mm256_xor_ps(q, mask)};
-  alignas(32) std::array<float,8> data;
-  simd_cd2 x = {111, 234, 356, -478,5,6,7,8};
-  simd_cd2 y = {9,10,-11,12,13,14,15,16};
-  alignas(32) std::array<std::complex<double>, x.size()> test;
-  auto test2 = x /y;
-  test2.store(test.data());
-  q.store(data.data());
-  for (int i = 0; i < q.size(); i++) { std::cout << data[i] << std::endl; }
-}
+// TEST(NDA, OurSIMD) {
+//   native_simd<long long int> hop;
+//   std::cout << hop.size() <<std::endl;
+//   simd_f8 q{1,2,3,4,5,6,7,8};
+//   const __m256 mask = _mm256_setr_ps(0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f);
+//   q = simd_f8{_mm256_xor_ps(q, mask)};
+//   alignas(32) std::array<float,8> data;
+//   simd_cd2 x = {111, 234, 356, -478,5,6,7,8};
+//   simd_cd2 y = {9,10,-11,12,13,14,15,16};
+//   alignas(32) std::array<std::complex<double>, x.size()> test;
+//   auto test2 = x /y;
+//   test2.store(test.data());
+//   q.store(data.data());
+//   for (int i = 0; i < q.size(); i++) { std::cout << data[i] << std::endl; }
+// }
 
 #endif
