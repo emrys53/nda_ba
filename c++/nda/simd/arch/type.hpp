@@ -22,6 +22,7 @@ namespace nda {
   using simd_cf2 = simd_type<std::complex<float>, 2, abi_tag::SSE>;
   using simd_cd1 = simd_type<std::complex<double>, 1, abi_tag::SSE>;
 #endif
+  /*
 #ifdef __NEON__
   using simd_f4  = simd_type<float, 4, abi_tag::NEON>;
   using simd_d2  = simd_type<double, 2, abi_tag::NEON>;
@@ -30,6 +31,7 @@ namespace nda {
   using simd_cf2 = simd_type<std::complex<float>, 2, abi_tag::NEON>;
   using simd_cd1 = simd_type<std::complex<double>, 1, abi_tag::NEON>;
 #endif
+*/
 #ifdef __AVX__
   using simd_f8  = simd_type<float, 8, abi_tag::AVX>;
   using simd_d4  = simd_type<double, 4, abi_tag::AVX>;
