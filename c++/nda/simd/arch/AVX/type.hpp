@@ -6,6 +6,7 @@
 
 #include "../SSE/type.hpp"
 #include "../macros.hpp"
+#include "../abi.hpp"
 
 namespace nda {
   template <>

@@ -1,18 +1,17 @@
 #pragma once
 #include <cstddef>
 #include "abi.hpp"
-#include "type.hpp"
 
 namespace nda {
   template <typename T, size_t Width, abi_tag ABI>
-  class simd_type;
+  class simd_type {};
 
-  using simd_f1    = float;
-  using simd_d1    = double;
-  using simd_i1    = int32_t;
-  using simd_l1    = int64_t;
-  using simd_cf1   = std::complex<float>;
-  using simd_cd1_d = std::complex<double>;
+  using simd_f1    = simd_type<float, 1, abi_tag::Default>;
+  using simd_d1    = simd_type<double, 1, abi_tag::Default>;
+  using simd_i1    = simd_type<int32_t, 1, abi_tag::Default>;
+  using simd_l1    = simd_type<int64_t, 1, abi_tag::Default>;
+  using simd_cf1   = simd_type<std::complex<float>, 1, abi_tag::Default>;
+  using simd_cd1_d = simd_type<std::complex<double>, 1, abi_tag::Default>;
 
   using simd_f4  = simd_type<float, 4, abi_tag::SSE>;
   using simd_d2  = simd_type<double, 2, abi_tag::SSE>;
@@ -45,4 +44,8 @@ namespace nda {
 #endif
 #ifdef __SSE2__
 #include "SSE/type.hpp"
+#endif
+#include "Default/type.hpp"
+#ifndef __NEON__
+#include "NEON/type.hpp"
 #endif
