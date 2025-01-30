@@ -20,7 +20,6 @@
 
 #include <nda/mem.hpp>
 
-#include <experimental/simd>
 #include <bitset>
 #include <cstddef>
 #include <iostream>
@@ -115,7 +114,7 @@ H check_handle() {
 #ifdef __clang__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wself-assign-overloaded"
-#endif // __clang__
+#endif             // __clang__
   handle = handle; // NOLINT (we want to check self assignment)
 #ifdef __clang__
 #pragma GCC diagnostic pop
@@ -242,12 +241,12 @@ TEST(NDA, MemoryMallocator) {
 
 TEST(NDA, MemoryMallocatorAligned) {
   const size_t alignment = 8;
-  const size_t size = 100;
-  const size_t capacity = mem::next_multiple(100, alignment);
+  const size_t size      = 100;
+  const size_t capacity  = mem::next_multiple(100, alignment);
   EXPECT_GE(capacity, size);
   EXPECT_EQ(capacity % alignment, 0);
   auto alloc = mem::mallocator_aligned<mem::Host>();
-  auto blk = alloc.allocate_zero(capacity, alignment);
+  auto blk   = alloc.allocate_zero(capacity, alignment);
   EXPECT_EQ(blk.s, capacity);
   for (int i = 0; i < capacity; ++i) EXPECT_EQ(blk.ptr[i], 0);
   alloc.deallocate(blk);
@@ -316,7 +315,7 @@ TEST(NDA, MemoryMultiBucketAllocator) {
   EXPECT_TRUE(allo.owns(bucket2[0]));
   // The new bucket may be first inside allo.buckets(),
   // as it respects memory ordering. Let's get the indeces
-  std::size_t first_bucket_idx = allo.buckets()[1].owns(bucket1[0]);
+  std::size_t first_bucket_idx  = allo.buckets()[1].owns(bucket1[0]);
   std::size_t second_bucket_idx = allo.buckets()[1].owns(bucket2[0]);
   EXPECT_TRUE(allo.buckets()[first_bucket_idx].is_full());
   EXPECT_FALSE(allo.buckets()[first_bucket_idx].owns(bucket2[0]));
@@ -491,53 +490,77 @@ TEST(NDA, MemoryHandleShared) {
 }
 
 TEST(NDA, TypeAlignmentInfoAlignment) {
-  constexpr auto correct_alignment = std::experimental::native_simd<int>::size() * sizeof(int);
+#ifdef __AVX512__
+  constexpr size_t correct_alignment = 64;
+#else
+#ifdef __AVX__
+  constexpr size_t correct_alignment = 32;
+#else
+#ifdef __SSE2__
+  constexpr size_t correct_alignment = 16;
+#else
+#ifdef __NEON__
+  constexpr size_t correct_alignment = 16;
+#else
+  constexpr size_t correct_alignment = 0;
+#endif
+#endif
+#endif
+#endif
 
   auto x = mem::type_alignment_info<int>::alignment;
-  EXPECT_EQ(x,correct_alignment);
+  EXPECT_EQ(x, correct_alignment);
 
-  x = mem::type_alignment_info<int*>::alignment;
-  EXPECT_EQ(x,0);
+  x = mem::type_alignment_info<int *>::alignment;
+  EXPECT_EQ(x, 0);
 
   x = mem::type_alignment_info<void>::alignment;
-  EXPECT_EQ(x,0);
+  EXPECT_EQ(x, 0);
 
   x = mem::type_alignment_info<std::complex<float>>::alignment;
-  EXPECT_EQ(x,correct_alignment);
+  EXPECT_EQ(x, correct_alignment);
 
   x = mem::type_alignment_info<std::complex<double>>::alignment;
-  EXPECT_EQ(x,correct_alignment);
+  EXPECT_EQ(x, correct_alignment);
 
-  // TODO: Uncomment these when we replace experimental/simd with better simd library. (doesnt work on macos)
-  // x = mem::type_alignment_info<const double>::alignment;
-  // EXPECT_EQ(x,correct_alignment);
-
-  // x = mem::type_alignment_info<std::complex<const float>>::alignment;
-  // EXPECT_EQ(x,correct_alignment);
-
-  x = mem::type_alignment_info<array<int,4>>::alignment;
-  EXPECT_EQ(x , 0);
+  x = mem::type_alignment_info<array<int, 4>>::alignment;
+  EXPECT_EQ(x, 0);
 }
 
 TEST(NDA, TypeAlignmentInfoWidth) {
-  constexpr auto correct_alignment = std::experimental::native_simd<int>::size() * sizeof(int);
+#ifdef __AVX512__
+  constexpr size_t correct_alignment = 64;
+#else
+#ifdef __AVX__
+  constexpr size_t correct_alignment = 32;
+#else
+#ifdef __SSE2__
+  constexpr size_t correct_alignment = 16;
+#else
+#ifdef __NEON__
+  constexpr size_t correct_alignment = 16;
+#else
+  constexpr size_t correct_alignment = 0;
+#endif
+#endif
+#endif
+#endif
 
   auto x = mem::type_alignment_info<int>::width;
-  EXPECT_EQ(x,correct_alignment / sizeof(int));
+  EXPECT_EQ(x, correct_alignment / sizeof(int));
+
+  x = mem::type_alignment_info<long>::width;
+  EXPECT_EQ(x, correct_alignment / sizeof(long));
 
   x = mem::type_alignment_info<void>::width;
   EXPECT_EQ(x, 0);
 
   x = mem::type_alignment_info<std::complex<float>>::width;
-  EXPECT_EQ(x,correct_alignment/sizeof(std::complex<float>));
+  EXPECT_EQ(x, correct_alignment / sizeof(std::complex<float>));
 
   x = mem::type_alignment_info<std::complex<double>>::width;
-  EXPECT_EQ(x,correct_alignment/sizeof(std::complex<double>));
+  EXPECT_EQ(x, correct_alignment / sizeof(std::complex<double>));
 
-  // TODO: Uncomment these when we replace experimental/simd with better simd library. (doesnt work on macos)
-  // x = mem::type_alignment_info<const double>::width;
-  // EXPECT_EQ(x,correct_alignment/sizeof(const double));
-
-  x = mem::type_alignment_info<array<int,4>>::width;
-  EXPECT_EQ(x , 0);
+  x = mem::type_alignment_info<array<int, 4>>::width;
+  EXPECT_EQ(x, 0);
 }
