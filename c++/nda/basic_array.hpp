@@ -597,8 +597,7 @@ namespace nda {
      */
     [[gnu::noinline]] void resize(std::array<long, Rank> const &shape) {
       lay = layout_t(shape);
-      // TODO: think more whether to change these sizes to capacity.
-      if (sto.is_null() or (sto.size() != lay.size())) sto = storage_t{lay.capacity()};
+      if (sto.is_null() or (sto.size() != lay.capacity())) sto = storage_t{lay.capacity()};
     }
 
 // include common functionality of arrays and views

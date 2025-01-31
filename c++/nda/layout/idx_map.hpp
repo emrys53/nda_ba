@@ -332,7 +332,9 @@ namespace nda {
       for (int u = 0, v = 0; u < Rank; ++u) extents[u] = (static_extents[u] == 0 ? dynamic_extents[v++] : static_extents[u]);
       return extents;
     }
-
+    //TODO: I think we shouldn't merge this with compute strides contiguous because this needs to be called everytime to initialize default_str
+    // Even if we try to combine it with compute_strides_contigious. We can only compute padded_str in compute_stride function and initialize default_str
+    // in this function. So why not do them both here.
     void init_default_str() {
       // If padding is not 0, that means we need padding. Pad the fastest dimension array and default_stride should be padded_str to access memory.
       // Else there is no padding default_str is just the original str.
@@ -371,14 +373,16 @@ namespace nda {
     }
     //TODO: implementing this causes many problem because sometimes layout constructor is called like with value {100}. Instead of converting this
     // to std::array<long,1> and calling it with shape constructoor compiler tries to call this constructor which breaks down the code. Ask what to do
+    // Tried adding a constructor with initializer list and broke down too many codes. Decided to just fix the test that called the constructor with
+    // just {100} by writing std::array{100}.
 
-    // explicit idx_map(mem::stride_padding padding) : padding(padding) {
-    //   if constexpr (n_dynamic_extents == 0) {
-    //     for (int u = 0; u < Rank; ++u) len[u] = static_extents[u];
-    //     compute_strides_contiguous();
-    //     init_default_str();
-    //   }
-    // }
+    explicit idx_map(mem::stride_padding padding) : padding(padding) {
+      if constexpr (n_dynamic_extents == 0) {
+        for (int u = 0; u < Rank; ++u) len[u] = static_extents[u];
+        compute_strides_contiguous();
+        init_default_str();
+      }
+    }
 
     /**
      * @brief Construct a new map from an existing map with different layout properties.
@@ -452,7 +456,7 @@ namespace nda {
      *
      * @param shape Shape of the new map.
      * @param strides Strides of the new map.
-     * @param width Alignment requirement for fastest dimension.
+     * @param padding Alignment requirement for fastest dimension.
      */
     idx_map(std::array<long, Rank> const &shape, // NOLINT (only throws if check_stride_order is true)
             std::array<long, Rank> const &strides, mem::stride_padding padding) noexcept(!check_stride_order)
@@ -653,17 +657,16 @@ namespace nda {
      * @param lin_idx Linear/Flat index.
      * @return Multi-dimensional index.
      */
-    // TODO: I think here we have to use unpadded strides.
     std::array<long, Rank> to_idx(long lin_idx) const {
       // compute residues starting from slowest index
       std::array<long, Rank> residues;
       residues[0] = lin_idx;
-      for (auto i : range(1, Rank)) { residues[i] = residues[i - 1] % str[stride_order[i - 1]]; }
+      for (auto i : range(1, Rank)) { residues[i] = residues[i - 1] % default_str[stride_order[i - 1]]; }
 
       // convert residues to indices, ordered from slowest to fastest
       std::array<long, Rank> idx;
-      idx[Rank - 1] = residues[Rank - 1] / str[stride_order[Rank - 1]];
-      for (auto i : range(Rank - 2, -1, -1)) { idx[i] = (residues[i] - residues[i + 1]) / str[stride_order[i]]; }
+      idx[Rank - 1] = residues[Rank - 1] / default_str[stride_order[Rank - 1]];
+      for (auto i : range(Rank - 2, -1, -1)) { idx[i] = (residues[i] - residues[i + 1]) / default_str[stride_order[i]]; }
 
       // reorder indices according to stride order
       return permutations::apply_inverse(stride_order, idx);
