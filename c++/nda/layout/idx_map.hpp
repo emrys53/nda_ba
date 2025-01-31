@@ -170,16 +170,10 @@ namespace nda {
       size_t required_padding = padding.get_padding();
       if (required_padding == 0) { return size(); }
 
-      if constexpr (Rank == 1) { return mem::next_multiple(len[0], required_padding); }
-      if constexpr (StrideOrder == C_stride_order<Rank>) {
-        return std::accumulate(len.cbegin(), len.cend() - 1, mem::next_multiple(len[Rank - 1], required_padding), std::multiplies<>{});
-      } else if constexpr (StrideOrder == Fortran_stride_order<Rank>) {
-        return std::accumulate(len.cbegin() + 1, len.cend(), mem::next_multiple(len[0], required_padding), std::multiplies<>{});
-      } else {
-        long init = mem::next_multiple(len[stride_order[Rank - 1]], required_padding);
-        for (int i = Rank - 2; i >= 0; --i) { init *= len[stride_order[i]]; }
-        return init;
-      }
+      long cap = mem::next_multiple(len[stride_order[Rank - 1]], required_padding);
+      for (int i = Rank - 2; i >= 0; --i) { cap *= len[stride_order[i]]; }
+      return cap;
+
     }
 
     /**
