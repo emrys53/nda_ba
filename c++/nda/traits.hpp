@@ -101,10 +101,6 @@ namespace nda {
   template <typename T>
   inline constexpr bool is_blas_lapack_v = is_double_or_complex_v<T>;
 
-  template <typename T>
-  inline constexpr bool is_vectorizable_v =
-     std::is_same_v<T, int32_t> or std::is_same_v<T, int64_t> or std::is_floating_point_v<T> or nda::is_complex_v<T>;
-
   /** @} */
 
   /**

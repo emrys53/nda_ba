@@ -2,6 +2,7 @@
 #ifdef __SSE2__
 #include "../abi.hpp"
 #include "../macros.hpp"
+#include "../type_forward.hpp"
 #include "immintrin.h"
 
 #include <complex>

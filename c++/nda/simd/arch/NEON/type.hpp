@@ -3,6 +3,7 @@
 // #if (defined __ARM_NEON) || (defined __ARM_NEON__)
 // #include <cstddef>
 // #include <complex>
+// #include "../type_forward.hpp"
 //
 // #include <arm_neon.h>
 //

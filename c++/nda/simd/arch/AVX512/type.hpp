@@ -4,8 +4,8 @@
 #include <cstddef>
 #include <complex>
 #include "immintrin.h"
+#include "../type_forward.hpp"
 #include "../AVX/type.hpp"
-#include "../macros.hpp"
 
 namespace nda {
   template <>

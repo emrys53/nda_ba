@@ -169,7 +169,6 @@ namespace nda {
     [[nodiscard]] long capacity() const noexcept {
       size_t required_padding = padding.get_padding();
       if (required_padding == 0) { return size(); }
-
       long cap = mem::next_multiple(len[stride_order[Rank - 1]], required_padding);
       for (int i = Rank - 2; i >= 0; --i) { cap *= len[stride_order[i]]; }
       return cap;
@@ -326,9 +325,7 @@ namespace nda {
       for (int u = 0, v = 0; u < Rank; ++u) extents[u] = (static_extents[u] == 0 ? dynamic_extents[v++] : static_extents[u]);
       return extents;
     }
-    //TODO: I think we shouldn't merge this with compute strides contiguous because this needs to be called everytime to initialize default_str
-    // Even if we try to combine it with compute_strides_contigious. We can only compute padded_str in compute_stride function and initialize default_str
-    // in this function. So why not do them both here.
+
     void init_default_str() {
       // If padding is not 0, that means we need padding. Pad the fastest dimension array and default_stride should be padded_str to access memory.
       // Else there is no padding default_str is just the original str.
@@ -337,7 +334,6 @@ namespace nda {
         padded_str[stride_order[Rank - 1]] = 1;
         long init                          = mem::next_multiple(len[stride_order[Rank - 1]], padding.get_padding());
         for (int i = rank() - 2; i >= 0; --i) {
-          std::cout << init << std::endl;
           padded_str[stride_order[i]] = init;
           init *= len[stride_order[i]];
         }

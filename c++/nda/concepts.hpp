@@ -23,6 +23,7 @@
 
 #include "./stdutil/concepts.hpp"
 #include "./traits.hpp"
+#include "simd/simd.hpp"
 
 #include <array>
 #include <concepts>
@@ -123,7 +124,7 @@ namespace nda {
    * @tparam S Type to check.
    */
   template <typename S>
-  concept Vectorizable = nda::is_vectorizable_v<S>;
+  concept Vectorizable = requires { nda::native_simd<S>(); };
 
   /**
    * @brief Check if a given type is either a double or complex type.

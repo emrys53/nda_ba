@@ -1,13 +1,11 @@
 #pragma once
-#include "../../concepts.hpp"
 namespace nda {
-  enum class abi_tag { Default, SSE, AVX, AVX512, NEON };
+  enum class  abi_tag { Default, SSE, AVX, AVX512, NEON };
   namespace abi {
-    template <typename T>
-    static constexpr abi_tag get_native_abi_tag() {
-      return abi_tag::Default;
-    }
-    template <Vectorizable T>
+    // template <typename T>
+    // static constexpr abi_tag get_native_abi_tag() {
+    // return abi_tag::Default;
+    // }
     static constexpr abi_tag get_native_abi_tag() {
 #ifdef __AVX512F__
       return abi_tag::AVX512;
@@ -29,12 +27,13 @@ namespace nda {
 
     template <typename T>
     static constexpr size_t get_native_width() {
-      return 1;
+      return 0;
     }
 
-    template <Vectorizable T>
+    template <typename T>
+    requires requires (T x) {sizeof(T);}
     static constexpr size_t get_native_width() {
-      constexpr abi_tag abi = get_native_abi_tag<T>();
+      constexpr abi_tag abi = get_native_abi_tag();
 
       constexpr auto is_abi = [](abi_tag lhs, abi_tag rhs) {
         return static_cast<std::underlying_type_t<abi_tag>>(lhs) == static_cast<std::underlying_type_t<abi_tag>>(rhs);
@@ -52,5 +51,6 @@ namespace nda {
       // }
       return 1;
     }
-  } // namespace abi
-} // namespace nda
+
+  }
+}// namespace  nda

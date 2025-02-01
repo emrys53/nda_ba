@@ -4,6 +4,7 @@
 #include <complex>
 #include "immintrin.h"
 
+#include "../type_forward.hpp"
 #include "../SSE/type.hpp"
 #include "../macros.hpp"
 #include "../abi.hpp"
@@ -47,7 +48,7 @@ namespace nda {
 #endif
       load_unaligned(l.begin());
     }
-
+    //TODO: Check aligned if debug available.
     explicit simd_type(const value_t *v) { load(v); }
 
     simd_type operator+(const simd_type &other) const {
@@ -424,6 +425,7 @@ namespace nda {
     public:
     using intrinsic_t = __m256;
     using value_t     = std::complex<float>;
+    // TODO: change complex_t = scalar_t using scalar_t = typename value_t::value_type
     using complex_t   = float;
 
     private:
