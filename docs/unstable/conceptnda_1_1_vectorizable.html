@@ -122,11 +122,11 @@ $(function(){initNavTree('conceptnda_1_1_vectorizable.html',''); initResizable(t
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="concepts_8hpp_source.html#l00126">126</a> of file <a class="el" href="concepts_8hpp_source.html">concepts.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="concepts_8hpp_source.html#l00127">127</a> of file <a class="el" href="concepts_8hpp_source.html">concepts.hpp</a>.</p>
 </div><h2 class="groupheader">Concept definition</h2>
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> S&gt;</div>
-<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptnda_1_1_vectorizable.html">nda::Vectorizable</a> =  nda::is_vectorizable_v&lt;S&gt;</div>
-<div class="ttc" id="aconceptnda_1_1_vectorizable_html"><div class="ttname"><a href="conceptnda_1_1_vectorizable.html">nda::Vectorizable</a></div><div class="ttdoc">Check if a given type is supported by simd class or complex type.</div><div class="ttdef"><b>Definition</b> <a href="concepts_8hpp_source.html#l00126">concepts.hpp:126</a></div></div>
+<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptnda_1_1_vectorizable.html">nda::Vectorizable</a> =  <span class="keyword">requires</span> { nda::native_simd&lt;S&gt;(); }</div>
+<div class="ttc" id="aconceptnda_1_1_vectorizable_html"><div class="ttname"><a href="conceptnda_1_1_vectorizable.html">nda::Vectorizable</a></div><div class="ttdoc">Check if a given type is supported by simd class or complex type.</div><div class="ttdef"><b>Definition</b> <a href="concepts_8hpp_source.html#l00127">concepts.hpp:127</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

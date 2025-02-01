@@ -8,5 +8,6 @@ var dir_a07c64a5f877ed79fe45c2524f87d3a0 =
     [ "abi.hpp", "abi_8hpp_source.html", null ],
     [ "macros.hpp", "simd_2arch_2macros_8hpp_source.html", null ],
     [ "simd.hpp", "arch_2simd_8hpp_source.html", null ],
-    [ "type.hpp", "type_8hpp_source.html", null ]
+    [ "type.hpp", "type_8hpp_source.html", null ],
+    [ "type_forward.hpp", "type__forward_8hpp_source.html", null ]
 ];
