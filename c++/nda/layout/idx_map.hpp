@@ -477,7 +477,7 @@ namespace nda {
      *
      * @tparam Int Integer type.
      * @param shape Shape of the new map.
-     * @param width Alignment requirement for fastest dimension.
+     * @param padding Alignment requirement for fastest dimension.
      */
     template <std::integral Int = long>
     idx_map(std::array<Int, Rank> const &shape, mem::stride_padding padding) noexcept : len(stdutil::make_std_array<long>(shape)), padding(padding) {
@@ -753,9 +753,8 @@ namespace nda {
       static constexpr std::array<int, Rank> permu              = decode<Rank>(Permutation);
       static constexpr std::array<int, Rank> new_stride_order   = permutations::compose(permu, stride_order);
       static constexpr std::array<int, Rank> new_static_extents = permutations::apply_inverse(permu, static_extents);
-      //TODO: Think more later whether to use default_str or str.
       return idx_map<Rank, encode(new_static_extents), encode(new_stride_order), LayoutProp>{permutations::apply_inverse(permu, lengths()),
-                                                                                             permutations::apply_inverse(permu, strides())};
+                                                                                             permutations::apply_inverse(permu, strides()), mem::stride_padding(get_padding())};
     }
   };
 
