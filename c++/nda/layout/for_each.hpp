@@ -84,6 +84,38 @@ namespace nda {
         idxs[J] = 0;
       }
     }
+    template <int I, uint64_t StaticExtents, uint64_t StrideOrder, typename F_SIMD, typename F_SCALAR, size_t R, std::integral Int = long>
+    FORCEINLINE void for_each_static_impl(std::array<Int, R> const &shape, std::array<long, R> &idxs, F_SIMD &f_simd, F_SCALAR &f_scalar,
+                                          size_t step_size) {
+      // Only difference from scalar implementation is that in the last dimension we call f_simd whenever we can.
+      if constexpr (I == R - 1) {
+        static constexpr int J = index_from_stride_order<R>(StrideOrder, I);
+        const long imax        = get_extent<J, R, StaticExtents>(shape);
+        size_t i               = 0;
+        for (; i + step_size <= imax; i += step_size) {
+          std::apply(f_simd, idxs);
+          idxs[J] += step_size;
+        }
+        for (; i < imax; ++i) {
+          std::apply(f_scalar, idxs);
+          ++idxs[J];
+        }
+        idxs[J] = 0;
+      } else {
+        // get the dimension over which to iterate and its extent
+        static constexpr int J = index_from_stride_order<R>(StrideOrder, I);
+        const long imax        = get_extent<J, R, StaticExtents>(shape);
+
+        // loop over all indices of the current dimension
+        for (long i = 0; i < imax; ++i) {
+          // recursive call for the next dimension
+          for_each_static_impl<I + 1, StaticExtents, StrideOrder>(shape, idxs, f_simd, f_scalar, step_size);
+          ++idxs[J];
+        }
+        idxs[J] = 0;
+      }
+
+    }
 
   } // namespace detail
 
@@ -129,6 +161,12 @@ namespace nda {
   FORCEINLINE void for_each(std::array<Int, R> const &shape, F &&f) { // NOLINT (we do not want to forward here)
     auto idxs = nda::stdutil::make_initialized_array<R>(0l);
     detail::for_each_static_impl<0, 0, 0>(shape, idxs, f);
+  }
+
+  template <typename F_SIMD, typename F_SCALAR, auto R, std::integral Int = long>
+  FORCEINLINE void for_each(std::array<Int, R> const &shape, F_SIMD &&f_simd, F_SCALAR &&f_scalar, size_t step_size) { // NOLINT
+    auto idxs = nda::stdutil::make_initialized_array<R>(0l);
+    detail::for_each_static_impl<0, 0, 0, F_SIMD, F_SCALAR>(shape, idxs, f_simd, f_scalar, step_size);
   }
 
   /** @} */

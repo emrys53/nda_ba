@@ -54,7 +54,7 @@ namespace nda::mem {
     // Alignment in bytes.
     static constexpr std::size_t alignment = native_simd<T>::alignment();
     // Maximum of elements I can fit into simd register of type T.
-    static constexpr std::size_t width = alignment / sizeof(T);
+    static constexpr std::size_t width = native_simd<T>::size();
   };
 
   struct stride_padding {

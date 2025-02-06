@@ -571,30 +571,36 @@ TEST(NDA, SimdEqualityOperator) {
 #endif
 }
 
+//TODO do overflow/underflow/nan/inf tests to see the behaviour of simd registers.
+// Do coverage tests.
 TEST(NDA, OurSIMD) {
-  // matrix_aligned<double, C_layout> s = matrix_aligned<double, C_layout>::rand({5, 3});
-  // std::cout << s.size() << std::endl;
-  // std::cout << s.indexmap().capacity() << std::endl;
-  // double k = 1;
-  // for (int i = 0; i < 5; ++i) {
-  //   for (int j = 0; j < 3; ++j) { s(i, j) = k++; }
+  // matrix_aligned<double, C_layout> s = matrix_aligned<double, C_layout>::rand({5, 7});
+  // for (int i = 0 ; i < 1 ; ++i) {
+  //   array_aligned<double , 2> s = array_aligned<double , 2>::rand({2 , 7});
+  //   double sum_first = nda::product(s);
+  //   double sum_second = nda::product<true>(s);
+  //   std::cout << sum_first << std::endl;
+  //   std::cout << sum_second << std::endl;
+  //   EXPECT_DOUBLE_EQ(sum_first, sum_second);
   // }
-  // // 1 2 3 0
-  // // 4 5 6 0
-  // // 7 8 9 0
-  // // 10 11 12 0
-  // // 13 14 15 0
-  // // Transpose
-  // // 1 4 7 10 13
-  // // 2 5  8 11 14
-  // // 3 6 9 12 15
-  // // 0 0 0 0 0
+
+
+  // 1 2 3 0
+  // 4 5 6 0
+  // 7 8 9 0
+  // 10 11 12 0
+  // 13 14 15 0
+  // Transpose
+  // 1 4 7 10 13
+  // 2 5  8 11 14
+  // 3 6 9 12 15
+  // 0 0 0 0 0
   // auto r = transpose(s);
   // std::cout << "EXTent0= " << r.extent(0) << std::endl;
   // std::cout << "EXTent1= " << r.extent(1) << std::endl;
   // std::cout << r.indexmap().get_padding() << std::endl;
   // for (int i = 0; i < 3; ++i) {
-  //   for (int j = 0; j < 5; ++j) { std::cout << "r(" << i << ", " << j << ")=" << r(i, j) << " Address " << &r(i, j) << std::endl; }
+  // for (int j = 0; j < 5; ++j) { std::cout << "r(" << i << ", " << j << ")=" << r(i, j) << " Address " << &r(i, j) << std::endl; }
   // }
   // for (int i = 0; i < 20; ++i) { std::cout << r.data()[i] << std::endl; }
 

@@ -65,6 +65,9 @@ namespace nda {
    * @param r Initial value.
    * @return Result of the fold operation.
    */
+  //TODO: Try to vectorize all these. If Array A is also MemoryArray do vectorize otherwise use default versions.
+  // TODO: Survey how other libraries do these operations.
+  // TODO: try basic_array_view with aligned memory.
   template <Array A, typename F, typename R>
   auto fold(F f, A const &a, R r) {
     // cast the initial value to the return type of f to avoid narrowing
@@ -78,6 +81,32 @@ namespace nda {
   template <Array A, typename F>
   auto fold(F f, A const &a) {
     return fold(std::move(f), a, get_value_t<A>{});
+  }
+
+  template <bool isAligned, Array A, typename F_SCALAR, typename F_SIMD, Vectorizable R>
+  auto fold(F_SIMD f_simd, F_SCALAR f_scalar, A const &a, native_simd<R> r_simd, R r_scalar) {
+    nda::for_each(
+       a.shape(),
+       [&a, &r_simd, &f_simd](auto &&...args) {
+         native_simd<R> tmp;
+         if constexpr (isAligned) {
+           tmp.load(&a(args...));
+         } else {
+           tmp.load_unaligned(&a(args...));
+         }
+
+         r_simd = f_simd(r_simd, tmp);
+       },
+       [&a, &r_scalar, &f_scalar](auto &&...args) { r_scalar = f_scalar(r_scalar, a(args...)); }, native_simd<R>::size());
+    alignas(r_simd.alignment()) std::array<R, r_simd.size()> res;
+    r_simd.store(res.data());
+    for (int i = 0; i < r_simd.size(); i++) { r_scalar = f_scalar(r_scalar, res[i]); }
+    return r_scalar;
+  }
+
+  template <bool isAligned, MemoryArray A, typename F_SCALAR, typename F_SIMD>
+  auto fold(F_SIMD f_simd, F_SCALAR f_scalar, A const &a) {
+    return fold<isAligned>(std::move(f_simd), std::move(f_scalar), a, native_simd<get_value_t<A>>{}, get_value_t<A>{});
   }
 
   /**
@@ -196,6 +225,13 @@ namespace nda {
     }
   }
 
+  template <bool isAligned, Array A, typename Value = get_value_t<A>>
+  auto sum(A const &a)
+    requires(Vectorizable<Value>)
+  {
+    return fold<isAligned>([](native_simd<Value> lhs, native_simd<Value> rhs) { return lhs + rhs; }, std::plus<>{}, a, native_simd<Value>(Value(0)), Value(0));
+  }
+
   /**
    * @brief Multiply all the elements of an nda::Array object.
    *
@@ -212,6 +248,13 @@ namespace nda {
     } else { // Array<Value>
       return fold(std::multiplies<>{}, a, Value::ones(get_first_element(a).shape()));
     }
+  }
+
+  template <bool isAligned, Array A, typename Value = get_value_t<A>>
+  auto product(A const &a)
+    requires(Vectorizable<Value>)
+  {
+    return fold<isAligned>([](native_simd<Value> lhs, native_simd<Value> rhs) { return lhs * rhs; }, std::multiplies<>{}, a, native_simd<Value>(Value(1)), Value(1));
   }
 
   /**

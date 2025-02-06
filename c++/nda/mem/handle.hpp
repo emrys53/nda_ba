@@ -100,6 +100,9 @@ namespace nda::mem {
   struct handle_heap {
     static_assert(std::is_nothrow_destructible_v<T>, "nda::mem::handle_heap requires the value_type to have a non-throwing destructor");
 
+    // TODO: change the concept of Allocator to accommodate width and add widths.
+    static constexpr size_t padding = A:: template padding<T>;
+
     private:
     // Pointer to the start of the actual data.
     T *_data = nullptr;
