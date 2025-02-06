@@ -118,7 +118,7 @@ namespace nda {
 
     simd_type(const value_t v) : value(_mm512_set1_epi64(v)) {}
 
-    simd_type(std::initializer_list<long> l) {
+    simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != size()) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
@@ -337,7 +337,7 @@ namespace nda {
   class simd_type<std::complex<float>, 8, abi_tag::AVX512> {
     using intrinsic_t = __m512;
     using value_t     = std::complex<float>;
-    using complex_t   = float;
+    using scalar_t   = float;
 
     intrinsic_t value;
     simd_type(intrinsic_t v) : value(v) {}
@@ -351,14 +351,14 @@ namespace nda {
     simd_type(simd_type &&other)                 = default;
     simd_type &operator=(simd_type &&other)      = default;
 
-    void load(const complex_t *from) { value = _mm512_load_ps(from); }
+    void load(const scalar_t *from) { value = _mm512_load_ps(from); }
     void load(const value_t *from) { value = _mm512_load_ps(from); }
-    void load_unaligned(const complex_t *from) { value = _mm512_loadu_ps(from); }
+    void load_unaligned(const scalar_t *from) { value = _mm512_loadu_ps(from); }
     void load_unaligned(const value_t *from) { value = _mm512_loadu_ps(from); }
 
-    void store(complex_t *to) const { _mm512_store_ps(to, value); }
+    void store(scalar_t *to) const { _mm512_store_ps(to, value); }
     void store(value_t *to) const { _mm512_store_ps(to, value); }
-    void store_unaligned(complex_t *to) const { _mm512_storeu_ps(to, value); }
+    void store_unaligned(scalar_t *to) const { _mm512_storeu_ps(to, value); }
     void store_unaligned(value_t *to) const { _mm512_storeu_ps(to, value); }
 
     simd_type() : value(_mm512_setzero_ps()) {}
@@ -367,11 +367,11 @@ namespace nda {
        : value(_mm512_set_ps(v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(),
                              v.imag(), v.real(), v.imag(), v.real())) {}
 
-    explicit simd_type(const complex_t v) : value(_mm512_set1_ps(v)) {}
+    explicit simd_type(const scalar_t v) : value(_mm512_set1_ps(v)) {}
 
     explicit simd_type(const value_t *v) { load(v); }
 
-    explicit simd_type(const complex_t *v) { load(v); }
+    explicit simd_type(const scalar_t *v) { load(v); }
 
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
@@ -383,7 +383,7 @@ namespace nda {
       load_unaligned(l.begin());
     }
 
-    simd_type(std::initializer_list<complex_t> l) {
+    simd_type(std::initializer_list<scalar_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != 2 * size()) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
@@ -442,7 +442,7 @@ namespace nda {
   class simd_type<std::complex<double>, 4, abi_tag::AVX512> {
     using intrinsic_t = __m512d;
     using value_t     = std::complex<double>;
-    using complex_t   = double;
+    using scalar_t   = double;
 
     intrinsic_t value;
 
@@ -457,27 +457,27 @@ namespace nda {
     simd_type(simd_type &&other)                 = default;
     simd_type &operator=(simd_type &&other)      = default;
 
-    void load(const complex_t *from) { value = _mm512_load_pd(from); }
+    void load(const scalar_t *from) { value = _mm512_load_pd(from); }
     void load(const value_t *from) { value = _mm512_load_pd(from); }
 
-    void load_unaligned(const complex_t *from) { value = _mm512_loadu_pd(from); }
+    void load_unaligned(const scalar_t *from) { value = _mm512_loadu_pd(from); }
     void load_unaligned(const value_t *from) { value = _mm512_loadu_pd(from); }
 
-    void store(complex_t *to) const { _mm512_store_pd(to, value); }
+    void store(scalar_t *to) const { _mm512_store_pd(to, value); }
     void store(value_t *to) const { _mm512_store_pd(to, value); }
 
-    void store_unaligned(complex_t *to) const { _mm512_storeu_pd(to, value); }
+    void store_unaligned(scalar_t *to) const { _mm512_storeu_pd(to, value); }
     void store_unaligned(value_t *to) const { _mm512_storeu_pd(to, value); }
 
     simd_type() : value(_mm512_setzero_pd()) {}
 
     explicit simd_type(const value_t v) : value(_mm512_set_pd(v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real())) {}
 
-    explicit simd_type(const complex_t v) : value(_mm512_set1_pd(v)) {}
+    explicit simd_type(const scalar_t v) : value(_mm512_set1_pd(v)) {}
 
     explicit simd_type(const value_t *v) { load(v); }
 
-    explicit simd_type(const complex_t *v) { load(v); }
+    explicit simd_type(const scalar_t *v) { load(v); }
 
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
@@ -489,7 +489,7 @@ namespace nda {
       load_unaligned(l.begin());
     }
 
-    simd_type(std::initializer_list<complex_t> l) {
+    simd_type(std::initializer_list<scalar_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != 2 * size()) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())

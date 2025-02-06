@@ -46,7 +46,7 @@ namespace nda::mem {
   template <typename T>
   struct type_alignment_info {
     static constexpr std::size_t required_alignment = 0;
-    static constexpr std::size_t required_padding     = 0;
+    static constexpr std::size_t required_padding   = 0;
   };
 
   template <Vectorizable T>

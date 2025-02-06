@@ -141,7 +141,7 @@ namespace nda {
 
     simd_type(const value_t v) : value(_mm_set1_epi64x(v)) {}
 
-    simd_type(std::initializer_list<long> l) {
+    simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != size()) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
@@ -243,7 +243,7 @@ namespace nda {
     simd_type(const value_t v) : value(_mm_set1_ps(v)) {}
 
     simd_type(std::initializer_list<value_t> l) {
-      // TODO: Do compile time assert. 
+      // TODO: Do compile time assert.
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != size()) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
@@ -377,7 +377,7 @@ namespace nda {
     public:
     using intrinsic_t = __m128;
     using value_t     = std::complex<float>;
-    using complex_t   = float;
+    using scalar_t    = float;
 
     private:
     intrinsic_t value;
@@ -393,25 +393,25 @@ namespace nda {
     simd_type(simd_type &&other)                 = default;
     simd_type &operator=(simd_type &&other)      = default;
 
-    void load(const complex_t *from) { value = _mm_load_ps(from); }
-    void load(const value_t *from) { value = _mm_load_ps(reinterpret_cast<const complex_t *>(from)); }
-    void load_unaligned(const complex_t *from) { value = _mm_loadu_ps(from); }
-    void load_unaligned(const value_t *from) { value = _mm_loadu_ps(reinterpret_cast<const complex_t *>(from)); }
+    void load(const scalar_t *from) { value = _mm_load_ps(from); }
+    void load(const value_t *from) { value = _mm_load_ps(reinterpret_cast<const scalar_t *>(from)); }
+    void load_unaligned(const scalar_t *from) { value = _mm_loadu_ps(from); }
+    void load_unaligned(const value_t *from) { value = _mm_loadu_ps(reinterpret_cast<const scalar_t *>(from)); }
 
-    void store(complex_t *to) const { _mm_store_ps(to, value); }
-    void store(value_t *to) const { _mm_store_ps(reinterpret_cast<complex_t *>(to), value); }
-    void store_unaligned(complex_t *to) const { _mm_storeu_ps(to, value); }
-    void store_unaligned(value_t *to) const { _mm_storeu_ps(reinterpret_cast<complex_t *>(to), value); }
+    void store(scalar_t *to) const { _mm_store_ps(to, value); }
+    void store(value_t *to) const { _mm_store_ps(reinterpret_cast<scalar_t *>(to), value); }
+    void store_unaligned(scalar_t *to) const { _mm_storeu_ps(to, value); }
+    void store_unaligned(value_t *to) const { _mm_storeu_ps(reinterpret_cast<scalar_t *>(to), value); }
 
     simd_type() : value(_mm_setzero_ps()) {}
 
     explicit simd_type(const value_t v) : value(_mm_set_ps(v.imag(), v.real(), v.imag(), v.real())) {}
 
-    explicit simd_type(const complex_t v) : value(_mm_set1_ps(v)) {}
+    explicit simd_type(const scalar_t v) : value(_mm_set1_ps(v)) {}
 
     explicit simd_type(const value_t *v) { load(v); }
 
-    explicit simd_type(const complex_t *v) { load(v); }
+    explicit simd_type(const scalar_t *v) { load(v); }
 
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
@@ -423,7 +423,7 @@ namespace nda {
       load_unaligned(l.begin());
     }
 
-    simd_type(std::initializer_list<complex_t> l) {
+    simd_type(std::initializer_list<scalar_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != 2 * size()) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
@@ -520,7 +520,7 @@ namespace nda {
     public:
     using intrinsic_t = __m128d;
     using value_t     = std::complex<double>;
-    using complex_t   = double;
+    using scalar_t    = double;
 
     private:
     intrinsic_t value;
@@ -537,25 +537,25 @@ namespace nda {
     simd_type(simd_type &&other)                 = default;
     simd_type &operator=(simd_type &&other)      = default;
 
-    void load(const complex_t *from) { value = _mm_load_pd(from); }
-    void load(const value_t *from) { value = _mm_load_pd(reinterpret_cast<const complex_t *>(from)); }
-    void load_unaligned(const complex_t *from) { value = _mm_loadu_pd(from); }
-    void load_unaligned(const value_t *from) { value = _mm_loadu_pd(reinterpret_cast<const complex_t *>(from)); }
+    void load(const scalar_t *from) { value = _mm_load_pd(from); }
+    void load(const value_t *from) { value = _mm_load_pd(reinterpret_cast<const scalar_t *>(from)); }
+    void load_unaligned(const scalar_t *from) { value = _mm_loadu_pd(from); }
+    void load_unaligned(const value_t *from) { value = _mm_loadu_pd(reinterpret_cast<const scalar_t *>(from)); }
 
-    void store(complex_t *to) const { _mm_store_pd(to, value); }
-    void store(value_t *to) const { _mm_store_pd(reinterpret_cast<complex_t *>(to), value); }
-    void store_unaligned(complex_t *to) const { _mm_storeu_pd(to, value); }
-    void store_unaligned(value_t *to) const { _mm_storeu_pd(reinterpret_cast<complex_t *>(to), value); }
+    void store(scalar_t *to) const { _mm_store_pd(to, value); }
+    void store(value_t *to) const { _mm_store_pd(reinterpret_cast<scalar_t *>(to), value); }
+    void store_unaligned(scalar_t *to) const { _mm_storeu_pd(to, value); }
+    void store_unaligned(value_t *to) const { _mm_storeu_pd(reinterpret_cast<scalar_t *>(to), value); }
 
     simd_type() : value(_mm_setzero_pd()) {}
 
     explicit simd_type(const value_t v) : value(_mm_set_pd(v.imag(), v.real())) {}
 
-    explicit simd_type(const complex_t v) : value(_mm_set1_pd(v)) {}
+    explicit simd_type(const scalar_t v) : value(_mm_set1_pd(v)) {}
 
     explicit simd_type(const value_t *v) { load(v); }
 
-    explicit simd_type(const complex_t *v) { load(v); }
+    explicit simd_type(const scalar_t *v) { load(v); }
 
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
@@ -567,7 +567,7 @@ namespace nda {
       load_unaligned(l.begin());
     }
 
-    simd_type(std::initializer_list<complex_t> l) {
+    simd_type(std::initializer_list<scalar_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != 2 * size()) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())

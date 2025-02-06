@@ -6,8 +6,6 @@
 #include <concepts>
 #include "../type_forward.hpp"
 
-
-
 namespace nda {
 
   template <typename T>
@@ -90,7 +88,7 @@ namespace nda {
     public:
     using intrinsic_t = std::complex<T>;
     using value_t     = std::complex<T>;
-    using complex_t   = T;
+    using scalar_t    = T;
 
     private:
     intrinsic_t value;
@@ -107,17 +105,17 @@ namespace nda {
     simd_type(simd_type &&other)                 = default;
     simd_type &operator=(simd_type &&other)      = default;
 
-    void load(const complex_t *from) { value = intrinsic_t(from[0], from[1]); }
+    void load(const scalar_t *from) { value = intrinsic_t(from[0], from[1]); }
     void load(const value_t *from) { value = *from; }
-    void load_unaligned(const complex_t *from) { value = intrinsic_t(from[0], from[1]); }
+    void load_unaligned(const scalar_t *from) { value = intrinsic_t(from[0], from[1]); }
     void load_unaligned(const value_t *from) { value = *from; }
 
-    void store(complex_t *to) const {
+    void store(scalar_t *to) const {
       to[0] = value.real();
       to[1] = value.imag();
     }
     void store(value_t *to) const { *to = value; }
-    void store_unaligned(complex_t *to) const {
+    void store_unaligned(scalar_t *to) const {
       to[0] = value.real();
       to[1] = value.imag();
     }
@@ -125,11 +123,11 @@ namespace nda {
 
     simd_type() : value(0, 0) {}
 
-    explicit simd_type(const complex_t v) : value(v, v) {}
+    explicit simd_type(const scalar_t v) : value(v, v) {}
 
     explicit simd_type(const value_t *v) { load(v); }
 
-    explicit simd_type(const complex_t *v) { load(v); }
+    explicit simd_type(const scalar_t *v) { load(v); }
 
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
@@ -141,7 +139,7 @@ namespace nda {
       load_unaligned(l.begin());
     }
 
-    simd_type(std::initializer_list<complex_t> l) {
+    simd_type(std::initializer_list<scalar_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != 2 * size()) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
