@@ -508,26 +508,26 @@ TEST(NDA, TypeAlignmentInfoAlignment) {
 #endif
 #endif
 
-  auto x = mem::type_alignment_info<int>::alignment;
+  auto x = mem::type_alignment_info<int>::required_alignment;
   EXPECT_EQ(x, correct_alignment);
 
-  x = mem::type_alignment_info<int *>::alignment;
+  x = mem::type_alignment_info<int *>::required_alignment;
   EXPECT_EQ(x, 0);
 
-  x = mem::type_alignment_info<void>::alignment;
+  x = mem::type_alignment_info<void>::required_alignment;
   EXPECT_EQ(x, 0);
 
-  x = mem::type_alignment_info<std::complex<float>>::alignment;
+  x = mem::type_alignment_info<std::complex<float>>::required_alignment;
   EXPECT_EQ(x, correct_alignment);
 
-  x = mem::type_alignment_info<std::complex<double>>::alignment;
+  x = mem::type_alignment_info<std::complex<double>>::required_alignment;
   EXPECT_EQ(x, correct_alignment);
 
-  x = mem::type_alignment_info<array<int, 4>>::alignment;
+  x = mem::type_alignment_info<array<int, 4>>::required_alignment;
   EXPECT_EQ(x, 0);
 }
 
-TEST(NDA, TypeAlignmentInfoWidth) {
+TEST(NDA, TypeAlignmentInfoRequiredPadding) {
 #ifdef __AVX512__
   constexpr size_t correct_alignment = 64;
 #else
@@ -546,21 +546,21 @@ TEST(NDA, TypeAlignmentInfoWidth) {
 #endif
 #endif
 
-  auto x = mem::type_alignment_info<int>::width;
+  auto x = mem::type_alignment_info<int>::required_padding;
   EXPECT_EQ(x, correct_alignment / sizeof(int));
 
-  x = mem::type_alignment_info<long>::width;
+  x = mem::type_alignment_info<long>::required_padding;
   EXPECT_EQ(x, correct_alignment / sizeof(long));
 
-  x = mem::type_alignment_info<void>::width;
+  x = mem::type_alignment_info<void>::required_padding;
   EXPECT_EQ(x, 0);
 
-  x = mem::type_alignment_info<std::complex<float>>::width;
+  x = mem::type_alignment_info<std::complex<float>>::required_padding;
   EXPECT_EQ(x, correct_alignment / sizeof(std::complex<float>));
 
-  x = mem::type_alignment_info<std::complex<double>>::width;
+  x = mem::type_alignment_info<std::complex<double>>::required_padding;
   EXPECT_EQ(x, correct_alignment / sizeof(std::complex<double>));
 
-  x = mem::type_alignment_info<array<int, 4>>::width;
+  x = mem::type_alignment_info<array<int, 4>>::required_padding;
   EXPECT_EQ(x, 0);
 }

@@ -264,7 +264,7 @@ namespace nda::mem {
      */
     handle_heap(long size, do_not_initialize_t) {
       if (size == 0) return;
-      auto b = allocator.allocate(size * sizeof(T), type_alignment_info<T>::alignment);
+      auto b = allocator.allocate(size * sizeof(T), type_alignment_info<T>::required_alignment);
       if (not b.ptr) throw std::bad_alloc{};
       _data = (T *)b.ptr;
       _size = size;
@@ -276,7 +276,7 @@ namespace nda::mem {
      */
     handle_heap(long size, init_zero_t) {
       if (size == 0) return;
-      auto b = allocator.allocate_zero(size * sizeof(T), type_alignment_info<T>::alignment);
+      auto b = allocator.allocate_zero(size * sizeof(T), type_alignment_info<T>::required_alignment);
       if (not b.ptr) throw std::bad_alloc{};
       _data = (T *)b.ptr;
       _size = size;
@@ -297,9 +297,9 @@ namespace nda::mem {
       if (size == 0) return;
       blk_t b;
       if constexpr (is_complex_v<T> && init_dcmplx)
-        b = allocator.allocate_zero(size * sizeof(T), type_alignment_info<T>::alignment);
+        b = allocator.allocate_zero(size * sizeof(T), type_alignment_info<T>::required_alignment);
       else
-        b = allocator.allocate(size * sizeof(T), type_alignment_info<T>::alignment);
+        b = allocator.allocate(size * sizeof(T), type_alignment_info<T>::required_alignment);
       if (not b.ptr) throw std::bad_alloc{};
       _data = (T *)b.ptr;
       _size = size;
@@ -605,7 +605,7 @@ namespace nda::mem {
       _size = h._size;
       if (_size == 0) return *this;
       if (on_heap()) {
-        auto b = mallocator<>::allocate(_size * sizeof(T), type_alignment_info<T>::alignment);
+        auto b = mallocator<>::allocate(_size * sizeof(T), type_alignment_info<T>::required_alignment);
         if (not b.ptr) throw std::bad_alloc{};
         _data = (T *)b.ptr;
       } else {
@@ -643,7 +643,7 @@ namespace nda::mem {
       if (not on_heap()) {
         _data = (T *)buffer.data();
       } else {
-        auto b = mallocator<>::allocate(size * sizeof(T), type_alignment_info<T>::alignment);
+        auto b = mallocator<>::allocate(size * sizeof(T), type_alignment_info<T>::required_alignment);
         if (not b.ptr) throw std::bad_alloc{};
         _data = (T *)b.ptr;
       }
@@ -665,7 +665,7 @@ namespace nda::mem {
         _data = (T *)buffer.data();
         for (size_t i = 0; i < _size; ++i) data()[i] = 0;
       } else {
-        auto b = mallocator<>::allocate_zero(size * sizeof(T), type_alignment_info<T>::alignment); //, alignof(T));
+        auto b = mallocator<>::allocate_zero(size * sizeof(T), type_alignment_info<T>::required_alignment); //, alignof(T));
         if (not b.ptr) throw std::bad_alloc{};
         _data = (T *)b.ptr;
       }
@@ -689,9 +689,9 @@ namespace nda::mem {
       } else {
         blk_t b;
         if constexpr (is_complex_v<T> && init_dcmplx)
-          b = mallocator<>::allocate_zero(size * sizeof(T), type_alignment_info<T>::alignment);
+          b = mallocator<>::allocate_zero(size * sizeof(T), type_alignment_info<T>::required_alignment);
         else
-          b = mallocator<>::allocate(size * sizeof(T), type_alignment_info<T>::alignment);
+          b = mallocator<>::allocate(size * sizeof(T), type_alignment_info<T>::required_alignment);
         if (not b.ptr) throw std::bad_alloc{};
         _data = (T *)b.ptr;
       }

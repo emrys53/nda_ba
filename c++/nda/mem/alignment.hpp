@@ -45,16 +45,16 @@ namespace nda::mem {
 
   template <typename T>
   struct type_alignment_info {
-    static constexpr std::size_t alignment = 0;
-    static constexpr std::size_t width     = 0;
+    static constexpr std::size_t required_alignment = 0;
+    static constexpr std::size_t required_padding     = 0;
   };
 
   template <Vectorizable T>
   struct type_alignment_info<T> {
-    // Alignment in bytes.
-    static constexpr std::size_t alignment = native_simd<T>::alignment();
-    // Maximum of elements I can fit into simd register of type T.
-    static constexpr std::size_t width = native_simd<T>::size();
+    // Required Alignment in bytes.
+    static constexpr std::size_t required_alignment = native_simd<T>::alignment();
+    // Required padding.
+    static constexpr std::size_t required_padding = native_simd<T>::size() > 1 ? native_simd<T>::size() : 0;
   };
 
   struct stride_padding {

@@ -139,7 +139,7 @@ namespace nda {
     /// Number of dimensions of the array.
     static constexpr int rank = Rank;
 
-    static constexpr size_t padding = std::is_same_v<ContainerPolicy, heap_aligned<>> ? mem::type_alignment_info<ValueType>::width : 0;
+    static constexpr size_t padding = std::is_same_v<ContainerPolicy, heap_aligned<>> ? mem::type_alignment_info<ValueType>::required_padding : 0;
 
     // Compile-time check.
     static_assert(has_contiguous(layout_t::layout_prop), "Error in nda::basic_array: Memory layout has to be contiguous");
