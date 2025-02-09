@@ -100,9 +100,6 @@ namespace nda::mem {
   struct handle_heap {
     static_assert(std::is_nothrow_destructible_v<T>, "nda::mem::handle_heap requires the value_type to have a non-throwing destructor");
 
-    // TODO: change the concept of Allocator to accommodate width and add widths.
-    static constexpr size_t padding = A:: template padding<T>;
-
     private:
     // Pointer to the start of the actual data.
     T *_data = nullptr;
@@ -151,6 +148,8 @@ namespace nda::mem {
 
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = allocator_type::address_space;
+
+    static constexpr bool is_aligned = allocator_type::is_aligned;
 
     /**
      * @brief Get a shared pointer to the memory block.
@@ -375,6 +374,8 @@ namespace nda::mem {
     /// nda::mem::AddressSpace in which the memory is allocated (always on `Host`).
     static constexpr auto address_space = Host;
 
+    static constexpr bool is_aligned = false;
+
     /**
      * @brief Destructor for the handle.
      * @details For non-trivial objects, it explicitly calls their destructors. Otherwise, it does nothing.
@@ -527,8 +528,10 @@ namespace nda::mem {
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = Host;
 
+    static constexpr bool is_aligned = false;
+
     /// Default constructor.
-    handle_sso(){}; // NOLINT (user-defined constructor to avoid value initialization of the buffer)
+    handle_sso() {}; // NOLINT (user-defined constructor to avoid value initialization of the buffer)
 
     /**
      * @brief Destructor for the handle.
@@ -778,6 +781,9 @@ namespace nda::mem {
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = AdrSp;
 
+    // TODO: Maybe later change this.
+    static constexpr bool is_aligned = false;
+
     /// Default constructor leaves the handle in a null state (`nullptr` and size 0).
     handle_shared() = default;
 
@@ -858,14 +864,14 @@ namespace nda::mem {
    * @tparam T Value type of the data.
    * @tparam AdrSp nda::mem::AddressSpace in which the memory is allocated.
    */
-  template <typename T, AddressSpace AdrSp = Host>
+  template <typename T, AddressSpace AdrSp = Host, Allocator A = mallocator<>>
   struct handle_borrowed {
     private:
     // Value type of the data with const removed.
     using T0 = std::remove_const_t<T>;
 
     // Parent handle (required for regular -> shared promotion in Python Converter).
-    handle_heap<T0> const *_parent = nullptr;
+    handle_heap<T0, A> const *_parent = nullptr;
 
     // Pointer to the start of the actual data.
     T *_data = nullptr;
@@ -876,6 +882,8 @@ namespace nda::mem {
 
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = AdrSp;
+
+    static constexpr bool is_aligned = A::is_aligned;
 
     /// Default constructor leaves the handle in a null state (nullptr).
     handle_borrowed() = default;
@@ -906,7 +914,7 @@ namespace nda::mem {
       requires(address_space == H::address_space and (std::is_const_v<value_type> or !std::is_const_v<typename H::value_type>)
                and std::is_same_v<const value_type, const typename H::value_type>)
     handle_borrowed(H const &h, long offset = 0) noexcept : _data(h.data() + offset) {
-      if constexpr (std::is_same_v<H, handle_heap<T0>>) _parent = &h;
+      if constexpr (std::is_same_v<H, handle_heap<T0, A>>) _parent = &h;
     }
 
     /**
@@ -935,7 +943,7 @@ namespace nda::mem {
      * @brief Get a pointer to the parent handle.
      * @return Pointer to the parent handle.
      */
-    [[nodiscard]] handle_heap<T0> const *parent() const { return _parent; }
+    [[nodiscard]] handle_heap<T0, A> const *parent() const { return _parent; }
 
     /**
      * @brief Get a pointer to the stored data.

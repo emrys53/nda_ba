@@ -88,14 +88,13 @@ namespace nda {
     nda::for_each(
        a.shape(),
        [&a, &r_simd, &f_simd](auto &&...args) {
-         native_simd<R> tmp;
          if constexpr (isAligned) {
-           tmp.load(&a(args...));
+           r_simd = f_simd(r_simd, native_simd<R>(&a(args...)));
          } else {
+           native_simd<R> tmp;
            tmp.load_unaligned(&a(args...));
+           r_simd = f_simd(r_simd, tmp);
          }
-
-         r_simd = f_simd(r_simd, tmp);
        },
        [&a, &r_scalar, &f_scalar](auto &&...args) { r_scalar = f_scalar(r_scalar, a(args...)); }, native_simd<R>::size());
     alignas(r_simd.alignment()) std::array<R, r_simd.size()> res;
@@ -229,7 +228,8 @@ namespace nda {
   auto sum(A const &a)
     requires(Vectorizable<Value>)
   {
-    return fold<isAligned>([](native_simd<Value> lhs, native_simd<Value> rhs) { return lhs + rhs; }, std::plus<>{}, a, native_simd<Value>(Value(0)), Value(0));
+    return fold<isAligned>([](native_simd<Value> lhs, native_simd<Value> rhs) { return lhs + rhs; }, std::plus<>{}, a, native_simd<Value>(Value(0)),
+                           Value(0));
   }
 
   /**
@@ -254,7 +254,8 @@ namespace nda {
   auto product(A const &a)
     requires(Vectorizable<Value>)
   {
-    return fold<isAligned>([](native_simd<Value> lhs, native_simd<Value> rhs) { return lhs * rhs; }, std::multiplies<>{}, a, native_simd<Value>(Value(1)), Value(1));
+    return fold<isAligned>([](native_simd<Value> lhs, native_simd<Value> rhs) { return lhs * rhs; }, std::multiplies<>{}, a,
+                           native_simd<Value>(Value(1)), Value(1));
   }
 
   /**

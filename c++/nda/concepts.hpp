@@ -176,6 +176,7 @@ namespace nda {
       { a.allocate_zero(size_t{}, size_t{}) } noexcept -> std::same_as<blk_t>;
       { a.deallocate(std::declval<blk_t>()) } noexcept;
       { A::address_space } -> std::same_as<AddressSpace const &>;
+      { A::is_aligned };
     };
 
     /**
@@ -194,6 +195,7 @@ namespace nda {
       { h.is_null() } noexcept -> std::same_as<bool>;
       { h.data() } noexcept -> std::same_as<T *>;
       { H::address_space } -> std::same_as<AddressSpace const &>;
+      { H::is_aligned };
     };
 
     /**
@@ -239,6 +241,12 @@ namespace nda {
     { a.shape() } -> StdArrayOfLong;
     { a.size() } -> std::same_as<long>;
     requires CallableWithLongs<A, get_rank<A>>;
+  };
+
+  //TODO: need to improve this.
+  template <typename T>
+  concept HasLoad = requires(T a) {
+    { &T::load };
   };
 
   /**

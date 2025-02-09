@@ -471,6 +471,7 @@ void assign_from_ndarray(RHS const &rhs) { // FIXME noexcept {
     static constexpr bool both_1d_strided = has_layout_strided_1d<self_t> and has_layout_strided_1d<RHS>;
     if constexpr (mem::on_host<self_t, RHS> and both_1d_strided) {
       // vectorizable copy on host
+//TODO:: assignment of lazy
       for (long i = 0; i < size(); ++i) (*this)(_linear_index_t{i}) = rhs(_linear_index_t{i});
       return;
     } else if constexpr (!mem::on_host<self_t, RHS> and have_same_value_type_v<self_t, RHS>) {

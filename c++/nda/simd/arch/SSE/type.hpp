@@ -243,7 +243,7 @@ namespace nda {
     simd_type(const value_t v) : value(_mm_set1_ps(v)) {}
 
     simd_type(std::initializer_list<value_t> l) {
-      // TODO: Do compile time assert.
+      // TODO: Do compile time assert. With arrays.
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != size()) {
         throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())

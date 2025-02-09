@@ -140,7 +140,6 @@ namespace nda::blas {
         compile_error_no_gpu();
 #endif
       } else {
-        //TODO: check whether the results are correct.
         f77::gemm(op_a, op_b, m, n, k, alpha, mat_a.data(), get_ld(mat_a), mat_b.data(), get_ld(mat_b), beta, c.data(), get_ld(c));
       }
     }

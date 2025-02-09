@@ -139,7 +139,9 @@ namespace nda {
     /// Number of dimensions of the array.
     static constexpr int rank = Rank;
 
-    static constexpr size_t padding = std::is_same_v<ContainerPolicy, heap_aligned<>> ? mem::type_alignment_info<ValueType>::required_padding : 0;
+    static constexpr bool is_aligned = storage_t::is_aligned;
+
+    static constexpr size_t padding = is_aligned ? mem::type_alignment_info<ValueType>::required_padding : 0;
 
     // Compile-time check.
     static_assert(has_contiguous(layout_t::layout_prop), "Error in nda::basic_array: Memory layout has to be contiguous");
@@ -408,7 +410,7 @@ namespace nda {
     {
       return basic_array{stdutil::make_std_array<long>(shape), mem::init_zero};
     }
-
+    //TODO: These functions only work for non-padded arrays.
     /**
      * @brief Make a zero-initialized array with the given dimensions.
      *
@@ -468,8 +470,8 @@ namespace nda {
       requires(std::is_floating_point_v<ValueType> or nda::is_complex_v<ValueType>)
     {
       using namespace std::complex_literals;
-      auto static gen  = std::mt19937(std::random_device{}());
-      auto res         = basic_array{shape};
+      auto static gen = std::mt19937(std::random_device{}());
+      auto res        = basic_array{shape};
       if constexpr (nda::is_complex_v<ValueType>) {
         auto static dist = std::uniform_real_distribution<typename ValueType::value_type>(0.0, 1.0);
         for (auto &x : res) x = dist(gen) + 1i * dist(gen);

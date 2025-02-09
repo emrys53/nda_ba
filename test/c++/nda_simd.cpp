@@ -20,18 +20,48 @@ void check_simd_array_equal(simd_type<T, Width, ABI> value, std::array<T, Width>
     if constexpr (std::is_same_v<T, int32_t> or std::is_same_v<T, int64_t>) {
       EXPECT_EQ(calculation[i], correct[i]);
     } else if constexpr (std::is_same_v<T, float>) {
-      EXPECT_FLOAT_EQ(calculation[i], correct[i]);
+      if (not(std::isnan(calculation[i]) and std::isnan(correct[i]))) { EXPECT_FLOAT_EQ(calculation[i], correct[i]); }
     } else if constexpr (std::is_same_v<T, double>) {
-      EXPECT_DOUBLE_EQ(calculation[i], correct[i]);
+      if (not(std::isnan(calculation[i]) and std::isnan(correct[i]))) { EXPECT_DOUBLE_EQ(calculation[i], correct[i]); }
     } else if constexpr (std::is_same_v<T, std::complex<float>>) {
       auto max         = std::max(std::abs(calculation[i]), std::abs(correct[i]));
       max              = std::max(max, 1.0f);
       double precision = 1e-6 * max;
+      if ((std::isnan(calculation[i].real()) and (std::isnan(correct[i].real())))) {
+        if ((std::isnan(calculation[i].imag()) and (std::isnan(correct[i].imag())))) { continue; }
+        EXPECT_FLOAT_EQ(calculation[i].imag(), correct[i].imag());
+        continue;
+      } else {
+        if ((std::isnan(calculation[i].imag()) and (std::isnan(correct[i].imag())))) {
+          EXPECT_FLOAT_EQ(calculation[i].real(), correct[i].real());
+          continue;
+        }
+        if (std::isnan(std::abs(calculation[i] - correct[i]))) {
+          EXPECT_FLOAT_EQ(calculation[i].real(), correct[i].real());
+          EXPECT_FLOAT_EQ(calculation[i].imag(), correct[i].imag());
+          continue;
+        }
+      }
       EXPECT_COMPLEX_NEAR(calculation[i], correct[i], precision);
     } else if constexpr (std::is_same_v<T, std::complex<double>>) {
       auto max         = std::max(std::abs(calculation[i]), std::abs(correct[i]));
       max              = std::max(max, 1.0);
       double precision = 1e-15 * max;
+      if ((std::isnan(calculation[i].real()) and (std::isnan(correct[i].real())))) {
+        if ((std::isnan(calculation[i].imag()) and (std::isnan(correct[i].imag())))) { continue; }
+        EXPECT_DOUBLE_EQ(calculation[i].imag(), correct[i].imag());
+        continue;
+      } else {
+        if ((std::isnan(calculation[i].imag()) and (std::isnan(correct[i].imag())))) {
+          EXPECT_DOUBLE_EQ(calculation[i].real(), correct[i].real());
+          continue;
+        }
+      }
+      if (std::isnan(std::abs(calculation[i] - correct[i]))) {
+        EXPECT_DOUBLE_EQ(calculation[i].real(), correct[i].real());
+        EXPECT_DOUBLE_EQ(calculation[i].imag(), correct[i].imag());
+        continue;
+      }
       EXPECT_COMPLEX_NEAR(calculation[i], correct[i], precision);
     }
   }
@@ -217,6 +247,174 @@ void simd_equality_operator() {
   EXPECT_FALSE(rhs == lhs);
   EXPECT_TRUE(lhs != rhs);
   EXPECT_TRUE(rhs != lhs);
+}
+
+template <typename T, size_t Width, abi_tag ABI>
+void simd_binary_operators_edge_cases() {
+  T min = std::numeric_limits<T>::min();
+  T max = std::numeric_limits<T>::max();
+  simd_type<T, Width, ABI> min_v(min);
+  simd_type<T, Width, ABI> max_v(max);
+  simd_type<T, Width, ABI> plus_v(T(2));
+  simd_type<T, Width, ABI> minus_v(T(-2));
+  std::array<T, Width> min_array{};
+  std::array<T, Width> max_array{};
+  std::array<T, Width> plus_array{};
+  std::array<T, Width> minus_array{};
+  for (int i = 0; i < Width; ++i) {
+    min_array[i]   = min;
+    max_array[i]   = max;
+    plus_array[i]  = 2;
+    minus_array[i] = -2;
+  }
+  check_simd_array_equal(max_v + plus_v, max_array + plus_array);
+  check_simd_array_equal(min_v - plus_v, min_array - plus_array);
+  check_simd_array_equal(max_v * plus_v, max_array * plus_array);
+  check_simd_array_equal(min_v * plus_v, min_array * plus_array);
+  check_simd_array_equal(min_v * minus_v, min_array * minus_array);
+  check_simd_array_equal(max_v * minus_v, max_array * minus_array);
+  check_simd_array_equal(max_v + min_v, max_array + min_array);
+  check_simd_array_equal(max_v + max_v, max_array + max_array);
+  check_simd_array_equal(min_v - max_v, min_array - max_array);
+  check_simd_array_equal(max_v * max_v, max_array * max_array);
+  check_simd_array_equal(min_v * max_v, min_array * max_array);
+}
+
+template <typename T, size_t Width, abi_tag ABI>
+void simd_check_nan_inf() {
+  if constexpr (std::is_floating_point_v<T>) {
+    T nan                                        = std::numeric_limits<T>::quiet_NaN();
+    T plus_inf                                   = std::numeric_limits<T>::infinity();
+    T minus_inf                                  = std::numeric_limits<T>::infinity() * -1;
+    constexpr size_t alignment                   = simd_type<T, Width, ABI>::alignment();
+    alignas(alignment) std::array<T, Width> mix  = {nan, plus_inf};
+    alignas(alignment) std::array<T, Width> mix2 = {minus_inf, 2};
+    alignas(alignment) std::array<T, Width> mix3 = {plus_inf, minus_inf};
+    alignas(alignment) std::array<T, Width> mix4 = {2, nan};
+    for (int i = 2; i < Width; ++i) {
+      mix[i]  = 1;
+      mix2[i] = 1;
+      mix3[i] = 1;
+    }
+    simd_type<T, Width, ABI> simd_mix(mix.data());
+    simd_type<T, Width, ABI> simd_mix2(mix2.data());
+    simd_type<T, Width, ABI> simd_mix3(mix3.data());
+    simd_type<T, Width, ABI> simd_mix4(mix4.data());
+    check_simd_array_equal(simd_mix + simd_mix, mix + mix);
+    check_simd_array_equal(simd_mix + simd_mix2, mix + mix2);
+    check_simd_array_equal(simd_mix + simd_mix3, mix + mix3);
+    check_simd_array_equal(simd_mix + simd_mix4, mix + mix4);
+    check_simd_array_equal(simd_mix2 + simd_mix3, mix2 + mix3);
+    check_simd_array_equal(simd_mix2 + simd_mix4, mix2 + mix4);
+    check_simd_array_equal(simd_mix3 + simd_mix4, mix3 + mix4);
+
+    check_simd_array_equal(simd_mix - simd_mix, mix - mix);
+    check_simd_array_equal(simd_mix - simd_mix2, mix - mix2);
+    check_simd_array_equal(simd_mix - simd_mix3, mix - mix3);
+    check_simd_array_equal(simd_mix - simd_mix4, mix - mix4);
+    check_simd_array_equal(simd_mix2 - simd_mix3, mix2 - mix3);
+    check_simd_array_equal(simd_mix2 - simd_mix4, mix2 - mix4);
+    check_simd_array_equal(simd_mix3 - simd_mix4, mix3 - mix4);
+
+    check_simd_array_equal(simd_mix * simd_mix, mix * mix);
+    check_simd_array_equal(simd_mix * simd_mix2, mix * mix2);
+    check_simd_array_equal(simd_mix * simd_mix3, mix * mix3);
+    check_simd_array_equal(simd_mix * simd_mix4, mix * mix4);
+    check_simd_array_equal(simd_mix2 * simd_mix3, mix2 * mix3);
+    check_simd_array_equal(simd_mix2 * simd_mix4, mix2 * mix4);
+    check_simd_array_equal(simd_mix3 * simd_mix4, mix3 * mix4);
+    std::array<T, Width> tmp1{}, tmp2{}, tmp3{}, tmp4{}, tmp5{}, tmp6{}, tmp7{};
+    for (int i = 0; i < Width; ++i) {
+      tmp1[i] = mix[i] / mix[i];
+      tmp2[i] = mix[i] / mix2[i];
+      tmp3[i] = mix[i] / mix3[i];
+      tmp4[i] = mix[i] / mix4[i];
+      tmp5[i] = mix2[i] / mix3[i];
+      tmp6[i] = mix2[i] / mix4[i];
+      tmp7[i] = mix3[i] / mix4[i];
+    }
+
+    check_simd_array_equal(simd_mix / simd_mix, tmp1);
+    check_simd_array_equal(simd_mix / simd_mix2, tmp2);
+    check_simd_array_equal(simd_mix / simd_mix3, tmp3);
+    check_simd_array_equal(simd_mix / simd_mix4, tmp4);
+    check_simd_array_equal(simd_mix2 / simd_mix3, tmp5);
+    check_simd_array_equal(simd_mix2 / simd_mix4, tmp6);
+    check_simd_array_equal(simd_mix3 / simd_mix4, tmp7);
+  } else {
+    using scalar_t                               = typename simd_type<T, Width, ABI>::scalar_t;
+    scalar_t nan                                 = std::numeric_limits<scalar_t>::quiet_NaN();
+    scalar_t plus_inf                            = std::numeric_limits<scalar_t>::infinity();
+    scalar_t minus_inf                           = std::numeric_limits<scalar_t>::infinity() * -1;
+    constexpr size_t alignment                   = simd_type<T, Width, ABI>::alignment();
+    alignas(alignment) std::array<T, Width> mix  = {std::complex<scalar_t>{nan, plus_inf}};
+    alignas(alignment) std::array<T, Width> mix2 = {std::complex<scalar_t>{minus_inf, 2}};
+    alignas(alignment) std::array<T, Width> mix3 = {std::complex<scalar_t>{plus_inf, minus_inf}};
+    alignas(alignment) std::array<T, Width> mix4 = {std::complex<scalar_t>{2, nan}};
+    for (int i = 1; i < Width; ++i) {
+      mix[i]  = {1, 1};
+      mix2[i] = {1, 1};
+      mix3[i] = {1, 1};
+    }
+    simd_type<T, Width, ABI> simd_mix(mix.data());
+    simd_type<T, Width, ABI> simd_mix2(mix2.data());
+    simd_type<T, Width, ABI> simd_mix3(mix3.data());
+    simd_type<T, Width, ABI> simd_mix4(mix4.data());
+    check_simd_array_equal(simd_mix + simd_mix, mix + mix);
+    check_simd_array_equal(simd_mix + simd_mix2, mix + mix2);
+    check_simd_array_equal(simd_mix + simd_mix3, mix + mix3);
+    check_simd_array_equal(simd_mix + simd_mix4, mix + mix4);
+    check_simd_array_equal(simd_mix2 + simd_mix3, mix2 + mix3);
+    check_simd_array_equal(simd_mix2 + simd_mix4, mix2 + mix4);
+    check_simd_array_equal(simd_mix3 + simd_mix4, mix3 + mix4);
+
+    check_simd_array_equal(simd_mix - simd_mix, mix - mix);
+    check_simd_array_equal(simd_mix - simd_mix2, mix - mix2);
+    check_simd_array_equal(simd_mix - simd_mix3, mix - mix3);
+    check_simd_array_equal(simd_mix - simd_mix4, mix - mix4);
+    check_simd_array_equal(simd_mix2 - simd_mix3, mix2 - mix3);
+    check_simd_array_equal(simd_mix2 - simd_mix4, mix2 - mix4);
+    check_simd_array_equal(simd_mix3 - simd_mix4, mix3 - mix4);
+
+    // std::array<T, Width> tmp1{}, tmp2{}, tmp3{}, tmp4{}, tmp5{}, tmp6{}, tmp7{};
+    //TODO: STL is wrong I think.
+
+    // for (int i = 0; i < Width; ++i) {
+    //   tmp1[i] = mix[i] * mix[i];
+    //   tmp2[i] = mix[i] * mix2[i];
+    //   tmp3[i] = mix[i] * mix3[i];
+    //   tmp4[i] = mix[i] * mix4[i];
+    //   tmp5[i] = mix2[i] * mix3[i];
+    //   tmp6[i] = mix2[i] * mix4[i];
+    //   tmp7[i] = mix3[i] * mix4[i];
+    // }
+    //
+    // check_simd_array_equal(simd_mix * simd_mix, tmp1);
+    // check_simd_array_equal(simd_mix * simd_mix2, tmp2);
+    // check_simd_array_equal(simd_mix * simd_mix3, tmp3);
+    // check_simd_array_equal(simd_mix * simd_mix4, tmp4);
+    // check_simd_array_equal(simd_mix2 * simd_mix3, tmp5);
+    // check_simd_array_equal(simd_mix2 * simd_mix4, tmp6);
+    // check_simd_array_equal(simd_mix3 * simd_mix4, tmp7);
+
+    //   for (int i = 0; i < Width; ++i) {
+    //     tmp1[i] = mix[i] / mix[i];
+    //     tmp2[i] = mix[i] / mix2[i];
+    //     tmp3[i] = mix[i] / mix3[i];
+    //     tmp4[i] = mix[i] / mix4[i];
+    //     tmp5[i] = mix2[i] / mix3[i];
+    //     tmp6[i] = mix2[i] / mix4[i];
+    //     tmp7[i] = mix3[i] / mix4[i];
+    //   }
+    //
+    //   check_simd_array_equal(simd_mix / simd_mix, tmp1);
+    //   check_simd_array_equal(simd_mix / simd_mix2, tmp2);
+    //   check_simd_array_equal(simd_mix / simd_mix3, tmp3);
+    //   check_simd_array_equal(simd_mix / simd_mix4, tmp4);
+    //   check_simd_array_equal(simd_mix2 / simd_mix3, tmp5);
+    //   check_simd_array_equal(simd_mix2 / simd_mix4, tmp6);
+    //   check_simd_array_equal(simd_mix3 / simd_mix4, tmp7);
+  }
 }
 
 TEST(NDA, SimdDefaultConstructor) {
@@ -571,8 +769,72 @@ TEST(NDA, SimdEqualityOperator) {
 #endif
 }
 
-//TODO do overflow/underflow/nan/inf tests to see the behaviour of simd registers.
-// Do coverage tests.
+TEST(NDA, SimdEdgeCases) {
+  // Default SIMD types
+  simd_binary_operators_edge_cases<float, 1, abi_tag::Default>();
+  simd_binary_operators_edge_cases<double, 1, abi_tag::Default>();
+  simd_binary_operators_edge_cases<int32_t, 1, abi_tag::Default>();
+  simd_binary_operators_edge_cases<int64_t, 1, abi_tag::Default>();
+  simd_binary_operators_edge_cases<std::complex<float>, 1, abi_tag::Default>();
+  simd_binary_operators_edge_cases<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+  // SSE SIMD types
+  simd_binary_operators_edge_cases<float, 4, abi_tag::SSE>();
+  simd_binary_operators_edge_cases<double, 2, abi_tag::SSE>();
+  simd_binary_operators_edge_cases<int32_t, 4, abi_tag::SSE>();
+  simd_binary_operators_edge_cases<int64_t, 2, abi_tag::SSE>();
+  simd_binary_operators_edge_cases<std::complex<float>, 2, abi_tag::SSE>();
+  simd_binary_operators_edge_cases<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  // AVX SIMD types
+  simd_binary_operators_edge_cases<float, 8, abi_tag::AVX>();
+  simd_binary_operators_edge_cases<double, 4, abi_tag::AVX>();
+  simd_binary_operators_edge_cases<int32_t, 8, abi_tag::AVX>();
+  simd_binary_operators_edge_cases<int64_t, 4, abi_tag::AVX>();
+  simd_binary_operators_edge_cases<std::complex<float>, 4, abi_tag::AVX>();
+  simd_binary_operators_edge_cases<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512__
+  // AVX512 SIMD types
+  simd_binary_operators_edge_cases<float, 16, abi_tag::AVX512>();
+  simd_binary_operators_edge_cases<double, 8, abi_tag::AVX512>();
+  simd_binary_operators_edge_cases<int32_t, 16, abi_tag::AVX512>();
+  simd_binary_operators_edge_cases<int64_t, 8, abi_tag::AVX512>();
+  simd_binary_operators_edge_cases<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_binary_operators_edge_cases<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+}
+
+TEST(NDA, SimdNanInf) {
+#ifdef __SSE2__
+  // SSE SIMD types
+  simd_check_nan_inf<float, 4, abi_tag::SSE>();
+  simd_check_nan_inf<double, 2, abi_tag::SSE>();
+  simd_check_nan_inf<std::complex<float>, 2, abi_tag::SSE>();
+  // simd_check_nan_inf<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  // AVX SIMD types
+  simd_check_nan_inf<float, 8, abi_tag::AVX>();
+  simd_check_nan_inf<double, 4, abi_tag::AVX>();
+  simd_check_nan_inf<std::complex<float>, 4, abi_tag::AVX>();
+  simd_check_nan_inf<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512__
+  // AVX512 SIMD types
+  simd_check_nan_inf<float, 16, abi_tag::AVX512>();
+  simd_check_nan_inf<double, 8, abi_tag::AVX512>();
+  simd_check_nan_inf<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_check_nan_inf<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+}
+
 TEST(NDA, OurSIMD) {
   // matrix_aligned<double, C_layout> s = matrix_aligned<double, C_layout>::rand({5, 7});
   // for (int i = 0 ; i < 1 ; ++i) {
@@ -583,7 +845,6 @@ TEST(NDA, OurSIMD) {
   //   std::cout << sum_second << std::endl;
   //   EXPECT_DOUBLE_EQ(sum_first, sum_second);
   // }
-
 
   // 1 2 3 0
   // 4 5 6 0

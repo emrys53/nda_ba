@@ -111,14 +111,14 @@ namespace nda {
    * @brief Memory policy using an nda::mem::handle_borrowed.
    * @tparam AdrSp nda::mem::AddressSpace in which the memory is allocated.
    */
-  template <mem::AddressSpace AdrSp = mem::Host>
+  template <mem::AddressSpace AdrSp = mem::Host, typename Allocator = mem::mallocator<>>
   struct borrowed {
     /**
      * @brief Handle type for the policy.
      * @tparam T Value type of the data.
      */
     template <typename T>
-    using handle = mem::handle_borrowed<T, AdrSp>;
+    using handle = mem::handle_borrowed<T, AdrSp, Allocator>;
   };
 
   /** @} */

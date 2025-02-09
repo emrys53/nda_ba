@@ -58,7 +58,7 @@ namespace nda::mem {
   /// Memory block consisting of a pointer and its size.
   struct blk_t {
     /// Pointer to the memory block.
-    char *  __restrict ptr = nullptr;
+    char *__restrict ptr = nullptr;
 
     /// Size of the memory block in bytes.
     size_t s = 0;
@@ -88,6 +88,8 @@ namespace nda::mem {
 
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = AdrSp;
+
+    static constexpr bool is_aligned = false;
 
     /**
      * @brief Allocate memory using nda::mem::malloc.
@@ -143,6 +145,9 @@ namespace nda::mem {
     mallocator_aligned &operator=(mallocator_aligned &&) = default;
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = AdrSp;
+
+    static constexpr bool is_aligned = true;
+
     /**
      * @brief Allocate memory using nda::mem::malloc.
      *
@@ -200,6 +205,8 @@ namespace nda::mem {
 
     /// Only `Host` nda::mem::AddressSpace is supported for this allocator.
     static constexpr auto address_space = Host;
+
+    static constexpr bool is_aligned = false;
 
 #ifdef NDA_USE_ASAN
     bucket() { __asan_poison_memory_region(p, TotalChunkSize); }
@@ -334,6 +341,8 @@ namespace nda::mem {
     /// Only `Host` nda::mem::AddressSpace is supported for this allocator.
     static constexpr auto address_space = Host;
 
+    static constexpr bool is_aligned = false;
+
     /// Default constructor.
     multi_bucket() : bu_vec(1), bu(bu_vec.begin()) {}
 
@@ -451,6 +460,8 @@ namespace nda::mem {
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = A::address_space;
 
+    static constexpr auto is_aligned = A::is_aligned and B::is_aligned;
+
     /// Default constructor.
     segregator() = default;
 
@@ -518,6 +529,8 @@ namespace nda::mem {
     public:
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = A::address_space;
+
+    static constexpr bool is_aligned = A::is_aligned;
 
     /// Default constructor.
     leak_check() = default;
@@ -625,6 +638,8 @@ namespace nda::mem {
     public:
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = A::address_space;
+
+    static constexpr bool is_aligned = A::is_aligned;
 
     /// Default constructor.
     stats() = default;
