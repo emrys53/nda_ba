@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TRIQS/nda: nda::borrowed&lt; AdrSp &gt;</title>
+<title>TRIQS/nda: nda::borrowed&lt; AdrSp, Allocator &gt;</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -111,14 +111,14 @@ $(function(){initNavTree('structnda_1_1borrowed.html',''); initResizable(true); 
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="structnda_1_1borrowed-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">nda::borrowed&lt; AdrSp &gt;<div class="ingroups"><a class="el" href="group__memory.html">Memory management</a> &raquo; <a class="el" href="group__mem__pols.html">Memory policies</a></div></div></div>
+  <div class="headertitle"><div class="title">nda::borrowed&lt; AdrSp, Allocator &gt;<div class="ingroups"><a class="el" href="group__memory.html">Memory management</a> &raquo; <a class="el" href="group__mem__pols.html">Memory policies</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="mem_2policies_8hpp_source.html">nda/mem/policies.hpp</a>&gt;</code></p>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005ebfc907bde9e0d">mem::AddressSpace</a> AdrSp = mem::Host&gt;<br />
-struct nda::borrowed&lt; AdrSp &gt;</div><p>Memory policy using an <a class="el" href="structnda_1_1mem_1_1handle__borrowed.html" title="A non-owning handle for a memory block on the heap.">nda::mem::handle_borrowed</a>. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005ebfc907bde9e0d">mem::AddressSpace</a> AdrSp = mem::Host, typename Allocator = mem::mallocator&lt;&gt;&gt;<br />
+struct nda::borrowed&lt; AdrSp, Allocator &gt;</div><p>Memory policy using an <a class="el" href="structnda_1_1mem_1_1handle__borrowed.html" title="A non-owning handle for a memory block on the heap.">nda::mem::handle_borrowed</a>. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">AdrSp</td><td><a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005ebfc907bde9e0d" title="Enum providing identifiers for the different memory address spaces.">nda::mem::AddressSpace</a> in which the memory is allocated. </td></tr>
@@ -130,24 +130,24 @@ struct nda::borrowed&lt; AdrSp &gt;</div><p>Memory policy using an <a class="el"
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ad6179beaa7b9c8da002fb3ad3cce04c1" id="r_ad6179beaa7b9c8da002fb3ad3cce04c1"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:ad6179beaa7b9c8da002fb3ad3cce04c1"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad6179beaa7b9c8da002fb3ad3cce04c1">handle</a> = <a class="el" href="structnda_1_1mem_1_1handle__borrowed.html">mem::handle_borrowed</a>&lt;T, AdrSp&gt;</td></tr>
-<tr class="memdesc:ad6179beaa7b9c8da002fb3ad3cce04c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle type for the policy.  <br /></td></tr>
-<tr class="separator:ad6179beaa7b9c8da002fb3ad3cce04c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8692ba8da9b6c4046139a3bd4db4e2ae" id="r_a8692ba8da9b6c4046139a3bd4db4e2ae"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a8692ba8da9b6c4046139a3bd4db4e2ae"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a8692ba8da9b6c4046139a3bd4db4e2ae">handle</a> = <a class="el" href="structnda_1_1mem_1_1handle__borrowed.html">mem::handle_borrowed</a>&lt;T, AdrSp, Allocator&gt;</td></tr>
+<tr class="memdesc:a8692ba8da9b6c4046139a3bd4db4e2ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle type for the policy.  <br /></td></tr>
+<tr class="separator:a8692ba8da9b6c4046139a3bd4db4e2ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="ad6179beaa7b9c8da002fb3ad3cce04c1" name="ad6179beaa7b9c8da002fb3ad3cce04c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6179beaa7b9c8da002fb3ad3cce04c1">&#9670;&#160;</a></span>handle</h2>
+<a id="a8692ba8da9b6c4046139a3bd4db4e2ae" name="a8692ba8da9b6c4046139a3bd4db4e2ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8692ba8da9b6c4046139a3bd4db4e2ae">&#9670;&#160;</a></span>handle</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005ebfc907bde9e0d">mem::AddressSpace</a> AdrSp = mem::Host&gt; </div>
+template&lt;<a class="el" href="group__mem__addrspcs.html#ga03c36f393776e30005ebfc907bde9e0d">mem::AddressSpace</a> AdrSp = mem::Host, typename Allocator = mem::mallocator&lt;&gt;&gt; </div>
 <div class="memtemplate">
 template&lt;typename T&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structnda_1_1borrowed.html">nda::borrowed</a>&lt; AdrSp &gt;::handle = <a class="el" href="structnda_1_1mem_1_1handle__borrowed.html">mem::handle_borrowed</a>&lt;T, AdrSp&gt;</td>
+          <td class="memname">using <a class="el" href="structnda_1_1borrowed.html">nda::borrowed</a>&lt; AdrSp, Allocator &gt;::handle = <a class="el" href="structnda_1_1mem_1_1handle__borrowed.html">mem::handle_borrowed</a>&lt;T, AdrSp, Allocator&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">

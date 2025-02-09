@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['parent_0',['parent',['../structnda_1_1mem_1_1handle__borrowed.html#a1c47ea4fa502f02dfd07ca97c6ecd119',1,'nda::mem::handle_borrowed']]],
+  ['parent_0',['parent',['../structnda_1_1mem_1_1handle__borrowed.html#af7900226ea7428ace8a55836bdb0a96d',1,'nda::mem::handle_borrowed']]],
   ['permuted_5findices_5fview_1',['permuted_indices_view',['../group__av__factories.html#ga587a5b691704422771dcaa5fcbbf32b4',1,'nda']]],
   ['pop_2',['pop',['../group__utils__std.html#ga372f86a44ea753a1845c8f056c7a2a2b',1,'nda::stdutil']]],
   ['pow_3',['pow',['../group__clef__expr.html#gaa90a95616e4d2765f3cea52a2e88cf47',1,'nda::clef::pow()'],['../group__av__math.html#ga6900d4319e73e27201a65f96d082289f',1,'nda::pow()']]],
