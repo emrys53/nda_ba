@@ -39,6 +39,7 @@
 #include "./mem/policies.hpp"
 #include "./stdutil/array.hpp"
 #include "./traits.hpp"
+#include "./config.hpp"
 
 #include <algorithm>
 #include <array>
@@ -147,7 +148,7 @@ namespace nda {
 
     // TODO: Right now for loading operations we require exact same values. Can be improved later on.
     template <typename T>
-    static constexpr bool has_load = is_aligned and Vectorizable<ValueType> and std::is_same_v<T, ValueType>;
+    static constexpr bool has_load = is_aligned and  Vectorizable<ValueType> and std::is_same_v<T, ValueType>;
 
     // Compile-time check.
     static_assert(has_contiguous(layout_t::layout_prop), "Error in nda::basic_array: Memory layout has to be contiguous");

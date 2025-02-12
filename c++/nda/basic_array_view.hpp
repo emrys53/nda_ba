@@ -36,6 +36,7 @@
 #include "./mem/memcpy.hpp"
 #include "./mem/policies.hpp"
 #include "./traits.hpp"
+#include "./config.hpp"
 
 #include <itertools/itertools.hpp>
 
@@ -153,7 +154,7 @@ namespace nda {
 
     static constexpr bool is_padded = NDA_PADDING;
 
-    static constexpr bool has_load = (is_aligned and NDA_PADDING) and Vectorizable<ValueType>;
+    static constexpr bool has_load = (is_aligned and is_padded) and Vectorizable<ValueType>;
 
     /// The associated regular (nda::basic_array) type.
     using regular_type = basic_array<std::remove_const_t<ValueType>, Rank, C_layout, Algebra, heap<mem::get_addr_space<storage_t>>>;
