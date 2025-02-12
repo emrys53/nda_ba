@@ -1,6 +1,7 @@
 #pragma once
 #include <complex>
 #include "abi.hpp"
+#include "../../macros.hpp"
 
 namespace nda {
 

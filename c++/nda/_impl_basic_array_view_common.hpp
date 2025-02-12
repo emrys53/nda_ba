@@ -273,6 +273,23 @@ FORCEINLINE decltype(auto) operator()(Ts const &...idxs) && noexcept(has_no_boun
   return call<Algebra, true>(*this, idxs...);
 }
 
+
+
+
+template <typename... Args>
+FORCEINLINE  native_simd<ValueType> load(Args... idx) {
+  static_assert(is_aligned and Vectorizable<ValueType>);
+  const long offset = lay(idx...);
+  return native_simd<ValueType>(data() + offset);
+}
+
+template <typename... Args>
+FORCEINLINE void store(native_simd<ValueType> value, Args... idx) {
+  static_assert(is_aligned and Vectorizable<ValueType>);
+  const long offset = lay(idx...);
+  value.store(data() + offset);
+}
+
 /**
  * @brief Subscript operator to access the 1-dimensional view/array.
  *
@@ -508,7 +525,17 @@ void assign_from_ndarray(RHS const &rhs) { // FIXME noexcept {
   if constexpr (mem::on_device<self_t> || mem::on_device<RHS>) {
     NDA_RUNTIME_ERROR << "Error in assign_from_ndarray: Fallback to elementwise assignment not implemented for arrays/views on the GPU";
   }
-  nda::for_each(shape(), [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); });
+  if constexpr (is_aligned and Vectorizable<ValueType>) {
+    if constexpr(RHS::has_load) {
+      nda::for_each(shape(),[this, &rhs](auto const &...args) {(*this).store(rhs.load(args...), args...); }, [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); }, native_simd<ValueType>::size());
+    }
+    else {
+      nda::for_each(shape(), [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); });
+    }
+  }
+  else {
+    nda::for_each(shape(), [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); });
+  }
 }
 
 // Implementation to fill a view/array with a constant scalar value.

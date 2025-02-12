@@ -248,6 +248,10 @@ namespace nda {
   concept HasLoad = requires(T a) {
     { &T::load };
   };
+  template <typename T, typename... Args>
+  concept HasLoadWithArguments = requires(T t, Args &&...args) {
+    { t.load(std::forward<Args>(args)...) };
+  };
 
   /**
    * @brief Check if a given type satisfies the memory array concept.

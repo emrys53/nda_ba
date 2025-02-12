@@ -836,44 +836,30 @@ TEST(NDA, SimdNanInf) {
 }
 
 TEST(NDA, OurSIMD) {
-  // matrix_aligned<double, C_layout> s = matrix_aligned<double, C_layout>::rand({5, 7});
-  // for (int i = 0 ; i < 1 ; ++i) {
-  //   array_aligned<double , 2> s = array_aligned<double , 2>::rand({2 , 7});
-  //   double sum_first = nda::product(s);
-  //   double sum_second = nda::product<true>(s);
-  //   std::cout << sum_first << std::endl;
-  //   std::cout << sum_second << std::endl;
-  //   EXPECT_DOUBLE_EQ(sum_first, sum_second);
-  // }
+  class add {
+    public:
+    float operator()(float a, float b) const { return a + b; }
 
-  // 1 2 3 0
-  // 4 5 6 0
-  // 7 8 9 0
-  // 10 11 12 0
-  // 13 14 15 0
-  // Transpose
-  // 1 4 7 10 13
-  // 2 5  8 11 14
-  // 3 6 9 12 15
-  // 0 0 0 0 0
-  // auto r = transpose(s);
-  // std::cout << "EXTent0= " << r.extent(0) << std::endl;
-  // std::cout << "EXTent1= " << r.extent(1) << std::endl;
-  // std::cout << r.indexmap().get_padding() << std::endl;
-  // for (int i = 0; i < 3; ++i) {
-  // for (int j = 0; j < 5; ++j) { std::cout << "r(" << i << ", " << j << ")=" << r(i, j) << " Address " << &r(i, j) << std::endl; }
-  // }
-  // for (int i = 0; i < 20; ++i) { std::cout << r.data()[i] << std::endl; }
+    native_simd<float> load(native_simd<float> a, native_simd<float> b) const { return a + b; }
+  };
+  const long size1 = 11;
+  const long size2 = 22;
+  float k          = 1;
+  array_aligned<float, 2> s({size1, size2});
+  array_aligned<float, 2> x({size1, size2});
+  for (int i = 0; i < size1; ++i) {
+    for (int j = 0; j < size2; ++j) { s(i, j) = k++; }
+  }
+  for (int i = 0; i < size1; ++i) {
+    for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
+  }
+  //TODO: this doesnt work check.
+  auto test                 = nda::map([](float x, float y) { return x + y; })(s, x);
+  auto test2                = nda::map(add{})(test, test);
+  array_aligned<float, 2> y = test2;
 
-  // std::cout << "HOP" << std::endl;
-  // std::cout << r.indexmap().capacity() << std::endl;
-  // std::cout << r.storage().size() << std::endl;
-  // std::cout << s.storage().size() << std::endl;
-  // std::cout << blas::get_ld(s) << std::endl;
-  // std::cout << blas::get_ld(r) << std::endl;
-  // std::cout << blas::has_C_layout<decltype(s)> << std::endl;
-  // std::cout << blas::has_C_layout<decltype(r)> << std::endl;
-  // std::cout << "ANAN" << std::endl;
-  // for (int i = 0; i < 24; ++i) { std::cout << s.storage().data()[i] << std::endl; }
-  // for (int i = 0; i < 20; ++i) { std::cout << r.storage().data()[i] << std::endl; }
+  for (int i = 0; i < size1; ++i) {
+    for (int j = 0; j < size2; ++j) { std::cout << y(i, j) << " "; }
+    std::cout << std::endl;
+  }
 }

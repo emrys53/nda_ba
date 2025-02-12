@@ -180,6 +180,8 @@ namespace nda {
      */
     auto as_array_view() { return basic_array_view<ValueType, Rank, LayoutPolicy, 'A', AccessorPolicy, OwningPolicy>{*this}; };
 
+    static constexpr bool has_load = is_aligned and Vectorizable<ValueType>;
+
     /**
      * @brief Convert the current array to a view with an 'A' (array) algebra.
      * @return An nda::basic_array_view of the current array with const value type.
