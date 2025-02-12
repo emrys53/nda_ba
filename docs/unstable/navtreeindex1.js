@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"lapack_8h_source.html":[4,7,0,2,0,4],
 "lapack_8hpp.html":[4,7,0,27],
 "lapack_8hpp_source.html":[4,7,0,27],
 "lapacke__config_8h_source.html":[4,7,0,2,0,5],

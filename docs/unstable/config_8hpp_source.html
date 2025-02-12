@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TRIQS/nda: nda/basic_array.hpp File Reference</title>
+<title>TRIQS/nda: config.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,7 +82,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('basic__array_8hpp.html',''); initResizable(true); });
+$(function(){initNavTree('config_8hpp_source.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -108,56 +108,23 @@ $(function(){initNavTree('basic__array_8hpp.html',''); initResizable(true); });
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
-  <div class="headertitle"><div class="title">basic_array.hpp File Reference</div></div>
+  <div class="headertitle"><div class="title">config.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="accessors_8hpp_source.html">./accessors.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="basic__array__view_8hpp_source.html">./basic_array_view.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="basic__functions_8hpp_source.html">./basic_functions.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="concepts_8hpp_source.html">./concepts.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="exceptions_8hpp_source.html">./exceptions.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="iterators_8hpp_source.html">./iterators.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="for__each_8hpp_source.html">./layout/for_each.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="permutation_8hpp_source.html">./layout/permutation.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="range_8hpp_source.html">./layout/range.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="layout__transforms_8hpp_source.html">./layout_transforms.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="macros_8hpp_source.html">./macros.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="address__space_8hpp_source.html">./mem/address_space.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="memcpy_8hpp_source.html">./mem/memcpy.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="mem_2policies_8hpp_source.html">./mem/policies.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="array_8hpp_source.html">./stdutil/array.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="traits_8hpp_source.html">./traits.hpp</a>&quot;</code><br />
-<code>#include &quot;./config.hpp&quot;</code><br />
-<code>#include &lt;algorithm&gt;</code><br />
-<code>#include &lt;array&gt;</code><br />
-<code>#include &lt;complex&gt;</code><br />
-<code>#include &lt;concepts&gt;</code><br />
-<code>#include &lt;initializer_list&gt;</code><br />
-<code>#include &lt;random&gt;</code><br />
-<code>#include &lt;ranges&gt;</code><br />
-<code>#include &lt;type_traits&gt;</code><br />
-<code>#include &lt;utility&gt;</code><br />
-</div><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Provides the generic class for arrays. </p>
-
-<p class="definition">Definition in file <a class="el" href="basic__array_8hpp_source.html">basic_array.hpp</a>.</p>
-</div>
-<p><a href="basic__array_8hpp_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnda_1_1basic__array.html">nda::basic_array&lt; ValueType, Rank, LayoutPolicy, Algebra, ContainerPolicy &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A generic multi-dimensional array.  <a href="classnda_1_1basic__array.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-</div><!-- contents -->
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">  Default padding is 1(enabled). If you wanna disable it you have to compile the code with -DNDA_PADDING=0</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#ifndef NDA_PADDING</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#define NDA_PADDING 1</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#endif</span></div>
+</div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_913b60804e0ca3d36b328b721e405789.html">nda</a></li><li class="navelem"><a class="el" href="basic__array_8hpp.html">basic_array.hpp</a></li>
+    <li class="navelem"><b>config.hpp</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

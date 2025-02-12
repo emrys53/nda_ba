@@ -97,6 +97,7 @@ var NAVTREEINDEX0 =
 "conceptnda_1_1mem_1_1_owning_handle.html":[4,4,4,2],
 "concepts_8hpp.html":[4,7,0,19],
 "concepts_8hpp_source.html":[4,7,0,19],
+"config_8hpp_source.html":[4,7,1],
 "cross__product_8hpp.html":[4,7,0,4,0],
 "cross__product_8hpp_source.html":[4,7,0,4,0],
 "cublas__interface_8cpp.html":[4,7,0,0,0,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "lapack_2interface_2cxx__interface_8cpp.html":[4,7,0,2,0,2],
 "lapack_2interface_2cxx__interface_8cpp_source.html":[4,7,0,2,0,2],
 "lapack_2interface_2cxx__interface_8hpp.html":[4,7,0,2,0,3],
-"lapack_2interface_2cxx__interface_8hpp_source.html":[4,7,0,2,0,3],
-"lapack_8h_source.html":[4,7,0,2,0,4]
+"lapack_2interface_2cxx__interface_8hpp_source.html":[4,7,0,2,0,3]
 };
