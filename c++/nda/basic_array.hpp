@@ -39,7 +39,6 @@
 #include "./mem/policies.hpp"
 #include "./stdutil/array.hpp"
 #include "./traits.hpp"
-#include "./macros.hpp"
 
 #include <algorithm>
 #include <array>
@@ -141,6 +140,8 @@ namespace nda {
     static constexpr int rank = Rank;
 
     static constexpr bool is_aligned = storage_t::is_aligned;
+
+    static constexpr bool is_padded = NDA_PADDING;
 
     static constexpr size_t padding = (is_aligned and is_padded) ? mem::type_alignment_info<ValueType>::required_padding : 0;
 
