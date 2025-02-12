@@ -94,7 +94,8 @@ namespace nda {
     /// Tuple containing the nda::Array arguments.
     std::tuple<const As...> a;
 
-    static constexpr bool has_load = HasLoad<F> && (std::remove_cvref_t<As>::has_load && ...);
+    template<typename T>
+    static constexpr bool has_load = HasLoad<F> && (std::remove_cvref_t<As>::template has_load<T> && ...);
 
     private:
     // Implementation of the function call operator.

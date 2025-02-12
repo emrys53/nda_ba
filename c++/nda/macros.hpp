@@ -40,6 +40,12 @@
 
 #define FORCEINLINE __inline__ __attribute__((always_inline))
 
+// ---------------- Padding ----------------
+#ifndef NDA_PADDING
+  #define NDA_PADDING 1 // In default we set padding to true.
+#endif
+
+
 // ---------------- Debugging ----------------
 
 #ifdef NDEBUG
@@ -92,5 +98,9 @@
   }
 
 #endif // NDEBUG
+
+namespace nda {
+  static constexpr bool is_padded = NDA_PADDING;
+}
 
 #endif // _CCQ_MACROS_GUARD_H

@@ -39,6 +39,7 @@
 #include "./mem/policies.hpp"
 #include "./stdutil/array.hpp"
 #include "./traits.hpp"
+#include "./macros.hpp"
 
 #include <algorithm>
 #include <array>
@@ -141,7 +142,11 @@ namespace nda {
 
     static constexpr bool is_aligned = storage_t::is_aligned;
 
-    static constexpr size_t padding = is_aligned ? mem::type_alignment_info<ValueType>::required_padding : 0;
+    static constexpr size_t padding = (is_aligned and is_padded) ? mem::type_alignment_info<ValueType>::required_padding : 0;
+
+    // TODO: Right now for loading operations we require exact same values. Can be improved later on.
+    template <typename T>
+    static constexpr bool has_load = is_aligned and Vectorizable<ValueType> and std::is_same_v<T, ValueType>;
 
     // Compile-time check.
     static_assert(has_contiguous(layout_t::layout_prop), "Error in nda::basic_array: Memory layout has to be contiguous");
@@ -179,8 +184,6 @@ namespace nda {
      * @return An nda::basic_array_view of the current array.
      */
     auto as_array_view() { return basic_array_view<ValueType, Rank, LayoutPolicy, 'A', AccessorPolicy, OwningPolicy>{*this}; };
-
-    static constexpr bool has_load = is_aligned and Vectorizable<ValueType>;
 
     /**
      * @brief Convert the current array to a view with an 'A' (array) algebra.
