@@ -14,7 +14,7 @@ namespace nda::simd {
 #ifdef __SSE3__
     return simd_i4(_mm_abs_epi32(x));
 #else
-    simd_i4 sign = _mm_srai_epi32(x, 31);
+    simd_i4 sign( _mm_srai_epi32(x, 31));
     return simd_i4(_mm_sub_epi32(_mm_xor_si128(x, sign), sign));
 #endif
   }

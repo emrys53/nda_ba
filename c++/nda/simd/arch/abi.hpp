@@ -1,6 +1,6 @@
 #pragma once
 namespace nda {
-  enum class  abi_tag { Default, SSE, AVX, AVX512, NEON };
+  enum class  abi_tag { Default, SSE, AVX, AVX512};
   namespace abi {
     // template <typename T>
     // static constexpr abi_tag get_native_abi_tag() {
@@ -16,9 +16,6 @@ namespace nda {
 #ifdef __SSE2__
       return abi_tag::SSE;
 #else
-#ifdef __NEON__
-      // return abi_tag::NEON;
-#endif
 #endif
 #endif
 #endif
@@ -46,9 +43,6 @@ namespace nda {
       } else if constexpr (is_abi(abi, abi_tag::AVX512)) {
         return 64 / sizeof(T);
       }
-      // else if constexpr (is_abi(abi, abi_tag::NEON)) {
-      //   return 16 / sizeof(T);
-      // }
       return 1;
     }
 

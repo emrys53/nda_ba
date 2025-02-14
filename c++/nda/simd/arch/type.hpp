@@ -12,8 +12,4 @@
 #include "SSE/type.hpp"
 #endif
 #include "Default/type.hpp"
-#ifdef __NEON__
-#include "NEON/type.hpp"
-#endif
-
 

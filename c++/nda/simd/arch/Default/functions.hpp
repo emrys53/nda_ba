@@ -1,9 +1,6 @@
 #pragma once
 #include "./type.hpp"
-#include "../macros.hpp"
 #include "../functions_forward.hpp"
-#include "../../../macros.hpp"
-#include "immintrin.h"
 
 #include <cstdlib>
 #include <complex>
