@@ -9,7 +9,7 @@
 namespace nda {
 
   template <typename T>
-    requires(std::same_as<T, int32_t> or std::same_as<T, int64_t> or std::same_as<T, float> or std::same_as<T, double>)
+    requires(std::same_as<T, int32_t> or std::same_as<T, int64_t> or std::same_as<T, long long> or std::same_as<T, float> or std::same_as<T, double>)
   class simd_type<T, 1, abi_tag::Default> {
     public:
     using intrinsic_t = T;

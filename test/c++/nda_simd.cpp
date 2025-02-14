@@ -417,6 +417,44 @@ void simd_check_nan_inf() {
   }
 }
 
+template <typename T, size_t Width, abi_tag ABI>
+void simd_function_abs() {
+  for (int i = 0; i < 1000; ++i) {
+    simd_type<T, Width, ABI> x;
+    alignas(x.alignment()) std::array<T, Width> tmp = generate_random_array<T, Width>();
+    x.load(tmp.data());
+    for (int j = 0; j < Width; ++j) { tmp[j] = std::abs(tmp[j]); }
+    check_simd_array_equal(simd::abs(x), tmp);
+  }
+}
+
+template <typename T, size_t Width, abi_tag ABI>
+void simd_function_conj() {
+  for (int i = 0; i < 1000; ++i) {
+    simd_type<T, Width, ABI> x;
+    alignas(x.alignment()) std::array<T, Width> tmp = generate_random_array<T, Width>();
+    x.load(tmp.data());
+    if constexpr (std::is_same_v<T, std::complex<float>> or std::is_same_v<T, std::complex<double>>) {
+      for (int j = 0; j < Width; ++j) {
+        tmp[j] = std::conj(tmp[j]);
+      }
+    }
+
+    check_simd_array_equal(simd::conj(x), tmp);
+  }
+}
+
+template <typename T, size_t Width, abi_tag ABI>
+void simd_function_sqrt() {
+  for (int i = 0; i < 1000; ++i) {
+    simd_type<T, Width, ABI> x;
+    alignas(x.alignment()) std::array<T, Width> tmp = generate_random_array<T, Width>();
+    x.load(tmp.data());
+    for (int j = 0; j < Width; ++j) { tmp[j] = std::sqrt(tmp[j]); }
+    check_simd_array_equal(simd::sqrt(x), tmp);
+  }
+}
+
 TEST(NDA, SimdDefaultConstructor) {
   // Default SIMD types
   simd_type_default_constructor<float, 1, abi_tag::Default>();
@@ -835,31 +873,147 @@ TEST(NDA, SimdNanInf) {
 #endif
 }
 
+TEST(NDA, SimdAbs) {
+  simd_function_abs<float, 1, abi_tag::Default>();
+  simd_function_abs<double, 1, abi_tag::Default>();
+  simd_function_abs<int32_t, 1, abi_tag::Default>();
+  simd_function_abs<int64_t, 1, abi_tag::Default>();
+  //simd_equality_operator<std::complex<float>, 1, abi_tag::Default>();
+  // simd_equality_operator<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+  simd_function_abs<float, 4, abi_tag::SSE>();
+  simd_function_abs<double, 2, abi_tag::SSE>();
+  simd_function_abs<int32_t, 4, abi_tag::SSE>();
+  simd_function_abs<int64_t, 2, abi_tag::SSE>();
+  // simd_equality_operator<std::complex<float>, 2, abi_tag::SSE>();
+  // simd_equality_operator<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  simd_function_abs<float, 8, abi_tag::AVX>();
+  simd_function_abs<double, 4, abi_tag::AVX>();
+  simd_function_abs<int32_t, 8, abi_tag::AVX>();
+  simd_function_abs<int64_t, 4, abi_tag::AVX>();
+  //simd_equality_operator<std::complex<float>, 4, abi_tag::AVX>();
+  // simd_equality_operator<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512__
+  simd_function_abs<float, 16, abi_tag::AVX512>();
+  simd_function_abs<double, 8, abi_tag::AVX512>();
+  simd_function_abs<int32_t, 16, abi_tag::AVX512>();
+  simd_function_abs<int64_t, 8, abi_tag::AVX512>();
+  // simd_function_abs<std::complex<float>, 8, abi_tag::AVX512>();
+  // simd_function_abs<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+}
+
+TEST(NDA, SimdConj) {
+  simd_function_conj<float, 1, abi_tag::Default>();
+  simd_function_conj<double, 1, abi_tag::Default>();
+  simd_function_conj<int32_t, 1, abi_tag::Default>();
+  simd_function_conj<int64_t, 1, abi_tag::Default>();
+  simd_function_conj<std::complex<float>, 1, abi_tag::Default>();
+  simd_function_conj<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+  simd_function_conj<float, 4, abi_tag::SSE>();
+  simd_function_conj<double, 2, abi_tag::SSE>();
+  simd_function_conj<int32_t, 4, abi_tag::SSE>();
+  simd_function_conj<int64_t, 2, abi_tag::SSE>();
+  simd_function_conj<std::complex<float>, 2, abi_tag::SSE>();
+  simd_function_conj<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  simd_function_conj<float, 8, abi_tag::AVX>();
+  simd_function_conj<double, 4, abi_tag::AVX>();
+  simd_function_conj<int32_t, 8, abi_tag::AVX>();
+  simd_function_conj<int64_t, 4, abi_tag::AVX>();
+  simd_function_conj<std::complex<float>, 4, abi_tag::AVX>();
+  simd_function_conj<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512__
+  simd_function_conj<float, 16, abi_tag::AVX512>();
+  simd_function_conj<double, 8, abi_tag::AVX512>();
+  simd_function_conj<int32_t, 16, abi_tag::AVX512>();
+  simd_function_conj<int64_t, 8, abi_tag::AVX512>();
+  simd_function_conj<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_function_conj<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+}
+
+TEST(NDA, SimdSqrt) {
+  simd_function_sqrt<float, 1, abi_tag::Default>();
+  simd_function_sqrt<double, 1, abi_tag::Default>();
+ // simd_function_sqrt<int32_t, 1, abi_tag::Default>();
+ // simd_function_sqrt<int64_t, 1, abi_tag::Default>();
+ // simd_function_sqrt<std::complex<float>, 1, abi_tag::Default>();
+  //simd_function_sqrt<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+  simd_function_sqrt<float, 4, abi_tag::SSE>();
+  simd_function_sqrt<double, 2, abi_tag::SSE>();
+  //simd_function_sqrt<int32_t, 4, abi_tag::SSE>();
+  //simd_function_sqrt<int64_t, 2, abi_tag::SSE>();
+  //simd_function_sqrt<std::complex<float>, 2, abi_tag::SSE>();
+  //simd_function_sqrt<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  simd_function_sqrt<float, 8, abi_tag::AVX>();
+  simd_function_sqrt<double, 4, abi_tag::AVX>();
+  //simd_function_sqrt<int32_t, 8, abi_tag::AVX>();
+  //simd_function_sqrt<int64_t, 4, abi_tag::AVX>();
+  //simd_function_sqrt<std::complex<float>, 4, abi_tag::AVX>();
+  //simd_function_sqrt<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512__
+  simd_function_sqrt<float, 16, abi_tag::AVX512>();
+  simd_function_sqrt<double, 8, abi_tag::AVX512>();
+  //simd_function_sqrt<int32_t, 16, abi_tag::AVX512>();
+  //simd_function_sqrt<int64_t, 8, abi_tag::AVX512>();
+  //simd_function_sqrt<std::complex<float>, 8, abi_tag::AVX512>();
+  //simd_function_sqrt<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+}
+
 TEST(NDA, OurSIMD) {
-  class add {
-    public:
-    float operator()(float a, float b) const { return a + b; }
+  static_assert(std::same_as<std::complex<float>, simd_cf1::intrinsic_t>);
+  static_assert(std::same_as<float, simd_cf1::scalar_t>);
+  simd_cf2 qq{1,2,3,4};
+  auto tmp = simd::conj(qq);
+  alignas(64) std::array<std::complex<float>, 2> q{};
+  tmp.store(q.data());
+  std::cout << q[0] << " " << q[1] << std::endl;
 
-    native_simd<float> load(native_simd<float> a, native_simd<float> b) const { return a + b; }
-  };
-  const long size1 = 11;
-  const long size2 = 22;
-  float k          = 1;
-  array_aligned<float, 2> s({size1, size2});
-  array_aligned<float, 2> x({size1, size2});
-  for (int i = 0; i < size1; ++i) {
-    for (int j = 0; j < size2; ++j) { s(i, j) = k++; }
-  }
-  for (int i = 0; i < size1; ++i) {
-    for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
-  }
-  //TODO: this doesnt work check.
-  auto test                 = nda::map([](float x, float y) { return x + y; })(s, x);
-  auto test2                = nda::map(add{})(test, test);
-  array_aligned<float, 2> y = test2;
-
-  for (int i = 0; i < size1; ++i) {
-    for (int j = 0; j < size2; ++j) { std::cout << y(i, j) << " "; }
-    std::cout << std::endl;
-  }
+  // class add {
+  //   public:
+  //   float operator()(float a, float b) const { return a + b; }
+  //
+  //   native_simd<float> load(native_simd<float> a, native_simd<float> b) const { return a + b; }
+  // };
+  // const long size1 = 11;
+  // const long size2 = 22;
+  // float k          = 1;
+  // array_aligned<float, 2> s({size1, size2});
+  // array_aligned<float, 2> x({size1, size2});
+  // for (int i = 0; i < size1; ++i) {
+  //   for (int j = 0; j < size2; ++j) { s(i, j) = k++; }
+  // }
+  // for (int i = 0; i < size1; ++i) {
+  //   for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
+  // }
+  // //TODO: this doesnt work check.
+  // auto test                 = nda::map([](float x, float y) { return x + y; })(s, x);
+  // auto test2                = nda::map(add{})(test, test);
+  // array_aligned<float, 2> y = test2;
+  //
+  // for (int i = 0; i < size1; ++i) {
+  //   for (int j = 0; j < size2; ++j) { std::cout << y(i, j) << " "; }
+  //   std::cout << std::endl;
+  // }
 }

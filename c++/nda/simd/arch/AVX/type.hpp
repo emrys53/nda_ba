@@ -273,22 +273,22 @@ namespace nda {
     public:
     explicit simd_type(intrinsic_t v) : value(v) {}
 
-    FORCEINLINE static constexpr size_t size() { return 8UL; };
-    FORCEINLINE static constexpr size_t alignment() { return size() * sizeof(value_t); };
+    static constexpr size_t size() { return 8UL; };
+    static constexpr size_t alignment() { return size() * sizeof(value_t); };
 
-    FORCEINLINE simd_type(const simd_type &other)            = default;
-    FORCEINLINE simd_type &operator=(const simd_type &other) = default;
-    FORCEINLINE simd_type(simd_type &&other)                 = default;
-    FORCEINLINE simd_type &operator=(simd_type &&other)      = default;
+    simd_type(const simd_type &other)            = default;
+    simd_type &operator=(const simd_type &other) = default;
+    simd_type(simd_type &&other)                 = default;
+    simd_type &operator=(simd_type &&other)      = default;
 
-    FORCEINLINE void load(const value_t *from) { value = _mm256_load_ps(from); }
-    FORCEINLINE void load_unaligned(const value_t *from) { value = _mm256_loadu_ps(from); }
-    FORCEINLINE void store(value_t *to) const { _mm256_store_ps(to, value); }
-    FORCEINLINE void store_unaligned(value_t *to) const { _mm256_storeu_ps(to, value); }
+    void load(const value_t *from) { value = _mm256_load_ps(from); }
+    void load_unaligned(const value_t *from) { value = _mm256_loadu_ps(from); }
+    void store(value_t *to) const { _mm256_store_ps(to, value); }
+    void store_unaligned(value_t *to) const { _mm256_storeu_ps(to, value); }
 
-    FORCEINLINE simd_type() : value(_mm256_setzero_ps()) {}
+    simd_type() : value(_mm256_setzero_ps()) {}
 
-    FORCEINLINE simd_type(const value_t v) : value(_mm256_set1_ps(v)) {}
+    simd_type(const value_t v) : value(_mm256_set1_ps(v)) {}
 
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
@@ -300,42 +300,42 @@ namespace nda {
       load_unaligned(l.begin());
     }
 
-    FORCEINLINE explicit simd_type(const value_t *v) { load(v); }
+    explicit simd_type(const value_t *v) { load(v); }
 
-    FORCEINLINE simd_type operator+(const simd_type &other) const { return simd_type{_mm256_add_ps(value, other.value)}; }
+    simd_type operator+(const simd_type &other) const { return simd_type{_mm256_add_ps(value, other.value)}; }
 
-    FORCEINLINE simd_type operator-(const simd_type &other) const { return simd_type{_mm256_sub_ps(value, other.value)}; }
+    simd_type operator-(const simd_type &other) const { return simd_type{_mm256_sub_ps(value, other.value)}; }
 
-    FORCEINLINE simd_type operator*(const simd_type &other) const { return simd_type{_mm256_mul_ps(value, other.value)}; }
+    simd_type operator*(const simd_type &other) const { return simd_type{_mm256_mul_ps(value, other.value)}; }
 
-    FORCEINLINE simd_type operator/(const simd_type &other) const { return simd_type{_mm256_div_ps(value, other.value)}; }
+    simd_type operator/(const simd_type &other) const { return simd_type{_mm256_div_ps(value, other.value)}; }
 
-    FORCEINLINE simd_type &operator+=(const simd_type &other) {
+    simd_type &operator+=(const simd_type &other) {
       value = (*this + other).value;
       return *this;
     }
 
-    FORCEINLINE simd_type &operator-=(const simd_type &other) {
+    simd_type &operator-=(const simd_type &other) {
       value = (*this - other).value;
       return *this;
     }
 
-    FORCEINLINE simd_type &operator*=(const simd_type &other) {
+    simd_type &operator*=(const simd_type &other) {
       value = (*this * other).value;
       return *this;
     }
 
-    FORCEINLINE simd_type &operator/=(const simd_type &other) {
+    simd_type &operator/=(const simd_type &other) {
       value = (*this / other).value;
       return *this;
     }
 
-    FORCEINLINE bool operator==(const simd_type &other) const {
+    bool operator==(const simd_type &other) const {
       const intrinsic_t cmp = _mm256_cmp_ps(value, other.value, 0x00);
       return _mm256_movemask_ps(cmp) == 0xFF;
     }
 
-    FORCEINLINE bool operator!=(const simd_type &other) const { return not(*this == other); }
+    bool operator!=(const simd_type &other) const { return not(*this == other); }
 
     operator intrinsic_t() const { return value; }
   };
