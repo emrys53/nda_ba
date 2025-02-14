@@ -122,7 +122,7 @@ $(function(){initNavTree('_default_2type_8hpp_source.html',''); initResizable(tr
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span>nda {</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keyword">requires</span>(std::same_as&lt;T, int32_t&gt; or std::same_as&lt;T, int64_t&gt; or std::same_as&lt;T, float&gt; or std::same_as&lt;T, double&gt;)</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keyword">requires</span>(std::same_as&lt;T, int32_t&gt; or std::same_as&lt;T, int64_t&gt; or std::same_as&lt;T, long long&gt; or std::same_as&lt;T, float&gt; or std::same_as&lt;T, double&gt;)</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keyword">class</span> simd_type&lt;T, 1, abi_tag::Default&gt; {</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keyword">using </span>intrinsic_t = T;</div>

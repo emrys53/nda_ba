@@ -386,22 +386,22 @@ $(function(){initNavTree('_a_v_x_2type_8hpp_source.html',''); initResizable(true
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    <span class="keyword">explicit</span> simd_type(intrinsic_t v) : value(v) {}</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    FORCEINLINE <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> size() { <span class="keywordflow">return</span> 8UL; };</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    FORCEINLINE <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> alignment() { <span class="keywordflow">return</span> size() * <span class="keyword">sizeof</span>(value_t); };</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> size() { <span class="keywordflow">return</span> 8UL; };</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> alignment() { <span class="keywordflow">return</span> size() * <span class="keyword">sizeof</span>(value_t); };</div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    FORCEINLINE simd_type(<span class="keyword">const</span> simd_type &amp;other)            = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    FORCEINLINE simd_type &amp;operator=(<span class="keyword">const</span> simd_type &amp;other) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    FORCEINLINE simd_type(simd_type &amp;&amp;other)                 = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    FORCEINLINE simd_type &amp;operator=(simd_type &amp;&amp;other)      = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    simd_type(<span class="keyword">const</span> simd_type &amp;other)            = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    simd_type &amp;operator=(<span class="keyword">const</span> simd_type &amp;other) = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    simd_type(simd_type &amp;&amp;other)                 = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    simd_type &amp;operator=(simd_type &amp;&amp;other)      = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    FORCEINLINE <span class="keywordtype">void</span> load(<span class="keyword">const</span> value_t *from) { value = _mm256_load_ps(from); }</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    FORCEINLINE <span class="keywordtype">void</span> load_unaligned(<span class="keyword">const</span> value_t *from) { value = _mm256_loadu_ps(from); }</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    FORCEINLINE <span class="keywordtype">void</span> store(value_t *to)<span class="keyword"> const </span>{ _mm256_store_ps(to, value); }</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    FORCEINLINE <span class="keywordtype">void</span> store_unaligned(value_t *to)<span class="keyword"> const </span>{ _mm256_storeu_ps(to, value); }</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <span class="keywordtype">void</span> load(<span class="keyword">const</span> value_t *from) { value = _mm256_load_ps(from); }</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    <span class="keywordtype">void</span> load_unaligned(<span class="keyword">const</span> value_t *from) { value = _mm256_loadu_ps(from); }</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    <span class="keywordtype">void</span> store(value_t *to)<span class="keyword"> const </span>{ _mm256_store_ps(to, value); }</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <span class="keywordtype">void</span> store_unaligned(value_t *to)<span class="keyword"> const </span>{ _mm256_storeu_ps(to, value); }</div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    FORCEINLINE simd_type() : value(_mm256_setzero_ps()) {}</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    simd_type() : value(_mm256_setzero_ps()) {}</div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span> </div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    FORCEINLINE simd_type(<span class="keyword">const</span> value_t v) : value(_mm256_set1_ps(v)) {}</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    simd_type(<span class="keyword">const</span> value_t v) : value(_mm256_set1_ps(v)) {}</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    simd_type(std::initializer_list&lt;value_t&gt; l) {</div>
 <div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="preprocessor">#ifdef NDA_ENFORCE_BOUNDCHECK</span></div>
@@ -413,42 +413,42 @@ $(function(){initNavTree('_a_v_x_2type_8hpp_source.html',''); initResizable(true
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>      load_unaligned(l.begin());</div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    }</div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    FORCEINLINE <span class="keyword">explicit</span> simd_type(<span class="keyword">const</span> value_t *v) { load(v); }</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    <span class="keyword">explicit</span> simd_type(<span class="keyword">const</span> value_t *v) { load(v); }</div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    FORCEINLINE simd_type <a class="code hl_function" href="group__av__ops.html#ga0e020426887be8ac9d2a18b96acb2d06">operator+</a>(<span class="keyword">const</span> simd_type &amp;other)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> simd_type{_mm256_add_ps(value, other.value)}; }</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    simd_type <a class="code hl_function" href="group__av__ops.html#ga0e020426887be8ac9d2a18b96acb2d06">operator+</a>(<span class="keyword">const</span> simd_type &amp;other)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> simd_type{_mm256_add_ps(value, other.value)}; }</div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    FORCEINLINE simd_type <a class="code hl_function" href="group__av__ops.html#gad3954fd687dd63043ec6790c2f5856e7">operator-</a>(<span class="keyword">const</span> simd_type &amp;other)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> simd_type{_mm256_sub_ps(value, other.value)}; }</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    simd_type <a class="code hl_function" href="group__av__ops.html#gad3954fd687dd63043ec6790c2f5856e7">operator-</a>(<span class="keyword">const</span> simd_type &amp;other)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> simd_type{_mm256_sub_ps(value, other.value)}; }</div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    FORCEINLINE simd_type <a class="code hl_function" href="group__av__ops.html#ga99b0f013ecf0a681b982e18407b2605b">operator*</a>(<span class="keyword">const</span> simd_type &amp;other)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> simd_type{_mm256_mul_ps(value, other.value)}; }</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    simd_type <a class="code hl_function" href="group__av__ops.html#ga99b0f013ecf0a681b982e18407b2605b">operator*</a>(<span class="keyword">const</span> simd_type &amp;other)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> simd_type{_mm256_mul_ps(value, other.value)}; }</div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span> </div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    FORCEINLINE simd_type <a class="code hl_function" href="group__av__ops.html#ga7bfec8c2f194bb6f550b901030ca79a0">operator/</a>(<span class="keyword">const</span> simd_type &amp;other)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> simd_type{_mm256_div_ps(value, other.value)}; }</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    simd_type <a class="code hl_function" href="group__av__ops.html#ga7bfec8c2f194bb6f550b901030ca79a0">operator/</a>(<span class="keyword">const</span> simd_type &amp;other)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> simd_type{_mm256_div_ps(value, other.value)}; }</div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    FORCEINLINE simd_type &amp;operator+=(<span class="keyword">const</span> simd_type &amp;other) {</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    simd_type &amp;operator+=(<span class="keyword">const</span> simd_type &amp;other) {</div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>      value = (*<span class="keyword">this</span> + other).value;</div>
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>      <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    }</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>    FORCEINLINE simd_type &amp;operator-=(<span class="keyword">const</span> simd_type &amp;other) {</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>    simd_type &amp;operator-=(<span class="keyword">const</span> simd_type &amp;other) {</div>
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>      value = (*<span class="keyword">this</span> - other).value;</div>
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>      <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    }</div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    FORCEINLINE simd_type &amp;operator*=(<span class="keyword">const</span> simd_type &amp;other) {</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    simd_type &amp;operator*=(<span class="keyword">const</span> simd_type &amp;other) {</div>
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>      value = (*<span class="keyword">this</span> * other).value;</div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>      <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    }</div>
 <div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> </div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    FORCEINLINE simd_type &amp;operator/=(<span class="keyword">const</span> simd_type &amp;other) {</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    simd_type &amp;operator/=(<span class="keyword">const</span> simd_type &amp;other) {</div>
 <div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>      value = (*<span class="keyword">this</span> / other).value;</div>
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>      <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    }</div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span> </div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>    FORCEINLINE <span class="keywordtype">bool</span> <a class="code hl_function" href="group__av__utils.html#gadbcb9ec37c03e3b29a13dccde60032d6">operator==</a>(<span class="keyword">const</span> simd_type &amp;other)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="group__av__utils.html#gadbcb9ec37c03e3b29a13dccde60032d6">operator==</a>(<span class="keyword">const</span> simd_type &amp;other)<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>      <span class="keyword">const</span> intrinsic_t cmp = _mm256_cmp_ps(value, other.value, 0x00);</div>
 <div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>      <span class="keywordflow">return</span> _mm256_movemask_ps(cmp) == 0xFF;</div>
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    }</div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    FORCEINLINE <span class="keywordtype">bool</span> operator!=(<span class="keyword">const</span> simd_type &amp;other)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> not(*<span class="keyword">this</span> == other); }</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    <span class="keywordtype">bool</span> operator!=(<span class="keyword">const</span> simd_type &amp;other)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> not(*<span class="keyword">this</span> == other); }</div>
 <div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
 <div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    <span class="keyword">operator</span> intrinsic_t()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> value; }</div>
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  };</div>
