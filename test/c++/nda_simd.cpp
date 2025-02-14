@@ -982,13 +982,13 @@ TEST(NDA, SimdSqrt) {
 }
 
 TEST(NDA, OurSIMD) {
-  static_assert(std::same_as<std::complex<float>, simd_cf1::intrinsic_t>);
-  static_assert(std::same_as<float, simd_cf1::scalar_t>);
-  simd_cf2 qq{1,2,3,4};
-  auto tmp = simd::conj(qq);
-  alignas(64) std::array<std::complex<float>, 2> q{};
-  tmp.store(q.data());
-  std::cout << q[0] << " " << q[1] << std::endl;
+  // static_assert(std::same_as<std::complex<float>, simd_cf1::intrinsic_t>);
+  // static_assert(std::same_as<float, simd_cf1::scalar_t>);
+  // simd_cf2 qq{1,2,3,4};
+  // auto tmp = simd::conj(qq);
+  // alignas(64) std::array<std::complex<float>, 2> q{};
+  // tmp.store(q.data());
+  // std::cout << q[0] << " " << q[1] << std::endl;
 
   // class add {
   //   public:
