@@ -78,5 +78,69 @@ namespace nda::simd {
     return simd_d4(_mm256_sqrt_pd(x));
   }
 
+  // Min functions
+  template <>
+  inline simd_i8 min(const simd_i8 &x, const simd_i8 &y) {
+#ifdef __AVX2__
+    return simd_i8{_mm256_min_epi32(x, y)};
+#else
+    simd_i4 lo_x{_mm256_extractf128_si256(x, 0)};
+    simd_i4 lo_y{_mm256_extractf128_si256(y, 0)};
+    simd_i4 hi_x{_mm256_extractf128_si256(x, 1)};
+    simd_i4 hi_y{_mm256_extractf128_si256(y, 1)};
+    simd_i4 lo_min = min(lo_x, lo_y);
+    simd_i4 hi_min = min(hi_x, hi_y);
+    return simd_i8{_mm256_insertf128_si256(_mm256_castsi128_si256(lo_min), hi_min, 1)};
+#endif
+  }
+
+  template <>
+  inline simd_l4 min(const simd_l4 &x, const simd_l4 &y) {
+    __m256i mask = _mm256_cmpgt_epi64(x, y);
+    return simd_l4{_mm256_or_si256(_mm256_andnot_si256(mask, x), _mm256_and_si256(mask, y))};
+  }
+
+  template <>
+  inline simd_f8 min(const simd_f8 &x, const simd_f8 &y) {
+    return simd_f8(_mm256_min_ps(y, x));
+  }
+
+  template <>
+  inline simd_d4 min(const simd_d4 &x, const simd_d4 &y) {
+    return simd_d4{_mm256_min_pd(y, x)};
+  }
+
+  //Max functions
+  template <>
+  inline simd_i8 max(const simd_i8 &x, const simd_i8 &y) {
+#ifdef __AVX2__
+    return simd_i8{_mm256_max_epi32(x, y)};
+#else
+    simd_i4 lo_x{_mm256_extractf128_si256(x, 0)};
+    simd_i4 lo_y{_mm256_extractf128_si256(y, 0)};
+    simd_i4 hi_x{_mm256_extractf128_si256(x, 1)};
+    simd_i4 hi_y{_mm256_extractf128_si256(y, 1)};
+    simd_i4 lo_max = max(lo_x, lo_y);
+    simd_i4 hi_max = max(hi_x, hi_y);
+    return simd_i8{_mm256_insertf128_si256(_mm256_castsi128_si256(lo_max), hi_max, 1)};
+#endif
+  }
+
+  template <>
+  inline simd_l4 max(const simd_l4 &x, const simd_l4 &y) {
+    __m256i mask = _mm256_cmpgt_epi64(x, y);
+    return simd_l4{_mm256_or_si256(_mm256_and_si256(mask, x), _mm256_andnot_si256(mask, y))};
+  }
+
+  template <>
+  inline simd_f8 max(const simd_f8 &x, const simd_f8 &y) {
+    return simd_f8{_mm256_max_ps(y, x)};
+  }
+
+  template <>
+  inline simd_d4 max(const simd_d4 &x, const simd_d4 &y) {
+    return simd_d4{_mm256_max_pd(y, x)};
+  }
+
 } // namespace nda::simd
 #endif

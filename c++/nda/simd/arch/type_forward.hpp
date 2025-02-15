@@ -30,7 +30,7 @@ namespace nda {
   using simd_cf4 = simd_type<std::complex<float>, 4, abi_tag::AVX>;
   using simd_cd2 = simd_type<std::complex<double>, 2, abi_tag::AVX>;
 #endif
-#ifdef __AVX512__
+#ifdef __AVX512F__
   using simd_f16 = simd_type<float, 16, abi_tag::AVX512>;
   using simd_d8  = simd_type<double, 8, abi_tag::AVX512>;
   using simd_i16 = simd_type<int32_t, 16, abi_tag::AVX512>;

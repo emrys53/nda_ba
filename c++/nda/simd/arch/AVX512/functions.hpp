@@ -81,5 +81,47 @@ namespace nda::simd {
     return simd_d8(_mm512_sqrt_pd(x));
   }
 
+  // Min functions
+  template <>
+  inline simd_i16 min(const simd_i16 &x, const simd_i16 &y) {
+    return simd_i16(_mm512_min_epi32(x,y));
+  }
+
+  template <>
+  inline simd_l8 min(const simd_l8 &x, const simd_l8 &y) {
+    return simd_l8(_mm512_min_epi64(x,y));
+  }
+
+  template <>
+  inline simd_f16 min(const simd_f16 &x, const simd_f16 &y) {
+    return simd_f16(_mm512_min_ps(y,x));
+  }
+
+  template <>
+  inline simd_d8 min(const simd_d8 &x, const simd_d8 &y) {
+    return simd_d8(_mm512_min_pd(y,x));
+  }
+
+  //Max functions
+  template <>
+  inline simd_i16 max(const simd_i16 &x, const simd_i16 &y) {
+    return simd_i16(_mm512_max_epi32(x,y));
+  }
+
+  template <>
+  inline simd_l8 max(const simd_l8 &x, const simd_l8 &y) {
+    return simd_l8(_mm512_max_epi64(x,y));
+  }
+
+  template <>
+  inline simd_f16 max(const simd_f16 &x, const simd_f16 &y) {
+    return simd_f16(_mm512_max_ps(y,x));
+  }
+
+  template <>
+  inline simd_d8 max(const simd_d8 &x, const simd_d8 &y) {
+    return simd_d8(_mm512_max_pd(y,x));
+  }
+
 } // namespace nda::simd
 #endif

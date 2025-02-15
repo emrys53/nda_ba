@@ -11,15 +11,6 @@ namespace nda::simd {
   T conj(const T &);
 
   template<typename T>
-  T logic_and(const T&, const T&);
-
-  template<typename T>
-  T logic_xor(const T&, const T&);
-
-  template<typename T>
-  T logic_or(const T&, const T&);
-
-  template<typename T>
   T min(const T&, const T&);
 
   template<typename T>

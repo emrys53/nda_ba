@@ -82,7 +82,7 @@ namespace nda {
     }
 
     simd_type operator/(const simd_type &other) const {
-#ifdef __AVX512__
+#ifdef __AVX512F__
       return simd_type{_mm512_cvttpd_epi32(_mm512_div_pd(_mm512_cvtepi32_pd(value), _mm512_cvtepi32_pd(other.value)))};
 #else
       const simd_i4 lo = simd_i4{_mm256_extractf128_si256(value, 0)} / simd_i4{_mm256_extractf128_si256(other.value, 0)};

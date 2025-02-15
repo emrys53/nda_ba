@@ -71,7 +71,6 @@ namespace nda::simd {
   }
 
   //Sqrt functions
-
   template <>
   inline simd_f4 sqrt(const simd_f4 &x) {
     return simd_f4(_mm_sqrt_ps(x));
@@ -80,6 +79,70 @@ namespace nda::simd {
   template <>
   inline simd_d2 sqrt(const simd_d2 &x) {
     return simd_d2(_mm_sqrt_pd(x));
+  }
+
+  // Min functions
+  template <>
+  inline simd_i4 min(const simd_i4 &x, const simd_i4 &y) {
+#ifdef __SSE4_1__
+    return simd_i4{_mm_min_epi32(x, y)};
+#else
+    simd_i4 mask{_mm_cmplt_epi32(x, y)};
+    return simd_i4{_mm_or_si128(_mm_and_si128(mask, x), _mm_andnot_si128(mask, y))};
+#endif
+  }
+
+  template <>
+  inline simd_l2 min(const simd_l2 &x, const simd_l2 &y) {
+    //TODO: Do Vectorized version in the future.
+    alignas(16) std::array<int64_t, 2> a, b, c;
+    x.store(a.data());
+    y.store(b.data());
+    c[0] = std::min(a[0], b[0]);
+    c[1] = std::min(a[1], b[1]);
+    return simd_l2{c.data()};
+  }
+
+  template <>
+  inline simd_f4 min(const simd_f4 &x, const simd_f4 &y) {
+    return simd_f4{_mm_min_ps(y, x)};
+  }
+
+  template <>
+  inline simd_d2 min(const simd_d2 &x, const simd_d2 &y) {
+    return simd_d2{_mm_min_pd(y, x)};
+  }
+
+  //Max functions
+  template <>
+  inline simd_i4 max(const simd_i4 &x, const simd_i4 &y) {
+#ifdef __SSE4_1__
+    return simd_i4{_mm_max_epi32(x, y)};
+#else
+    simd_i4 mask{_mm_cmpgt_epi32(x, y)};
+    return simd_i4{_mm_or_si128(_mm_and_si128(mask, x), _mm_andnot_si128(mask, y))};
+#endif
+  }
+
+  template <>
+  inline simd_l2 max(const simd_l2 &x, const simd_l2 &y) {
+    //TODO: Do Vectorized version in the future.
+    alignas(16) std::array<int64_t, 2> a, b, c;
+    x.store(a.data());
+    y.store(b.data());
+    c[0] = std::max(a[0], b[0]);
+    c[1] = std::max(a[1], b[1]);
+    return simd_l2{c.data()};
+  }
+
+  template <>
+  inline simd_f4 max(const simd_f4 &x, const simd_f4 &y) {
+    return simd_f4{_mm_max_ps(y, x)};
+  }
+
+  template <>
+  inline simd_d2 max(const simd_d2 &x, const simd_d2 &y) {
+    return simd_d2{_mm_max_pd(y, x)};
   }
 
 } // namespace nda::simd

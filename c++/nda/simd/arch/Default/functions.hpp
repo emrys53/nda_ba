@@ -70,4 +70,46 @@ namespace nda::simd {
     return simd_d1(std::sqrt(x));
   }
 
+  // Min functions
+  template <>
+  inline simd_i1 min(const simd_i1 &x, const simd_i1 &y) {
+    return simd_i1(std::min(x, y));
+  }
+
+  template <>
+  inline simd_l1 min(const simd_l1 &x, const simd_l1 &y) {
+    return simd_l1(std::min(x, y));
+  }
+
+  template <>
+  inline simd_f1 min(const simd_f1 &x, const simd_f1 &y) {
+    return simd_f1(std::min(x, y));
+  }
+
+  template <>
+  inline simd_d1 min(const simd_d1 &x, const simd_d1 &y) {
+    return simd_d1(std::min(x, y));
+  }
+
+  //Max functions
+  template <>
+  inline simd_i1 max(const simd_i1 &x, const simd_i1 &y) {
+    return simd_i1(std::max(x, y));
+  }
+
+  template <>
+  inline simd_l1 max(const simd_l1 &x, const simd_l1 &y) {
+    return simd_l1(std::max(x, y));
+  }
+
+  template <>
+  inline simd_f1 max(const simd_f1 &x, const simd_f1 &y) {
+    return simd_f1(std::max(x, y));
+  }
+
+  template <>
+  inline simd_d1 max(const simd_d1 &x, const simd_d1 &y) {
+    return simd_d1(std::max(x, y));
+  }
+
 } // namespace nda::simd
