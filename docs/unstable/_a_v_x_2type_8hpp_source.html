@@ -195,7 +195,7 @@ $(function(){initNavTree('_a_v_x_2type_8hpp_source.html',''); initResizable(true
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    }</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    simd_type <a class="code hl_function" href="group__av__ops.html#ga7bfec8c2f194bb6f550b901030ca79a0">operator/</a>(<span class="keyword">const</span> simd_type &amp;other)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">#ifdef __AVX512__</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">#ifdef __AVX512F__</span></div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      <span class="keywordflow">return</span> simd_type{_mm512_cvttpd_epi32(_mm512_div_pd(_mm512_cvtepi32_pd(value), _mm512_cvtepi32_pd(other.value)))};</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">#else</span></div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      <span class="keyword">const</span> simd_i4 lo = simd_i4{_mm256_extractf128_si256(value, 0)} / simd_i4{_mm256_extractf128_si256(other.value, 0)};</div>

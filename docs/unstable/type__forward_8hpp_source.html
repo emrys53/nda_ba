@@ -143,7 +143,7 @@ $(function(){initNavTree('type__forward_8hpp_source.html',''); initResizable(tru
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keyword">using </span>simd_cf4 = simd_type&lt;std::complex&lt;float&gt;, 4, abi_tag::AVX&gt;;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">using </span>simd_cd2 = simd_type&lt;std::complex&lt;double&gt;, 2, abi_tag::AVX&gt;;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#ifdef __AVX512__</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#ifdef __AVX512F__</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keyword">using </span>simd_f16 = simd_type&lt;float, 16, abi_tag::AVX512&gt;;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">using </span>simd_d8  = simd_type&lt;double, 8, abi_tag::AVX512&gt;;</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">using </span>simd_i16 = simd_type&lt;int32_t, 16, abi_tag::AVX512&gt;;</div>
