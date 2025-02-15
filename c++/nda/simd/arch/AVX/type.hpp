@@ -126,6 +126,44 @@ namespace nda {
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
 
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const {
+#ifdef __AVX2__
+      return simd_type{_mm256_xor_si256(value, other.value)};
+#else
+      return simd_type{_mm256_castps_si256(_mm256_xor_ps(_mm256_castsi256_ps(value), _mm256_castsi256_ps(other.value)))};
+#endif
+    }
+    simd_type operator&(const simd_type &other) const {
+#ifdef __AVX2__
+      return simd_type{_mm256_and_si256(value, other.value)};
+#else
+      return simd_type{_mm256_castps_si256(_mm256_and_ps(_mm256_castsi256_ps(value), _mm256_castsi256_ps(other.value)))};
+#endif
+    }
+    simd_type operator|(const simd_type &other) const {
+#ifdef __AVX2__
+      return simd_type{_mm256_or_si256(value, other.value)};
+#else
+      return simd_type{_mm256_castps_si256(_mm256_or_ps(_mm256_castsi256_ps(value), _mm256_castsi256_ps(other.value)))};
+#endif
+    }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
+
     operator intrinsic_t() const { return value; }
   };
 
@@ -258,6 +296,44 @@ namespace nda {
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
 
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const {
+#ifdef __AVX2__
+      return simd_type{_mm256_xor_si256(value, other.value)};
+#else
+      return simd_type{_mm256_castps_si256(_mm256_xor_ps(_mm256_castsi256_ps(value), _mm256_castsi256_ps(other.value)))};
+#endif
+    }
+    simd_type operator&(const simd_type &other) const {
+#ifdef __AVX2__
+      return simd_type{_mm256_and_si256(value, other.value)};
+#else
+      return simd_type{_mm256_castps_si256(_mm256_and_ps(_mm256_castsi256_ps(value), _mm256_castsi256_ps(other.value)))};
+#endif
+    }
+    simd_type operator|(const simd_type &other) const {
+#ifdef __AVX2__
+      return simd_type{_mm256_or_si256(value, other.value)};
+#else
+      return simd_type{_mm256_castps_si256(_mm256_or_ps(_mm256_castsi256_ps(value), _mm256_castsi256_ps(other.value)))};
+#endif
+    }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
+
     operator intrinsic_t() const { return value; }
   };
 
@@ -337,6 +413,26 @@ namespace nda {
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
 
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const { return simd_type{_mm256_xor_ps(value, other.value)}; }
+    simd_type operator&(const simd_type &other) const { return simd_type{_mm256_and_ps(value, other.value)}; }
+    simd_type operator|(const simd_type &other) const { return simd_type{_mm256_or_ps(value, other.value)}; }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
+
     operator intrinsic_t() const { return value; }
   };
 
@@ -415,6 +511,26 @@ namespace nda {
     }
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
+
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const { return simd_type{_mm256_xor_pd(value, other.value)}; }
+    simd_type operator&(const simd_type &other) const { return simd_type{_mm256_and_pd(value, other.value)}; }
+    simd_type operator|(const simd_type &other) const { return simd_type{_mm256_or_pd(value, other.value)}; }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
 
     operator intrinsic_t() const { return value; }
   };
@@ -543,6 +659,26 @@ namespace nda {
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
 
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const { return simd_type{_mm256_xor_ps(value, other.value)}; }
+    simd_type operator&(const simd_type &other) const { return simd_type{_mm256_and_ps(value, other.value)}; }
+    simd_type operator|(const simd_type &other) const { return simd_type{_mm256_or_ps(value, other.value)}; }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
+
     operator intrinsic_t() const { return value; }
   };
 
@@ -659,6 +795,26 @@ namespace nda {
     }
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
+
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const { return simd_type{_mm256_xor_pd(value, other.value)}; }
+    simd_type operator&(const simd_type &other) const { return simd_type{_mm256_and_pd(value, other.value)}; }
+    simd_type operator|(const simd_type &other) const { return simd_type{_mm256_or_pd(value, other.value)}; }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
 
     operator intrinsic_t() const { return value; }
   };

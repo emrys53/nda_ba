@@ -7,6 +7,7 @@
 #include <array>
 #include <complex>
 #include <algorithm>
+#include <bit>
 
 using namespace nda;
 
@@ -453,6 +454,58 @@ void simd_function_sqrt() {
   }
 }
 
+template <typename T, size_t Width, abi_tag ABI>
+void simd_bitwise_operations() {
+  simd_type<T, Width, ABI> first;
+  simd_type<T, Width, ABI> second;
+  alignas(first.alignment()) std::array<T, Width> first_array   = generate_random_array<T, Width>();
+  alignas(second.alignment()) std::array<T, Width> second_array = generate_random_array<T, Width>();
+  first.load(first_array.data());
+  second.load(second_array.data());
+  simd_type<T, Width, ABI> simd_and = first & second;
+  simd_type<T, Width, ABI> simd_or  = first | second;
+  simd_type<T, Width, ABI> simd_xor = first ^ second;
+  alignas(first.alignment()) std::array<T, Width> array_and, array_or, array_xor;
+  for (int i = 0; i < Width; ++i) {
+    if constexpr (std::is_same_v<T, std::complex<float>>) {
+      float and_temp_real = std::bit_cast<float>(std::bit_cast<int32_t>(first_array[i].real()) & std::bit_cast<int32_t>(second_array[i].real()));
+      float and_temp_imag = std::bit_cast<float>(std::bit_cast<int32_t>(first_array[i].imag()) & std::bit_cast<int32_t>(second_array[i].imag()));
+      float or_temp_real  = std::bit_cast<float>(std::bit_cast<int32_t>(first_array[i].real()) | std::bit_cast<int32_t>(second_array[i].real()));
+      float or_temp_imag  = std::bit_cast<float>(std::bit_cast<int32_t>(first_array[i].imag()) | std::bit_cast<int32_t>(second_array[i].imag()));
+      float xor_temp_real = std::bit_cast<float>(std::bit_cast<int32_t>(first_array[i].real()) ^ std::bit_cast<int32_t>(second_array[i].real()));
+      float xor_temp_imag = std::bit_cast<float>(std::bit_cast<int32_t>(first_array[i].imag()) ^ std::bit_cast<int32_t>(second_array[i].imag()));
+      array_and[i]        = std::complex<float>{and_temp_real, and_temp_imag};
+      array_or[i]         = std::complex<float>{or_temp_real, or_temp_imag};
+      array_xor[i]        = std::complex<float>{xor_temp_real, xor_temp_imag};
+
+    } else if constexpr (std::is_same_v<T, std::complex<double>>) {
+      double and_temp_real = std::bit_cast<double>(std::bit_cast<int64_t>(first_array[i].real()) & std::bit_cast<int64_t>(second_array[i].real()));
+      double and_temp_imag = std::bit_cast<double>(std::bit_cast<int64_t>(first_array[i].imag()) & std::bit_cast<int64_t>(second_array[i].imag()));
+      double or_temp_real  = std::bit_cast<double>(std::bit_cast<int64_t>(first_array[i].real()) | std::bit_cast<int64_t>(second_array[i].real()));
+      double or_temp_imag  = std::bit_cast<double>(std::bit_cast<int64_t>(first_array[i].imag()) | std::bit_cast<int64_t>(second_array[i].imag()));
+      double xor_temp_real = std::bit_cast<double>(std::bit_cast<int64_t>(first_array[i].real()) ^ std::bit_cast<int64_t>(second_array[i].real()));
+      double xor_temp_imag = std::bit_cast<double>(std::bit_cast<int64_t>(first_array[i].imag()) ^ std::bit_cast<int64_t>(second_array[i].imag()));
+      array_and[i]         = std::complex<double>{and_temp_real, and_temp_imag};
+      array_or[i]          = std::complex<double>{or_temp_real, or_temp_imag};
+      array_xor[i]         = std::complex<double>{xor_temp_real, xor_temp_imag};
+
+    } else {
+      if constexpr (sizeof(T) == 4) {
+        array_and[i] = std::bit_cast<T>(std::bit_cast<int32_t>(first_array[i]) & std::bit_cast<int32_t>(second_array[i]));
+        array_or[i]  = std::bit_cast<T>(std::bit_cast<int32_t>(first_array[i]) | std::bit_cast<int32_t>(second_array[i]));
+        array_xor[i] = std::bit_cast<T>(std::bit_cast<int32_t>(first_array[i]) ^ std::bit_cast<int32_t>(second_array[i]));
+      } else {
+        array_and[i] = std::bit_cast<T>(std::bit_cast<int64_t>(first_array[i]) & std::bit_cast<int64_t>(second_array[i]));
+        array_or[i]  = std::bit_cast<T>(std::bit_cast<int64_t>(first_array[i]) | std::bit_cast<int64_t>(second_array[i]));
+        array_xor[i] = std::bit_cast<T>(std::bit_cast<int64_t>(first_array[i]) ^ std::bit_cast<int64_t>(second_array[i]));
+      }
+    }
+  }
+  check_simd_array_equal(simd_and, array_and);
+  check_simd_array_equal(simd_or, array_or);
+  check_simd_array_equal(simd_xor, array_xor);
+}
+
 TEST(NDA, SimdDefaultConstructor) {
   // Default SIMD types
   simd_type_default_constructor<float, 1, abi_tag::Default>();
@@ -484,12 +537,12 @@ TEST(NDA, SimdDefaultConstructor) {
 
 #ifdef __AVX512__
   // AVX512 SIMD types
-  test_simd_type_constructor<float, 16, abi_tag::AVX512>();
-  test_simd_type_constructor<double, 8, abi_tag::AVX512>();
-  test_simd_type_constructor<int32_t, 16, abi_tag::AVX512>();
-  test_simd_type_constructor<int64_t, 8, abi_tag::AVX512>();
-  test_simd_type_constructor<std::complex<float>, 8, abi_tag::AVX512>();
-  test_simd_type_constructor<std::complex<double>, 4, abi_tag::AVX512>();
+  simd_type_default_constructor<float, 16, abi_tag::AVX512>();
+  simd_type_default_constructor<double, 8, abi_tag::AVX512>();
+  simd_type_default_constructor<int32_t, 16, abi_tag::AVX512>();
+  simd_type_default_constructor<int64_t, 8, abi_tag::AVX512>();
+  simd_type_default_constructor<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_type_default_constructor<std::complex<double>, 4, abi_tag::AVX512>();
 #endif
 }
 
@@ -979,6 +1032,47 @@ TEST(NDA, SimdSqrt) {
 #endif
 }
 
+TEST(NDA, SimdBitwiseOperations) {
+
+  // Default SIMD types
+  simd_bitwise_operations<float, 1, abi_tag::Default>();
+  simd_bitwise_operations<double, 1, abi_tag::Default>();
+  simd_bitwise_operations<int32_t, 1, abi_tag::Default>();
+  simd_bitwise_operations<int64_t, 1, abi_tag::Default>();
+  simd_bitwise_operations<std::complex<float>, 1, abi_tag::Default>();
+  simd_bitwise_operations<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+  // SSE SIMD types
+  simd_bitwise_operations<float, 4, abi_tag::SSE>();
+  simd_bitwise_operations<double, 2, abi_tag::SSE>();
+  simd_bitwise_operations<int32_t, 4, abi_tag::SSE>();
+  simd_bitwise_operations<int64_t, 2, abi_tag::SSE>();
+  simd_bitwise_operations<std::complex<float>, 2, abi_tag::SSE>();
+  simd_bitwise_operations<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  // AVX SIMD types
+  simd_bitwise_operations<float, 8, abi_tag::AVX>();
+  simd_bitwise_operations<double, 4, abi_tag::AVX>();
+  simd_bitwise_operations<int32_t, 8, abi_tag::AVX>();
+  simd_bitwise_operations<int64_t, 4, abi_tag::AVX>();
+  simd_bitwise_operations<std::complex<float>, 4, abi_tag::AVX>();
+  simd_bitwise_operations<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512__
+  // AVX512 SIMD types
+  simd_bitwise_operations<float, 16, abi_tag::AVX512>();
+  simd_bitwise_operations<double, 8, abi_tag::AVX512>();
+  simd_bitwise_operations<int32_t, 16, abi_tag::AVX512>();
+  simd_bitwise_operations<int64_t, 8, abi_tag::AVX512>();
+  simd_bitwise_operations<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_bitwise_operations<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+}
+
 TEST(NDA, OurSIMD) {
   class add {
     public:
@@ -1004,7 +1098,7 @@ TEST(NDA, OurSIMD) {
   std::cout << is_simd_enabled_v<float, decltype(test2)> << std::endl;
   std::cout << is_simd_enabled_v<float, decltype(test)> << std::endl;
   for (int i = 0; i < size1; ++i) {
-    for (int j = 0; j < size2; ++j) { std::cout << y(i, j) << " "; }
+    for (int j = 0; j < size2; ++j) { std::cout << s(i, j) << " "; }
     std::cout << std::endl;
   }
 }

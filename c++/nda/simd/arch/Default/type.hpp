@@ -1,10 +1,11 @@
 #pragma once
 #include "../abi.hpp"
+#include "../type_forward.hpp"
 
 #include <cstddef>
 #include <initializer_list>
 #include <concepts>
-#include "../type_forward.hpp"
+#include <bit>
 
 namespace nda {
 
@@ -79,6 +80,44 @@ namespace nda {
     bool operator==(const simd_type &other) const { return value == other.value; }
 
     bool operator!=(const simd_type &other) const { return not(*this == other); };
+
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const {
+      if constexpr (sizeof(T) == 4) {
+        return simd_type{std::bit_cast<T>(std::bit_cast<int32_t>(value) ^ std::bit_cast<int32_t>(other.value))};
+      } else {
+        return simd_type{std::bit_cast<T>(std::bit_cast<int64_t>(value) ^ std::bit_cast<int64_t>(other.value))};
+      }
+    }
+    simd_type operator&(const simd_type &other) const {
+      if constexpr (sizeof(T) == 4) {
+        return simd_type{std::bit_cast<T>(std::bit_cast<int32_t>(value) & std::bit_cast<int32_t>(other.value))};
+      } else {
+        return simd_type{std::bit_cast<T>(std::bit_cast<int64_t>(value) & std::bit_cast<int64_t>(other.value))};
+      }
+    }
+    simd_type operator|(const simd_type &other) const {
+      if constexpr (sizeof(T) == 4) {
+        return simd_type{std::bit_cast<T>(std::bit_cast<int32_t>(value) | std::bit_cast<int32_t>(other.value))};
+      } else {
+        return simd_type{std::bit_cast<T>(std::bit_cast<int64_t>(value) | std::bit_cast<int64_t>(other.value))};
+      }
+    }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
 
     operator intrinsic_t() const { return value; }
   };
@@ -180,6 +219,56 @@ namespace nda {
     bool operator==(const simd_type &other) const { return value == other.value; }
 
     bool operator!=(const simd_type &other) const { return not(*this == other); };
+
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const {
+      if constexpr (sizeof(scalar_t) == 4) {
+        T real = std::bit_cast<T>(std::bit_cast<int32_t>(value.real()) ^ std::bit_cast<int32_t>(other.value.real()));
+        T imag = std::bit_cast<T>(std::bit_cast<int32_t>(value.imag()) ^ std::bit_cast<int32_t>(other.value.imag()));
+        return simd_type{value_t{real, imag}};
+      } else {
+        T real = std::bit_cast<T>(std::bit_cast<int64_t>(value.real()) ^ std::bit_cast<int64_t>(other.value.real()));
+        T imag = std::bit_cast<T>(std::bit_cast<int64_t>(value.imag()) ^ std::bit_cast<int64_t>(other.value.imag()));
+        return simd_type{value_t{real, imag}};
+      }
+    }
+    simd_type operator&(const simd_type &other) const {
+      if constexpr (sizeof(scalar_t) == 4) {
+        T real = std::bit_cast<T>(std::bit_cast<int32_t>(value.real()) & std::bit_cast<int32_t>(other.value.real()));
+        T imag = std::bit_cast<T>(std::bit_cast<int32_t>(value.imag()) & std::bit_cast<int32_t>(other.value.imag()));
+        return simd_type{value_t{real, imag}};
+      } else {
+        T real = std::bit_cast<T>(std::bit_cast<int64_t>(value.real()) & std::bit_cast<int64_t>(other.value.real()));
+        T imag = std::bit_cast<T>(std::bit_cast<int64_t>(value.imag()) & std::bit_cast<int64_t>(other.value.imag()));
+        return simd_type{value_t{real, imag}};
+      }
+    }
+    simd_type operator|(const simd_type &other) const {
+      if constexpr (sizeof(scalar_t) == 4) {
+        T real = std::bit_cast<T>(std::bit_cast<int32_t>(value.real()) | std::bit_cast<int32_t>(other.value.real()));
+        T imag = std::bit_cast<T>(std::bit_cast<int32_t>(value.imag()) | std::bit_cast<int32_t>(other.value.imag()));
+        return simd_type{value_t{real, imag}};
+      } else {
+        T real = std::bit_cast<T>(std::bit_cast<int64_t>(value.real()) | std::bit_cast<int64_t>(other.value.real()));
+        T imag = std::bit_cast<T>(std::bit_cast<int64_t>(value.imag()) | std::bit_cast<int64_t>(other.value.imag()));
+        return simd_type{value_t{real, imag}};
+      }
+    }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
 
     operator intrinsic_t() const { return value; }
   };

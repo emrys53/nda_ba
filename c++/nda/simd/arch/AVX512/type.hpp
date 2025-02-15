@@ -86,7 +86,29 @@ namespace nda {
       const int cmp = _mm512_cmp_epi32_mask(value, other.value, 0x00);
       return cmp == 0xFFFF;
     }
+
     bool operator!=(const simd_type &other) const { return not(*this == other); }
+
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const { return simd_type{_mm512_xor_si512(value, other.value)}; }
+    simd_type operator&(const simd_type &other) const { return simd_type{_mm512_and_si512(value, other.value)}; }
+    simd_type operator|(const simd_type &other) const { return simd_type{_mm512_or_si512(value, other.value)}; }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
+
 
     operator intrinsic_t() const { return value; }
   };
@@ -178,6 +200,26 @@ namespace nda {
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
 
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const { return simd_type{_mm512_xor_si512(value, other.value)}; }
+    simd_type operator&(const simd_type &other) const { return simd_type{_mm512_and_si512(value, other.value)}; }
+    simd_type operator|(const simd_type &other) const { return simd_type{_mm512_or_si512(value, other.value)}; }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
+
     operator intrinsic_t() const { return value; }
   };
 
@@ -253,6 +295,44 @@ namespace nda {
     }
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
+
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const {
+#ifdef __AVX512DQ__
+      return simd_type{_mm512_xor_ps(value, other.value)};
+#else
+      return simd_type{_mm512_castsi512_ps(_mm512_xor_si512(_mm512_castps_si512(value), _mm512_castps_si512(other.value)))};
+#endif
+    }
+    simd_type operator&(const simd_type &other) const {
+#ifdef __AVX512DQ__
+      return simd_type{_mm512_and_ps(value, other.value)};
+#else
+      return simd_type{_mm512_castsi512_ps(_mm512_and_si512(_mm512_castps_si512(value), _mm512_castps_si512(other.value)))};
+#endif
+    }
+    simd_type operator|(const simd_type &other) const {
+#ifdef __AVX512DQ__
+      return simd_type{_mm512_or_ps(value, other.value)};
+#else
+      return simd_type{_mm512_castsi512_ps(_mm512_or_si512(_mm512_castps_si512(value), _mm512_castps_si512(other.value)))};
+#endif
+    }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
 
     operator intrinsic_t() const { return value; }
   };
@@ -330,6 +410,43 @@ namespace nda {
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
 
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const {
+#ifdef __AVX512DQ__
+      return simd_type{_mm512_xor_pd(value, other.value)};
+#else
+      return simd_type{_mm512_castsi512_pd(_mm512_xor_si512(_mm512_castpd_si512(value), _mm512_castpd_si512(other.value)))};
+#endif
+    }
+    simd_type operator&(const simd_type &other) const {
+#ifdef __AVX512DQ__
+      return simd_type{_mm512_and_pd(value, other.value)};
+#else
+      return simd_type{_mm512_castsi512_pd(_mm512_and_si512(_mm512_castpd_si512(value), _mm512_castpd_si512(other.value)))};
+#endif
+    }
+    simd_type operator|(const simd_type &other) const {
+#ifdef __AVX512DQ__
+      return simd_type{_mm512_or_pd(value, other.value)};
+#else
+      return simd_type{_mm512_castsi512_pd(_mm512_or_si512(_mm512_castpd_si512(value), _mm512_castpd_si512(other.value)))};
+#endif
+    }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
     operator intrinsic_t() const { return value; }
   };
 
@@ -434,6 +551,44 @@ namespace nda {
     }
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
+
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const {
+#ifdef __AVX512DQ__
+      return simd_type{_mm512_xor_ps(value, other.value)};
+#else
+      return simd_type{_mm512_castsi512_ps(_mm512_xor_si512(_mm512_castps_si512(value), _mm512_castps_si512(other.value)))};
+#endif
+    }
+    simd_type operator&(const simd_type &other) const {
+#ifdef __AVX512DQ__
+      return simd_type{_mm512_and_ps(value, other.value)};
+#else
+      return simd_type{_mm512_castsi512_ps(_mm512_and_si512(_mm512_castps_si512(value), _mm512_castps_si512(other.value)))};
+#endif
+    }
+    simd_type operator|(const simd_type &other) const {
+#ifdef __AVX512DQ__
+      return simd_type{_mm512_or_ps(value, other.value)};
+#else
+      return simd_type{_mm512_castsi512_ps(_mm512_or_si512(_mm512_castps_si512(value), _mm512_castps_si512(other.value)))};
+#endif
+    }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
 
     operator intrinsic_t() const { return value; }
   };
@@ -545,6 +700,44 @@ namespace nda {
     }
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
+
+    // Bitwise operators
+    simd_type operator^(const simd_type &other) const {
+#ifdef __AVX512DQ__
+      return simd_type{_mm512_xor_pd(value, other.value)};
+#else
+      return simd_type{_mm512_castsi512_pd(_mm512_xor_si512(_mm512_castpd_si512(value), _mm512_castpd_si512(other.value)))};
+#endif
+    }
+    simd_type operator&(const simd_type &other) const {
+#ifdef __AVX512DQ__
+      return simd_type{_mm512_and_pd(value, other.value)};
+#else
+      return simd_type{_mm512_castsi512_pd(_mm512_and_si512(_mm512_castpd_si512(value), _mm512_castpd_si512(other.value)))};
+#endif
+    }
+    simd_type operator|(const simd_type &other) const {
+#ifdef __AVX512DQ__
+      return simd_type{_mm512_or_pd(value, other.value)};
+#else
+      return simd_type{_mm512_castsi512_pd(_mm512_or_si512(_mm512_castpd_si512(value), _mm512_castpd_si512(other.value)))};
+#endif
+    }
+
+    simd_type &operator^=(const simd_type &other) {
+      *this = *this ^ other;
+      return *this;
+    }
+
+    simd_type &operator&=(const simd_type &other) {
+      *this = *this & other;
+      return *this;
+    }
+
+    simd_type &operator|=(const simd_type &other) {
+      *this = *this | other;
+      return *this;
+    }
 
     operator intrinsic_t() const { return value; }
   };
