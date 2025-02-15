@@ -169,8 +169,8 @@ $(function(){initNavTree('map_8hpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span></div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="structnda_1_1expr__call.html#aa42ea85e2894d9ea18446bb1d0a1115d">   95</a></span>    std::tuple&lt;<span class="keyword">const</span> As...&gt; <a class="code hl_variable" href="structnda_1_1expr__call.html#aa42ea85e2894d9ea18446bb1d0a1115d">a</a>;</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> has_load = HasLoad&lt;F&gt; &amp;&amp; (std::remove_cvref_t&lt;As&gt;::template has_load&lt;T&gt; &amp;&amp; ...);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> simd_enabled = HasLoad&lt;F&gt; and is_simd_enabled_v&lt;T, std::remove_cvref_t&lt;As&gt;...&gt;;</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keyword">private</span>:</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment">// Implementation of the function call operator.</span></div>
