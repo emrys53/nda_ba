@@ -41,12 +41,12 @@ static void GEMM(benchmark::State &state) {
 
   for (auto s : state) {
     if constexpr (not Matrix::is_aligned) {
-      auto tmp1 = nda::map(add{})(A, B);
-      auto tmp2 = nda::map(mul{})(tmp1, B);
-      auto tmp3 = nda::map(mul{})(tmp2, tmp1);
-      auto tmp4 = nda::map(mul{})(tmp3, tmp2);
-      auto tmp5 = nda::map(mul{})(tmp4, tmp3);
-      auto tmp6 = nda::map(mul{})(tmp5, tmp4);
+      auto tmp1 = nda::map(addd{})(A, B);
+      auto tmp2 = nda::map(mult{})(tmp1, B);
+      auto tmp3 = nda::map(mult{})(tmp2, tmp1);
+      auto tmp4 = nda::map(mult{})(tmp3, tmp2);
+      auto tmp5 = nda::map(mult{})(tmp4, tmp3);
+      auto tmp6 = nda::map(mult{})(tmp5, tmp4);
       volatile Matrix tmp7(tmp6);
       benchmark::DoNotOptimize(tmp7);
       benchmark::ClobberMemory();
@@ -58,7 +58,7 @@ static void GEMM(benchmark::State &state) {
       auto tmp4 = nda::map(mult{})(tmp3, tmp2);
       auto tmp5 = nda::map(mult{})(tmp4, tmp3);
       auto tmp6 = nda::map(mult{})(tmp5, tmp4);
-      array_aligned<double, 3, C_layout> tmp7(tmp6);
+      volatile Matrix tmp7(tmp6);
       // for (int i = 0; i < N; i++) {
       //   for (int j = 0; j < N; j++) {
       //     if (tmp7(i, j) != tmp77(i, j)) {
@@ -84,6 +84,6 @@ static void GEMM(benchmark::State &state) {
   state.counters["Size A"]   = long(M * N);
   state.counters["Size B"]   = long(N * K);
 }
-// BENCHMARK_TEMPLATE(GEMM, array<value_t, 3, C_layout>)->RangeMultiplier(2)->Range(Nmin, Nmax)->Unit(benchmark::kMicrosecond); // NOLINT
+BENCHMARK_TEMPLATE(GEMM, array<value_t, 3, C_layout>)->RangeMultiplier(2)->Range(Nmin, Nmax)->Unit(benchmark::kMicrosecond); // NOLINT
 
 BENCHMARK_TEMPLATE(GEMM, array_aligned<value_t, 3, C_layout>)->RangeMultiplier(2)->Range(Nmin, Nmax)->Unit(benchmark::kMicrosecond); // NOLINT

@@ -62,8 +62,6 @@ namespace nda {
     /// nda::Array object.
     A a;
 
-    static constexpr bool has_load = false;
-
     /**
      * @brief Function call operator.
      *

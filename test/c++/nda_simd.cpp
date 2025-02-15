@@ -435,9 +435,7 @@ void simd_function_conj() {
     alignas(x.alignment()) std::array<T, Width> tmp = generate_random_array<T, Width>();
     x.load(tmp.data());
     if constexpr (std::is_same_v<T, std::complex<float>> or std::is_same_v<T, std::complex<double>>) {
-      for (int j = 0; j < Width; ++j) {
-        tmp[j] = std::conj(tmp[j]);
-      }
+      for (int j = 0; j < Width; ++j) { tmp[j] = std::conj(tmp[j]); }
     }
 
     check_simd_array_equal(simd::conj(x), tmp);
@@ -948,9 +946,9 @@ TEST(NDA, SimdConj) {
 TEST(NDA, SimdSqrt) {
   simd_function_sqrt<float, 1, abi_tag::Default>();
   simd_function_sqrt<double, 1, abi_tag::Default>();
- // simd_function_sqrt<int32_t, 1, abi_tag::Default>();
- // simd_function_sqrt<int64_t, 1, abi_tag::Default>();
- // simd_function_sqrt<std::complex<float>, 1, abi_tag::Default>();
+  // simd_function_sqrt<int32_t, 1, abi_tag::Default>();
+  // simd_function_sqrt<int64_t, 1, abi_tag::Default>();
+  // simd_function_sqrt<std::complex<float>, 1, abi_tag::Default>();
   //simd_function_sqrt<std::complex<double>, 1, abi_tag::Default>();
 
 #ifdef __SSE2__
@@ -982,38 +980,31 @@ TEST(NDA, SimdSqrt) {
 }
 
 TEST(NDA, OurSIMD) {
-  // static_assert(std::same_as<std::complex<float>, simd_cf1::intrinsic_t>);
-  // static_assert(std::same_as<float, simd_cf1::scalar_t>);
-  // simd_cf2 qq{1,2,3,4};
-  // auto tmp = simd::conj(qq);
-  // alignas(64) std::array<std::complex<float>, 2> q{};
-  // tmp.store(q.data());
-  // std::cout << q[0] << " " << q[1] << std::endl;
+  class add {
+    public:
+    float operator()(float a, float b) const { return a + b; }
 
-  // class add {
-  //   public:
-  //   float operator()(float a, float b) const { return a + b; }
-  //
-  //   native_simd<float> load(native_simd<float> a, native_simd<float> b) const { return a + b; }
-  // };
-  // const long size1 = 11;
-  // const long size2 = 22;
-  // float k          = 1;
-  // array_aligned<float, 2> s({size1, size2});
-  // array_aligned<float, 2> x({size1, size2});
-  // for (int i = 0; i < size1; ++i) {
-  //   for (int j = 0; j < size2; ++j) { s(i, j) = k++; }
-  // }
-  // for (int i = 0; i < size1; ++i) {
-  //   for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
-  // }
-  // //TODO: this doesnt work check.
-  // auto test                 = nda::map([](float x, float y) { return x + y; })(s, x);
-  // auto test2                = nda::map(add{})(test, test);
-  // array_aligned<float, 2> y = test2;
-  //
-  // for (int i = 0; i < size1; ++i) {
-  //   for (int j = 0; j < size2; ++j) { std::cout << y(i, j) << " "; }
-  //   std::cout << std::endl;
-  // }
+    native_simd<float> load(native_simd<float> a, native_simd<float> b) const { return a + b; }
+  };
+  const long size1 = 11;
+  const long size2 = 22;
+  float k          = 1;
+  array_aligned<float, 2> s({size1, size2});
+  array_aligned<float, 2> x({size1, size2});
+  for (int i = 0; i < size1; ++i) {
+    for (int j = 0; j < size2; ++j) { s(i, j) = k++; }
+  }
+  for (int i = 0; i < size1; ++i) {
+    for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
+  }
+  //TODO: this doesnt work check.
+  auto test                 = nda::map(add{})(s, x);
+  auto test2                = nda::map(add{})(test, test);
+  array<float, 2> y = test2;
+  std::cout << is_simd_enabled_v<float, decltype(test2)> << std::endl;
+  std::cout << is_simd_enabled_v<float, decltype(test)> << std::endl;
+  for (int i = 0; i < size1; ++i) {
+    for (int j = 0; j < size2; ++j) { std::cout << y(i, j) << " "; }
+    std::cout << std::endl;
+  }
 }

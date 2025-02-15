@@ -277,7 +277,7 @@ FORCEINLINE decltype(auto) operator()(Ts const &...idxs) && noexcept(has_no_boun
 
 
 template <typename... Args>
-FORCEINLINE  native_simd<ValueType> load(Args... idx) {
+FORCEINLINE  native_simd<ValueType> load(Args... idx) const {
   static_assert(Vectorizable<ValueType>, "Load function is called with a type that is not a vectorizable type");
   const long offset = lay(idx...);
   if constexpr(is_aligned and is_padded) {
@@ -537,18 +537,12 @@ void assign_from_ndarray(RHS const &rhs) { // FIXME noexcept {
   if constexpr (mem::on_device<self_t> || mem::on_device<RHS>) {
     NDA_RUNTIME_ERROR << "Error in assign_from_ndarray: Fallback to elementwise assignment not implemented for arrays/views on the GPU";
   }
-  if constexpr (is_aligned and Vectorizable<ValueType>) {
-    //TODO: Improve this so it doesnt fail to compile when an expression doesn't have a has_load static member.
-    if constexpr(RHS::template has_load<ValueType>) {
-      nda::for_each(shape(),[this, &rhs](auto const &...args) {(*this).store(rhs.load(args...), args...); }, [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); }, native_simd<ValueType>::size());
-    }
-    else {
-      nda::for_each(shape(), [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); });
-    }
+  if constexpr (is_aligned and Vectorizable<ValueType> and is_simd_enabled_v<ValueType, RHS>) {
+    nda::for_each(shape(),[this, &rhs](auto const &...args) {(*this).store(rhs.load(args...), args...); }, [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); }, native_simd<ValueType>::size());
   }
   else {
     nda::for_each(shape(), [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); });
-  }
+    }
 }
 
 // Implementation to fill a view/array with a constant scalar value.

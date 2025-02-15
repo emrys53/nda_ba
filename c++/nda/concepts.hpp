@@ -253,6 +253,26 @@ namespace nda {
     { t.load(std::forward<Args>(args)...) };
   };
 
+  // U is not needed.
+  template <typename T, typename U = void>
+  concept HasSimdEnabled = requires {
+    { T::template simd_enabled<U> } -> std::convertible_to<bool>;
+  };
+  //TODO: Type trait is temporary. Since I can't forward declare concepts I have to write it here instead of traits.hpp
+  template<typename T, typename... Args>
+  struct is_simd_enabled {
+    static constexpr bool value = false;
+  };
+
+  template<typename T, typename... Args> requires(HasSimdEnabled<Args> and ...)
+  struct is_simd_enabled<T, Args...>
+  {
+    static constexpr bool value = (Args::template simd_enabled<T> and ...);
+  };
+
+  template<typename T, typename... Args>
+  static constexpr bool is_simd_enabled_v = is_simd_enabled<T, Args...>::value;
+
   /**
    * @brief Check if a given type satisfies the memory array concept.
    *
