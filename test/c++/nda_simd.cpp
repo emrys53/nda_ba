@@ -1423,13 +1423,20 @@ TEST(NDA, OurSIMD) {
     for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
   }
   //TODO: this doesnt work check.
-  auto test         = nda::map(add{})(s, x);
-  auto test2        = nda::map(add{})(test, test);
+  auto single_add = [](float a, float b) { return a + b; };
+  auto test                 = nda::map(single_add)(s, x);
+  auto test2                = nda::map(add{})(test, test);
   array<float, 2> y = test2;
-  std::cout << is_simd_enabled_v<float, decltype(test2)> << std::endl;
-  std::cout << is_simd_enabled_v<float, decltype(test)> << std::endl;
+  std::cout << get_layout_info<decltype(test)>.stride_order << std::endl;
+  std::cout << get_layout_info<decltype(test2)>.stride_order << std::endl;
+  std::cout << C_stride_order<2> << std::endl;
+  std::cout << is_simd_enabled_v2<float, decltype(y)>::value << std::endl;
+  std::cout << is_simd_enabled_v2<float, decltype(s)>::value << std::endl;
+  std::cout << is_simd_enabled_v2<float, decltype(x)>::value << std::endl;
+  std::cout << is_simd_enabled_v2<float, decltype(test)>::value << std::endl;
+  std::cout << is_simd_enabled_v2<float, decltype(test2)>::value << std::endl;
   for (int i = 0; i < size1; ++i) {
-    for (int j = 0; j < size2; ++j) { std::cout << s(i, j) << " "; }
+    for (int j = 0; j < size2; ++j) { std::cout << y(i, j) << " "; }
     std::cout << std::endl;
   }
 }

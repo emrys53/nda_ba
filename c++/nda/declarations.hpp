@@ -56,6 +56,9 @@ namespace nda {
 
   template <char OP, ArrayOrScalar L, ArrayOrScalar R>
   struct expr;
+
+  template <typename F, Array... As>
+  struct expr_call;
   /// @endcond
 
   /**
@@ -84,7 +87,6 @@ namespace nda {
    */
   template <typename ValueType, int Rank, typename Layout = C_layout, typename ContainerPolicy = heap_aligned<>>
   using array_aligned = basic_array<ValueType, Rank, Layout, 'A', ContainerPolicy>;
-
 
   /**
    * @brief Alias template of an nda::basic_array_view with an 'A' algebra, nda::default_accessor and nda::borrowed
@@ -139,7 +141,6 @@ namespace nda {
   template <typename ValueType, typename Layout = C_layout, typename ContainerPolicy = heap<>>
   using matrix = basic_array<ValueType, 2, Layout, 'M', ContainerPolicy>;
 
-
   /**
   * @brief Alias template of an nda::basic_array with rank 2 and an 'M' algebra and aligned allocator.
   *
@@ -149,7 +150,6 @@ namespace nda {
   */
   template <typename ValueType, typename Layout = C_layout, typename ContainerPolicy = heap_aligned<>>
   using matrix_aligned = basic_array<ValueType, 2, Layout, 'M', ContainerPolicy>;
-
 
   /**
    * @brief Alias template of an nda::basic_array_view with rank 2, an 'M' algebra, nda::default_accessor and
@@ -443,6 +443,52 @@ namespace nda {
   /// Specialization of nda::get_layout_info for nda::expr types.
   template <char OP, typename L, typename R>
   inline constexpr layout_info_t get_layout_info<expr<OP, L, R>> = expr<OP, L, R>::compute_layout_info();
+
+  template <typename F, Array... As>
+  inline constexpr layout_info_t get_layout_info<expr_call<F, As...>> = (get_layout_info<As> & ...);
+
+  template <typename T, typename U>
+  struct is_simd_enabled_v2 {
+    static constexpr bool value = false;
+  };
+
+  template <typename T, typename U>
+    requires(!std::is_same_v<U, std::remove_cvref_t<U>>)
+  struct is_simd_enabled_v2<T, U> {
+    static constexpr bool value = is_simd_enabled_v2<T, std::remove_cvref_t<U>>::value;
+  };
+
+  // Specialization for basic_array
+  template <typename T, typename ValueType, int Rank, typename LayoutPolicy, char Algebra, typename ContainerPolicy>
+  struct is_simd_enabled_v2<T, basic_array<ValueType, Rank, LayoutPolicy, Algebra, ContainerPolicy>> {
+    static constexpr bool value = basic_array<ValueType, Rank, LayoutPolicy, Algebra, ContainerPolicy>::template simd_enabled<T>;
+  };
+  // Specialization for basic_array_view
+  template <typename T, typename ValueType, int Rank, typename LayoutPolicy, char Algebra, typename AccessorPolicy, typename OwningPolicy>
+  struct is_simd_enabled_v2<T, basic_array_view<ValueType, Rank, LayoutPolicy, Algebra, AccessorPolicy, OwningPolicy>> {
+    static constexpr bool value = basic_array_view<ValueType, Rank, LayoutPolicy, Algebra, AccessorPolicy, OwningPolicy>::template simd_enabled<T>;
+  };
+
+  //Specialization for expr_call
+  template <typename T, typename F, Array... As>
+  struct is_simd_enabled_v2<T, expr_call<F, As...>> {
+    static constexpr bool value = HasLoad<F> and (is_simd_enabled_v2<T, As>::value or ...);
+  };
+
+  //Specialization for expr_unary
+  template <typename T, char OP, Array A>
+  struct is_simd_enabled_v2<T, expr_unary<OP, A>> {
+    static constexpr bool value = false; // TODO:
+  };
+
+  //Specialization for expr
+  template <typename T, char OP, typename L, typename R>
+  struct is_simd_enabled_v2<T, expr<OP, L, R>> {
+    static constexpr bool value = false; // TODO:
+  };
+
+  template <typename T, typename U>
+  inline static constexpr bool is_simd_enabled_v2_v = is_simd_enabled_v2<T, U>::value;
 
   /** @} */
 

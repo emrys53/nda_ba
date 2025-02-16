@@ -537,7 +537,8 @@ void assign_from_ndarray(RHS const &rhs) { // FIXME noexcept {
   if constexpr (mem::on_device<self_t> || mem::on_device<RHS>) {
     NDA_RUNTIME_ERROR << "Error in assign_from_ndarray: Fallback to elementwise assignment not implemented for arrays/views on the GPU";
   }
-  if constexpr (is_aligned and Vectorizable<ValueType> and is_simd_enabled_v<ValueType, RHS>) {
+  //TODO: Remove is_aligned when I also check if their layout are compatible. And call the for_each with specific layout.
+  if constexpr (same_stride_order and Vectorizable<ValueType> and is_simd_enabled_v2_v<ValueType, RHS> and (get_layout_info<self_t>.stride_order == C_stride_order<Rank>) ) {
     nda::for_each(shape(),[this, &rhs](auto const &...args) {(*this).store(rhs.load(args...), args...); }, [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); }, native_simd<ValueType>::size());
   }
   else {
