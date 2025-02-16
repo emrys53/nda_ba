@@ -267,7 +267,7 @@ $(function(){initNavTree('_a_v_x_2functions_8hpp_source.html',''); initResizable
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="keyword">template</span> &lt;&gt;</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="keyword">inline</span> simd_l4::value_t reduce_min(<span class="keyword">const</span> simd_l4 &amp;x) {</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keyword">alignas</span>(x.alignment()) std::array&lt;int64_t, 4&gt; a;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keyword">alignas</span>(simd_l4::alignment()) std::array&lt;int64_t, 4&gt; a;</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    x.store(a.data());</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    simd_l4::value_t lo_min = a[0] &lt; a[1] ? a[0] : a[1];</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    simd_l4::value_t hi_min = a[2] &lt; a[3] ? a[2] : a[3];</div>
@@ -301,7 +301,7 @@ $(function(){initNavTree('_a_v_x_2functions_8hpp_source.html',''); initResizable
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <span class="keyword">template</span> &lt;&gt;</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <span class="keyword">inline</span> simd_l4::value_t reduce_max(<span class="keyword">const</span> simd_l4 &amp;x) {</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keyword">alignas</span>(x.alignment()) std::array&lt;int64_t, 4&gt; a;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keyword">alignas</span>(simd_l4::alignment()) std::array&lt;int64_t, 4&gt; a;</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    x.store(a.data());</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    simd_l4::value_t lo_max = a[0] &lt; a[1] ? a[1] : a[0];</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    simd_l4::value_t hi_max = a[2] &lt; a[3] ? a[3] : a[2];</div>
