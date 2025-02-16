@@ -10,22 +10,22 @@ namespace nda::simd {
   template <typename T>
   T conj(const T &);
 
-  template<typename T>
-  T min(const T&, const T&);
+  template <typename T>
+  T min(const T &, const T &);
 
-  template<typename T>
-  T max(const T&, const T&);
+  template <typename T>
+  T max(const T &, const T &);
 
-  template<typename T>
-  typename T::value_t reduce_sum(const T&);
+  template <typename T>
+  typename T::value_t reduce_min(const T &);
 
-  template<typename T>
-  typename T::value_t reduce_mul(const T&);
+  template <typename T>
+  typename T::value_t reduce_max(const T &);
 
-  template<typename T>
-  typename T::value_t reduce_min(const T&);
+  template <typename T>
+  typename T::value_t reduce_sum(const T &);
 
-  template<typename T>
-  typename T::value_t reduce_max(const T&);
+  template <typename T>
+  typename T::value_t reduce_mul(const T &);
 
 } // namespace nda::simd

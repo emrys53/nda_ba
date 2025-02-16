@@ -154,7 +154,7 @@ namespace nda::simd {
 
   template <>
   inline simd_l4::value_t reduce_min(const simd_l4 &x) {
-    alignas(x.alignment()) std::array<int64_t, 4> a;
+    alignas(simd_l4::alignment()) std::array<int64_t, 4> a;
     x.store(a.data());
     simd_l4::value_t lo_min = a[0] < a[1] ? a[0] : a[1];
     simd_l4::value_t hi_min = a[2] < a[3] ? a[2] : a[3];
@@ -188,7 +188,7 @@ namespace nda::simd {
 
   template <>
   inline simd_l4::value_t reduce_max(const simd_l4 &x) {
-    alignas(x.alignment()) std::array<int64_t, 4> a;
+    alignas(simd_l4::alignment()) std::array<int64_t, 4> a;
     x.store(a.data());
     simd_l4::value_t lo_max = a[0] < a[1] ? a[1] : a[0];
     simd_l4::value_t hi_max = a[2] < a[3] ? a[3] : a[2];

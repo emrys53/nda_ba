@@ -114,46 +114,45 @@ namespace nda::simd {
   }
 
   // Reduce Min
-  template<>
-  inline simd_i1::value_t reduce_min(const simd_i1&x) {
+  template <>
+  inline simd_i1::value_t reduce_min(const simd_i1 &x) {
     return x;
   }
 
-  template<>
-  inline simd_l1::value_t reduce_min(const simd_l1&x) {
+  template <>
+  inline simd_l1::value_t reduce_min(const simd_l1 &x) {
     return x;
   }
 
-  template<>
-  inline simd_f1::value_t reduce_min(const simd_f1&x) {
+  template <>
+  inline simd_f1::value_t reduce_min(const simd_f1 &x) {
     return x;
   }
 
-  template<>
-  inline simd_d1::value_t reduce_min(const simd_d1&x) {
+  template <>
+  inline simd_d1::value_t reduce_min(const simd_d1 &x) {
     return x;
   }
 
   // Reduce Max
-  template<>
-  inline simd_i1::value_t reduce_max(const simd_i1&x) {
+  template <>
+  inline simd_i1::value_t reduce_max(const simd_i1 &x) {
     return x;
   }
 
-  template<>
-  inline simd_l1::value_t reduce_max(const simd_l1&x) {
+  template <>
+  inline simd_l1::value_t reduce_max(const simd_l1 &x) {
     return x;
   }
 
-  template<>
-  inline simd_f1::value_t reduce_max(const simd_f1&x) {
+  template <>
+  inline simd_f1::value_t reduce_max(const simd_f1 &x) {
     return x;
   }
 
-  template<>
-  inline simd_d1::value_t reduce_max(const simd_d1&x) {
+  template <>
+  inline simd_d1::value_t reduce_max(const simd_d1 &x) {
     return x;
   }
-
 
 } // namespace nda::simd

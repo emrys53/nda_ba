@@ -95,7 +95,7 @@ namespace nda::simd {
   template <>
   inline simd_l2 min(const simd_l2 &x, const simd_l2 &y) {
     //TODO: Do Vectorized version in the future.
-    alignas(x.alignment()) std::array<int64_t, 2> a, b, c;
+    alignas(simd_l2::alignment()) std::array<int64_t, 2> a, b, c;
     x.store(a.data());
     y.store(b.data());
     c[0] = std::min(a[0], b[0]);
@@ -127,7 +127,7 @@ namespace nda::simd {
   template <>
   inline simd_l2 max(const simd_l2 &x, const simd_l2 &y) {
     //TODO: Do Vectorized version in the future.
-    alignas(x.alignment()) std::array<int64_t, 2> a, b, c;
+    alignas(simd_l2::alignment()) std::array<int64_t, 2> a, b, c;
     x.store(a.data());
     y.store(b.data());
     c[0] = std::max(a[0], b[0]);
@@ -156,7 +156,7 @@ namespace nda::simd {
 
   template <>
   inline simd_l2::value_t reduce_min(const simd_l2 &x) {
-    alignas(x.alignment()) std::array<int64_t, 2> a;
+    alignas(simd_l2::alignment()) std::array<int64_t, 2> a;
     x.store(a.data());
     return a[0] < a[1] ? a[0] : a[1];
   }
@@ -185,7 +185,7 @@ namespace nda::simd {
 
   template <>
   inline simd_l2::value_t reduce_max(const simd_l2 &x) {
-    alignas(x.alignment()) std::array<int64_t, 2> a;
+    alignas(simd_l2::alignment()) std::array<int64_t, 2> a;
     x.store(a.data());
     return a[0] < a[1] ? a[1] : a[0];
   }
