@@ -210,5 +210,91 @@ namespace nda::simd {
     return _mm256_cvtsd_f64(m_0213);
   }
 
+  //Reduce_sum
+  template <>
+  inline simd_i8::value_t reduce_sum(const simd_i8 &x) {
+    simd_i4 lo{_mm256_extractf128_si256(x, 0)};
+    simd_i4 hi{_mm256_extractf128_si256(x, 1)};
+    return reduce_sum(lo + hi);
+  }
+
+  template <>
+  inline simd_l4::value_t reduce_sum(const simd_l4 &x) {
+    __m128i r = _mm_add_epi64(_mm256_extractf128_si256(x, 0), _mm256_extractf128_si256(x, 1));
+    return _mm_extract_epi64(r, 0) + _mm_extract_epi64(r, 1);
+  }
+
+  template <>
+  inline simd_f8::value_t reduce_sum(const simd_f8 &x) {
+    simd_f4 lo{_mm256_extractf128_ps(x, 0)};
+    simd_f4 hi{_mm256_extractf128_ps(x, 1)};
+    return reduce_sum(lo + hi);
+  }
+
+  template <>
+  inline simd_d4::value_t reduce_sum(const simd_d4 &x) {
+    simd_d2 lo{_mm256_extractf128_pd(x, 0)};
+    simd_d2 hi{_mm256_extractf128_pd(x, 1)};
+    return reduce_sum(lo + hi);
+  }
+
+  template <>
+  inline simd_cf4::value_t reduce_sum(const simd_cf4 &x) {
+    simd_cf2 lo{_mm256_extractf128_ps(x, 0)};
+    simd_cf2 hi{_mm256_extractf128_ps(x, 1)};
+    return reduce_sum(lo + hi);
+  }
+
+  template <>
+  inline simd_cd2::value_t reduce_sum(const simd_cd2 &x) {
+    simd_cd1 lo{_mm256_extractf128_pd(x, 0)};
+    simd_cd1 hi{_mm256_extractf128_pd(x, 1)};
+    return reduce_sum(lo + hi);
+  }
+
+  //Reduce_mul
+  template <>
+  inline simd_i8::value_t reduce_mul(const simd_i8 &x) {
+    simd_i4 lo{_mm256_extractf128_si256(x, 0)};
+    simd_i4 hi{_mm256_extractf128_si256(x, 1)};
+    return reduce_mul(lo * hi);
+  }
+
+  template <>
+  inline simd_l4::value_t reduce_mul(const simd_l4 &x) {
+    simd_l2 lo{_mm256_extractf128_si256(x, 0)};
+    simd_l2 hi{_mm256_extractf128_si256(x, 1)};
+    return reduce_mul(lo * hi);
+  }
+
+  template <>
+  inline simd_f8::value_t reduce_mul(const simd_f8 &x) {
+    __m256 m_04_15_26_37 = _mm256_mul_ps(x, _mm256_permute2f128_ps(x, x, 0x1));
+    __m256 m_0437_1526   = _mm256_mul_ps(m_04_15_26_37, _mm256_shuffle_ps(m_04_15_26_37, m_04_15_26_37, NDA_SHUFFLE_MASK4(3, 2, 1, 0)));
+    __m256 m_04371526    = _mm256_mul_ps(m_0437_1526, _mm256_shuffle_ps(m_0437_1526, m_0437_1526, 0x1));
+    return _mm256_cvtss_f32(m_04371526);
+  }
+
+  template <>
+  inline simd_d4::value_t reduce_mul(const simd_d4 &x) {
+    __m256d m_02_13 = _mm256_mul_pd(x, _mm256_permute2f128_pd(x, x, 0x1));
+    __m256d m_0213  = _mm256_mul_pd(m_02_13, _mm256_shuffle_pd(m_02_13, m_02_13, 0x1));
+    return _mm256_cvtsd_f64(m_0213);
+  }
+
+  template <>
+  inline simd_cf4::value_t reduce_mul(const simd_cf4 &x) {
+    simd_cf2 lo{_mm256_extractf128_ps(x, 0)};
+    simd_cf2 hi{_mm256_extractf128_ps(x, 1)};
+    return reduce_mul(lo * hi);
+  }
+
+  template <>
+  inline simd_cd2::value_t reduce_mul(const simd_cd2 &x) {
+    simd_cd1 lo{_mm256_extractf128_pd(x, 0)};
+    simd_cd1 hi{_mm256_extractf128_pd(x, 1)};
+    return reduce_mul(lo * hi);
+  }
+
 } // namespace nda::simd
 #endif

@@ -155,4 +155,66 @@ namespace nda::simd {
     return x;
   }
 
+  //Reduce_sum
+  template <>
+  inline simd_i1::value_t reduce_sum(const simd_i1 &x) {
+    return x;
+  }
+
+  template <>
+  inline simd_l1::value_t reduce_sum(const simd_l1 &x) {
+    return x;
+  }
+
+  template <>
+  inline simd_f1::value_t reduce_sum(const simd_f1 &x) {
+    return x;
+  }
+
+  template <>
+  inline simd_d1::value_t reduce_sum(const simd_d1 &x) {
+    return x;
+  }
+
+  template <>
+  inline simd_cf1::value_t reduce_sum(const simd_cf1 &x) {
+    return x;
+  }
+
+  template <>
+  inline simd_cd1_d::value_t reduce_sum(const simd_cd1_d &x) {
+    return x;
+  }
+
+  //Reduce_mul
+  template <>
+  inline simd_i1::value_t reduce_mul(const simd_i1 &x) {
+    return x;
+  }
+
+  template <>
+  inline simd_l1::value_t reduce_mul(const simd_l1 &x) {
+    return x;
+  }
+
+  template <>
+  inline simd_f1::value_t reduce_mul(const simd_f1 &x) {
+    return x;
+  }
+
+  template <>
+  inline simd_d1::value_t reduce_mul(const simd_d1 &x) {
+    return x;
+  }
+
+  template <>
+  inline simd_cf1::value_t reduce_mul(const simd_cf1 &x) {
+    return x;
+  }
+
+  template <>
+  inline simd_cd1_d::value_t reduce_mul(const simd_cd1_d &x) {
+    return x;
+  }
+
 } // namespace nda::simd

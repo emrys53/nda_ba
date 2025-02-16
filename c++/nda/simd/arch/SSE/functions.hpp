@@ -203,5 +203,96 @@ namespace nda::simd {
     return _mm_cvtsd_f64(max(x, simd_d2{_mm_unpackhi_pd(x, x)}));
   }
 
+  //Reduce_sum
+  template <>
+  inline simd_i4::value_t reduce_sum(const simd_i4 &x) {
+#ifndef __SSE3__
+    __m128i m_01_23 = _mm_hadd_epi32(x, x);
+    __m128i m_0123  = _mm_hadd_epi32(m_01_23, m_01_23);
+    return _mm_cvtsi128_si32(m_0123);
+#else
+    __m128i m_02_13 = _mm_add_epi32(x, _mm_unpackhi_epi64(x, x));
+    int32_t m_02    = _mm_cvtsi128_si32(m_02_13);
+    int32_t m_13    = _mm_cvtsi128_si32(_mm_shuffle_epi32(m_02_13, 0x1));
+    return m_02 + m_13;
+#endif
+  }
+
+  template <>
+  inline simd_l2::value_t reduce_sum(const simd_l2 &x) {
+    return _mm_cvtsi128_si64(_mm_add_epi64(x, _mm_unpackhi_epi64(x, x)));
+  }
+
+  template <>
+  inline simd_f4::value_t reduce_sum(const simd_f4 &x) {
+    __m128 m_02_13 = _mm_add_ps(x, _mm_movehl_ps(x, x));
+    __m128 m_0213  = _mm_add_ps(m_02_13, _mm_shuffle_ps(m_02_13, m_02_13, 0x1));
+    return _mm_cvtss_f32(m_0213);
+  }
+
+  template <>
+  inline simd_d2::value_t reduce_sum(const simd_d2 &x) {
+    return _mm_cvtsd_f64(_mm_add_pd(x, _mm_unpackhi_pd(x, x)));
+  }
+
+  template <>
+  inline simd_cf2::value_t reduce_sum(const simd_cf2 &x) {
+    __m128 m_01 = _mm_add_ps(x, _mm_movehl_ps(x, x));
+    // Now get the std::complex<float> from m_01
+    alignas(alignof(__m64)) std::complex<float> res;
+    _mm_storel_pi(reinterpret_cast<__m64 *>(&res), m_01);
+    return res;
+  }
+
+  template <>
+  inline simd_cd1::value_t reduce_sum(const simd_cd1 &x) {
+    alignas(simd_cd1::alignment()) std::array<simd_cd1::scalar_t, 2> res;
+    x.store(res.data());
+    return simd_cd1::value_t{res[0], res[1]};
+  }
+
+  //Reduce_mul
+  template <>
+  inline simd_i4::value_t reduce_mul(const simd_i4 &x) {
+    alignas(simd_i4::alignment()) std::array<simd_i4::value_t, 4> a;
+    x.store(a.data());
+    return a[0] * a[1] * a[2] * a[3];
+  }
+
+  template <>
+  inline simd_l2::value_t reduce_mul(const simd_l2 &x) {
+    alignas(simd_l2::alignment()) std::array<simd_l2::value_t, 2> a;
+    x.store(a.data());
+    return a[0] * a[1];
+  }
+
+  template <>
+  inline simd_f4::value_t reduce_mul(const simd_f4 &x) {
+    __m128 m_02_13 = _mm_mul_ps(x, _mm_movehl_ps(x, x));
+    __m128 m_0213  = _mm_mul_ps(m_02_13, _mm_shuffle_ps(m_02_13, m_02_13, 0x1));
+    return _mm_cvtss_f32(m_0213);
+  }
+
+  template <>
+  inline simd_d2::value_t reduce_mul(const simd_d2 &x) {
+    return _mm_cvtsd_f64(_mm_mul_pd(x, _mm_unpackhi_pd(x, x)));
+  }
+
+  template <>
+  inline simd_cf2::value_t reduce_mul(const simd_cf2 &x) {
+    simd_cf2 m_13{_mm_movehl_ps(x, x)};
+    simd_cf2 tmp = x * m_13;
+    alignas(alignof(__m64)) std::complex<float> res;
+    _mm_storel_pi(reinterpret_cast<__m64 *>(&res), tmp);
+    return res;
+  }
+
+  template <>
+  inline simd_cd1::value_t reduce_mul(const simd_cd1 &x) {
+    alignas(simd_cd1::alignment()) std::array<simd_cd1::scalar_t, 2> res;
+    x.store(res.data());
+    return simd_cd1::value_t{res[0], res[1]};
+  }
+
 } // namespace nda::simd
 #endif

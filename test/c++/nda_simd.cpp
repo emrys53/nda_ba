@@ -481,44 +481,67 @@ void simd_function_max() {
   }
 }
 
-template<typename T, size_t Width, abi_tag ABI>
+template <typename T, size_t Width, abi_tag ABI>
 void simd_function_reduce_min() {
   for (int i = 0; i < 1000; ++i) {
     simd_type<T, Width, ABI> x;
-    alignas(x.alignment()) std::array<T, Width> tmp  = generate_random_array<T, Width>();
+    alignas(x.alignment()) std::array<T, Width> tmp = generate_random_array<T, Width>();
     x.load(tmp.data());
     auto simd_reduced = simd::reduce_min(x);
-    auto array_min = std::ranges::min(tmp);
-    if constexpr(std::is_same_v<T, float>) {
+    auto array_min    = std::ranges::min(tmp);
+    if constexpr (std::is_same_v<T, float>) {
       EXPECT_FLOAT_EQ(simd_reduced, array_min);
-    }
-    else if constexpr(std::is_same_v<T, double>) {
+    } else if constexpr (std::is_same_v<T, double>) {
       EXPECT_DOUBLE_EQ(simd_reduced, array_min);
-    }
-    else {
+    } else {
       EXPECT_EQ(simd_reduced, array_min);
     }
   }
 }
 
-template<typename T, size_t Width, abi_tag ABI>
+template <typename T, size_t Width, abi_tag ABI>
 void simd_function_reduce_max() {
   for (int i = 0; i < 1000; ++i) {
     simd_type<T, Width, ABI> x;
-    alignas(x.alignment()) std::array<T, Width> tmp  = generate_random_array<T, Width>();
+    alignas(x.alignment()) std::array<T, Width> tmp = generate_random_array<T, Width>();
     x.load(tmp.data());
     auto simd_reduced = simd::reduce_max(x);
-    auto array_min = std::ranges::max(tmp);
-    if constexpr(std::is_same_v<T, float>) {
+    auto array_min    = std::ranges::max(tmp);
+    if constexpr (std::is_same_v<T, float>) {
       EXPECT_FLOAT_EQ(simd_reduced, array_min);
-    }
-    else if constexpr(std::is_same_v<T, double>) {
+    } else if constexpr (std::is_same_v<T, double>) {
       EXPECT_DOUBLE_EQ(simd_reduced, array_min);
-    }
-    else {
+    } else {
       EXPECT_EQ(simd_reduced, array_min);
     }
   }
+}
+
+//TODO: talk in the next meeting
+template <typename T, size_t Width, abi_tag ABI>
+void simd_function_reduce_sum() {
+  // for (int i = 0; i <1000; ++i) {
+  //   simd_type<T, Width, ABI> x;
+  //   alignas(x.alignment()) std::array<T, Width> tmp = generate_random_array<T, Width>();
+  //   x.load(tmp.data());
+  //   for (int j = 1; j < Width; ++j) { tmp[0] += tmp[j]; }
+  //   simd_type<T, 1, abi_tag::Default> simd_res{simd::reduce_sum(x)};
+  //   std::array<T, 1> array_res{tmp[0]};
+  //   check_simd_array_equal(simd_res, array_res);
+  // }
+}
+
+template <typename T, size_t Width, abi_tag ABI>
+void simd_function_reduce_mul() {
+  // for (int i = 0; i <1000; ++i) {
+  //   simd_type<T, Width, ABI> x;
+  //   alignas(x.alignment()) std::array<T, Width> tmp = generate_random_array<T, Width>();
+  //   x.load(tmp.data());
+  //   for (int j = 1; j < Width; ++j) { tmp[0] *= tmp[j]; }
+  //   simd_type<T, 1, abi_tag::Default> simd_res{simd::reduce_mul(x)};
+  //   std::array<T, 1> array_res{tmp[0]};
+  //   check_simd_array_equal(simd_res, array_res);
+  // }
 }
 
 template <typename T, size_t Width, abi_tag ABI>
@@ -1256,6 +1279,87 @@ TEST(NDA, SimdReduceMax) {
   simd_function_reduce_max<int64_t, 8, abi_tag::AVX512>();
   // simd_function_reduce_min<std::complex<float>, 8, abi_tag::AVX512>();
   // simd_function_reduce_min<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+}
+
+TEST(NDA, SimdReduceSum) {
+  // Default SIMD types
+  simd_function_reduce_sum<float, 1, abi_tag::Default>();
+  simd_function_reduce_sum<double, 1, abi_tag::Default>();
+  simd_function_reduce_sum<int32_t, 1, abi_tag::Default>();
+  simd_function_reduce_sum<int64_t, 1, abi_tag::Default>();
+  simd_function_reduce_sum<std::complex<float>, 1, abi_tag::Default>();
+  simd_function_reduce_sum<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+  // SSE SIMD types
+  simd_function_reduce_sum<float, 4, abi_tag::SSE>();
+  simd_function_reduce_sum<double, 2, abi_tag::SSE>();
+  simd_function_reduce_sum<int32_t, 4, abi_tag::SSE>();
+  simd_function_reduce_sum<int64_t, 2, abi_tag::SSE>();
+  simd_function_reduce_sum<std::complex<float>, 2, abi_tag::SSE>();
+  simd_function_reduce_sum<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  // AVX SIMD types
+  simd_function_reduce_sum<float, 8, abi_tag::AVX>();
+  simd_function_reduce_sum<double, 4, abi_tag::AVX>();
+  simd_function_reduce_sum<int32_t, 8, abi_tag::AVX>();
+  simd_function_reduce_sum<int64_t, 4, abi_tag::AVX>();
+  simd_function_reduce_sum<std::complex<float>, 4, abi_tag::AVX>();
+  simd_function_reduce_sum<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512F__
+
+  // AVX512 SIMD types
+  simd_function_reduce_sum<float, 16, abi_tag::AVX512>();
+  simd_function_reduce_sum<double, 8, abi_tag::AVX512>();
+  simd_function_reduce_sum<int32_t, 16, abi_tag::AVX512>();
+  simd_function_reduce_sum<int64_t, 8, abi_tag::AVX512>();
+  simd_function_reduce_sum<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_function_reduce_sum<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+}
+
+TEST(NDA, SimdReduceMul) {
+  // Default SIMD types
+  simd_function_reduce_mul<float, 1, abi_tag::Default>();
+  simd_function_reduce_mul<double, 1, abi_tag::Default>();
+  simd_function_reduce_mul<int32_t, 1, abi_tag::Default>();
+  simd_function_reduce_mul<int64_t, 1, abi_tag::Default>();
+  simd_function_reduce_mul<std::complex<float>, 1, abi_tag::Default>();
+  simd_function_reduce_mul<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+  // SSE SIMD types
+  simd_function_reduce_mul<float, 4, abi_tag::SSE>();
+  simd_function_reduce_mul<double, 2, abi_tag::SSE>();
+  simd_function_reduce_mul<int32_t, 4, abi_tag::SSE>();
+  simd_function_reduce_mul<int64_t, 2, abi_tag::SSE>();
+  simd_function_reduce_mul<std::complex<float>, 2, abi_tag::SSE>();
+  simd_function_reduce_mul<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  // AVX SIMD types
+  simd_function_reduce_mul<float, 8, abi_tag::AVX>();
+  simd_function_reduce_mul<double, 4, abi_tag::AVX>();
+  simd_function_reduce_mul<int32_t, 8, abi_tag::AVX>();
+  simd_function_reduce_mul<int64_t, 4, abi_tag::AVX>();
+  simd_function_reduce_mul<std::complex<float>, 4, abi_tag::AVX>();
+  simd_function_reduce_mul<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512F__
+  // AVX512 SIMD types
+  simd_function_reduce_mul<float, 16, abi_tag::AVX512>();
+  simd_function_reduce_mul<double, 8, abi_tag::AVX512>();
+  simd_function_reduce_mul<int32_t, 16, abi_tag::AVX512>();
+  simd_function_reduce_mul<int64_t, 8, abi_tag::AVX512>();
+  simd_function_reduce_mul<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_function_reduce_mul<std::complex<double>, 4, abi_tag::AVX512>();
 #endif
 }
 
