@@ -4,6 +4,7 @@
 
 #include <cstdlib>
 #include <complex>
+#include <algorithm>
 
 namespace nda::simd {
 
@@ -111,5 +112,48 @@ namespace nda::simd {
   inline simd_d1 max(const simd_d1 &x, const simd_d1 &y) {
     return simd_d1(std::max(x, y));
   }
+
+  // Reduce Min
+  template<>
+  inline simd_i1::value_t reduce_min(const simd_i1&x) {
+    return x;
+  }
+
+  template<>
+  inline simd_l1::value_t reduce_min(const simd_l1&x) {
+    return x;
+  }
+
+  template<>
+  inline simd_f1::value_t reduce_min(const simd_f1&x) {
+    return x;
+  }
+
+  template<>
+  inline simd_d1::value_t reduce_min(const simd_d1&x) {
+    return x;
+  }
+
+  // Reduce Max
+  template<>
+  inline simd_i1::value_t reduce_max(const simd_i1&x) {
+    return x;
+  }
+
+  template<>
+  inline simd_l1::value_t reduce_max(const simd_l1&x) {
+    return x;
+  }
+
+  template<>
+  inline simd_f1::value_t reduce_max(const simd_f1&x) {
+    return x;
+  }
+
+  template<>
+  inline simd_d1::value_t reduce_max(const simd_d1&x) {
+    return x;
+  }
+
 
 } // namespace nda::simd

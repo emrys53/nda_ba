@@ -8,6 +8,7 @@
 #include <complex>
 #include <algorithm>
 #include <bit>
+#include <ranges>
 
 using namespace nda;
 
@@ -477,6 +478,46 @@ void simd_function_max() {
     y.load(tmp2.data());
     for (int j = 0; j < Width; ++j) { tmp[j] = std::max(tmp[j], tmp2[j]); }
     check_simd_array_equal(simd::max(x, y), tmp);
+  }
+}
+
+template<typename T, size_t Width, abi_tag ABI>
+void simd_function_reduce_min() {
+  for (int i = 0; i < 1000; ++i) {
+    simd_type<T, Width, ABI> x;
+    alignas(x.alignment()) std::array<T, Width> tmp  = generate_random_array<T, Width>();
+    x.load(tmp.data());
+    auto simd_reduced = simd::reduce_min(x);
+    auto array_min = std::ranges::min(tmp);
+    if constexpr(std::is_same_v<T, float>) {
+      EXPECT_FLOAT_EQ(simd_reduced, array_min);
+    }
+    else if constexpr(std::is_same_v<T, double>) {
+      EXPECT_DOUBLE_EQ(simd_reduced, array_min);
+    }
+    else {
+      EXPECT_EQ(simd_reduced, array_min);
+    }
+  }
+}
+
+template<typename T, size_t Width, abi_tag ABI>
+void simd_function_reduce_max() {
+  for (int i = 0; i < 1000; ++i) {
+    simd_type<T, Width, ABI> x;
+    alignas(x.alignment()) std::array<T, Width> tmp  = generate_random_array<T, Width>();
+    x.load(tmp.data());
+    auto simd_reduced = simd::reduce_max(x);
+    auto array_min = std::ranges::max(tmp);
+    if constexpr(std::is_same_v<T, float>) {
+      EXPECT_FLOAT_EQ(simd_reduced, array_min);
+    }
+    else if constexpr(std::is_same_v<T, double>) {
+      EXPECT_DOUBLE_EQ(simd_reduced, array_min);
+    }
+    else {
+      EXPECT_EQ(simd_reduced, array_min);
+    }
   }
 }
 
@@ -1135,6 +1176,86 @@ TEST(NDA, SimdMax) {
   simd_function_max<int64_t, 8, abi_tag::AVX512>();
   // simd_bitwise_operations<std::complex<float>, 8, abi_tag::AVX512>();
   // simd_bitwise_operations<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+}
+
+TEST(NDA, SimdReduceMin) {
+  // Default SIMD types
+  simd_function_reduce_min<float, 1, abi_tag::Default>();
+  simd_function_reduce_min<double, 1, abi_tag::Default>();
+  simd_function_reduce_min<int32_t, 1, abi_tag::Default>();
+  simd_function_reduce_min<int64_t, 1, abi_tag::Default>();
+  // simd_function_reduce_min<std::complex<float>, 1, abi_tag::Default>();
+  // simd_function_reduce_min<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+  // SSE SIMD types
+  simd_function_reduce_min<float, 4, abi_tag::SSE>();
+  simd_function_reduce_min<double, 2, abi_tag::SSE>();
+  simd_function_reduce_min<int32_t, 4, abi_tag::SSE>();
+  simd_function_reduce_min<int64_t, 2, abi_tag::SSE>();
+  // simd_function_reduce_min<std::complex<float>, 2, abi_tag::SSE>();
+  // simd_function_reduce_min<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  // AVX SIMD types
+  simd_function_reduce_min<float, 8, abi_tag::AVX>();
+  simd_function_reduce_min<double, 4, abi_tag::AVX>();
+  simd_function_reduce_min<int32_t, 8, abi_tag::AVX>();
+  simd_function_reduce_min<int64_t, 4, abi_tag::AVX>();
+  // simd_function_reduce_min<std::complex<float>, 4, abi_tag::AVX>();
+  // simd_function_reduce_min<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512F__
+  // AVX512 SIMD types
+  simd_function_reduce_min<float, 16, abi_tag::AVX512>();
+  simd_function_reduce_min<double, 8, abi_tag::AVX512>();
+  simd_function_reduce_min<int32_t, 16, abi_tag::AVX512>();
+  simd_function_reduce_min<int64_t, 8, abi_tag::AVX512>();
+  // simd_function_reduce_min<std::complex<float>, 8, abi_tag::AVX512>();
+  // simd_function_reduce_min<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+}
+
+TEST(NDA, SimdReduceMax) {
+  // Default SIMD types
+  simd_function_reduce_max<float, 1, abi_tag::Default>();
+  simd_function_reduce_max<double, 1, abi_tag::Default>();
+  simd_function_reduce_max<int32_t, 1, abi_tag::Default>();
+  simd_function_reduce_max<int64_t, 1, abi_tag::Default>();
+  // simd_function_reduce_min<std::complex<float>, 1, abi_tag::Default>();
+  // simd_function_reduce_min<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+  // SSE SIMD types
+  simd_function_reduce_max<float, 4, abi_tag::SSE>();
+  simd_function_reduce_max<double, 2, abi_tag::SSE>();
+  simd_function_reduce_max<int32_t, 4, abi_tag::SSE>();
+  simd_function_reduce_max<int64_t, 2, abi_tag::SSE>();
+  // simd_function_reduce_min<std::complex<float>, 2, abi_tag::SSE>();
+  // simd_function_reduce_min<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  // AVX SIMD types
+  simd_function_reduce_max<float, 8, abi_tag::AVX>();
+  simd_function_reduce_max<double, 4, abi_tag::AVX>();
+  simd_function_reduce_max<int32_t, 8, abi_tag::AVX>();
+  simd_function_reduce_max<int64_t, 4, abi_tag::AVX>();
+  // simd_function_reduce_min<std::complex<float>, 4, abi_tag::AVX>();
+  // simd_function_reduce_min<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512F__
+  // AVX512 SIMD types
+  simd_function_reduce_max<float, 16, abi_tag::AVX512>();
+  simd_function_reduce_max<double, 8, abi_tag::AVX512>();
+  simd_function_reduce_max<int32_t, 16, abi_tag::AVX512>();
+  simd_function_reduce_max<int64_t, 8, abi_tag::AVX512>();
+  // simd_function_reduce_min<std::complex<float>, 8, abi_tag::AVX512>();
+  // simd_function_reduce_min<std::complex<double>, 4, abi_tag::AVX512>();
 #endif
 }
 

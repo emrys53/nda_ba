@@ -95,7 +95,7 @@ namespace nda::simd {
   template <>
   inline simd_l2 min(const simd_l2 &x, const simd_l2 &y) {
     //TODO: Do Vectorized version in the future.
-    alignas(16) std::array<int64_t, 2> a, b, c;
+    alignas(x.alignment()) std::array<int64_t, 2> a, b, c;
     x.store(a.data());
     y.store(b.data());
     c[0] = std::min(a[0], b[0]);
@@ -127,7 +127,7 @@ namespace nda::simd {
   template <>
   inline simd_l2 max(const simd_l2 &x, const simd_l2 &y) {
     //TODO: Do Vectorized version in the future.
-    alignas(16) std::array<int64_t, 2> a, b, c;
+    alignas(x.alignment()) std::array<int64_t, 2> a, b, c;
     x.store(a.data());
     y.store(b.data());
     c[0] = std::max(a[0], b[0]);
@@ -143,6 +143,64 @@ namespace nda::simd {
   template <>
   inline simd_d2 max(const simd_d2 &x, const simd_d2 &y) {
     return simd_d2{_mm_max_pd(y, x)};
+  }
+
+  // Reduce Min
+  template <>
+  inline simd_i4::value_t reduce_min(const simd_i4 &x) {
+    simd_i4 m_3{_mm_shuffle_epi32(x, NDA_SHUFFLE_MASK4(3, 2, 1, 0))};
+    simd_i4 m_03   = min(x, m_3);
+    simd_i4 m_0321 = min(m_03, simd_i4{_mm_shuffle_epi32(m_03, 0x1)});
+    return _mm_cvtsi128_si32(m_0321);
+  }
+
+  template <>
+  inline simd_l2::value_t reduce_min(const simd_l2 &x) {
+    alignas(x.alignment()) std::array<int64_t, 2> a;
+    x.store(a.data());
+    return a[0] < a[1] ? a[0] : a[1];
+  }
+
+  template <>
+  inline simd_f4::value_t reduce_min(const simd_f4 &x) {
+    simd_f4 m_2{_mm_movehl_ps(x, x)};
+    simd_f4 m_02   = min(x, m_2);
+    simd_f4 m_0231 = min(m_02, simd_f4{_mm_shuffle_ps(m_02, m_02, 1)});
+    return _mm_cvtss_f32(m_0231);
+  }
+
+  template <>
+  inline simd_d2::value_t reduce_min(const simd_d2 &x) {
+    return _mm_cvtsd_f64(min(x, simd_d2{_mm_unpackhi_pd(x, x)}));
+  }
+
+  // Reduce Max
+  template <>
+  inline simd_i4::value_t reduce_max(const simd_i4 &x) {
+    simd_i4 m_3{_mm_shuffle_epi32(x, NDA_SHUFFLE_MASK4(3, 2, 1, 0))};
+    simd_i4 m_03   = max(x, m_3);
+    simd_i4 m_0321 = max(m_03, simd_i4{_mm_shuffle_epi32(m_03, 0x1)});
+    return _mm_cvtsi128_si32(m_0321);
+  }
+
+  template <>
+  inline simd_l2::value_t reduce_max(const simd_l2 &x) {
+    alignas(x.alignment()) std::array<int64_t, 2> a;
+    x.store(a.data());
+    return a[0] < a[1] ? a[1] : a[0];
+  }
+
+  template <>
+  inline simd_f4::value_t reduce_max(const simd_f4 &x) {
+    simd_f4 m_2{_mm_movehl_ps(x, x)};
+    simd_f4 m_02   = max(x, m_2);
+    simd_f4 m_0231 = max(m_02, simd_f4{_mm_shuffle_ps(m_02, m_02, 1)});
+    return _mm_cvtss_f32(m_0231);
+  }
+
+  template <>
+  inline simd_d2::value_t reduce_max(const simd_d2 &x) {
+    return _mm_cvtsd_f64(max(x, simd_d2{_mm_unpackhi_pd(x, x)}));
   }
 
 } // namespace nda::simd

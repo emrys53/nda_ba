@@ -123,5 +123,65 @@ namespace nda::simd {
     return simd_d8(_mm512_max_pd(y,x));
   }
 
+  // Reduce Min
+  template <>
+  inline simd_i16::value_t reduce_min(const simd_i16 &x) {
+    return _mm512_reduce_min_epi32(x);
+   }
+
+  template <>
+  inline simd_l8::value_t reduce_min(const simd_l8 &x) {
+    return _mm512_reduce_min_epi64(x);
+  }
+
+  template <>
+  inline simd_f16::value_t reduce_min(const simd_f16 &x) {
+    //Eigen
+    __m128 lane0 = _mm512_extractf32x4_ps(x, 0);
+    __m128 lane1 = _mm512_extractf32x4_ps(x, 1);
+    __m128 lane2 = _mm512_extractf32x4_ps(x, 2);
+    __m128 lane3 = _mm512_extractf32x4_ps(x, 3);
+    simd_f4 min  = min(min(simd_f4{lane0}, simd_f4{lane1}), min(simd_f4{lane2}, simd_f4{lane3}));
+    return reduce_min(min);
+
+  }
+
+  template <>
+  inline simd_d8::value_t reduce_min(const simd_d8 &x) {
+    __m256d lane0 = _mm512_extractf64x4_pd(x, 0);
+    __m256d lane1 = _mm512_extractf64x4_pd(x, 1);
+    simd_d4 min = min(simd_d4{lane0}, simd_d4{lane1});
+    return reduce_min(min);
+  }
+
+  // Reduce Max
+  template <>
+  inline simd_i16::value_t reduce_max(const simd_i16 &x) {
+    return _mm512_reduce_max_epi32(x);
+  }
+
+  template <>
+  inline simd_l8::value_t reduce_max(const simd_l8 &x) {
+    _mm512_reduce_max_epi64(x)
+  }
+
+  template <>
+  inline simd_f16::value_t reduce_max(const simd_f16 &x) {
+    __m128 lane0 = _mm512_extractf32x4_ps(x, 0);
+    __m128 lane1 = _mm512_extractf32x4_ps(x, 1);
+    __m128 lane2 = _mm512_extractf32x4_ps(x, 2);
+    __m128 lane3 = _mm512_extractf32x4_ps(x, 3);
+    simd_f4 max  = max(max(simd_f4{lane0}, simd_f4{lane1}), max(simd_f4{lane2}, simd_f4{lane3}));
+    return reduce_max(max);
+  }
+
+  template <>
+  inline simd_d8::value_t reduce_max(const simd_d8 &x) {
+    __m256d lane0 = _mm512_extractf64x4_pd(x, 0);
+    __m256d lane1 = _mm512_extractf64x4_pd(x, 1);
+    simd_d4 max = max(simd_d4{lane0}, simd_d4{lane1});
+    return reduce_max(max);
+  }
+
 } // namespace nda::simd
 #endif

@@ -142,5 +142,73 @@ namespace nda::simd {
     return simd_d4{_mm256_max_pd(y, x)};
   }
 
+  // Reduce Min
+  template <>
+  inline simd_i8::value_t reduce_min(const simd_i8 &x) {
+    simd_i4 lo_x{_mm256_extractf128_si256(x, 0)};
+    simd_i4 hi_x{_mm256_extractf128_si256(x, 1)};
+    simd_i8::value_t lo_min = reduce_min(lo_x);
+    simd_i8::value_t hi_min = reduce_min(hi_x);
+    return lo_min < hi_min ? lo_min : hi_min;
+  }
+
+  template <>
+  inline simd_l4::value_t reduce_min(const simd_l4 &x) {
+    alignas(x.alignment()) std::array<int64_t, 4> a;
+    x.store(a.data());
+    simd_l4::value_t lo_min = a[0] < a[1] ? a[0] : a[1];
+    simd_l4::value_t hi_min = a[2] < a[3] ? a[2] : a[3];
+    return lo_min < hi_min ? lo_min : hi_min;
+  }
+
+  template <>
+  inline simd_f8::value_t reduce_min(const simd_f8 &x) {
+    simd_f8 m_04_15_26_37 = min(x, simd_f8{_mm256_permute2f128_ps(x, x, 0x1)});
+    simd_f8 m_0437_1526   = min(m_04_15_26_37, simd_f8{_mm256_shuffle_ps(m_04_15_26_37, m_04_15_26_37, NDA_SHUFFLE_MASK4(3, 2, 1, 0))});
+    simd_f8 m_04371526    = min(m_0437_1526, simd_f8(_mm256_shuffle_ps(m_0437_1526, m_0437_1526, 0x1)));
+    return _mm256_cvtss_f32(m_04371526);
+  }
+
+  template <>
+  inline simd_d4::value_t reduce_min(const simd_d4 &x) {
+    simd_d4 m_02_13 = min(x, simd_d4{_mm256_permute2f128_pd(x, x, 0x1)});
+    simd_d4 m_0213  = min(m_02_13, simd_d4{_mm256_shuffle_pd(m_02_13, m_02_13, 0x1)});
+    return _mm256_cvtsd_f64(m_0213);
+  }
+
+  // Reduce Max
+  template <>
+  inline simd_i8::value_t reduce_max(const simd_i8 &x) {
+    simd_i4 lo_x{_mm256_extractf128_si256(x, 0)};
+    simd_i4 hi_x{_mm256_extractf128_si256(x, 1)};
+    simd_i8::value_t lo_max = reduce_max(lo_x);
+    simd_i8::value_t hi_max = reduce_max(hi_x);
+    return lo_max < hi_max ? hi_max : lo_max;
+  }
+
+  template <>
+  inline simd_l4::value_t reduce_max(const simd_l4 &x) {
+    alignas(x.alignment()) std::array<int64_t, 4> a;
+    x.store(a.data());
+    simd_l4::value_t lo_max = a[0] < a[1] ? a[1] : a[0];
+    simd_l4::value_t hi_max = a[2] < a[3] ? a[3] : a[2];
+    return lo_max < hi_max ? hi_max : lo_max;
+  }
+
+  template <>
+  inline simd_f8::value_t reduce_max(const simd_f8 &x) {
+    simd_f8 m_04_15_26_37 = max(x, simd_f8{_mm256_permute2f128_ps(x, x, 0x1)});
+    simd_f8 m_0437_1526   = max(m_04_15_26_37, simd_f8{_mm256_shuffle_ps(m_04_15_26_37, m_04_15_26_37, NDA_SHUFFLE_MASK4(3, 2, 1, 0))});
+    simd_f8 m_04371526    = max(m_0437_1526, simd_f8(_mm256_shuffle_ps(m_0437_1526, m_0437_1526, 0x1)));
+    return _mm256_cvtss_f32(m_04371526);
+  }
+
+  template <>
+  inline simd_d4::value_t reduce_max(const simd_d4 &x) {
+    simd_d4 m_02_13 = max(x, simd_d4{_mm256_permute2f128_pd(x, x, 0x1)});
+    simd_d4 m_0213  = max(m_02_13, simd_d4{_mm256_shuffle_pd(m_02_13, m_02_13, 0x1)});
+    return _mm256_cvtsd_f64(m_0213);
+  }
+
 } // namespace nda::simd
 #endif
