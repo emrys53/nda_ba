@@ -111,6 +111,10 @@ namespace nda {
 
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+      return simd_type{}-*this;
+    }
   };
 
   template <>
@@ -221,10 +225,14 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+      return simd_type{}-*this;
+    }
   };
 
   template <>
-  class simd_type<float, 32, abi_tag::AVX512> {
+  class simd_type<float, 16, abi_tag::AVX512> {
     using intrinsic_t = __m512;
     using value_t     = float;
 
@@ -335,6 +343,11 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+      const intrinsic_t mask = _mm512_castsi512_ps(_mm512_set1_epi32(0x80000000));
+      return *this ^ simd_type { mask };
+    }
   };
 
   template <>
@@ -448,6 +461,11 @@ namespace nda {
       return *this;
     }
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+     const intrinsic_t mask = _mm512_castsi512_pd(_mm512_set1_epi64(0x8000000000000000ULL));
+      return *this ^ simd_type { mask };
+    }
   };
 
   template <>
@@ -591,6 +609,11 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+      const intrinsic_t mask = _mm512_castsi512_ps(_mm512_set1_epi32(0x80000000));
+      return *this ^ simd_type { mask };
+    }
   };
 
   template <>
@@ -740,6 +763,11 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+     const intrinsic_t mask = _mm512_castsi512_pd(_mm512_set1_epi64(0x8000000000000000ULL));
+      return *this ^ simd_type { mask };
+    }
   };
 } // namespace nda
 

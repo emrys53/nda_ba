@@ -596,6 +596,17 @@ void simd_bitwise_operations() {
   check_simd_array_equal(simd_xor, array_xor);
 }
 
+template <typename T, size_t Width, abi_tag ABI>
+void simd_unary_negate() {
+  for (int i = 0; i < 1000; ++i) {
+    simd_type<T, Width, ABI> x;
+    alignas(x.alignment()) std::array<T, Width> tmp = generate_random_array<T, Width>();
+    x.load(tmp.data());
+    for (int j = 0; j < Width; ++j) { tmp[j] = -tmp[j]; }
+    check_simd_array_equal(-x, tmp);
+  }
+}
+
 TEST(NDA, SimdDefaultConstructor) {
   // Default SIMD types
   simd_type_default_constructor<float, 1, abi_tag::Default>();
@@ -1404,6 +1415,47 @@ TEST(NDA, SimdBitwiseOperations) {
 #endif
 }
 
+TEST(NDA, SimdUnaryNegate) {
+  // Default SIMD types
+  simd_unary_negate<float, 1, abi_tag::Default>();
+  simd_unary_negate<double, 1, abi_tag::Default>();
+  simd_unary_negate<int32_t, 1, abi_tag::Default>();
+  simd_unary_negate<int64_t, 1, abi_tag::Default>();
+  simd_unary_negate<std::complex<float>, 1, abi_tag::Default>();
+  simd_unary_negate<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+  // SSE SIMD types
+  simd_unary_negate<float, 4, abi_tag::SSE>();
+  simd_unary_negate<double, 2, abi_tag::SSE>();
+  simd_unary_negate<int32_t, 4, abi_tag::SSE>();
+  simd_unary_negate<int64_t, 2, abi_tag::SSE>();
+  simd_unary_negate<std::complex<float>, 2, abi_tag::SSE>();
+  simd_unary_negate<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  // AVX SIMD types
+  simd_unary_negate<float, 8, abi_tag::AVX>();
+  simd_unary_negate<double, 4, abi_tag::AVX>();
+  simd_unary_negate<int32_t, 8, abi_tag::AVX>();
+  simd_unary_negate<int64_t, 4, abi_tag::AVX>();
+  simd_unary_negate<std::complex<float>, 4, abi_tag::AVX>();
+  simd_unary_negate<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512F__
+  // AVX512 SIMD types
+  simd_unary_negate<float, 16, abi_tag::AVX512>();
+  simd_unary_negate<double, 8, abi_tag::AVX512>();
+  simd_unary_negate<int32_t, 16, abi_tag::AVX512>();
+  simd_unary_negate<int64_t, 8, abi_tag::AVX512>();
+  simd_unary_negate<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_unary_negate<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+
+}
+
 TEST(NDA, OurSIMD) {
   class add {
     public:
@@ -1423,9 +1475,9 @@ TEST(NDA, OurSIMD) {
     for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
   }
   //TODO: this doesnt work check.
-  auto single_add = [](float a, float b) { return a + b; };
-  auto test                 = nda::map(single_add)(s, x);
-  auto test2                = nda::map(add{})(test, test);
+  auto single_add   = [](float a, float b) { return a + b; };
+  auto test         = nda::map(add{})(s, x);
+  auto test2        = nda::map(add{})(test, test);
   array<float, 2> y = test2;
   std::cout << get_layout_info<decltype(test)>.stride_order << std::endl;
   std::cout << get_layout_info<decltype(test2)>.stride_order << std::endl;

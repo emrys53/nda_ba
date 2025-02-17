@@ -132,6 +132,9 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    //TODO: Be careful when I change default constructor this needs to be updated.
+    simd_type operator-() const { return simd_type{} - *this; }
   };
 
   template <>
@@ -253,6 +256,8 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const { return simd_type{} - *this; }
   };
 
   template <>
@@ -353,6 +358,11 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+      const intrinsic_t mask = _mm_castsi128_ps(_mm_setr_epi32(0x80000000, 0x80000000, 0x80000000, 0x80000000));
+      return *this ^ simd_type { mask };
+    }
   };
 
   template <>
@@ -452,6 +462,11 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+      const intrinsic_t mask = _mm_castsi128_pd(_mm_setr_epi32(0x0, 0x80000000, 0x0, 0x80000000));
+      return *this ^ simd_type { mask };
+    }
   };
 
   template <>
@@ -615,6 +630,11 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+      const intrinsic_t mask = _mm_castsi128_ps(_mm_setr_epi32(0x80000000, 0x80000000, 0x80000000, 0x80000000));
+      return *this ^ simd_type { mask };
+    }
   };
 
   template <>
@@ -767,6 +787,11 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+      const intrinsic_t mask = _mm_castsi128_pd(_mm_setr_epi32(0x0, 0x80000000, 0x0, 0x80000000));
+      return *this ^ simd_type { mask };
+    }
   };
 
 } // namespace nda

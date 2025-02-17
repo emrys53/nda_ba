@@ -41,7 +41,7 @@ static void GEMM(benchmark::State &state) {
 
   for (auto s : state) {
     if constexpr (not Matrix::is_aligned) {
-      auto tmp1 = nda::map(addd{})(A, B);
+      auto tmp1 = nda::map(add{})(A, B);
       auto tmp2 = nda::map(mult{})(tmp1, B);
       auto tmp3 = nda::map(mult{})(tmp2, tmp1);
       auto tmp4 = nda::map(mult{})(tmp3, tmp2);

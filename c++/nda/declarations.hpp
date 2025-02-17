@@ -472,7 +472,7 @@ namespace nda {
   //Specialization for expr_call
   template <typename T, typename F, Array... As>
   struct is_simd_enabled_v2<T, expr_call<F, As...>> {
-    static constexpr bool value = HasLoad<F> and (is_simd_enabled_v2<T, As>::value or ...);
+    static constexpr bool value = HasLoad<F> and (is_simd_enabled_v2<T, As>::value and ...);
   };
 
   //Specialization for expr_unary

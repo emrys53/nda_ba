@@ -165,6 +165,8 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const { return simd_type{} - *this; }
   };
 
   template <>
@@ -335,6 +337,8 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const { return simd_type{} - *this; }
   };
 
   template <>
@@ -434,6 +438,11 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+      const intrinsic_t mask = _mm256_castsi256_ps(_mm256_set1_epi32(0x80000000));
+      return *this ^ simd_type { mask };
+    }
   };
 
   template <>
@@ -533,6 +542,11 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+      const intrinsic_t mask = _mm256_castsi256_pd(_mm256_set1_epi64x(0x8000000000000000ULL));
+      return *this ^ simd_type { mask };
+    }
   };
 
   // c = a * b +  c
@@ -680,6 +694,11 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+      const intrinsic_t mask = _mm256_castsi256_ps(_mm256_set1_epi32(0x80000000));
+      return *this ^ simd_type { mask };
+    }
   };
 
   template <>
@@ -817,6 +836,11 @@ namespace nda {
     }
 
     operator intrinsic_t() const { return value; }
+
+    simd_type operator-() const {
+      const intrinsic_t mask = _mm256_castsi256_pd(_mm256_set1_epi64x(0x8000000000000000ULL));
+      return *this ^ simd_type { mask };
+    }
   };
 } // namespace nda
 

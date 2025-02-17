@@ -77,6 +77,8 @@ namespace nda {
       return *this;
     }
 
+    simd_type operator-() const { return simd_type{-value}; }
+
     bool operator==(const simd_type &other) const { return value == other.value; }
 
     bool operator!=(const simd_type &other) const { return not(*this == other); };
@@ -215,6 +217,8 @@ namespace nda {
       value = (*this / other).value;
       return *this;
     }
+
+    simd_type operator-() const { return simd_type{-value}; }
 
     bool operator==(const simd_type &other) const { return value == other.value; }
 
