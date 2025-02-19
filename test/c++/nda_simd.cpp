@@ -607,6 +607,36 @@ void simd_unary_negate() {
   }
 }
 
+template <typename T, size_t Width, abi_tag ABI>
+void simd_fma_functions() {
+  for (int i = 0; i < 1000; ++i) {
+    simd_type<T, Width, ABI> x, y, z, p, q;
+    alignas(x.alignment()) std::array<T, Width> tmp, tmp2, tmp3, tmp4;
+    tmp  = generate_random_array<T, Width>();
+    tmp2 = generate_random_array<T, Width>();
+    tmp3 = generate_random_array<T, Width>();
+    x.load(tmp.data());
+    y.load(tmp2.data());
+    z.load(tmp3.data());
+    p = simd::fma_add(x, y, z);
+    q = x * y + z;
+    q.store(tmp4.data());
+    check_simd_array_equal(p, tmp4);
+    p = simd::fma_sub(x, y, z);
+    q = x * y - z;
+    q.store(tmp4.data());
+    check_simd_array_equal(q, tmp4);
+    p = simd::fma_nadd(x, y, z);
+    q = -(x * y) + z;
+    q.store(tmp4.data());
+    check_simd_array_equal(q, tmp4);
+    p = simd::fma_nsub(x, y, z);
+    q = -(x * y) - z;
+    q.store(tmp4.data());
+    check_simd_array_equal(q, tmp4);
+  }
+}
+
 TEST(NDA, SimdDefaultConstructor) {
   // Default SIMD types
   simd_type_default_constructor<float, 1, abi_tag::Default>();
@@ -1452,6 +1482,48 @@ TEST(NDA, SimdUnaryNegate) {
   simd_unary_negate<int64_t, 8, abi_tag::AVX512>();
   simd_unary_negate<std::complex<float>, 8, abi_tag::AVX512>();
   simd_unary_negate<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+}
+
+TEST(NDA, SimdFMAFunctions) {
+#ifdef __FMA__
+  // Default SIMD types
+  simd_fma_functions<float, 1, abi_tag::Default>();
+  simd_fma_functions<double, 1, abi_tag::Default>();
+  // simd_fma_functions<int32_t, 1, abi_tag::Default>();
+  // simd_fma_functions<int64_t, 1, abi_tag::Default>();
+  simd_fma_functions<std::complex<float>, 1, abi_tag::Default>();
+  simd_fma_functions<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+  // SSE SIMD types
+  simd_fma_functions<float, 4, abi_tag::SSE>();
+  simd_fma_functions<double, 2, abi_tag::SSE>();
+  // simd_fma_functions<int32_t, 4, abi_tag::SSE>();
+  // simd_fma_functions<int64_t, 2, abi_tag::SSE>();
+  simd_fma_functions<std::complex<float>, 2, abi_tag::SSE>();
+  simd_fma_functions<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  // AVX SIMD types
+  simd_fma_functions<float, 8, abi_tag::AVX>();
+  simd_fma_functions<double, 4, abi_tag::AVX>();
+  // simd_fma_functions<int32_t, 8, abi_tag::AVX>();
+  // simd_fma_functions<int64_t, 4, abi_tag::AVX>();
+  simd_fma_functions<std::complex<float>, 4, abi_tag::AVX>();
+  simd_fma_functions<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512F__
+  // AVX512 SIMD types
+  simd_fma_functions<float, 16, abi_tag::AVX512>();
+  simd_fma_functions<double, 8, abi_tag::AVX512>();
+  // simd_fma_functions<int32_t, 16, abi_tag::AVX512>();
+  // simd_fma_functions<int64_t, 8, abi_tag::AVX512>();
+  simd_fma_functions<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_fma_functions<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
 #endif
 }
 

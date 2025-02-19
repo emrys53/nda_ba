@@ -1,5 +1,5 @@
 #pragma once
-#ifdef __AVX512F__
+#ifndef __AVX512F__
 #include "./type.hpp"
 #include "../functions_forward.hpp"
 #include "../../../macros.hpp"
@@ -282,6 +282,92 @@ namespace nda::simd {
     simd_cd2 hi{_mm512_extractf64x4_pd(x, 1)};
     return reduce_mul(lo * hi);
   }
+
+  #ifdef __FMA__
+  // FMA ADD
+  template <>
+  inline simd_f16 fma_add(const simd_f16 &x, const simd_f16 &y, const simd_f16 &z) {
+    return simd_f16(_mm512_fmadd_ps(x, y, z));
+  }
+
+  template <>
+  inline simd_d8 fma_add(const simd_d8 &x, const simd_d8 &y, const simd_d8 &z) {
+    return simd_d8(_mm512_fmadd_pd(x, y, z));
+  }
+
+  template <>
+  inline simd_cf8 fma_add(const simd_cf8 &x, const simd_cf8 &y, const simd_cf8 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_cd4 fma_add(const simd_cd4 &x, const simd_cd4 &y, const simd_cd4 &z) {
+    return x * y + z;
+  }
+
+  //FMA_SUB
+  template <>
+  inline simd_f16 fma_sub(const simd_f16 &x, const simd_f16 &y, const simd_f16 &z) {
+    return simd_f16(_mm512_fmsub_ps(x, y, z));
+  }
+
+  template <>
+  inline simd_d8 fma_sub(const simd_d8 &x, const simd_d8 &y, const simd_d8 &z) {
+    return simd_d8(_mm512_fmsub_pd(x, y, z));
+  }
+
+  template <>
+  inline simd_cf8 fma_sub(const simd_cf8 &x, const simd_cf8 &y, const simd_cf8 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_cd4 fma_sub(const simd_cd4 &x, const simd_cd4 &y, const simd_cd4 &z) {
+    return x * y + z;
+  }
+
+  //FMA_NADD
+  template <>
+  inline simd_f16 fma_nadd(const simd_f16 &x, const simd_f16 &y, const simd_f16 &z) {
+    return simd_f16(_mm512_fnmadd_ps(x, y, z));
+  }
+
+  template <>
+  inline simd_d8 fma_nadd(const simd_d8 &x, const simd_d8 &y, const simd_d8 &z) {
+    return simd_d8(_mm512_fnmadd_pd(x, y, z));
+  }
+
+  template <>
+  inline simd_cf8 fma_nadd(const simd_cf8 &x, const simd_cf8 &y, const simd_cf8 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_cd4 fma_nadd(const simd_cd4 &x, const simd_cd4 &y, const simd_cd4 &z) {
+    return x * y + z;
+  }
+
+  //FMA_NSUB
+  template <>
+  inline simd_f16 fma_nsub(const simd_f16 &x, const simd_f16 &y, const simd_f16 &z) {
+    return simd_f16(_mm512_fnmsub_ps(x, y, z));
+  }
+
+  template <>
+  inline simd_d8 fma_nsub(const simd_d8 &x, const simd_d8 &y, const simd_d8 &z) {
+    return simd_d8(_mm512_fnmsub_pd(x, y, z));
+  }
+
+  template <>
+  inline simd_cf8 fma_nsub(const simd_cf8 &x, const simd_cf8 &y, const simd_cf8 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_cd4 fma_nsub(const simd_cd4 &x, const simd_cd4 &y, const simd_cd4 &z) {
+    return x * y + z;
+  }
+#endif
 
 } // namespace nda::simd
 #endif

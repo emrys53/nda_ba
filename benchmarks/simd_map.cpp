@@ -33,7 +33,7 @@ static void GEMM(benchmark::State &state) {
     native_simd<value_t> load(native_simd<value_t> x, native_simd<value_t> y) const { return (x * x * x + y) * (x + y); };
   };
   struct add {
-    __attribute__((optimize("no-tree-vectorize"))) double operator()(value_t x, value_t y) const { return x + y; };
+    __attribute__((optimize("no-tree-vectorize"))) value_t operator()(value_t x, value_t y) const { return x + y; };
   };
   struct mul {
     __attribute__((optimize("no-tree-vectorize"))) value_t operator()(value_t x, value_t y) const { return (x * x * x + y) * (x + y); };
