@@ -312,7 +312,7 @@ $(function(){initNavTree('__impl__basic__array__view__common_8hpp_source.html','
 <div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  <span class="keywordflow">return</span> call&lt;Algebra, true&gt;(*<span class="keyword">this</span>, x);</div>
 <div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>}</div>
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span></div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span><span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">int</span> iterator_rank = (<a class="code hl_function" href="group__layout__utils.html#ga2446a9e6ebbe07bc8733e92af41d93e1">has_strided_1d</a>(layout_t::layout_prop) ? 1 : Rank);</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span><span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">int</span> iterator_rank = (<a class="code hl_function" href="group__layout__utils.html#ga2446a9e6ebbe07bc8733e92af41d93e1">has_strided_1d</a>(layout_t::layout_prop) and not(is_aligned and is_padded) ? 1 : Rank);</div>
 <div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span></div>
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span><span class="keyword">using </span>const_iterator = array_iterator&lt;iterator_rank, ValueType const, typename AccessorPolicy::template accessor&lt;ValueType&gt;::pointer&gt;;</div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span></div>

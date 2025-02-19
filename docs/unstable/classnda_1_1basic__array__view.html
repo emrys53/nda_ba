@@ -416,8 +416,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ad62306c6bb0dd851a1b254d1f1190f8f" id="r_ad62306c6bb0dd851a1b254d1f1190f8f"><td class="memItemLeft" align="right" valign="top"><a id="ad62306c6bb0dd851a1b254d1f1190f8f" name="ad62306c6bb0dd851a1b254d1f1190f8f"></a>
-static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>iterator_rank</b> = (<a class="el" href="group__layout__utils.html#ga2446a9e6ebbe07bc8733e92af41d93e1">has_strided_1d</a>(layout_t::layout_prop) ? 1 : Rank)</td></tr>
-<tr class="memdesc:ad62306c6bb0dd851a1b254d1f1190f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rank of the <a class="el" href="classnda_1_1array__iterator.html" title="Iterator for nda::basic_array and nda::basic_array_view types.">nda::array_iterator</a> for the view/array. <br /></td></tr>
+static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>iterator_rank</b> = (<a class="el" href="group__layout__utils.html#ga2446a9e6ebbe07bc8733e92af41d93e1">has_strided_1d</a>(layout_t::layout_prop) and not(is_aligned and is_padded) ? 1 : Rank)</td></tr>
+<tr class="memdesc:ad62306c6bb0dd851a1b254d1f1190f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rank of the <a class="el" href="classnda_1_1array__iterator.html" title="Iterator for nda::basic_array and nda::basic_array_view types.">nda::array_iterator</a> for the view/array. // TODO: Optimize it better in the future for aligned/padded arrays. <br /></td></tr>
 <tr class="separator:ad62306c6bb0dd851a1b254d1f1190f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fb22cdf52eb965f95782f12420952e4" id="r_a2fb22cdf52eb965f95782f12420952e4"><td class="memItemLeft" align="right" valign="top"><a id="a2fb22cdf52eb965f95782f12420952e4" name="a2fb22cdf52eb965f95782f12420952e4"></a>
 static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>rank</b> = Rank</td></tr>
