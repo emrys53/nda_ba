@@ -1463,11 +1463,12 @@ TEST(NDA, OurSIMD) {
 
     native_simd<float> load(native_simd<float> a, native_simd<float> b) const { return a + b; }
   };
-  const long size1 = 11;
-  const long size2 = 22;
+  const long size1 = 13;
+  const long size2 = 13;
   float k          = 1;
-  array_aligned<float, 2> s({size1, size2});
-  array_aligned<float, 2> x({size1, size2});
+  const float xx   = 5;
+  matrix_aligned<float> s({size1, size2});
+  matrix_aligned<float> x({size1, size2});
   for (int i = 0; i < size1; ++i) {
     for (int j = 0; j < size2; ++j) { s(i, j) = k++; }
   }
@@ -1475,18 +1476,24 @@ TEST(NDA, OurSIMD) {
     for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
   }
   //TODO: this doesnt work check.
-  auto single_add   = [](float a, float b) { return a + b; };
-  auto test         = nda::map(add{})(s, x);
-  auto test2        = nda::map(add{})(test, test);
-  array<float, 2> y = test2;
-  std::cout << get_layout_info<decltype(test)>.stride_order << std::endl;
-  std::cout << get_layout_info<decltype(test2)>.stride_order << std::endl;
-  std::cout << C_stride_order<2> << std::endl;
-  std::cout << is_simd_enabled_v2<float, decltype(y)>::value << std::endl;
-  std::cout << is_simd_enabled_v2<float, decltype(s)>::value << std::endl;
-  std::cout << is_simd_enabled_v2<float, decltype(x)>::value << std::endl;
-  std::cout << is_simd_enabled_v2<float, decltype(test)>::value << std::endl;
-  std::cout << is_simd_enabled_v2<float, decltype(test2)>::value << std::endl;
+  auto single_add  = [](float a, float b) { return a + b; };
+  auto test        = nda::map(add{})(s, x);
+  auto test2       = nda::map(add{})(test, test);
+  auto test3       = test2 - test2;
+  auto test4       = test3 + 7.0f;
+  matrix_aligned y = test4;
+  // for (auto asd : s) { std::cout << asd << std::endl; }
+  // std::cout << get_layout_info<decltype(y)>.stride_order << std::endl;
+  // std::cout << get_layout_info<decltype(test4)>.stride_order << std::endl;
+  // std::cout << C_stride_order<2> << std::endl;
+  // std::cout << is_simd_enabled_v2<float, decltype(y)>::value << std::endl;
+  // std::cout << is_simd_enabled_v2<float, decltype(s)>::value << std::endl;
+  // std::cout << is_simd_enabled_v2<float, decltype(x)>::value << std::endl;
+  // std::cout << is_simd_enabled_v2<float, decltype(test)>::value << std::endl;
+  // std::cout << is_simd_enabled_v2<float, decltype(test2)>::value << std::endl;
+  // std::cout << is_simd_enabled_v2<float, decltype(test3)>::value << std::endl;
+  // std::cout << is_simd_enabled_v2<float, decltype(test4)>::value << std::endl;
+  //
   for (int i = 0; i < size1; ++i) {
     for (int j = 0; j < size2; ++j) { std::cout << y(i, j) << " "; }
     std::cout << std::endl;

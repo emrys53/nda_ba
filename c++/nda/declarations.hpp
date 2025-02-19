@@ -478,13 +478,15 @@ namespace nda {
   //Specialization for expr_unary
   template <typename T, char OP, Array A>
   struct is_simd_enabled_v2<T, expr_unary<OP, A>> {
-    static constexpr bool value = false; // TODO:
+    static constexpr bool value = is_simd_enabled_v2<T, A>::value;
   };
 
   //Specialization for expr
   template <typename T, char OP, typename L, typename R>
   struct is_simd_enabled_v2<T, expr<OP, L, R>> {
-    static constexpr bool value = false; // TODO:
+    static constexpr bool value = is_scalar_v<L> ? (is_simd_enabled_v2<T, R>::value and std::is_same_v<T, std::remove_cvref_t<L>>) :
+       is_scalar_v<R>                            ? (is_simd_enabled_v2<T, L>::value and std::is_same_v<T, std::remove_cvref_t<R>>) :
+                                                   (is_simd_enabled_v2<T, L>::value and is_simd_enabled_v2<T, R>::value);
   };
 
   template <typename T, typename U>

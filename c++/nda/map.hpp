@@ -112,29 +112,10 @@ namespace nda {
       return f(std::get<Is>(a)[arg]...);
     }
 
+    //TODO: implement fake_simd in functors to fallback to scalar version of simd operations.
     template <size_t... Is, typename... Args>
     [[gnu::always_inline]] auto _call_load(std::index_sequence<Is...>, Args const &...args) const {
-      // if constexpr(HasLoadWithArguments<F, decltype(std::get<Is>(a).load(args...))...>){
-
-      // }
       return f.load(std::get<Is>(a).load(args...)...);
-      // if constexpr (HasLoad<F>) {
-      //   return f.load(std::get<Is>(a).load(args...)...);
-      // } else {
-      //   auto init              = f(std::get<Is>(a)(args...)...);
-      //   using return_t         = decltype(init);
-      //   const size_t simd_size = native_simd<return_t>::size();
-      //   alignas(native_simd<return_t>::alignment()) std::array<return_t, simd_size> helper;
-      //   helper[0]                            = init;
-      //   constexpr size_t num_args            = sizeof...(Args);
-      //   std::array<long, num_args> arg_array = {args...};
-      //   ++arg_array[num_args - 1];
-      //   for (int i = 1; i < simd_size; ++i) {
-      //     helper[i] = std::apply([&](auto &&...unpacked_args) { return _call(t, unpacked_args...); }, arg_array);
-      //     ++arg_array[num_args - 1];
-      //   }
-      //   return native_simd<return_t>(helper.data());
-      // }
     }
 
     public:
