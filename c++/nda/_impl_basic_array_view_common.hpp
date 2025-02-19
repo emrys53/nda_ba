@@ -339,8 +339,8 @@ decltype(auto) operator[](T const &x) && noexcept(has_no_boundcheck) {
   return call<Algebra, true>(*this, x);
 }
 
-/// Rank of the nda::array_iterator for the view/array.
-static constexpr int iterator_rank = (has_strided_1d(layout_t::layout_prop) ? 1 : Rank);
+/// Rank of the nda::array_iterator for the view/array. // TODO: Optimize it better in the future for aligned/padded arrays.
+static constexpr int iterator_rank = (has_strided_1d(layout_t::layout_prop) and not(is_aligned and is_padded) ? 1 : Rank);
 
 /// Const iterator type of the view/array.
 using const_iterator = array_iterator<iterator_rank, ValueType const, typename AccessorPolicy::template accessor<ValueType>::pointer>;
