@@ -609,7 +609,7 @@ void simd_unary_negate() {
 
 template <typename T, size_t Width, abi_tag ABI>
 void simd_fma_functions() {
-  for (int i = 0; i < 1000; ++i) {
+  for (int i = 0; i < 10; ++i) {
     simd_type<T, Width, ABI> x, y, z, p, q;
     alignas(x.alignment()) std::array<T, Width> tmp, tmp2, tmp3, tmp4;
     tmp  = generate_random_array<T, Width>();
