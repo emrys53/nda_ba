@@ -83,19 +83,11 @@ namespace nda {
     return fold(std::move(f), a, get_value_t<A>{});
   }
 
-  template <bool isAligned, Array A, typename F_SCALAR, typename F_SIMD, Vectorizable R>
+  template <Array A, typename F_SIMD, typename F_SCALAR, Vectorizable R>
+    requires(vectorizable_array<A> and std::is_same_v<R, get_value_t<A>>)
   auto fold(F_SIMD f_simd, F_SCALAR f_scalar, A const &a, native_simd<R> r_simd, R r_scalar) {
-    nda::for_each(
-       a.shape(),
-       [&a, &r_simd, &f_simd](auto &&...args) {
-         if constexpr (isAligned) {
-           r_simd = f_simd(r_simd, native_simd<R>(&a(args...)));
-         } else {
-           native_simd<R> tmp;
-           tmp.load_unaligned(&a(args...));
-           r_simd = f_simd(r_simd, tmp);
-         }
-       },
+   nda::for_each_static<0, get_layout_info<A>.stride_order>(
+       a.shape(), [&a, &r_simd, &f_simd](auto &&...args) { r_simd = f_simd(r_simd, native_simd<R>(a.load(args...))); },
        [&a, &r_scalar, &f_scalar](auto &&...args) { r_scalar = f_scalar(r_scalar, a(args...)); }, native_simd<R>::size());
     alignas(r_simd.alignment()) std::array<R, r_simd.size()> res;
     r_simd.store(res.data());
@@ -219,6 +211,28 @@ namespace nda {
    */
   template <ArrayOfRank<2> A>
   double frobenius_norm(A const &a) {
+    if constexpr (vectorizable_array<A> and not is_complex_v<get_value_t<A>>) {
+      std::cout << "VECTORIZED" << std::endl;
+      using value_t = get_value_t<A>;
+      using simd_t  = native_simd<value_t>;
+      simd_t r_simd(value_t(0));
+      auto f_simd = [&a, &r_simd](auto &&...args) {
+        simd_t x   = a.load(args...);
+        simd_t abs = simd::abs(x);
+        if constexpr (std::is_integral_v<value_t>) {
+          r_simd = abs * abs + r_simd;
+        } else {
+          r_simd = simd::fma_add(abs, abs, r_simd);
+        }
+      };
+      double r      = 0;
+      auto f_scalar = [&a, &r](auto &&...args) {
+        auto abs = std::abs(a(args...));
+        r        = abs * abs + r;
+      };
+      nda::for_each_static<0, get_layout_info<A>.stride_order>(a.shape(), std::move(f_simd), std::move(f_scalar), simd_t::size());
+      return std::sqrt((static_cast<double>(simd::reduce_sum(r_simd)) + r));
+    }
     return std::sqrt(fold(
        [](double r, auto const &x) -> double {
          auto ab = std::abs(x);
