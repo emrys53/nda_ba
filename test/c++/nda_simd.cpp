@@ -1552,9 +1552,12 @@ TEST(NDA, OurSIMD) {
   auto test2              = nda::map(add{})(test, test);
   auto test3              = test2 - test2;
   auto test4              = test3 + 7.0f;
-  matrix_aligned<float> y = test4 + s; // Without float template deduction fails in clang.
+  auto  y = test4 + s + test2 + test + s + x; // Without float template deduction fails in clang.
+  std::cout << min_element(y) << std::endl;
+  std::cout << max_element(y) << std::endl;
 
-  for (auto asd : s) { std::cout << asd << std::endl; }
+  std::cout << (get_layout_info<decltype(y)>.prop == layout_prop_e::contiguous) << std::endl;
+  // for (auto asd : s) { std::cout << asd << std::endl; }
   // std::cout << get_layout_info<decltype(y)>.stride_order << std::endl;
   // std::cout << get_layout_info<decltype(test4)>.stride_order << std::endl;
   // std::cout << C_stride_order<2> << std::endl;

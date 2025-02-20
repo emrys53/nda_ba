@@ -1,7 +1,7 @@
 #include "./bench_common.hpp"
 #include <nda/blas.hpp>
 
-using value_t   = float;
+using value_t   = std::complex<float>;
 const long Nmin = 10;
 const long Nmax = 1 << 9;
 
@@ -15,28 +15,25 @@ static void GEMM(benchmark::State &state) {
   for (int i = 0; i < N; ++i) {
     for (int j = 0; j < N; ++j) {
       for (int k = 0; k < N; ++k) {
-        A(i, j, k) = 0.001 * j + 0.00001 * k + 0.0002 * i;
-        B(i, j, k) = 0.002 * k + 0.00003 * i + 0.00004 * j;
+        A(i, j, k) = {0.001 * j + 0.00001 * k + 0.0002 * i, 0.0001};
+        B(i, j, k) = {0.002 * k + 0.00003 * i + 0.00004 * j, 0.0004};
       }
     }
   }
   static const long L = N;
   struct addd {
-    __attribute__((optimize("no-tree-vectorize")))  value_t operator()(value_t x, value_t y) const { return x + y; }
-    native_simd<value_t> load(const native_simd<value_t> x, native_simd<value_t> y) const {
-      return x + y;
-      ;
-    };
+    value_t operator()(value_t x, value_t y) const { return x + y; }
+    native_simd<value_t> load(const native_simd<value_t> x, native_simd<value_t> y) const { return x + y; };
   };
   struct mult {
-    __attribute__((optimize("no-tree-vectorize"))) value_t operator()(value_t x, value_t y) const { return x * y; };
-    native_simd<value_t> load(native_simd<value_t> x, native_simd<value_t> y) const { return (x * x * x + y) * (x + y); };
+    value_t operator()(value_t x, value_t y) const { return x * y; };
+    native_simd<value_t> load(native_simd<value_t> x, native_simd<value_t> y) const { return (x * y); };
   };
   struct add {
-    __attribute__((optimize("no-tree-vectorize"))) value_t operator()(value_t x, value_t y) const { return x + y; };
+    value_t operator()(value_t x, value_t y) const { return x + y; };
   };
   struct mul {
-    __attribute__((optimize("no-tree-vectorize"))) value_t operator()(value_t x, value_t y) const { return (x * x * x + y) * (x + y); };
+    value_t operator()(value_t x, value_t y) const { return (x * y); };
   };
 
   for (auto s : state) {
@@ -47,8 +44,8 @@ static void GEMM(benchmark::State &state) {
       auto tmp4 = nda::map(mult{})(tmp3, tmp2);
       auto tmp5 = nda::map(mult{})(tmp4, tmp3);
       auto tmp6 = nda::map(mult{})(tmp5, tmp4);
-      volatile Matrix tmp7(tmp6);
-      benchmark::DoNotOptimize(tmp7);
+      // volatile Matrix tmp7(tmp6);
+      benchmark::DoNotOptimize(sum(tmp6));
       benchmark::ClobberMemory();
     } else {
 
@@ -58,7 +55,7 @@ static void GEMM(benchmark::State &state) {
       auto tmp4 = nda::map(mult{})(tmp3, tmp2);
       auto tmp5 = nda::map(mult{})(tmp4, tmp3);
       auto tmp6 = nda::map(mult{})(tmp5, tmp4);
-      volatile Matrix tmp7(tmp6);
+      // volatile Matrix tmp7(tmp6);
       // for (int i = 0; i < N; i++) {
       //   for (int j = 0; j < N; j++) {
       //     if (tmp7(i, j) != tmp77(i, j)) {
@@ -74,7 +71,7 @@ static void GEMM(benchmark::State &state) {
       //     }
       //   }
       // }
-      benchmark::DoNotOptimize(tmp7);
+      benchmark::DoNotOptimize(sum(tmp6));
       benchmark::ClobberMemory();
     }
   }

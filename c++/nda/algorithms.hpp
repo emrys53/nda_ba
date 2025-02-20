@@ -161,6 +161,16 @@ namespace nda {
    */
   template <Array A>
   auto max_element(A const &a) {
+    if constexpr (vectorizable_array<A>) {
+      using value_t = get_value_t<A>;
+      using simd_t  = native_simd<value_t>;
+      simd_t max_simd(get_first_element(a));
+      auto f_simd        = [&a, &max_simd](auto &&...args) { max_simd = simd::max(max_simd, a.load(args...)); };
+      value_t max_scalar = get_first_element(a);
+      auto f_scalar      = [&a, &max_scalar](auto &&...args) { max_scalar = std::max(max_scalar, a(args...)); };
+      nda::for_each_static<0, get_layout_info<A>.stride_order>(a.shape(), std::move(f_simd), std::move(f_scalar), simd_t::size());
+      return std::max(max_scalar, simd::reduce_max(max_simd));
+    }
     return fold(
        [](auto const &x, auto const &y) {
          using std::max;
@@ -180,6 +190,17 @@ namespace nda {
    */
   template <Array A>
   auto min_element(A const &a) {
+
+    if constexpr (vectorizable_array<A>) {
+      using value_t = get_value_t<A>;
+      using simd_t  = native_simd<value_t>;
+      simd_t min_simd(get_first_element(a));
+      auto f_simd        = [&a, &min_simd](auto &&...args) { min_simd = simd::min(min_simd, a.load(args...)); };
+      value_t min_scalar = get_first_element(a);
+      auto f_scalar      = [&a, &min_scalar](auto &&...args) { min_scalar = std::min(min_scalar, a(args...)); };
+      nda::for_each_static<0, get_layout_info<A>.stride_order>(a.shape(), std::move(f_simd), std::move(f_scalar), simd_t::size());
+      return std::min(min_scalar, simd::reduce_min(min_simd));
+    }
     return fold(
        [](auto const &x, auto const &y) {
          using std::min;
@@ -218,18 +239,20 @@ namespace nda {
     requires(nda::Scalar<Value> or nda::Array<Value>)
   {
     if constexpr (nda::Scalar<Value>) {
+      if constexpr (vectorizable_array<A>) {
+        using value_t = get_value_t<A>;
+        using simd_t  = native_simd<value_t>;
+        simd_t sum_simd(value_t{0});
+        auto f_simd = [&a, &sum_simd](auto &&...args) { sum_simd += a.load(args...); };
+        value_t sum_scalar{0};
+        auto f_scalar = [&a, &sum_scalar](auto &&...args) { sum_scalar += a(args...); };
+        nda::for_each_static<0, get_layout_info<A>.stride_order>(a.shape(), std::move(f_simd), std::move(f_scalar), simd_t::size());
+        return sum_scalar + simd::reduce_sum(sum_simd);
+      }
       return fold(std::plus<>{}, a);
     } else { // Array<Value>
       return fold(std::plus<>{}, a, Value::zeros(get_first_element(a).shape()));
     }
-  }
-
-  template <bool isAligned, Array A, typename Value = get_value_t<A>>
-  auto sum(A const &a)
-    requires(Vectorizable<Value>)
-  {
-    return fold<isAligned>([](native_simd<Value> lhs, native_simd<Value> rhs) { return lhs + rhs; }, std::plus<>{}, a, native_simd<Value>(Value(0)),
-                           Value(0));
   }
 
   /**
@@ -244,18 +267,20 @@ namespace nda {
     requires(nda::Scalar<Value> or nda::Array<Value>)
   {
     if constexpr (nda::Scalar<Value>) {
+      if constexpr (vectorizable_array<A>) {
+        using value_t = get_value_t<A>;
+        using simd_t  = native_simd<value_t>;
+        simd_t product_simd(value_t{1});
+        auto f_simd = [&a, &product_simd](auto &&...args) { product_simd *= a.load(args...); };
+        value_t product_scalar{1};
+        auto f_scalar = [&a, &product_scalar](auto &&...args) { product_scalar *= a(args...); };
+        nda::for_each_static<0, get_layout_info<A>.stride_order>(a.shape(), std::move(f_simd), std::move(f_scalar), simd_t::size());
+        return product_scalar * simd::reduce_mul(product_simd);
+      }
       return fold(std::multiplies<>{}, a, get_value_t<A>{1});
     } else { // Array<Value>
       return fold(std::multiplies<>{}, a, Value::ones(get_first_element(a).shape()));
     }
-  }
-
-  template <bool isAligned, Array A, typename Value = get_value_t<A>>
-  auto product(A const &a)
-    requires(Vectorizable<Value>)
-  {
-    return fold<isAligned>([](native_simd<Value> lhs, native_simd<Value> rhs) { return lhs * rhs; }, std::multiplies<>{}, a,
-                           native_simd<Value>(Value(1)), Value(1));
   }
 
   /**
@@ -270,7 +295,17 @@ namespace nda {
   template <Array A, Array B>
     requires(nda::get_rank<A> == nda::get_rank<B>)
   [[nodiscard]] constexpr auto hadamard(A &&a, B &&b) {
-    return nda::map([](auto const &x, auto const &y) { return x * y; })(std::forward<A>(a), std::forward<B>(b));
+    if constexpr (vectorizable_array<A> and vectorizable_array<B> and std::is_same_v<get_value_t<A>, get_value_t<B>>) {
+      using value_t = get_value_t<A>;
+      using simd_t  = native_simd<value_t>;
+      struct mul {
+        value_t operator()(const value_t &x, const value_t &y) const { return x * y; }
+        simd_t load(const simd_t &x, const simd_t &y) const { return x * y; };
+      };
+      return nda::map(mul{})(std::forward<A>(a), std::forward<B>(b));
+    } else {
+      return nda::map([](auto const &x, auto const &y) { return x * y; })(std::forward<A>(a), std::forward<B>(b));
+    }
   }
 
   /**

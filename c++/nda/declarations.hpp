@@ -492,6 +492,9 @@ namespace nda {
   template <typename T, typename U>
   inline static constexpr bool is_simd_enabled_v2_v = is_simd_enabled_v2<T, U>::value;
 
+  template<Array A>
+  inline static constexpr bool vectorizable_array = is_simd_enabled_v2_v<get_value_t<A>, A> and get_layout_info<A>.stride_order != static_cast<uint64_t>(-1) and get_layout_info<A>.prop == layout_prop_e::contiguous;
+
   /** @} */
 
 } // namespace nda

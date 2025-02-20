@@ -142,6 +142,12 @@ namespace nda {
     detail::for_each_static_impl<0, StaticExtents, StrideOrder>(shape, idxs, f);
   }
 
+  template <uint64_t StaticExtents, uint64_t StrideOrder,typename F_SIMD, typename F_SCALAR, auto R, std::integral Int = long>
+ FORCEINLINE void for_each_static(std::array<Int, R> const &shape,F_SIMD &&f_simd, F_SCALAR &&f_scalar, size_t step_size) { // NOLINT (we do not want to forward here)
+    auto idxs = nda::stdutil::make_initialized_array<R>(0l);
+    detail::for_each_static_impl<0, StaticExtents, StrideOrder>(shape, idxs, f_simd, f_scalar, step_size);
+  }
+
   /**
    * @brief Loop over all possible index values of a given shape and apply a function to them.
    *
