@@ -1,5 +1,5 @@
 #pragma once
-#ifndef __AVX512F__
+#ifdef __AVX512F__
 #include "./type.hpp"
 #include "../functions_forward.hpp"
 #include "../../../macros.hpp"

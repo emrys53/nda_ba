@@ -625,15 +625,15 @@ void simd_fma_functions() {
     p = simd::fma_sub(x, y, z);
     q = x * y - z;
     q.store(tmp4.data());
-    check_simd_array_equal(q, tmp4);
+    check_simd_array_equal(p, tmp4);
     p = simd::fma_nadd(x, y, z);
     q = -(x * y) + z;
     q.store(tmp4.data());
-    check_simd_array_equal(q, tmp4);
+    check_simd_array_equal(p, tmp4);
     p = simd::fma_nsub(x, y, z);
     q = -(x * y) - z;
     q.store(tmp4.data());
-    check_simd_array_equal(q, tmp4);
+    check_simd_array_equal(p, tmp4);
   }
 }
 

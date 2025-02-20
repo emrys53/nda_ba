@@ -369,19 +369,21 @@ namespace nda::simd {
 
   template <>
   inline simd_cf4 fma_nadd(const simd_cf4 &x, const simd_cf4 &y, const simd_cf4 &z) {
-    __m256 x_odd  = _mm256_movehdup_ps(x);
-    __m256 x_even = _mm256_moveldup_ps(x);
-    __m256 y_swap = _mm256_permute_ps(y, NDA_SHUFFLE_MASK4(1, 0, 3, 2));
-    __m256 result = _mm256_fmaddsub_ps(x_odd, y_swap, _mm256_fmaddsub_ps(x_even, y, z));
+    __m256 x_odd         = _mm256_movehdup_ps(x);
+    __m256 x_even        = _mm256_moveldup_ps(x);
+    __m256 y_swap        = _mm256_permute_ps(y, NDA_SHUFFLE_MASK4(1, 0, 3, 2));
+    simd_cf4 y_swap_conj = conj(simd_cf4(y_swap));
+    __m256 result        = _mm256_fmsub_ps(x_odd, y_swap_conj, _mm256_fmsub_ps(x_even, y, z));
     return simd_cf4(result);
   }
 
   template <>
   inline simd_cd2 fma_nadd(const simd_cd2 &x, const simd_cd2 &y, const simd_cd2 &z) {
-    __m256d x_odd  = _mm256_permute_pd(x, 0xF);
-    __m256d x_even = _mm256_movedup_pd(x);
-    __m256d y_swap = _mm256_permute_pd(y, 0x5);
-    __m256d result = _mm256_fmaddsub_pd(x_odd, y_swap, _mm256_fmaddsub_pd(x_even, y, z));
+    __m256d x_odd        = _mm256_permute_pd(x, 0xF);
+    __m256d x_even       = _mm256_movedup_pd(x);
+    __m256d y_swap       = _mm256_permute_pd(y, 0x5);
+    simd_cd2 y_swap_conj = conj(simd_cd2(y_swap));
+    __m256d result       = _mm256_fmsub_pd(x_odd, y_swap_conj, _mm256_fmsub_pd(x_even, y, z));
     return simd_cd2(result);
   }
 
@@ -398,20 +400,106 @@ namespace nda::simd {
 
   template <>
   inline simd_cf4 fma_nsub(const simd_cf4 &x, const simd_cf4 &y, const simd_cf4 &z) {
-    __m256 x_odd  = _mm256_movehdup_ps(x);
-    __m256 x_even = _mm256_moveldup_ps(x);
-    __m256 y_swap = _mm256_permute_ps(y, NDA_SHUFFLE_MASK4(1, 0, 3, 2));
-    __m256 result = _mm256_fmaddsub_ps(x_odd, y_swap, _mm256_fmsubadd_ps(x_even, y, z));
+    __m256 x_odd         = _mm256_movehdup_ps(x);
+    __m256 x_even        = _mm256_moveldup_ps(x);
+    __m256 y_swap        = _mm256_permute_ps(y, NDA_SHUFFLE_MASK4(1, 0, 3, 2));
+    simd_cf4 y_swap_conj = conj(simd_cf4(y_swap));
+    __m256 result        = _mm256_fmsub_ps(x_odd, y_swap_conj, _mm256_fmadd_ps(x_even, y, z));
     return simd_cf4(result);
   }
 
   template <>
   inline simd_cd2 fma_nsub(const simd_cd2 &x, const simd_cd2 &y, const simd_cd2 &z) {
-    __m256d x_odd  = _mm256_permute_pd(x, 0xF);
-    __m256d x_even = _mm256_movedup_pd(x);
-    __m256d y_swap = _mm256_permute_pd(y, 0x5);
-    __m256d result = _mm256_fmaddsub_pd(x_odd, y_swap, _mm256_fmsubadd_pd(x_even, y, z));
+    __m256d x_odd        = _mm256_permute_pd(x, 0xF);
+    __m256d x_even       = _mm256_movedup_pd(x);
+    __m256d y_swap       = _mm256_permute_pd(y, 0x5);
+    simd_cd2 y_swap_conj = conj(simd_cd2(y_swap));
+    __m256d result       = _mm256_fmsub_pd(x_odd, y_swap_conj, _mm256_fmadd_pd(x_even, y, z));
     return simd_cd2(result);
+  }
+#else
+  // FMA ADD
+  template <>
+  inline simd_f8 fma_add(const simd_f8 &x, const simd_f8 &y, const simd_f8 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_d4 fma_add(const simd_d4 &x, const simd_d4 &y, const simd_d4 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_cf4 fma_add(const simd_cf4 &x, const simd_cf4 &y, const simd_cf4 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_cd2 fma_add(const simd_cd2 &x, const simd_cd2 &y, const simd_cd2 &z) {
+    return x * y + z;
+  }
+
+  //FMA_SUB
+  template <>
+  inline simd_f8 fma_sub(const simd_f8 &x, const simd_f8 &y, const simd_f8 &z) {
+    return x * y - z;
+  }
+
+  template <>
+  inline simd_d4 fma_sub(const simd_d4 &x, const simd_d4 &y, const simd_d4 &z) {
+    return x * y - z;
+  }
+
+  template <>
+  inline simd_cf4 fma_sub(const simd_cf4 &x, const simd_cf4 &y, const simd_cf4 &z) {
+    return x * y - z;
+  }
+
+  template <>
+  inline simd_cd2 fma_sub(const simd_cd2 &x, const simd_cd2 &y, const simd_cd2 &z) {
+    return x * y - z;
+  }
+
+  //FMA_NADD
+  template <>
+  inline simd_f8 fma_nadd(const simd_f8 &x, const simd_f8 &y, const simd_f8 &z) {
+    return z - (x * y);
+  }
+
+  template <>
+  inline simd_d4 fma_nadd(const simd_d4 &x, const simd_d4 &y, const simd_d4 &z) {
+    return z - (x * y);
+  }
+
+  template <>
+  inline simd_cf4 fma_nadd(const simd_cf4 &x, const simd_cf4 &y, const simd_cf4 &z) {
+    return z - (x * y);
+  }
+
+  template <>
+  inline simd_cd2 fma_nadd(const simd_cd2 &x, const simd_cd2 &y, const simd_cd2 &z) {
+    return z - (x * y);
+  }
+
+  //FMA_NSUB
+  template <>
+  inline simd_f8 fma_nsub(const simd_f8 &x, const simd_f8 &y, const simd_f8 &z) {
+    return -(x * y + z);
+  }
+
+  template <>
+  inline simd_d4 fma_nsub(const simd_d4 &x, const simd_d4 &y, const simd_d4 &z) {
+    return -(x * y + z);
+  }
+
+  template <>
+  inline simd_cf4 fma_nsub(const simd_cf4 &x, const simd_cf4 &y, const simd_cf4 &z) {
+    return -(x * y + z);
+  }
+
+  template <>
+  inline simd_cd2 fma_nsub(const simd_cd2 &x, const simd_cd2 &y, const simd_cd2 &z) {
+    return -(x * y + z);
   }
 #endif
 

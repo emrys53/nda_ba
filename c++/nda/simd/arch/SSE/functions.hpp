@@ -369,8 +369,9 @@ namespace nda::simd {
   inline simd_cf2 fma_nadd(const simd_cf2 &x, const simd_cf2 &y, const simd_cf2 &z) {
     __m128 x_odd  = _mm_movehdup_ps(x);
     __m128 x_even = _mm_moveldup_ps(x);
-    __m128 y_swap = _mm_permute_ps(y, NDA_SHUFFLE_MASK4(1, 0, 3, 2));
-    __m128 result = _mm_fmaddsub_ps(x_odd, y_swap, _mm_fmaddsub_ps(x_even, y, z));
+    __m128 y_swap = _mm_permute_ps(y, NDA_SHUFFLE_MASK4(1,0,3,2));
+    simd_cf2 y_swap_conj = conj(simd_cf2(y_swap)); // TODO: Eigen bug create issue maybe in eigen.
+    __m128 result = _mm_fmsub_ps(x_odd, y_swap_conj, _mm_fmsub_ps(x_even, y, z));
     return simd_cf2(result);
   }
 
@@ -379,7 +380,8 @@ namespace nda::simd {
     __m128d x_odd  = _mm_permute_pd(x, 0x3);
     __m128d x_even = _mm_movedup_pd(x);
     __m128d y_swap = _mm_permute_pd(y, 0x1);
-    __m128d result = _mm_fmaddsub_pd(x_odd, y_swap, _mm_fmaddsub_pd(x_even, y, z));
+    simd_cd1 y_swap_conj = conj(simd_cd1(y_swap));
+    __m128d result = _mm_fmsub_pd(x_odd, y_swap_conj, _mm_fmsub_pd(x_even, y, z));
     return simd_cd1(result);
   }
 
@@ -399,7 +401,8 @@ namespace nda::simd {
     __m128 x_odd  = _mm_movehdup_ps(x);
     __m128 x_even = _mm_moveldup_ps(x);
     __m128 y_swap = _mm_permute_ps(y, NDA_SHUFFLE_MASK4(1, 0, 3, 2));
-    __m128 result = _mm_fmaddsub_ps(x_odd, y_swap, _mm_fmsubadd_ps(x_even, y, z));
+    simd_cf2 y_swap_conj = conj(simd_cf2(y_swap));
+    __m128 result = _mm_fmsub_ps(x_odd, y_swap_conj, _mm_fmadd_ps(x_even, y, z));
     return simd_cf2(result);
   }
 
@@ -408,9 +411,96 @@ namespace nda::simd {
     __m128d x_odd  = _mm_permute_pd(x, 0x3);
     __m128d x_even = _mm_movedup_pd(x);
     __m128d y_swap = _mm_permute_pd(y, 0x1);
-    __m128d result = _mm_fmaddsub_pd(x_odd, y_swap, _mm_fmsubadd_pd(x_even, y, z));
+    simd_cd1 y_swap_conj = conj(simd_cd1(y_swap));
+
+    __m128d result = _mm_fmsub_pd(x_odd, y_swap_conj, _mm_fmadd_pd(x_even, y, z));
     return simd_cd1(result);
   }
+#else
+  // FMA ADD
+  template <>
+  inline simd_f4 fma_add(const simd_f4 &x, const simd_f4 &y, const simd_f4 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_d2 fma_add(const simd_d2 &x, const simd_d2 &y, const simd_d2 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_cf2 fma_add(const simd_cf2 &x, const simd_cf2 &y, const simd_cf2 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_cd1 fma_add(const simd_cd1 &x, const simd_cd1 &y, const simd_cd1 &z) {
+    return x * y + z;
+  }
+
+  //FMA_SUB
+  template <>
+  inline simd_f4 fma_sub(const simd_f4 &x, const simd_f4 &y, const simd_f4 &z) {
+    return x * y - z;
+  }
+
+  template <>
+  inline simd_d2 fma_sub(const simd_d2 &x, const simd_d2 &y, const simd_d2 &z) {
+    return x * y - z;
+  }
+
+  template <>
+  inline simd_cf2 fma_sub(const simd_cf2 &x, const simd_cf2 &y, const simd_cf2 &z) {
+    return x * y - z;
+  }
+
+  template <>
+  inline simd_cd1 fma_sub(const simd_cd1 &x, const simd_cd1 &y, const simd_cd1 &z) {
+    return x * y - z;
+  }
+
+  //FMA_NADD
+  template <>
+  inline simd_f4 fma_nadd(const simd_f4 &x, const simd_f4 &y, const simd_f4 &z) {
+    return z - (x * y);
+  }
+
+  template <>
+  inline simd_d2 fma_nadd(const simd_d2 &x, const simd_d2 &y, const simd_d2 &z) {
+    return z - (x * y);
+  }
+
+  template <>
+  inline simd_cf2 fma_nadd(const simd_cf2 &x, const simd_cf2 &y, const simd_cf2 &z) {
+    return z - (x * y);
+  }
+
+  template <>
+  inline simd_cd1 fma_nadd(const simd_cd1 &x, const simd_cd1 &y, const simd_cd1 &z) {
+    return z - (x * y);
+  }
+
+  //FMA_NSUB
+  template <>
+  inline simd_f4 fma_nsub(const simd_f4 &x, const simd_f4 &y, const simd_f4 &z) {
+    return -(x * y + z);
+  }
+
+  template <>
+  inline simd_d2 fma_nsub(const simd_d2 &x, const simd_d2 &y, const simd_d2 &z) {
+    return -(x * y + z);
+  }
+
+  template <>
+  inline simd_cf2 fma_nsub(const simd_cf2 &x, const simd_cf2 &y, const simd_cf2 &z) {
+    return -(x * y + z);
+  }
+
+  template <>
+  inline simd_cd1 fma_nsub(const simd_cd1 &x, const simd_cd1 &y, const simd_cd1 &z) {
+    return -(x * y + z);
+  }
+
 #endif
 } // namespace nda::simd
 #endif
