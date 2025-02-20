@@ -26,7 +26,7 @@
     </tr>
     <tr>
       <th scope="row">Date:</th>
-      <td>2025-02-19 21:06:24</td>
+      <td>2025-02-20 17:57:42</td>
     </tr>
   </table>
 </div>
@@ -40,8 +40,8 @@
     </tr>
     <tr>
       <th scope="row">Lines:</th>
-      <td>34</td>
-      <td>34</td>
+      <td>36</td>
+      <td>36</td>
       <td class="coverage-high">100.0%</td>
     </tr>
     <tr>
@@ -52,9 +52,9 @@
     </tr>
     <tr>
       <th scope="row">Branches:</th>
-      <td>902</td>
+      <td>904</td>
       <td>1134</td>
-      <td class="coverage-medium">79.5%</td>
+      <td class="coverage-medium">79.7%</td>
     </tr>
   </table>
 </div>
@@ -72,13 +72,13 @@
     </tr>
     <tr><td><a href="#l45">int nda::detail::index_from_stride_order&lt;3&gt;(unsigned long, int) (line 45)</a></td><td>called 3 times</td><td>88.0%</td></tr>
     <tr><td><a href="#l53">long nda::detail::get_extent&lt;0, 1, 0ul, long&gt;(std::array&lt;long, 1&gt; const&amp;) (line 53)</a></td><td>called 619 times</td><td>100.0%</td></tr>
-    <tr><td><a href="#l53">long nda::detail::get_extent&lt;0, 2, 0ul, long&gt;(std::array&lt;long, 2&gt; const&amp;) (line 53)</a></td><td>called 1454 times</td><td>100.0%</td></tr>
+    <tr><td><a href="#l53">long nda::detail::get_extent&lt;0, 2, 0ul, long&gt;(std::array&lt;long, 2&gt; const&amp;) (line 53)</a></td><td>called 1455 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l53">long nda::detail::get_extent&lt;0, 3, 0ul, int&gt;(std::array&lt;int, 3&gt; const&amp;) (line 53)</a></td><td>called 1 time</td><td>100.0%</td></tr>
     <tr><td><a href="#l53">long nda::detail::get_extent&lt;0, 3, 0ul, long&gt;(std::array&lt;long, 3&gt; const&amp;) (line 53)</a></td><td>called 23303 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l53">long nda::detail::get_extent&lt;0, 3, 1074ul, long&gt;(std::array&lt;long, 3&gt; const&amp;) (line 53)</a></td><td>called 13 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l53">long nda::detail::get_extent&lt;0, 4, 0ul, long&gt;(std::array&lt;long, 4&gt; const&amp;) (line 53)</a></td><td>called 102 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l53">long nda::detail::get_extent&lt;0, 6, 0ul, long&gt;(std::array&lt;long, 6&gt; const&amp;) (line 53)</a></td><td>called 7 times</td><td>100.0%</td></tr>
-    <tr><td><a href="#l53">long nda::detail::get_extent&lt;1, 2, 0ul, long&gt;(std::array&lt;long, 2&gt; const&amp;) (line 53)</a></td><td>called 19582 times</td><td>100.0%</td></tr>
+    <tr><td><a href="#l53">long nda::detail::get_extent&lt;1, 2, 0ul, long&gt;(std::array&lt;long, 2&gt; const&amp;) (line 53)</a></td><td>called 19595 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l53">long nda::detail::get_extent&lt;1, 3, 0ul, int&gt;(std::array&lt;int, 3&gt; const&amp;) (line 53)</a></td><td>called 1 time</td><td>100.0%</td></tr>
     <tr><td><a href="#l53">long nda::detail::get_extent&lt;1, 3, 0ul, long&gt;(std::array&lt;long, 3&gt; const&amp;) (line 53)</a></td><td>called 27225 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l53">long nda::detail::get_extent&lt;1, 3, 1074ul, long&gt;(std::array&lt;long, 3&gt; const&amp;) (line 53)</a></td><td>called 6 times</td><td>100.0%</td></tr>
@@ -488,7 +488,7 @@
       <td class="lineno"><a id="l53" href="#l53">53</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">237171</td>
+      <td class="linecount coveredLine">237199</td>
       <td class="src coveredLine"><span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">get_extent</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">Int</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="o">&gt;</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">shape</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
@@ -509,7 +509,7 @@
       <td class="lineno"><a id="l56" href="#l56">56</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">237119</td>
+      <td class="linecount coveredLine">237147</td>
       <td class="src coveredLine"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">shape</span><span class="p">[</span><span class="n">I</span><span class="p">];</span></td>
     </tr>
     <tr class="source-line">
@@ -633,7 +633,7 @@
             <div class="notTakenBranch">&cross; Branch 11 not taken.</div>
             <div class="takenBranch">&check; Branch 13 taken 164247 times.</div>
             <div class="notTakenBranch">&cross; Branch 14 not taken.</div>
-            <div class="takenBranch">&check; Branch 16 taken 164342 times.</div>
+            <div class="takenBranch">&check; Branch 16 taken 164338 times.</div>
             <div class="notTakenBranch">&cross; Branch 17 not taken.</div>
             <div class="takenBranch">&check; Branch 19 taken 1267 times.</div>
             <div class="notTakenBranch">&cross; Branch 20 not taken.</div>
@@ -643,39 +643,39 @@
             <div class="notTakenBranch">&cross; Branch 26 not taken.</div>
             <div class="takenBranch">&check; Branch 28 taken 165051 times.</div>
             <div class="notTakenBranch">&cross; Branch 29 not taken.</div>
-            <div class="takenBranch">&check; Branch 31 taken 588 times.</div>
+            <div class="takenBranch">&check; Branch 31 taken 603 times.</div>
             <div class="notTakenBranch">&cross; Branch 32 not taken.</div>
-            <div class="takenBranch">&check; Branch 34 taken 534 times.</div>
+            <div class="takenBranch">&check; Branch 34 taken 540 times.</div>
             <div class="notTakenBranch">&cross; Branch 35 not taken.</div>
-            <div class="takenBranch">&check; Branch 37 taken 31230 times.</div>
+            <div class="takenBranch">&check; Branch 37 taken 1223 times.</div>
             <div class="notTakenBranch">&cross; Branch 38 not taken.</div>
-            <div class="takenBranch">&check; Branch 40 taken 10502 times.</div>
+            <div class="takenBranch">&check; Branch 40 taken 495 times.</div>
             <div class="notTakenBranch">&cross; Branch 41 not taken.</div>
-            <div class="takenBranch">&check; Branch 43 taken 763 times.</div>
+            <div class="takenBranch">&check; Branch 43 taken 747 times.</div>
             <div class="notTakenBranch">&cross; Branch 44 not taken.</div>
-            <div class="takenBranch">&check; Branch 46 taken 763 times.</div>
+            <div class="takenBranch">&check; Branch 46 taken 745 times.</div>
             <div class="notTakenBranch">&cross; Branch 47 not taken.</div>
-            <div class="takenBranch">&check; Branch 49 taken 659 times.</div>
+            <div class="takenBranch">&check; Branch 49 taken 635 times.</div>
             <div class="notTakenBranch">&cross; Branch 50 not taken.</div>
-            <div class="takenBranch">&check; Branch 52 taken 1477 times.</div>
+            <div class="takenBranch">&check; Branch 52 taken 1453 times.</div>
             <div class="notTakenBranch">&cross; Branch 53 not taken.</div>
-            <div class="takenBranch">&check; Branch 55 taken 336 times.</div>
+            <div class="takenBranch">&check; Branch 55 taken 334 times.</div>
             <div class="notTakenBranch">&cross; Branch 56 not taken.</div>
-            <div class="takenBranch">&check; Branch 58 taken 646 times.</div>
+            <div class="takenBranch">&check; Branch 58 taken 644 times.</div>
             <div class="notTakenBranch">&cross; Branch 59 not taken.</div>
-            <div class="takenBranch">&check; Branch 61 taken 378 times.</div>
+            <div class="takenBranch">&check; Branch 61 taken 354 times.</div>
             <div class="notTakenBranch">&cross; Branch 62 not taken.</div>
-            <div class="takenBranch">&check; Branch 64 taken 628 times.</div>
+            <div class="takenBranch">&check; Branch 64 taken 604 times.</div>
             <div class="notTakenBranch">&cross; Branch 65 not taken.</div>
-            <div class="takenBranch">&check; Branch 67 taken 888 times.</div>
+            <div class="takenBranch">&check; Branch 67 taken 886 times.</div>
             <div class="notTakenBranch">&cross; Branch 68 not taken.</div>
-            <div class="takenBranch">&check; Branch 70 taken 576 times.</div>
+            <div class="takenBranch">&check; Branch 70 taken 552 times.</div>
             <div class="notTakenBranch">&cross; Branch 71 not taken.</div>
-            <div class="takenBranch">&check; Branch 73 taken 218 times.</div>
+            <div class="takenBranch">&check; Branch 73 taken 194 times.</div>
             <div class="notTakenBranch">&cross; Branch 74 not taken.</div>
-            <div class="takenBranch">&check; Branch 76 taken 407 times.</div>
+            <div class="takenBranch">&check; Branch 76 taken 359 times.</div>
             <div class="notTakenBranch">&cross; Branch 77 not taken.</div>
-            <div class="takenBranch">&check; Branch 79 taken 607 times.</div>
+            <div class="takenBranch">&check; Branch 79 taken 559 times.</div>
             <div class="notTakenBranch">&cross; Branch 80 not taken.</div>
             <div class="takenBranch">&check; Branch 82 taken 406 times.</div>
             <div class="notTakenBranch">&cross; Branch 83 not taken.</div>
@@ -703,15 +703,15 @@
             <div class="notTakenBranch">&cross; Branch 116 not taken.</div>
             <div class="takenBranch">&check; Branch 118 taken 1609 times.</div>
             <div class="notTakenBranch">&cross; Branch 119 not taken.</div>
-            <div class="takenBranch">&check; Branch 121 taken 3566 times.</div>
+            <div class="takenBranch">&check; Branch 121 taken 3466 times.</div>
             <div class="notTakenBranch">&cross; Branch 122 not taken.</div>
-            <div class="takenBranch">&check; Branch 124 taken 443 times.</div>
+            <div class="takenBranch">&check; Branch 124 taken 343 times.</div>
             <div class="notTakenBranch">&cross; Branch 125 not taken.</div>
             <div class="takenBranch">&check; Branch 127 taken 24 times.</div>
             <div class="notTakenBranch">&cross; Branch 128 not taken.</div>
             <div class="takenBranch">&check; Branch 130 taken 12 times.</div>
             <div class="notTakenBranch">&cross; Branch 131 not taken.</div>
-            <div class="takenBranch">&check; Branch 133 taken 5011 times.</div>
+            <div class="takenBranch">&check; Branch 133 taken 61 times.</div>
             <div class="notTakenBranch">&cross; Branch 134 not taken.</div>
             <div class="takenBranch">&check; Branch 136 taken 69 times.</div>
             <div class="notTakenBranch">&cross; Branch 137 not taken.</div>
@@ -842,7 +842,7 @@
           </div>
         </details>
       </td>
-      <td class="linecount partialCoveredLine">816830</td>
+      <td class="linecount partialCoveredLine">771403</td>
       <td class="src partialCoveredLine"><span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">apply</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">idxs</span><span class="p">);</span></td>
     </tr>
     <tr class="source-line">
@@ -883,7 +883,7 @@
           </div>
         </details>
       </td>
-      <td class="linecount partialCoveredLine">85740</td>
+      <td class="linecount partialCoveredLine">85247</td>
       <td class="src partialCoveredLine"><span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">imax</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">get_extent</span><span class="o">&lt;</span><span class="n">J</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="n">StaticExtents</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shape</span><span class="p">);</span></td>
     </tr>
     <tr class="source-line">
@@ -926,10 +926,10 @@
             <div class="takenBranch">&check; Branch 17 taken 2756 times.</div>
             <div class="takenBranch">&check; Branch 18 taken 3031 times.</div>
             <div class="takenBranch">&check; Branch 19 taken 183 times.</div>
-            <div class="takenBranch">&check; Branch 20 taken 164153 times.</div>
-            <div class="takenBranch">&check; Branch 21 taken 2665 times.</div>
-            <div class="takenBranch">&check; Branch 22 taken 2916 times.</div>
-            <div class="takenBranch">&check; Branch 23 taken 165 times.</div>
+            <div class="takenBranch">&check; Branch 20 taken 164149 times.</div>
+            <div class="takenBranch">&check; Branch 21 taken 2663 times.</div>
+            <div class="takenBranch">&check; Branch 22 taken 2914 times.</div>
+            <div class="takenBranch">&check; Branch 23 taken 164 times.</div>
             <div class="takenBranch">&check; Branch 24 taken 1071 times.</div>
             <div class="takenBranch">&check; Branch 25 taken 254 times.</div>
             <div class="takenBranch">&check; Branch 26 taken 356 times.</div>
@@ -958,84 +958,84 @@
             <div class="takenBranch">&check; Branch 49 taken 59 times.</div>
             <div class="takenBranch">&check; Branch 50 taken 261 times.</div>
             <div class="takenBranch">&check; Branch 51 taken 51 times.</div>
-            <div class="takenBranch">&check; Branch 52 taken 812 times.</div>
-            <div class="takenBranch">&check; Branch 53 taken 209 times.</div>
-            <div class="takenBranch">&check; Branch 54 taken 249 times.</div>
-            <div class="takenBranch">&check; Branch 55 taken 73 times.</div>
-            <div class="takenBranch">&check; Branch 56 taken 161 times.</div>
-            <div class="takenBranch">&check; Branch 57 taken 55 times.</div>
-            <div class="takenBranch">&check; Branch 58 taken 857 times.</div>
-            <div class="takenBranch">&check; Branch 59 taken 216 times.</div>
-            <div class="takenBranch">&check; Branch 60 taken 328 times.</div>
-            <div class="takenBranch">&check; Branch 61 taken 107 times.</div>
-            <div class="takenBranch">&check; Branch 62 taken 278 times.</div>
+            <div class="takenBranch">&check; Branch 52 taken 827 times.</div>
+            <div class="takenBranch">&check; Branch 53 taken 212 times.</div>
+            <div class="takenBranch">&check; Branch 54 taken 252 times.</div>
+            <div class="takenBranch">&check; Branch 55 taken 74 times.</div>
+            <div class="takenBranch">&check; Branch 56 taken 145 times.</div>
+            <div class="takenBranch">&check; Branch 57 taken 50 times.</div>
+            <div class="takenBranch">&check; Branch 58 taken 875 times.</div>
+            <div class="takenBranch">&check; Branch 59 taken 220 times.</div>
+            <div class="takenBranch">&check; Branch 60 taken 325 times.</div>
+            <div class="takenBranch">&check; Branch 61 taken 106 times.</div>
+            <div class="takenBranch">&check; Branch 62 taken 277 times.</div>
             <div class="takenBranch">&check; Branch 63 taken 87 times.</div>
-            <div class="takenBranch">&check; Branch 64 taken 611 times.</div>
-            <div class="takenBranch">&check; Branch 65 taken 137 times.</div>
-            <div class="takenBranch">&check; Branch 66 taken 261 times.</div>
+            <div class="takenBranch">&check; Branch 64 taken 604 times.</div>
+            <div class="takenBranch">&check; Branch 65 taken 135 times.</div>
+            <div class="takenBranch">&check; Branch 66 taken 260 times.</div>
             <div class="takenBranch">&check; Branch 67 taken 62 times.</div>
-            <div class="takenBranch">&check; Branch 68 taken 1006 times.</div>
-            <div class="takenBranch">&check; Branch 69 taken 447 times.</div>
-            <div class="takenBranch">&check; Branch 70 taken 593 times.</div>
-            <div class="takenBranch">&check; Branch 71 taken 165 times.</div>
-            <div class="takenBranch">&check; Branch 72 taken 180 times.</div>
-            <div class="takenBranch">&check; Branch 73 taken 47 times.</div>
-            <div class="takenBranch">&check; Branch 74 taken 735 times.</div>
-            <div class="takenBranch">&check; Branch 75 taken 189 times.</div>
-            <div class="takenBranch">&check; Branch 76 taken 30226 times.</div>
-            <div class="takenBranch">&check; Branch 77 taken 358 times.</div>
-            <div class="takenBranch">&check; Branch 78 taken 643 times.</div>
-            <div class="takenBranch">&check; Branch 79 taken 98 times.</div>
-            <div class="takenBranch">&check; Branch 80 taken 10313 times.</div>
-            <div class="takenBranch">&check; Branch 81 taken 187 times.</div>
-            <div class="takenBranch">&check; Branch 82 taken 833 times.</div>
-            <div class="takenBranch">&check; Branch 83 taken 328 times.</div>
-            <div class="takenBranch">&check; Branch 84 taken 1009 times.</div>
-            <div class="takenBranch">&check; Branch 85 taken 237 times.</div>
-            <div class="takenBranch">&check; Branch 86 taken 260 times.</div>
-            <div class="takenBranch">&check; Branch 87 taken 53 times.</div>
-            <div class="takenBranch">&check; Branch 88 taken 261 times.</div>
-            <div class="takenBranch">&check; Branch 89 taken 104 times.</div>
-            <div class="takenBranch">&check; Branch 90 taken 533 times.</div>
-            <div class="takenBranch">&check; Branch 91 taken 61 times.</div>
-            <div class="takenBranch">&check; Branch 92 taken 648 times.</div>
-            <div class="takenBranch">&check; Branch 93 taken 42 times.</div>
-            <div class="takenBranch">&check; Branch 94 taken 602 times.</div>
-            <div class="takenBranch">&check; Branch 95 taken 76 times.</div>
-            <div class="takenBranch">&check; Branch 96 taken 389 times.</div>
-            <div class="takenBranch">&check; Branch 97 taken 27 times.</div>
-            <div class="takenBranch">&check; Branch 98 taken 559 times.</div>
-            <div class="takenBranch">&check; Branch 99 taken 117 times.</div>
-            <div class="takenBranch">&check; Branch 100 taken 341 times.</div>
-            <div class="takenBranch">&check; Branch 101 taken 83 times.</div>
-            <div class="takenBranch">&check; Branch 102 taken 273 times.</div>
-            <div class="takenBranch">&check; Branch 103 taken 76 times.</div>
-            <div class="takenBranch">&check; Branch 104 taken 284 times.</div>
-            <div class="takenBranch">&check; Branch 105 taken 88 times.</div>
-            <div class="takenBranch">&check; Branch 106 taken 593 times.</div>
-            <div class="takenBranch">&check; Branch 107 taken 148 times.</div>
-            <div class="takenBranch">&check; Branch 108 taken 497 times.</div>
-            <div class="takenBranch">&check; Branch 109 taken 231 times.</div>
-            <div class="takenBranch">&check; Branch 110 taken 331 times.</div>
-            <div class="takenBranch">&check; Branch 111 taken 56 times.</div>
-            <div class="takenBranch">&check; Branch 112 taken 225 times.</div>
-            <div class="takenBranch">&check; Branch 113 taken 29 times.</div>
-            <div class="takenBranch">&check; Branch 114 taken 578 times.</div>
-            <div class="takenBranch">&check; Branch 115 taken 230 times.</div>
-            <div class="takenBranch">&check; Branch 116 taken 263 times.</div>
-            <div class="takenBranch">&check; Branch 117 taken 67 times.</div>
-            <div class="takenBranch">&check; Branch 118 taken 384 times.</div>
-            <div class="takenBranch">&check; Branch 119 taken 80 times.</div>
-            <div class="takenBranch">&check; Branch 120 taken 109 times.</div>
-            <div class="takenBranch">&check; Branch 121 taken 26 times.</div>
-            <div class="takenBranch">&check; Branch 122 taken 49 times.</div>
-            <div class="takenBranch">&check; Branch 123 taken 16 times.</div>
-            <div class="takenBranch">&check; Branch 124 taken 192 times.</div>
-            <div class="takenBranch">&check; Branch 125 taken 50 times.</div>
-            <div class="takenBranch">&check; Branch 126 taken 50 times.</div>
-            <div class="takenBranch">&check; Branch 127 taken 17 times.</div>
-            <div class="takenBranch">&check; Branch 128 taken 360 times.</div>
-            <div class="takenBranch">&check; Branch 129 taken 138 times.</div>
+            <div class="takenBranch">&check; Branch 68 taken 990 times.</div>
+            <div class="takenBranch">&check; Branch 69 taken 442 times.</div>
+            <div class="takenBranch">&check; Branch 70 taken 587 times.</div>
+            <div class="takenBranch">&check; Branch 71 taken 163 times.</div>
+            <div class="takenBranch">&check; Branch 72 taken 162 times.</div>
+            <div class="takenBranch">&check; Branch 73 taken 41 times.</div>
+            <div class="takenBranch">&check; Branch 74 taken 729 times.</div>
+            <div class="takenBranch">&check; Branch 75 taken 187 times.</div>
+            <div class="takenBranch">&check; Branch 76 taken 202 times.</div>
+            <div class="takenBranch">&check; Branch 77 taken 52 times.</div>
+            <div class="takenBranch">&check; Branch 78 taken 337 times.</div>
+            <div class="takenBranch">&check; Branch 79 taken 93 times.</div>
+            <div class="takenBranch">&check; Branch 80 taken 311 times.</div>
+            <div class="takenBranch">&check; Branch 81 taken 86 times.</div>
+            <div class="takenBranch">&check; Branch 82 taken 709 times.</div>
+            <div class="takenBranch">&check; Branch 83 taken 321 times.</div>
+            <div class="takenBranch">&check; Branch 84 taken 1003 times.</div>
+            <div class="takenBranch">&check; Branch 85 taken 235 times.</div>
+            <div class="takenBranch">&check; Branch 86 taken 258 times.</div>
+            <div class="takenBranch">&check; Branch 87 taken 52 times.</div>
+            <div class="takenBranch">&check; Branch 88 taken 259 times.</div>
+            <div class="takenBranch">&check; Branch 89 taken 103 times.</div>
+            <div class="takenBranch">&check; Branch 90 taken 531 times.</div>
+            <div class="takenBranch">&check; Branch 91 taken 60 times.</div>
+            <div class="takenBranch">&check; Branch 92 taken 624 times.</div>
+            <div class="takenBranch">&check; Branch 93 taken 36 times.</div>
+            <div class="takenBranch">&check; Branch 94 taken 596 times.</div>
+            <div class="takenBranch">&check; Branch 95 taken 74 times.</div>
+            <div class="takenBranch">&check; Branch 96 taken 387 times.</div>
+            <div class="takenBranch">&check; Branch 97 taken 26 times.</div>
+            <div class="takenBranch">&check; Branch 98 taken 535 times.</div>
+            <div class="takenBranch">&check; Branch 99 taken 111 times.</div>
+            <div class="takenBranch">&check; Branch 100 taken 335 times.</div>
+            <div class="takenBranch">&check; Branch 101 taken 81 times.</div>
+            <div class="takenBranch">&check; Branch 102 taken 271 times.</div>
+            <div class="takenBranch">&check; Branch 103 taken 75 times.</div>
+            <div class="takenBranch">&check; Branch 104 taken 282 times.</div>
+            <div class="takenBranch">&check; Branch 105 taken 87 times.</div>
+            <div class="takenBranch">&check; Branch 106 taken 569 times.</div>
+            <div class="takenBranch">&check; Branch 107 taken 142 times.</div>
+            <div class="takenBranch">&check; Branch 108 taken 491 times.</div>
+            <div class="takenBranch">&check; Branch 109 taken 229 times.</div>
+            <div class="takenBranch">&check; Branch 110 taken 329 times.</div>
+            <div class="takenBranch">&check; Branch 111 taken 55 times.</div>
+            <div class="takenBranch">&check; Branch 112 taken 101 times.</div>
+            <div class="takenBranch">&check; Branch 113 taken 22 times.</div>
+            <div class="takenBranch">&check; Branch 114 taken 472 times.</div>
+            <div class="takenBranch">&check; Branch 115 taken 227 times.</div>
+            <div class="takenBranch">&check; Branch 116 taken 261 times.</div>
+            <div class="takenBranch">&check; Branch 117 taken 66 times.</div>
+            <div class="takenBranch">&check; Branch 118 taken 336 times.</div>
+            <div class="takenBranch">&check; Branch 119 taken 68 times.</div>
+            <div class="takenBranch">&check; Branch 120 taken 97 times.</div>
+            <div class="takenBranch">&check; Branch 121 taken 22 times.</div>
+            <div class="takenBranch">&check; Branch 122 taken 45 times.</div>
+            <div class="takenBranch">&check; Branch 123 taken 14 times.</div>
+            <div class="takenBranch">&check; Branch 124 taken 144 times.</div>
+            <div class="takenBranch">&check; Branch 125 taken 38 times.</div>
+            <div class="takenBranch">&check; Branch 126 taken 38 times.</div>
+            <div class="takenBranch">&check; Branch 127 taken 13 times.</div>
+            <div class="takenBranch">&check; Branch 128 taken 356 times.</div>
+            <div class="takenBranch">&check; Branch 129 taken 136 times.</div>
             <div class="takenBranch">&check; Branch 130 taken 152 times.</div>
             <div class="takenBranch">&check; Branch 131 taken 36 times.</div>
             <div class="takenBranch">&check; Branch 132 taken 143 times.</div>
@@ -1110,8 +1110,8 @@
             <div class="takenBranch">&check; Branch 201 taken 26 times.</div>
             <div class="takenBranch">&check; Branch 202 taken 30 times.</div>
             <div class="takenBranch">&check; Branch 203 taken 6 times.</div>
-            <div class="takenBranch">&check; Branch 204 taken 4955 times.</div>
-            <div class="takenBranch">&check; Branch 205 taken 101 times.</div>
+            <div class="takenBranch">&check; Branch 204 taken 5 times.</div>
+            <div class="takenBranch">&check; Branch 205 taken 1 times.</div>
             <div class="takenBranch">&check; Branch 206 taken 25 times.</div>
             <div class="takenBranch">&check; Branch 207 taken 5 times.</div>
             <div class="takenBranch">&check; Branch 208 taken 5 times.</div>
@@ -1373,7 +1373,7 @@
           </div>
         </details>
       </td>
-      <td class="linecount coveredLine">1013059</td>
+      <td class="linecount coveredLine">966522</td>
       <td class="src coveredLine"><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">imax</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
@@ -1394,7 +1394,7 @@
       <td class="lineno"><a id="l82" href="#l82">82</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">902569</td>
+      <td class="linecount coveredLine">856649</td>
       <td class="src coveredLine"><span class="w">          </span><span class="o">++</span><span class="n">idxs</span><span class="p">[</span><span class="n">J</span><span class="p">];</span></td>
     </tr>
     <tr class="source-line">
@@ -1408,7 +1408,7 @@
       <td class="lineno"><a id="l84" href="#l84">84</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">110490</td>
+      <td class="linecount coveredLine">109873</td>
       <td class="src coveredLine"><span class="w">        </span><span class="n">idxs</span><span class="p">[</span><span class="n">J</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
@@ -1422,7 +1422,7 @@
       <td class="lineno"><a id="l86" href="#l86">86</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">927320</td>
+      <td class="linecount coveredLine">881276</td>
       <td class="src coveredLine"><span class="w">    </span><span class="p">}</span></td>
     </tr>
     <tr class="source-line">
@@ -1471,14 +1471,14 @@
       <td class="lineno"><a id="l93" href="#l93">93</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">7106</td>
+      <td class="linecount coveredLine">7596</td>
       <td class="src coveredLine"><span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">imax</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">get_extent</span><span class="o">&lt;</span><span class="n">J</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="n">StaticExtents</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shape</span><span class="p">);</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l94" href="#l94">94</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">7219</td>
+      <td class="linecount coveredLine">7811</td>
       <td class="src coveredLine"><span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w">               </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
@@ -1488,37 +1488,37 @@
           <summary class="linebranchSummary">86/86</summary>
           <div class="linebranchContents">
             <div class="takenBranch">&check; Branch 0 taken 370 times.</div>
-            <div class="takenBranch">&check; Branch 1 taken 344 times.</div>
-            <div class="takenBranch">&check; Branch 2 taken 2675 times.</div>
-            <div class="takenBranch">&check; Branch 3 taken 329 times.</div>
-            <div class="takenBranch">&check; Branch 4 taken 82076 times.</div>
-            <div class="takenBranch">&check; Branch 5 taken 2738 times.</div>
-            <div class="takenBranch">&check; Branch 6 taken 41175 times.</div>
-            <div class="takenBranch">&check; Branch 7 taken 2965 times.</div>
+            <div class="takenBranch">&check; Branch 1 taken 346 times.</div>
+            <div class="takenBranch">&check; Branch 2 taken 3888 times.</div>
+            <div class="takenBranch">&check; Branch 3 taken 442 times.</div>
+            <div class="takenBranch">&check; Branch 4 taken 89576 times.</div>
+            <div class="takenBranch">&check; Branch 5 taken 3038 times.</div>
+            <div class="takenBranch">&check; Branch 6 taken 43675 times.</div>
+            <div class="takenBranch">&check; Branch 7 taken 3065 times.</div>
             <div class="takenBranch">&check; Branch 8 taken 65 times.</div>
-            <div class="takenBranch">&check; Branch 9 taken 90 times.</div>
+            <div class="takenBranch">&check; Branch 9 taken 93 times.</div>
             <div class="takenBranch">&check; Branch 10 taken 313 times.</div>
-            <div class="takenBranch">&check; Branch 11 taken 160 times.</div>
-            <div class="takenBranch">&check; Branch 12 taken 166 times.</div>
-            <div class="takenBranch">&check; Branch 13 taken 163 times.</div>
-            <div class="takenBranch">&check; Branch 14 taken 36 times.</div>
-            <div class="takenBranch">&check; Branch 15 taken 30 times.</div>
+            <div class="takenBranch">&check; Branch 11 taken 166 times.</div>
+            <div class="takenBranch">&check; Branch 12 taken 191 times.</div>
+            <div class="takenBranch">&check; Branch 13 taken 167 times.</div>
+            <div class="takenBranch">&check; Branch 14 taken 61 times.</div>
+            <div class="takenBranch">&check; Branch 15 taken 34 times.</div>
             <div class="takenBranch">&check; Branch 16 taken 6 times.</div>
-            <div class="takenBranch">&check; Branch 17 taken 6 times.</div>
+            <div class="takenBranch">&check; Branch 17 taken 12 times.</div>
             <div class="takenBranch">&check; Branch 18 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 19 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 20 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 21 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 22 taken 6 times.</div>
-            <div class="takenBranch">&check; Branch 23 taken 3 times.</div>
-            <div class="takenBranch">&check; Branch 24 taken 3 times.</div>
-            <div class="takenBranch">&check; Branch 25 taken 3 times.</div>
-            <div class="takenBranch">&check; Branch 26 taken 12 times.</div>
-            <div class="takenBranch">&check; Branch 27 taken 6 times.</div>
-            <div class="takenBranch">&check; Branch 28 taken 6 times.</div>
-            <div class="takenBranch">&check; Branch 29 taken 6 times.</div>
-            <div class="takenBranch">&check; Branch 30 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 31 taken 1 times.</div>
+            <div class="takenBranch">&check; Branch 19 taken 7 times.</div>
+            <div class="takenBranch">&check; Branch 20 taken 13 times.</div>
+            <div class="takenBranch">&check; Branch 21 taken 7 times.</div>
+            <div class="takenBranch">&check; Branch 22 taken 12 times.</div>
+            <div class="takenBranch">&check; Branch 23 taken 9 times.</div>
+            <div class="takenBranch">&check; Branch 24 taken 15 times.</div>
+            <div class="takenBranch">&check; Branch 25 taken 9 times.</div>
+            <div class="takenBranch">&check; Branch 26 taken 18 times.</div>
+            <div class="takenBranch">&check; Branch 27 taken 12 times.</div>
+            <div class="takenBranch">&check; Branch 28 taken 18 times.</div>
+            <div class="takenBranch">&check; Branch 29 taken 18 times.</div>
+            <div class="takenBranch">&check; Branch 30 taken 14 times.</div>
+            <div class="takenBranch">&check; Branch 31 taken 13 times.</div>
             <div class="takenBranch">&check; Branch 32 taken 1 times.</div>
             <div class="takenBranch">&check; Branch 33 taken 1 times.</div>
             <div class="takenBranch">&check; Branch 34 taken 6 times.</div>
@@ -1576,7 +1576,7 @@
           </div>
         </details>
       </td>
-      <td class="linecount coveredLine">134632</td>
+      <td class="linecount coveredLine">146547</td>
       <td class="src coveredLine"><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">step_size</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">imax</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">step_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
@@ -1587,35 +1587,35 @@
           <div class="linebranchContents">
             <div class="takenBranch">&check; Branch 1 taken 370 times.</div>
             <div class="notTakenBranch">&cross; Branch 2 not taken.</div>
-            <div class="takenBranch">&check; Branch 4 taken 2675 times.</div>
+            <div class="takenBranch">&check; Branch 4 taken 3888 times.</div>
             <div class="notTakenBranch">&cross; Branch 5 not taken.</div>
-            <div class="takenBranch">&check; Branch 7 taken 82076 times.</div>
+            <div class="takenBranch">&check; Branch 7 taken 89576 times.</div>
             <div class="notTakenBranch">&cross; Branch 8 not taken.</div>
-            <div class="takenBranch">&check; Branch 10 taken 41175 times.</div>
+            <div class="takenBranch">&check; Branch 10 taken 43675 times.</div>
             <div class="notTakenBranch">&cross; Branch 11 not taken.</div>
             <div class="takenBranch">&check; Branch 13 taken 65 times.</div>
             <div class="notTakenBranch">&cross; Branch 14 not taken.</div>
             <div class="takenBranch">&check; Branch 16 taken 313 times.</div>
             <div class="notTakenBranch">&cross; Branch 17 not taken.</div>
-            <div class="takenBranch">&check; Branch 19 taken 166 times.</div>
+            <div class="takenBranch">&check; Branch 19 taken 191 times.</div>
             <div class="notTakenBranch">&cross; Branch 20 not taken.</div>
-            <div class="takenBranch">&check; Branch 22 taken 36 times.</div>
+            <div class="takenBranch">&check; Branch 22 taken 61 times.</div>
             <div class="notTakenBranch">&cross; Branch 23 not taken.</div>
             <div class="takenBranch">&check; Branch 25 taken 6 times.</div>
             <div class="notTakenBranch">&cross; Branch 26 not taken.</div>
             <div class="takenBranch">&check; Branch 28 taken 2 times.</div>
             <div class="notTakenBranch">&cross; Branch 29 not taken.</div>
-            <div class="takenBranch">&check; Branch 31 taken 1 times.</div>
+            <div class="takenBranch">&check; Branch 31 taken 13 times.</div>
             <div class="notTakenBranch">&cross; Branch 32 not taken.</div>
-            <div class="takenBranch">&check; Branch 34 taken 6 times.</div>
+            <div class="takenBranch">&check; Branch 34 taken 12 times.</div>
             <div class="notTakenBranch">&cross; Branch 35 not taken.</div>
-            <div class="takenBranch">&check; Branch 37 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 37 taken 15 times.</div>
             <div class="notTakenBranch">&cross; Branch 38 not taken.</div>
-            <div class="takenBranch">&check; Branch 40 taken 12 times.</div>
+            <div class="takenBranch">&check; Branch 40 taken 18 times.</div>
             <div class="notTakenBranch">&cross; Branch 41 not taken.</div>
-            <div class="takenBranch">&check; Branch 43 taken 6 times.</div>
+            <div class="takenBranch">&check; Branch 43 taken 18 times.</div>
             <div class="notTakenBranch">&cross; Branch 44 not taken.</div>
-            <div class="takenBranch">&check; Branch 46 taken 2 times.</div>
+            <div class="takenBranch">&check; Branch 46 taken 14 times.</div>
             <div class="notTakenBranch">&cross; Branch 47 not taken.</div>
             <div class="takenBranch">&check; Branch 49 taken 1 times.</div>
             <div class="notTakenBranch">&cross; Branch 50 not taken.</div>
@@ -1674,14 +1674,14 @@
           </div>
         </details>
       </td>
-      <td class="linecount partialCoveredLine">127413</td>
+      <td class="linecount partialCoveredLine">138736</td>
       <td class="src partialCoveredLine"><span class="w">          </span><span class="n">std</span><span class="o">::</span><span class="n">apply</span><span class="p">(</span><span class="n">f_simd</span><span class="p">,</span><span class="w"> </span><span class="n">idxs</span><span class="p">);</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l97" href="#l97">97</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">127413</td>
+      <td class="linecount coveredLine">138736</td>
       <td class="src coveredLine"><span class="w">          </span><span class="n">idxs</span><span class="p">[</span><span class="n">J</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">step_size</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
@@ -1695,40 +1695,40 @@
       <td class="lineno"><a id="l99" href="#l99">99</a></td>
       <td class="linebranch">
         <details class="linebranchDetails">
-          <summary class="linebranchSummary">71/86</summary>
+          <summary class="linebranchSummary">72/86</summary>
           <div class="linebranchContents">
-            <div class="takenBranch">&check; Branch 0 taken 389 times.</div>
-            <div class="takenBranch">&check; Branch 1 taken 344 times.</div>
-            <div class="takenBranch">&check; Branch 2 taken 313 times.</div>
-            <div class="takenBranch">&check; Branch 3 taken 329 times.</div>
+            <div class="takenBranch">&check; Branch 0 taken 393 times.</div>
+            <div class="takenBranch">&check; Branch 1 taken 346 times.</div>
+            <div class="takenBranch">&check; Branch 2 taken 502 times.</div>
+            <div class="takenBranch">&check; Branch 3 taken 442 times.</div>
             <div class="takenBranch">&check; Branch 4 taken 254 times.</div>
-            <div class="takenBranch">&check; Branch 5 taken 2738 times.</div>
+            <div class="takenBranch">&check; Branch 5 taken 3038 times.</div>
             <div class="takenBranch">&check; Branch 6 taken 517 times.</div>
-            <div class="takenBranch">&check; Branch 7 taken 2965 times.</div>
-            <div class="takenBranch">&check; Branch 8 taken 86 times.</div>
-            <div class="takenBranch">&check; Branch 9 taken 90 times.</div>
-            <div class="takenBranch">&check; Branch 10 taken 7 times.</div>
-            <div class="takenBranch">&check; Branch 11 taken 160 times.</div>
-            <div class="takenBranch">&check; Branch 12 taken 9 times.</div>
-            <div class="takenBranch">&check; Branch 13 taken 163 times.</div>
-            <div class="takenBranch">&check; Branch 14 taken 24 times.</div>
-            <div class="takenBranch">&check; Branch 15 taken 30 times.</div>
-            <div class="notTakenBranch">&cross; Branch 16 not taken.</div>
-            <div class="takenBranch">&check; Branch 17 taken 6 times.</div>
-            <div class="takenBranch">&check; Branch 18 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 19 taken 1 times.</div>
+            <div class="takenBranch">&check; Branch 7 taken 3065 times.</div>
+            <div class="takenBranch">&check; Branch 8 taken 95 times.</div>
+            <div class="takenBranch">&check; Branch 9 taken 93 times.</div>
+            <div class="takenBranch">&check; Branch 10 taken 25 times.</div>
+            <div class="takenBranch">&check; Branch 11 taken 166 times.</div>
+            <div class="takenBranch">&check; Branch 12 taken 18 times.</div>
+            <div class="takenBranch">&check; Branch 13 taken 167 times.</div>
+            <div class="takenBranch">&check; Branch 14 taken 33 times.</div>
+            <div class="takenBranch">&check; Branch 15 taken 34 times.</div>
+            <div class="takenBranch">&check; Branch 16 taken 18 times.</div>
+            <div class="takenBranch">&check; Branch 17 taken 12 times.</div>
+            <div class="takenBranch">&check; Branch 18 taken 19 times.</div>
+            <div class="takenBranch">&check; Branch 19 taken 7 times.</div>
             <div class="takenBranch">&check; Branch 20 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 21 taken 1 times.</div>
+            <div class="takenBranch">&check; Branch 21 taken 7 times.</div>
             <div class="takenBranch">&check; Branch 22 taken 3 times.</div>
-            <div class="takenBranch">&check; Branch 23 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 23 taken 9 times.</div>
             <div class="takenBranch">&check; Branch 24 taken 3 times.</div>
-            <div class="takenBranch">&check; Branch 25 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 25 taken 9 times.</div>
             <div class="notTakenBranch">&cross; Branch 26 not taken.</div>
-            <div class="takenBranch">&check; Branch 27 taken 6 times.</div>
+            <div class="takenBranch">&check; Branch 27 taken 12 times.</div>
             <div class="notTakenBranch">&cross; Branch 28 not taken.</div>
-            <div class="takenBranch">&check; Branch 29 taken 6 times.</div>
+            <div class="takenBranch">&check; Branch 29 taken 18 times.</div>
             <div class="takenBranch">&check; Branch 30 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 31 taken 1 times.</div>
+            <div class="takenBranch">&check; Branch 31 taken 13 times.</div>
             <div class="takenBranch">&check; Branch 32 taken 1 times.</div>
             <div class="takenBranch">&check; Branch 33 taken 1 times.</div>
             <div class="takenBranch">&check; Branch 34 taken 3 times.</div>
@@ -1786,34 +1786,34 @@
           </div>
         </details>
       </td>
-      <td class="linecount partialCoveredLine">9074</td>
+      <td class="linecount partialCoveredLine">9940</td>
       <td class="src partialCoveredLine"><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">imax</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l100" href="#l100">100</a></td>
       <td class="linebranch">
         <details class="linebranchDetails">
-          <summary class="linebranchSummary">28/86</summary>
+          <summary class="linebranchSummary">29/86</summary>
           <div class="linebranchContents">
-            <div class="takenBranch">&check; Branch 1 taken 389 times.</div>
+            <div class="takenBranch">&check; Branch 1 taken 393 times.</div>
             <div class="notTakenBranch">&cross; Branch 2 not taken.</div>
-            <div class="takenBranch">&check; Branch 4 taken 313 times.</div>
+            <div class="takenBranch">&check; Branch 4 taken 502 times.</div>
             <div class="notTakenBranch">&cross; Branch 5 not taken.</div>
             <div class="takenBranch">&check; Branch 7 taken 254 times.</div>
             <div class="notTakenBranch">&cross; Branch 8 not taken.</div>
             <div class="takenBranch">&check; Branch 10 taken 517 times.</div>
             <div class="notTakenBranch">&cross; Branch 11 not taken.</div>
-            <div class="takenBranch">&check; Branch 13 taken 86 times.</div>
+            <div class="takenBranch">&check; Branch 13 taken 95 times.</div>
             <div class="notTakenBranch">&cross; Branch 14 not taken.</div>
-            <div class="takenBranch">&check; Branch 16 taken 7 times.</div>
+            <div class="takenBranch">&check; Branch 16 taken 25 times.</div>
             <div class="notTakenBranch">&cross; Branch 17 not taken.</div>
-            <div class="takenBranch">&check; Branch 19 taken 9 times.</div>
+            <div class="takenBranch">&check; Branch 19 taken 18 times.</div>
             <div class="notTakenBranch">&cross; Branch 20 not taken.</div>
-            <div class="takenBranch">&check; Branch 22 taken 24 times.</div>
+            <div class="takenBranch">&check; Branch 22 taken 33 times.</div>
             <div class="notTakenBranch">&cross; Branch 23 not taken.</div>
-            <div class="notTakenBranch">&cross; Branch 25 not taken.</div>
+            <div class="takenBranch">&check; Branch 25 taken 18 times.</div>
             <div class="notTakenBranch">&cross; Branch 26 not taken.</div>
-            <div class="takenBranch">&check; Branch 28 taken 1 times.</div>
+            <div class="takenBranch">&check; Branch 28 taken 19 times.</div>
             <div class="notTakenBranch">&cross; Branch 29 not taken.</div>
             <div class="takenBranch">&check; Branch 31 taken 1 times.</div>
             <div class="notTakenBranch">&cross; Branch 32 not taken.</div>
@@ -1884,14 +1884,14 @@
           </div>
         </details>
       </td>
-      <td class="linecount partialCoveredLine">1855</td>
+      <td class="linecount partialCoveredLine">2129</td>
       <td class="src partialCoveredLine"><span class="w">          </span><span class="n">std</span><span class="o">::</span><span class="n">apply</span><span class="p">(</span><span class="n">f_scalar</span><span class="p">,</span><span class="w"> </span><span class="n">idxs</span><span class="p">);</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l101" href="#l101">101</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">1855</td>
+      <td class="linecount coveredLine">2129</td>
       <td class="src coveredLine"><span class="w">          </span><span class="o">++</span><span class="n">idxs</span><span class="p">[</span><span class="n">J</span><span class="p">];</span></td>
     </tr>
     <tr class="source-line">
@@ -1905,7 +1905,7 @@
       <td class="lineno"><a id="l103" href="#l103">103</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">7219</td>
+      <td class="linecount coveredLine">7811</td>
       <td class="src coveredLine"><span class="w">        </span><span class="n">idxs</span><span class="p">[</span><span class="n">J</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
@@ -1933,7 +1933,7 @@
       <td class="lineno"><a id="l107" href="#l107">107</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">522</td>
+      <td class="linecount coveredLine">540</td>
       <td class="src coveredLine"><span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">imax</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">get_extent</span><span class="o">&lt;</span><span class="n">J</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="n">StaticExtents</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shape</span><span class="p">);</span></td>
     </tr>
     <tr class="source-line">
@@ -1956,58 +1956,58 @@
         <details class="linebranchDetails">
           <summary class="linebranchSummary">94/94</summary>
           <div class="linebranchContents">
-            <div class="takenBranch">&check; Branch 0 taken 2974 times.</div>
-            <div class="takenBranch">&check; Branch 1 taken 189 times.</div>
-            <div class="takenBranch">&check; Branch 2 taken 2897 times.</div>
-            <div class="takenBranch">&check; Branch 3 taken 154 times.</div>
+            <div class="takenBranch">&check; Branch 0 taken 2976 times.</div>
+            <div class="takenBranch">&check; Branch 1 taken 190 times.</div>
+            <div class="takenBranch">&check; Branch 2 taken 2910 times.</div>
+            <div class="takenBranch">&check; Branch 3 taken 155 times.</div>
             <div class="takenBranch">&check; Branch 4 taken 194 times.</div>
             <div class="takenBranch">&check; Branch 5 taken 76 times.</div>
             <div class="takenBranch">&check; Branch 6 taken 344 times.</div>
             <div class="takenBranch">&check; Branch 7 taken 67 times.</div>
-            <div class="takenBranch">&check; Branch 8 taken 121 times.</div>
-            <div class="takenBranch">&check; Branch 9 taken 32 times.</div>
-            <div class="takenBranch">&check; Branch 10 taken 45 times.</div>
-            <div class="takenBranch">&check; Branch 11 taken 16 times.</div>
+            <div class="takenBranch">&check; Branch 8 taken 421 times.</div>
+            <div class="takenBranch">&check; Branch 9 taken 35 times.</div>
+            <div class="takenBranch">&check; Branch 10 taken 145 times.</div>
+            <div class="takenBranch">&check; Branch 11 taken 17 times.</div>
             <div class="takenBranch">&check; Branch 12 taken 212 times.</div>
             <div class="takenBranch">&check; Branch 13 taken 71 times.</div>
             <div class="takenBranch">&check; Branch 14 taken 73 times.</div>
             <div class="takenBranch">&check; Branch 15 taken 36 times.</div>
-            <div class="takenBranch">&check; Branch 16 taken 159 times.</div>
-            <div class="takenBranch">&check; Branch 17 taken 53 times.</div>
-            <div class="takenBranch">&check; Branch 18 taken 58 times.</div>
-            <div class="takenBranch">&check; Branch 19 taken 28 times.</div>
-            <div class="takenBranch">&check; Branch 20 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 21 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 22 taken 6 times.</div>
-            <div class="takenBranch">&check; Branch 23 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 24 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 25 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 26 taken 3 times.</div>
-            <div class="takenBranch">&check; Branch 27 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 28 taken 3 times.</div>
-            <div class="takenBranch">&check; Branch 29 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 30 taken 6 times.</div>
-            <div class="takenBranch">&check; Branch 31 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 32 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 33 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 34 taken 6 times.</div>
-            <div class="takenBranch">&check; Branch 35 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 36 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 37 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 38 taken 6 times.</div>
-            <div class="takenBranch">&check; Branch 39 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 40 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 41 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 42 taken 6 times.</div>
-            <div class="takenBranch">&check; Branch 43 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 44 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 45 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 46 taken 3 times.</div>
-            <div class="takenBranch">&check; Branch 47 taken 1 times.</div>
-            <div class="takenBranch">&check; Branch 48 taken 6 times.</div>
-            <div class="takenBranch">&check; Branch 49 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 50 taken 2 times.</div>
-            <div class="takenBranch">&check; Branch 51 taken 1 times.</div>
+            <div class="takenBranch">&check; Branch 16 taken 162 times.</div>
+            <div class="takenBranch">&check; Branch 17 taken 54 times.</div>
+            <div class="takenBranch">&check; Branch 18 taken 64 times.</div>
+            <div class="takenBranch">&check; Branch 19 taken 30 times.</div>
+            <div class="takenBranch">&check; Branch 20 taken 5 times.</div>
+            <div class="takenBranch">&check; Branch 21 taken 2 times.</div>
+            <div class="takenBranch">&check; Branch 22 taken 9 times.</div>
+            <div class="takenBranch">&check; Branch 23 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 24 taken 8 times.</div>
+            <div class="takenBranch">&check; Branch 25 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 26 taken 9 times.</div>
+            <div class="takenBranch">&check; Branch 27 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 28 taken 9 times.</div>
+            <div class="takenBranch">&check; Branch 29 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 30 taken 8 times.</div>
+            <div class="takenBranch">&check; Branch 31 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 32 taken 8 times.</div>
+            <div class="takenBranch">&check; Branch 33 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 34 taken 8 times.</div>
+            <div class="takenBranch">&check; Branch 35 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 36 taken 8 times.</div>
+            <div class="takenBranch">&check; Branch 37 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 38 taken 8 times.</div>
+            <div class="takenBranch">&check; Branch 39 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 40 taken 8 times.</div>
+            <div class="takenBranch">&check; Branch 41 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 42 taken 8 times.</div>
+            <div class="takenBranch">&check; Branch 43 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 44 taken 14 times.</div>
+            <div class="takenBranch">&check; Branch 45 taken 5 times.</div>
+            <div class="takenBranch">&check; Branch 46 taken 7 times.</div>
+            <div class="takenBranch">&check; Branch 47 taken 3 times.</div>
+            <div class="takenBranch">&check; Branch 48 taken 18 times.</div>
+            <div class="takenBranch">&check; Branch 49 taken 6 times.</div>
+            <div class="takenBranch">&check; Branch 50 taken 6 times.</div>
+            <div class="takenBranch">&check; Branch 51 taken 3 times.</div>
             <div class="takenBranch">&check; Branch 52 taken 3 times.</div>
             <div class="takenBranch">&check; Branch 53 taken 1 times.</div>
             <div class="takenBranch">&check; Branch 54 taken 6 times.</div>
@@ -2053,7 +2053,7 @@
           </div>
         </details>
       </td>
-      <td class="linecount coveredLine">8373</td>
+      <td class="linecount coveredLine">8918</td>
       <td class="src coveredLine"><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">imax</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
@@ -2074,7 +2074,7 @@
       <td class="lineno"><a id="l113" href="#l113">113</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">7499</td>
+      <td class="linecount coveredLine">8005</td>
       <td class="src coveredLine"><span class="w">          </span><span class="o">++</span><span class="n">idxs</span><span class="p">[</span><span class="n">J</span><span class="p">];</span></td>
     </tr>
     <tr class="source-line">
@@ -2088,7 +2088,7 @@
       <td class="lineno"><a id="l115" href="#l115">115</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">874</td>
+      <td class="linecount coveredLine">913</td>
       <td class="src coveredLine"><span class="w">        </span><span class="n">idxs</span><span class="p">[</span><span class="n">J</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
@@ -2109,7 +2109,7 @@
       <td class="lineno"><a id="l118" href="#l118">118</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">8093</td>
+      <td class="linecount coveredLine">8724</td>
       <td class="src coveredLine"><span class="w">    </span><span class="p">}</span></td>
     </tr>
     <tr class="source-line">
@@ -2308,167 +2308,167 @@
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="cm">/**</span></td>
+      <td class="src "><span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">StaticExtents</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">StrideOrder</span><span class="p">,</span><span class="k">typename</span><span class="w"> </span><span class="nc">F_SIMD</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">F_SCALAR</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">integral</span><span class="w"> </span><span class="n">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l146" href="#l146">146</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   * @brief Loop over all possible index values of a given shape and apply a function to them.</span></td>
+      <td class="src "><span class="w"> </span><span class="n">FORCEINLINE</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">for_each_static</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">Int</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="o">&gt;</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">shape</span><span class="p">,</span><span class="n">F_SIMD</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="n">f_simd</span><span class="p">,</span><span class="w"> </span><span class="n">F_SCALAR</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="n">f_scalar</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">step_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// NOLINT (we do not want to forward here)</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l147" href="#l147">147</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="cm">   *</span></td>
+      <td class="linecount coveredLine">126</td>
+      <td class="src coveredLine"><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">idxs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nda</span><span class="o">::</span><span class="n">stdutil</span><span class="o">::</span><span class="n">make_initialized_array</span><span class="o">&lt;</span><span class="n">R</span><span class="o">&gt;</span><span class="p">(</span><span class="mf">0l</span><span class="p">);</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l148" href="#l148">148</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   * @details It traverses all possible indices in C-order, i.e. the last index varies the fastest. The shape is</span></td>
+      <td class="src "><span class="w">    </span><span class="n">detail</span><span class="o">::</span><span class="n">for_each_static_impl</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">StaticExtents</span><span class="p">,</span><span class="w"> </span><span class="n">StrideOrder</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">idxs</span><span class="p">,</span><span class="w"> </span><span class="n">f_simd</span><span class="p">,</span><span class="w"> </span><span class="n">f_scalar</span><span class="p">,</span><span class="w"> </span><span class="n">step_size</span><span class="p">);</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l149" href="#l149">149</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="cm">   * specified at runtime and the given function `f` must be callable with as many long values as the number of</span></td>
+      <td class="linecount coveredLine">126</td>
+      <td class="src coveredLine"><span class="w">  </span><span class="p">}</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l150" href="#l150">150</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   * dimensions in the shape array, e.g. for a 3-dimensional shape the function must be callable as</span></td>
+      <td class="src "></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l151" href="#l151">151</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   * `f(long, long, long)`.</span></td>
+      <td class="src "><span class="w">  </span><span class="cm">/**</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l152" href="#l152">152</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   *</span></td>
+      <td class="src "><span class="cm">   * @brief Loop over all possible index values of a given shape and apply a function to them.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l153" href="#l153">153</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   * @tparam F Callable type.</span></td>
+      <td class="src "><span class="cm">   *</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l154" href="#l154">154</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   * @tparam R Number of dimensions.</span></td>
+      <td class="src "><span class="cm">   * @details It traverses all possible indices in C-order, i.e. the last index varies the fastest. The shape is</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l155" href="#l155">155</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   * @tparam Int Integer type used in the shape array.</span></td>
+      <td class="src "><span class="cm">   * specified at runtime and the given function `f` must be callable with as many long values as the number of</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l156" href="#l156">156</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   *</span></td>
+      <td class="src "><span class="cm">   * dimensions in the shape array, e.g. for a 3-dimensional shape the function must be callable as</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l157" href="#l157">157</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   * @param shape Shape to loop over (index bounds).</span></td>
+      <td class="src "><span class="cm">   * `f(long, long, long)`.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l158" href="#l158">158</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   * @param f Callable object.</span></td>
+      <td class="src "><span class="cm">   *</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l159" href="#l159">159</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   */</span></td>
+      <td class="src "><span class="cm">   * @tparam F Callable type.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l160" href="#l160">160</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">F</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">integral</span><span class="w"> </span><span class="n">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span></td>
+      <td class="src "><span class="cm">   * @tparam R Number of dimensions.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l161" href="#l161">161</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="n">FORCEINLINE</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">for_each</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">Int</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="o">&gt;</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">F</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// NOLINT (we do not want to forward here)</span></td>
+      <td class="src "><span class="cm">   * @tparam Int Integer type used in the shape array.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l162" href="#l162">162</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">24722</td>
-      <td class="src coveredLine"><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">idxs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nda</span><span class="o">::</span><span class="n">stdutil</span><span class="o">::</span><span class="n">make_initialized_array</span><span class="o">&lt;</span><span class="n">R</span><span class="o">&gt;</span><span class="p">(</span><span class="mf">0l</span><span class="p">);</span></td>
+      <td class="linecount "></td>
+      <td class="src "><span class="cm">   *</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l163" href="#l163">163</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">    </span><span class="n">detail</span><span class="o">::</span><span class="n">for_each_static_impl</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">idxs</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">);</span></td>
+      <td class="src "><span class="cm">   * @param shape Shape to loop over (index bounds).</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l164" href="#l164">164</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">24722</td>
-      <td class="src coveredLine"><span class="w">  </span><span class="p">}</span></td>
+      <td class="linecount "></td>
+      <td class="src "><span class="cm">   * @param f Callable object.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l165" href="#l165">165</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "></td>
+      <td class="src "><span class="cm">   */</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l166" href="#l166">166</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">F_SIMD</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">F_SCALAR</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">integral</span><span class="w"> </span><span class="n">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span></td>
+      <td class="src "><span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">F</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">integral</span><span class="w"> </span><span class="n">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l167" href="#l167">167</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="n">FORCEINLINE</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">for_each</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">Int</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="o">&gt;</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">F_SIMD</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="n">f_simd</span><span class="p">,</span><span class="w"> </span><span class="n">F_SCALAR</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="n">f_scalar</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">step_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// NOLINT</span></td>
+      <td class="src "><span class="w">  </span><span class="n">FORCEINLINE</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">for_each</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">Int</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="o">&gt;</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">F</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// NOLINT (we do not want to forward here)</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l168" href="#l168">168</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">594</td>
+      <td class="linecount coveredLine">24598</td>
       <td class="src coveredLine"><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">idxs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nda</span><span class="o">::</span><span class="n">stdutil</span><span class="o">::</span><span class="n">make_initialized_array</span><span class="o">&lt;</span><span class="n">R</span><span class="o">&gt;</span><span class="p">(</span><span class="mf">0l</span><span class="p">);</span></td>
     </tr>
     <tr class="source-line">
@@ -2476,13 +2476,13 @@
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">    </span><span class="n">detail</span><span class="o">::</span><span class="n">for_each_static_impl</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">F_SIMD</span><span class="p">,</span><span class="w"> </span><span class="n">F_SCALAR</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">idxs</span><span class="p">,</span><span class="w"> </span><span class="n">f_simd</span><span class="p">,</span><span class="w"> </span><span class="n">f_scalar</span><span class="p">,</span><span class="w"> </span><span class="n">step_size</span><span class="p">);</span></td>
+      <td class="src "><span class="w">    </span><span class="n">detail</span><span class="o">::</span><span class="n">for_each_static_impl</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">idxs</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">);</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l170" href="#l170">170</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">594</td>
+      <td class="linecount coveredLine">24598</td>
       <td class="src coveredLine"><span class="w">  </span><span class="p">}</span></td>
     </tr>
     <tr class="source-line">
@@ -2497,24 +2497,66 @@
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="cm">/** @} */</span></td>
+      <td class="src "><span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">F_SIMD</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">F_SCALAR</span><span class="p">,</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">integral</span><span class="w"> </span><span class="n">Int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l173" href="#l173">173</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "></td>
+      <td class="src "><span class="w">  </span><span class="n">FORCEINLINE</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">for_each</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">Int</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="o">&gt;</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">F_SIMD</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="n">f_simd</span><span class="p">,</span><span class="w"> </span><span class="n">F_SCALAR</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="n">f_scalar</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">step_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// NOLINT</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l174" href="#l174">174</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount coveredLine">593</td>
+      <td class="src coveredLine"><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">idxs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nda</span><span class="o">::</span><span class="n">stdutil</span><span class="o">::</span><span class="n">make_initialized_array</span><span class="o">&lt;</span><span class="n">R</span><span class="o">&gt;</span><span class="p">(</span><span class="mf">0l</span><span class="p">);</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l175" href="#l175">175</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "><span class="w">    </span><span class="n">detail</span><span class="o">::</span><span class="n">for_each_static_impl</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">F_SIMD</span><span class="p">,</span><span class="w"> </span><span class="n">F_SCALAR</span><span class="o">&gt;</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">idxs</span><span class="p">,</span><span class="w"> </span><span class="n">f_simd</span><span class="p">,</span><span class="w"> </span><span class="n">f_scalar</span><span class="p">,</span><span class="w"> </span><span class="n">step_size</span><span class="p">);</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l176" href="#l176">176</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount coveredLine">593</td>
+      <td class="src coveredLine"><span class="w">  </span><span class="p">}</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l177" href="#l177">177</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l178" href="#l178">178</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "><span class="w">  </span><span class="cm">/** @} */</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l179" href="#l179">179</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l180" href="#l180">180</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
       <td class="src "><span class="p">}</span><span class="w"> </span><span class="c1">// namespace nda</span></td>
     </tr>
     <tr class="source-line">
-      <td class="lineno"><a id="l175" href="#l175">175</a></td>
+      <td class="lineno"><a id="l181" href="#l181">181</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
