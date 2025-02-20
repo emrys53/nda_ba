@@ -369,9 +369,12 @@ $(function(){initNavTree('declarations_8hpp_source.html',''); initResizable(true
 <div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span> </div>
 <div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</div>
 <div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>  <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> is_simd_enabled_v2_v = is_simd_enabled_v2&lt;T, U&gt;::value;</div>
-<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span></div>
-<div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span> </div>
-<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span>} <span class="comment">// namespace nda</span></div>
+<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span> </div>
+<div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span>  <span class="keyword">template</span>&lt;Array A&gt;</div>
+<div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span>  <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> vectorizable_array = is_simd_enabled_v2_v&lt;get_value_t&lt;A&gt;, A&gt; and <a class="code hl_variable" href="group__layout__utils.html#ga9bd94d15e6806a7637d8c45464561878">get_layout_info&lt;A&gt;</a>.stride_order != <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(-1) and <a class="code hl_variable" href="group__layout__utils.html#ga9bd94d15e6806a7637d8c45464561878">get_layout_info&lt;A&gt;</a>.prop == layout_prop_e::contiguous;</div>
+<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span></div>
+<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span> </div>
+<div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>} <span class="comment">// namespace nda</span></div>
 <div class="ttc" id="aaccessors_8hpp_html"><div class="ttname"><a href="accessors_8hpp.html">accessors.hpp</a></div><div class="ttdoc">Defines accessors for nda::array objects (cf. std::default_accessor).</div></div>
 <div class="ttc" id="aaddress__space_8hpp_html"><div class="ttname"><a href="address__space_8hpp.html">address_space.hpp</a></div><div class="ttdoc">Provides definitions and type traits involving the different memory address spaces supported by nda.</div></div>
 <div class="ttc" id="aclassnda_1_1basic__array__view_html"><div class="ttname"><a href="classnda_1_1basic__array__view.html">nda::basic_array_view</a></div><div class="ttdoc">A generic view of a multi-dimensional array.</div><div class="ttdef"><b>Definition</b> <a href="basic__array__view_8hpp_source.html#l00128">basic_array_view.hpp:128</a></div></div>

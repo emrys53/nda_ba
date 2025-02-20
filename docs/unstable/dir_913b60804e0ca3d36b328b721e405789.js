@@ -20,6 +20,7 @@ var dir_913b60804e0ca3d36b328b721e405789 =
     [ "blas.hpp", "blas_8hpp.html", null ],
     [ "clef.hpp", "clef_8hpp.html", null ],
     [ "concepts.hpp", "concepts_8hpp.html", null ],
+    [ "config.hpp", "config_8hpp_source.html", null ],
     [ "declarations.hpp", "declarations_8hpp.html", "declarations_8hpp" ],
     [ "device.hpp", "device_8hpp.html", "device_8hpp" ],
     [ "exceptions.hpp", "exceptions_8hpp.html", null ],
