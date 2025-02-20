@@ -26,7 +26,7 @@
     </tr>
     <tr>
       <th scope="row">Date:</th>
-      <td>2025-02-20 20:20:23</td>
+      <td>2025-02-20 21:14:10</td>
     </tr>
   </table>
 </div>
@@ -83,7 +83,7 @@
     <tr><td><a href="#l207">nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt;::value_t nda::simd::reduce_max&lt;nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt; &gt;(nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt; const&amp;) (line 207)</a></td><td>called 1006 times</td><td>89.0%</td></tr>
     <tr><td><a href="#l173">nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt;::value_t nda::simd::reduce_min&lt;nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt; &gt;(nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt; const&amp;) (line 173)</a></td><td>called 1004 times</td><td>89.0%</td></tr>
     <tr><td><a href="#l279">nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt;::value_t nda::simd::reduce_mul&lt;nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt; &gt;(nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt; const&amp;) (line 279)</a></td><td>called 1 time</td><td>100.0%</td></tr>
-    <tr><td><a href="#l235">nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt;::value_t nda::simd::reduce_sum&lt;nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt; &gt;(nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt; const&amp;) (line 235)</a></td><td>called 1 time</td><td>92.0%</td></tr>
+    <tr><td><a href="#l235">nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt;::value_t nda::simd::reduce_sum&lt;nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt; &gt;(nda::simd_type&lt;double, 4ul, (nda::abi_tag)2&gt; const&amp;) (line 235)</a></td><td>called 3 times</td><td>92.0%</td></tr>
     <tr><td><a href="#l27">nda::simd_type&lt;float, 8ul, (nda::abi_tag)2&gt; nda::simd::abs&lt;nda::simd_type&lt;float, 8ul, (nda::abi_tag)2&gt; &gt;(nda::simd_type&lt;float, 8ul, (nda::abi_tag)2&gt; const&amp;) (line 27)</a></td><td>called 1000 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l50">nda::simd_type&lt;float, 8ul, (nda::abi_tag)2&gt; nda::simd::conj&lt;nda::simd_type&lt;float, 8ul, (nda::abi_tag)2&gt; &gt;(nda::simd_type&lt;float, 8ul, (nda::abi_tag)2&gt; const&amp;) (line 50)</a></td><td>called 1000 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l303">nda::simd_type&lt;float, 8ul, (nda::abi_tag)2&gt; nda::simd::fma_add&lt;nda::simd_type&lt;float, 8ul, (nda::abi_tag)2&gt; &gt;(nda::simd_type&lt;float, 8ul, (nda::abi_tag)2&gt; const&amp;, nda::simd_type&lt;float, 8ul, (nda::abi_tag)2&gt; const&amp;, nda::simd_type&lt;float, 8ul, (nda::abi_tag)2&gt; const&amp;) (line 303)</a></td><td>called 10 times</td><td>100.0%</td></tr>
@@ -1986,7 +1986,7 @@
       <td class="lineno"><a id="l235" href="#l235">235</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">1</td>
+      <td class="linecount coveredLine">3</td>
       <td class="src coveredLine"><span class="w">  </span><span class="kr">inline</span><span class="w"> </span><span class="n">simd_d4</span><span class="o">::</span><span class="n">value_t</span><span class="w"> </span><span class="n">reduce_sum</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">simd_d4</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
@@ -1995,12 +1995,12 @@
         <details class="linebranchDetails">
           <summary class="linebranchSummary">1/2</summary>
           <div class="linebranchContents">
-            <div class="takenBranch">&check; Branch 1 taken 1 times.</div>
+            <div class="takenBranch">&check; Branch 1 taken 3 times.</div>
             <div class="notTakenBranch">&cross; Branch 2 not taken.</div>
           </div>
         </details>
       </td>
-      <td class="linecount partialCoveredLine">1</td>
+      <td class="linecount partialCoveredLine">3</td>
       <td class="src partialCoveredLine"><span class="w">    </span><span class="n">simd_d2</span><span class="w"> </span><span class="n">lo</span><span class="p">{</span><span class="n">_mm256_extractf128_pd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)};</span></td>
     </tr>
     <tr class="source-line">
@@ -2009,12 +2009,12 @@
         <details class="linebranchDetails">
           <summary class="linebranchSummary">1/2</summary>
           <div class="linebranchContents">
-            <div class="takenBranch">&check; Branch 1 taken 1 times.</div>
+            <div class="takenBranch">&check; Branch 1 taken 3 times.</div>
             <div class="notTakenBranch">&cross; Branch 2 not taken.</div>
           </div>
         </details>
       </td>
-      <td class="linecount partialCoveredLine">1</td>
+      <td class="linecount partialCoveredLine">3</td>
       <td class="src partialCoveredLine"><span class="w">    </span><span class="n">simd_d2</span><span class="w"> </span><span class="n">hi</span><span class="p">{</span><span class="n">_mm256_extractf128_pd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)};</span></td>
     </tr>
     <tr class="source-line">
@@ -2023,12 +2023,12 @@
         <details class="linebranchDetails">
           <summary class="linebranchSummary">1/2</summary>
           <div class="linebranchContents">
-            <div class="takenBranch">&check; Branch 2 taken 1 times.</div>
+            <div class="takenBranch">&check; Branch 2 taken 3 times.</div>
             <div class="notTakenBranch">&cross; Branch 3 not taken.</div>
           </div>
         </details>
       </td>
-      <td class="linecount partialCoveredLine">1</td>
+      <td class="linecount partialCoveredLine">3</td>
       <td class="src partialCoveredLine"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">lo</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hi</span><span class="p">);</span></td>
     </tr>
     <tr class="source-line">
