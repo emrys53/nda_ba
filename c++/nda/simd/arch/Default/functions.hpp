@@ -217,7 +217,6 @@ namespace nda::simd {
     return x;
   }
 
-#ifdef __FMA__
   // FMA ADD
   template <>
   inline simd_f1 fma_add(const simd_f1 &x, const simd_f1 &y, const simd_f1 &z) {
@@ -301,5 +300,4 @@ namespace nda::simd {
   inline simd_cd1_d fma_nsub(const simd_cd1_d &x, const simd_cd1_d &y, const simd_cd1_d &z) {
     return -(x * y + z);
   }
-#endif
 } // namespace nda::simd
