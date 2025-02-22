@@ -44,8 +44,8 @@ static void GEMM(benchmark::State &state) {
       auto tmp4 = nda::map(mult{})(tmp3, tmp2);
       auto tmp5 = nda::map(mult{})(tmp4, tmp3);
       auto tmp6 = nda::map(mult{})(tmp5, tmp4);
-      // volatile Matrix tmp7(tmp6);
-      benchmark::DoNotOptimize(sum(tmp6));
+      volatile Matrix tmp7(tmp6);
+      // benchmark::DoNotOptimize(sum(tmp6));
       benchmark::ClobberMemory();
     } else {
 
@@ -55,7 +55,7 @@ static void GEMM(benchmark::State &state) {
       auto tmp4 = nda::map(mult{})(tmp3, tmp2);
       auto tmp5 = nda::map(mult{})(tmp4, tmp3);
       auto tmp6 = nda::map(mult{})(tmp5, tmp4);
-      // volatile Matrix tmp7(tmp6);
+      volatile Matrix tmp7(tmp6);
       // for (int i = 0; i < N; i++) {
       //   for (int j = 0; j < N; j++) {
       //     if (tmp7(i, j) != tmp77(i, j)) {
@@ -71,7 +71,7 @@ static void GEMM(benchmark::State &state) {
       //     }
       //   }
       // }
-      benchmark::DoNotOptimize(sum(tmp6));
+      // benchmark::DoNotOptimize(sum(tmp6));
       benchmark::ClobberMemory();
     }
   }

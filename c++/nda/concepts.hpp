@@ -144,6 +144,21 @@ namespace nda {
   template <typename T, template <typename...> class TMPLT>
   concept InstantiationOf = nda::is_instantiation_of_v<TMPLT, T>;
 
+  namespace simd {
+    template <typename Derived, Vectorizable T>
+    struct mock_simd;
+  }
+
+  template <typename F, typename T, size_t R>
+  concept LoadWithNativeSimd = requires(F const &f) {
+    requires Vectorizable<T>;
+    {
+      []<auto... Is>(std::index_sequence<Is...>, auto const &aa) -> decltype(aa.load(native_simd<T>((static_cast<T>(Is)))...)) {
+        return (aa.load(native_simd<T>((static_cast<T>(Is)))...));
+      }(std::make_index_sequence<R>{}, f)
+    } -> std::same_as<native_simd<T>>;
+  } or std::is_base_of_v<simd::mock_simd<F, T>, F>;
+
   /** @} */
 
   namespace mem {
@@ -242,17 +257,6 @@ namespace nda {
     { a.size() } -> std::same_as<long>;
     requires CallableWithLongs<A, get_rank<A>>;
   };
-
-  //TODO: need to improve this.
-  template <typename T>
-  concept HasLoad = requires(T a) {
-    { &T::load };
-  };
-  template <typename T, typename... Args>
-  concept HasLoadWithArguments = requires(T t, Args &&...args) {
-    { t.load(std::forward<Args>(args)...) };
-  };
-
 
   /**
    * @brief Check if a given type satisfies the memory array concept.

@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <bit>
 #include <ranges>
+#include <nda/simd/mock_simd.hpp>
 
 using namespace nda;
 
@@ -1527,6 +1528,40 @@ TEST(NDA, SimdFMAFunctions) {
 #endif
 }
 
+
+template <Vectorizable T>
+struct adder : simd::mock_simd<adder<T>, T> {
+  using value_t = T;
+  using simd_t  = native_simd<T>;
+
+  template <typename... Args>
+  value_t operator()(Args... args) const {
+    static_assert((std::is_same_v<value_t, std::remove_cvref_t<Args>> and ...), "All types have to be the same.");
+    return (args + ...);
+  }
+};
+
+template <Vectorizable T>
+struct adder_simd : simd::mock_simd<adder_simd<T>, T> {
+  using value_t = T;
+  using simd_t  = native_simd<T>;
+
+  template <typename... Args>
+  value_t operator()(Args... args) const {
+    static_assert((std::is_same_v<value_t, std::remove_cvref_t<Args>> and ...), "All types have to be the same.");
+    return (args + ...);
+  }
+
+  template <typename... Args>
+  [[nodiscard]] simd_t load(Args... args) const {
+    static_assert((std::is_same_v<simd_t, std::remove_cvref_t<Args>> and ...), "All types have to be the same.");
+    std::cout << "dervied load" << std::endl;
+    return (args + ...);
+  }
+};
+
+
+
 TEST(NDA, OurSIMD) {
   class add {
     public:
@@ -1534,43 +1569,65 @@ TEST(NDA, OurSIMD) {
 
     native_simd<float> load(native_simd<float> a, native_simd<float> b) const { return a + b; }
   };
-  const long size1 = 13;
-  const long size2 = 11;
-  float k          = 1;
-  const float xx   = 5;
-  matrix_aligned<float> s({size1, size2});
-  matrix_aligned<float> x({size1, size2});
-  for (int i = 0; i < size1; ++i) {
-    for (int j = 0; j < size2; ++j) { s(i, j) = k++; }
-  }
-  for (int i = 0; i < size1; ++i) {
-    for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
-  }
-  //TODO: this doesnt work check.
-  auto single_add         = [](float a, float b) { return a + b; };
-  auto test               = nda::map(add{})(s, x);
-  auto test2              = nda::map(add{})(test, test);
-  auto test3              = test2 - test2;
-  auto test4              = test3 + 7.0f;
-  auto  y = test4 + s + test2 + test + s + x; // Without float template deduction fails in clang.
-  std::cout << min_element(y) << std::endl;
-  std::cout << max_element(y) << std::endl;
 
-  std::cout << (get_layout_info<decltype(y)>.prop == layout_prop_e::contiguous) << std::endl;
-  // for (auto asd : s) { std::cout << asd << std::endl; }
-  // std::cout << get_layout_info<decltype(y)>.stride_order << std::endl;
-  // std::cout << get_layout_info<decltype(test4)>.stride_order << std::endl;
-  // std::cout << C_stride_order<2> << std::endl;
-  // std::cout << is_simd_enabled_v2<float, decltype(y)>::value << std::endl;
-  // std::cout << is_simd_enabled_v2<float, decltype(s)>::value << std::endl;
-  // std::cout << is_simd_enabled_v2<float, decltype(x)>::value << std::endl;
-  // std::cout << is_simd_enabled_v2<float, decltype(test)>::value << std::endl;
-  // std::cout << is_simd_enabled_v2<float, decltype(test2)>::value << std::endl;
-  // std::cout << is_simd_enabled_v2<float, decltype(test3)>::value << std::endl;
-  // std::cout << is_simd_enabled_v2<float, decltype(test4)>::value << std::endl;
+  // std::cout << adder<int>{}(1, 2, 3, 4, 5) << std::endl;
+  // simd_i8 hop({1, 2, 3, 4, 5, 6, 7, 8});
+  // simd_i8 hop2({11, 22, 33, 45, 6, 6, 7, 8});
+  // std::cout << LoadWithNativeSimd<adder_simd<int>, int, 222> << std::endl;
+  // std::cout << LoadWithNativeSimd<adder<int>, int, 222> << std::endl;
+  // std::cout << LoadWithNativeSimd<add, float, 223> << std::endl;
+  // std::cout << LoadWithNativeSimd<adder_simd<int>, float, 222> << std::endl;
+  // std::cout << LoadWithNativeSimd<add, float, 2> << std::endl;
+
+  // std::cout << HasLoadWithArguments<decltype(adder_simd<int>{})> << std::endl;
+  // std::cout << HasLoadWithArguments<decltype(adder<int>{})> << std::endl;
+  // std::cout << HasLoad<decltype(adder<int>{})> << std::endl;
+  // std::cout << HasLoadWithArguments<decltype(add{})> << std::endl;
+  // std::cout << HasLoad<decltype(add{})> << std::endl;
+
+  // native_simd<int> hop4 = adder_simd<int>{}.load(simd_i8(10), hop2, hop, hop2);
+  // native_simd<int> hop5 = adder<int>{}.load(simd_i8(10), hop2, hop, hop2);
   //
-  for (int i = 0; i < size1; ++i) {
-    for (int j = 0; j < size2; ++j) { std::cout << y(i, j) << " "; }
-    std::cout << std::endl;
-  }
+  // alignas(32) std::array<int, 8> result_array;
+  // hop5.store(result_array.data());
+  // for (int i = 0; i < 8; ++i) { std::cout << result_array[i] << std::endl; }
+  // const long size1 = 13;
+  // const long size2 = 11;
+  // float k          = 1;
+  // const float xx   = 5;
+  // matrix_aligned<float> s({size1, size2});
+  // matrix_aligned<float> x({size1, size2});
+  // for (int i = 0; i < size1; ++i) {
+  //   for (int j = 0; j < size2; ++j) { s(i, j) = k++; }
+  // }
+  // for (int i = 0; i < size1; ++i) {
+  //   for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
+  // }
+  // //TODO: this doesnt work check.
+  // auto single_add = [](float a, float b) { return a + b; };
+  // auto test       = nda::map(add{})(s, x);
+  // auto test2      = nda::map(add{})(test, test);
+  // auto test3      = test2 - test2;
+  // auto test4      = test3 + 7.0f;
+  // auto y          = test4 + s + test2 + test + s + x; // Without float template deduction fails in clang.
+  // std::cout << min_element(y) << std::endl;
+  // std::cout << max_element(y) << std::endl;
+  //
+  // std::cout << (get_layout_info<decltype(y)>.prop == layout_prop_e::contiguous) << std::endl;
+  // // for (auto asd : s) { std::cout << asd << std::endl; }
+  // // std::cout << get_layout_info<decltype(y)>.stride_order << std::endl;
+  // // std::cout << get_layout_info<decltype(test4)>.stride_order << std::endl;
+  // // std::cout << C_stride_order<2> << std::endl;
+  // // std::cout << is_simd_enabled_v2<float, decltype(y)>::value << std::endl;
+  // // std::cout << is_simd_enabled_v2<float, decltype(s)>::value << std::endl;
+  // // std::cout << is_simd_enabled_v2<float, decltype(x)>::value << std::endl;
+  // // std::cout << is_simd_enabled_v2<float, decltype(test)>::value << std::endl;
+  // // std::cout << is_simd_enabled_v2<float, decltype(test2)>::value << std::endl;
+  // // std::cout << is_simd_enabled_v2<float, decltype(test3)>::value << std::endl;
+  // // std::cout << is_simd_enabled_v2<float, decltype(test4)>::value << std::endl;
+  // //
+  // for (int i = 0; i < size1; ++i) {
+  //   for (int j = 0; j < size2; ++j) { std::cout << y(i, j) << " "; }
+  //   std::cout << std::endl;
+  // }
 }

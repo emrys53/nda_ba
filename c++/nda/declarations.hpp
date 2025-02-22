@@ -472,7 +472,7 @@ namespace nda {
   //Specialization for expr_call
   template <typename T, typename F, Array... As>
   struct is_simd_enabled_v2<T, expr_call<F, As...>> {
-    static constexpr bool value = HasLoad<F> and (is_simd_enabled_v2<T, As>::value and ...);
+    static constexpr bool value = LoadWithNativeSimd<F, T, sizeof...(As)> and (is_simd_enabled_v2<T, As>::value and ...);
   };
 
   //Specialization for expr_unary
@@ -492,8 +492,9 @@ namespace nda {
   template <typename T, typename U>
   inline static constexpr bool is_simd_enabled_v2_v = is_simd_enabled_v2<T, U>::value;
 
-  template<Array A>
-  inline static constexpr bool vectorizable_array = is_simd_enabled_v2_v<get_value_t<A>, A> and get_layout_info<A>.stride_order != static_cast<uint64_t>(-1) and get_layout_info<A>.prop == layout_prop_e::contiguous;
+  template <Array A>
+  inline static constexpr bool vectorizable_array = is_simd_enabled_v2_v<get_value_t<A>, A>
+     and get_layout_info<A>.stride_order != static_cast<uint64_t>(-1) and get_layout_info<A>.prop == layout_prop_e::contiguous;
 
   /** @} */
 
