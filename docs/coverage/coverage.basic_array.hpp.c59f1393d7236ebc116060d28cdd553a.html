@@ -26,7 +26,7 @@
     </tr>
     <tr>
       <th scope="row">Date:</th>
-      <td>2025-02-20 21:28:16</td>
+      <td>2025-02-22 23:22:22</td>
     </tr>
   </table>
 </div>
@@ -46,8 +46,8 @@
     </tr>
     <tr>
       <th scope="row">Functions:</th>
-      <td>904</td>
-      <td>922</td>
+      <td>903</td>
+      <td>921</td>
       <td class="coverage-high">98.0%</td>
     </tr>
     <tr>
@@ -348,7 +348,6 @@
     <tr><td><a href="#l243">nda::basic_array&lt;double, 4, nda::basic_layout&lt;0ul, 12576ul, (nda::layout_prop_e)3&gt;, (char)65, nda::heap_basic&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt; &gt;::basic_array&lt;int, int, int, int&gt;(int, int, int, int) (line 243)</a></td><td>called 1 time</td><td>83.0%</td></tr>
     <tr><td><a href="#l296">nda::basic_array&lt;double, 4, nda::basic_layout&lt;0ul, 12801ul, (nda::layout_prop_e)3&gt;, (char)65, nda::heap_basic&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt; &gt;::basic_array(nda::idx_map&lt;4, 0ul, 12801ul, (nda::layout_prop_e)3&gt; const&amp;, nda::mem::handle_heap&lt;double, nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt;&amp;&amp;) (line 296)</a></td><td>called 1 time</td><td>100.0%</td></tr>
     <tr><td><a href="#l243">nda::basic_array&lt;double, 4, nda::basic_layout&lt;0ul, 8961ul, (nda::layout_prop_e)3&gt;, (char)65, nda::heap_basic&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt; &gt;::basic_array&lt;int, int, int, int&gt;(int, int, int, int) (line 243)</a></td><td>called 2 times</td><td>83.0%</td></tr>
-    <tr><td><a href="#l273">nda::basic_array&lt;float, 2, nda::C_layout, (char)77, nda::heap_basic&lt;nda::mem::mallocator_aligned&lt;(nda::mem::AddressSpace)1&gt; &gt; &gt;::basic_array&lt;long&gt;(std::array&lt;long, 2ul&gt; const&amp;) (line 273)</a></td><td>called 2 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l476">nda::basic_array&lt;float, 3, nda::C_layout, (char)65, nda::heap_basic&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt; &gt; nda::basic_array&lt;float, 3, nda::C_layout, (char)65, nda::heap_basic&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt; &gt;::rand&lt;long&gt;(std::array&lt;long, 3ul&gt; const&amp;) (line 476)</a></td><td>called 1 time</td><td>69.0%</td></tr>
     <tr><td><a href="#l273">nda::basic_array&lt;float, 3, nda::C_layout, (char)65, nda::heap_basic&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt; &gt;::basic_array&lt;long&gt;(std::array&lt;long, 3ul&gt; const&amp;) (line 273)</a></td><td>called 1 time</td><td>100.0%</td></tr>
     <tr><td><a href="#l415">nda::basic_array&lt;foo, 1, nda::C_layout, (char)65, nda::heap_basic&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt; &gt; nda::basic_array&lt;foo, 1, nda::C_layout, (char)65, nda::heap_basic&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt; &gt;::zeros&lt;long&gt;(std::array&lt;long, 1ul&gt; const&amp;) (line 415)</a></td><td>called 1 time</td><td>100.0%</td></tr>
@@ -2920,7 +2919,7 @@
       <td class="lineno"><a id="l273" href="#l273">273</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">1044</td>
+      <td class="linecount coveredLine">1042</td>
       <td class="src coveredLine"><span class="w">    </span><span class="k">explicit</span><span class="w"> </span><span class="n">basic_array</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">Int</span><span class="p">,</span><span class="w"> </span><span class="n">Rank</span><span class="o">&gt;</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">shape</span><span class="p">)</span></td>
     </tr>
     <tr class="source-line">
@@ -2934,7 +2933,7 @@
       <td class="lineno"><a id="l275" href="#l275">275</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">1044</td>
+      <td class="linecount coveredLine">1042</td>
       <td class="src coveredLine"><span class="w">       </span><span class="o">:</span><span class="w"> </span><span class="n">lay</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">mem</span><span class="o">::</span><span class="n">stride_padding</span><span class="p">(</span><span class="n">padding</span><span class="p">)),</span><span class="w"> </span><span class="n">sto</span><span class="p">(</span><span class="n">lay</span><span class="p">.</span><span class="n">capacity</span><span class="p">())</span><span class="w"> </span><span class="p">{}</span></td>
     </tr>
     <tr class="source-line">
