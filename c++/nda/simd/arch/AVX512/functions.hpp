@@ -3,6 +3,7 @@
 #include "./type.hpp"
 #include "../functions_forward.hpp"
 #include "../../../macros.hpp"
+#include "../AVX/functions.hpp"
 #include <immintrin.h>
 
 namespace nda::simd {
@@ -162,7 +163,7 @@ namespace nda::simd {
 
   template <>
   inline simd_l8::value_t reduce_max(const simd_l8 &x) {
-    _mm512_reduce_max_epi64(x)
+    _mm512_reduce_max_epi64(x);
   }
 
   template <>
