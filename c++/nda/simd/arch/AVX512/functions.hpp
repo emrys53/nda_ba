@@ -142,7 +142,7 @@ namespace nda::simd {
     __m128 lane1 = _mm512_extractf32x4_ps(x, 1);
     __m128 lane2 = _mm512_extractf32x4_ps(x, 2);
     __m128 lane3 = _mm512_extractf32x4_ps(x, 3);
-    simd_f4 min  = min(min(simd_f4{lane0}, simd_f4{lane1}), min(simd_f4{lane2}, simd_f4{lane3}));
+    simd_f4 min  = min(min(simd_f4(lane0), simd_f4(lane1)), min(simd_f4(lane2), simd_f4(lane3)));
     return reduce_min(min);
 
   }
@@ -151,7 +151,7 @@ namespace nda::simd {
   inline simd_d8::value_t reduce_min(const simd_d8 &x) {
     __m256d lane0 = _mm512_extractf64x4_pd(x, 0);
     __m256d lane1 = _mm512_extractf64x4_pd(x, 1);
-    simd_d4 min = min(simd_d4{lane0}, simd_d4{lane1});
+    simd_d4 min = min(simd_d4(lane0), simd_d4(lane1));
     return reduce_min(min);
   }
 
@@ -172,7 +172,7 @@ namespace nda::simd {
     __m128 lane1 = _mm512_extractf32x4_ps(x, 1);
     __m128 lane2 = _mm512_extractf32x4_ps(x, 2);
     __m128 lane3 = _mm512_extractf32x4_ps(x, 3);
-    simd_f4 max  = max(max(simd_f4{lane0}, simd_f4{lane1}), max(simd_f4{lane2}, simd_f4{lane3}));
+    simd_f4 max  = max(max(simd_f4(lane0), simd_f4(lane1)), max(simd_f4(lane2), simd_f4(lane3)));
     return reduce_max(max);
   }
 
@@ -180,7 +180,7 @@ namespace nda::simd {
   inline simd_d8::value_t reduce_max(const simd_d8 &x) {
     __m256d lane0 = _mm512_extractf64x4_pd(x, 0);
     __m256d lane1 = _mm512_extractf64x4_pd(x, 1);
-    simd_d4 max = max(simd_d4{lane0}, simd_d4{lane1});
+    simd_d4 max = max(simd_d4(lane0), simd_d4(lane1));
     return reduce_max(max);
   }
 
@@ -198,42 +198,42 @@ namespace nda::simd {
   template <>
   inline simd_f16::value_t reduce_sum(const simd_f16 &x) {
 #ifdef __AVX512DQ__
-    simd_f8 lo{_mm512_extractf32x8_ps(x, 0)};
-    simd_f8 hi{_mm512_extractf32x8_ps(x, 1)};
+    simd_f8 lo(_mm512_extractf32x8_ps(x, 0));
+    simd_f8 hi(_mm512_extractf32x8_ps(x, 1));
     return reduce_sum(lo + hi);
 #else
-    simd_f4 lo_1{_mm512_extractf32x4_ps(x,0)};
-    simd_f4 lo_2{_mm512_extractf32x4_ps(x,1)};
-    simd_f4 hi_1{_mm512_extractf32x4_ps(x,2)};
-    simd_f4 hi_2{_mm512_extractf32x4_ps(x,3)};
+    simd_f4 lo_1(_mm512_extractf32x4_ps(x,0));
+    simd_f4 lo_2(_mm512_extractf32x4_ps(x,1));
+    simd_f4 hi_1(_mm512_extractf32x4_ps(x,2));
+    simd_f4 hi_2(_mm512_extractf32x4_ps(x,3));
     return reduce_sum(lo_1 + lo_2 + hi_1 + hi_2);
 #endif
   }
 
   template <>
   inline simd_d8::value_t reduce_sum(const simd_d8 &x) {
-    simd_d8 lo{_mm512_extractf64x4_pd(x, 0)};
-    simd_d8 hi{_mm512_extractf64x4_pd(x, 1)};
+    simd_d8 lo(_mm512_extractf64x4_pd(x, 0));
+    simd_d8 hi(_mm512_extractf64x4_pd(x, 1));
     return reduce_sum(lo + hi);
   }
 
   template <>
   inline simd_cf8::value_t reduce_sum(const simd_cf8 &x) {
 #ifdef __AVX512DQ__
-    simd_cf4 lo{_mm512_extractf32x8_ps(x, 0)};
-    simd_cf4 hi{_mm512_extractf32x4_ps(x, 1)};
+    simd_cf4 lo(_mm512_extractf32x8_ps(x, 0));
+    simd_cf4 hi(_mm512_extractf32x4_ps(x, 1));
     return reduce_sum(lo + hi);
 #else
-    simd_cf4 lo{_mm256_castsi256_ps(_mm512_extracti64x4_epi64(_mm512_castps_si512(x), 0));
-    simd_cf4 hi{_mm256_castsi256_ps(_mm512_extracti64x4_epi64(_mm512_castps_si512(x), 1));
+    simd_cf4 lo(_mm256_castsi256_ps(_mm512_extracti64x4_epi64(_mm512_castps_si512(x), 0));
+    simd_cf4 hi(_mm256_castsi256_ps(_mm512_extracti64x4_epi64(_mm512_castps_si512(x), 1));
       return reduce_sum(lo + hi)
 #endif
   }
 
   template <>
   inline simd_cd4::value_t reduce_sum(const simd_cd4 &x) {
-    simd_cd2 lo{_mm512_extractf64x4_pd(x, 0)};
-    simd_cd2 hi{_mm512_extractf64x4_pd(x, 1)};
+    simd_cd2 lo(_mm512_extractf64x4_pd(x, 0));
+    simd_cd2 hi(_mm512_extractf64x4_pd(x, 1));
     return reduce_sum(lo + hi);
   }
 
@@ -250,37 +250,37 @@ namespace nda::simd {
 
   template <>
   inline simd_f16::value_t reduce_mul(const simd_f16 &x) {
-    simd_f4 lo_1{_mm512_extractf32x4_ps(x,0)};
-    simd_f4 lo_2{_mm512_extractf32x4_ps(x,1)};
-    simd_f4 hi_1{_mm512_extractf32x4_ps(x,2)};
-    simd_f4 hi_2{_mm512_extractf32x4_ps(x,3)};
+    simd_f4 lo_1(_mm512_extractf32x4_ps(x,0));
+    simd_f4 lo_2(_mm512_extractf32x4_ps(x,1));
+    simd_f4 hi_1(_mm512_extractf32x4_ps(x,2));
+    simd_f4 hi_2(_mm512_extractf32x4_ps(x,3));
     return reduce_mul(lo_1 * lo_2 * hi_1 * hi_2);
   }
 
   template <>
   inline simd_d8::value_t reduce_mul(const simd_d8 &x) {
-    simd_d8 lo{_mm512_extractf64x4_pd(x, 0)};
-    simd_d8 hi{_mm512_extractf64x4_pd(x, 1)};
+    simd_d8 lo(_mm512_extractf64x4_pd(x, 0));
+    simd_d8 hi(_mm512_extractf64x4_pd(x, 1));
     return reduce_mul(lo * hi);
   }
 
   template <>
   inline simd_cf8::value_t reduce_mul(const simd_cf8 &x) {
 #ifdef __AVX512DQ__
-    simd_cf4 lo{_mm512_extractf32x8_ps(x, 0)};
-    simd_cf4 hi{_mm512_extractf32x4_ps(x, 1)};
+    simd_cf4 lo(_mm512_extractf32x8_ps(x, 0));
+    simd_cf4 hi(_mm512_extractf32x4_ps(x, 1));
     return reduce_mul(lo * hi);
 #else
-    simd_cf4 lo{_mm256_castsi256_ps(_mm512_extracti64x4_epi64(_mm512_castps_si512(x), 0));
-    simd_cf4 hi{_mm256_castsi256_ps(_mm512_extracti64x4_epi64(_mm512_castps_si512(x), 1));
+    simd_cf4 lo(_mm256_castsi256_ps(_mm512_extracti64x4_epi64(_mm512_castps_si512(x), 0));
+    simd_cf4 hi(_mm256_castsi256_ps(_mm512_extracti64x4_epi64(_mm512_castps_si512(x), 1));
     return reduce_mul(lo * hi)
 #endif
   }
 
   template <>
   inline simd_cd4::value_t reduce_mul(const simd_cd4 &x) {
-    simd_cd2 lo{_mm512_extractf64x4_pd(x, 0)};
-    simd_cd2 hi{_mm512_extractf64x4_pd(x, 1)};
+    simd_cd2 lo(_mm512_extractf64x4_pd(x, 0));
+    simd_cd2 hi(_mm512_extractf64x4_pd(x, 1));
     return reduce_mul(lo * hi);
   }
 
