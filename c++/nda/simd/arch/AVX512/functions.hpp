@@ -4,6 +4,7 @@
 #include "../functions_forward.hpp"
 #include "../../../macros.hpp"
 #include "../AVX/functions.hpp"
+#include "../SSE/functions.hpp"
 #include <immintrin.h>
 
 namespace nda::simd {
@@ -212,8 +213,8 @@ namespace nda::simd {
 
   template <>
   inline simd_d8::value_t reduce_sum(const simd_d8 &x) {
-    simd_d8 lo(_mm512_extractf64x4_pd(x, 0));
-    simd_d8 hi(_mm512_extractf64x4_pd(x, 1));
+    simd_d4 lo(_mm512_extractf64x4_pd(x, 0));
+    simd_d4 hi(_mm512_extractf64x4_pd(x, 1));
     return reduce_sum(lo + hi);
   }
 
@@ -221,7 +222,7 @@ namespace nda::simd {
   inline simd_cf8::value_t reduce_sum(const simd_cf8 &x) {
 #ifdef __AVX512DQ__
     simd_cf4 lo(_mm512_extractf32x8_ps(x, 0));
-    simd_cf4 hi(_mm512_extractf32x4_ps(x, 1));
+    simd_cf4 hi(_mm512_extractf32x8_ps(x, 1));
     return reduce_sum(lo + hi);
 #else
     simd_cf4 lo(_mm256_castsi256_ps(_mm512_extracti64x4_epi64(_mm512_castps_si512(x), 0));
@@ -259,8 +260,8 @@ namespace nda::simd {
 
   template <>
   inline simd_d8::value_t reduce_mul(const simd_d8 &x) {
-    simd_d8 lo(_mm512_extractf64x4_pd(x, 0));
-    simd_d8 hi(_mm512_extractf64x4_pd(x, 1));
+    simd_d4 lo(_mm512_extractf64x4_pd(x, 0));
+    simd_d4 hi(_mm512_extractf64x4_pd(x, 1));
     return reduce_mul(lo * hi);
   }
 
@@ -268,7 +269,7 @@ namespace nda::simd {
   inline simd_cf8::value_t reduce_mul(const simd_cf8 &x) {
 #ifdef __AVX512DQ__
     simd_cf4 lo(_mm512_extractf32x8_ps(x, 0));
-    simd_cf4 hi(_mm512_extractf32x4_ps(x, 1));
+    simd_cf4 hi(_mm512_extractf32x8_ps(x, 1));
     return reduce_mul(lo * hi);
 #else
     simd_cf4 lo(_mm256_castsi256_ps(_mm512_extracti64x4_epi64(_mm512_castps_si512(x), 0));
