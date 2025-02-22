@@ -10,9 +10,10 @@
 namespace nda {
   template <>
   class simd_type<int32_t, 16, abi_tag::AVX512> {
+    public:
     using intrinsic_t = __m512i;
     using value_t     = int32_t;
-
+	private:
     intrinsic_t value{};
 
     public:
@@ -119,9 +120,11 @@ namespace nda {
 
   template <>
   class simd_type<int64_t, 8, abi_tag::AVX512> {
+    public:
     using intrinsic_t = __m512i;
     using value_t     = int64_t;
 
+	private:
     intrinsic_t value{};
 
     public:
@@ -233,13 +236,16 @@ namespace nda {
 
   template <>
   class simd_type<float, 16, abi_tag::AVX512> {
+    public:
     using intrinsic_t = __m512;
     using value_t     = float;
 
+	private:
     intrinsic_t value{};
-    explicit simd_type(intrinsic_t v) : value(v) {}
 
     public:
+    explicit simd_type(intrinsic_t v) : value(v) {}
+
     static constexpr size_t size() { return 16UL; };
     static constexpr size_t alignment() { return size() * sizeof(value_t); };
 
@@ -352,13 +358,16 @@ namespace nda {
 
   template <>
   class simd_type<double, 8, abi_tag::AVX512> {
+    public:
     using intrinsic_t = __m512d;
     using value_t     = double;
 
+	private:
     intrinsic_t value{};
-    explicit simd_type(intrinsic_t v) : value(v) {}
 
     public:
+    explicit simd_type(intrinsic_t v) : value(v) {}
+
     static constexpr size_t size() { return 8UL; }
     static constexpr size_t alignment() { return size() * sizeof(value_t); }
 
@@ -470,14 +479,17 @@ namespace nda {
 
   template <>
   class simd_type<std::complex<float>, 8, abi_tag::AVX512> {
+    public:
     using intrinsic_t = __m512;
     using value_t     = std::complex<float>;
     using scalar_t   = float;
 
+	private:
     intrinsic_t value;
-    simd_type(intrinsic_t v) : value(v) {}
 
     public:
+    simd_type(intrinsic_t v) : value(v) {}
+
     static constexpr size_t size() { return 8UL; };
     static constexpr size_t alignment() { return size() * sizeof(value_t); }
 
@@ -618,15 +630,17 @@ namespace nda {
 
   template <>
   class simd_type<std::complex<double>, 4, abi_tag::AVX512> {
+    public:
     using intrinsic_t = __m512d;
     using value_t     = std::complex<double>;
     using scalar_t   = double;
 
+	private:
     intrinsic_t value;
 
+    public:
     simd_type(intrinsic_t v) : value(v) {}
 
-    public:
     static constexpr size_t size() { return 4UL; };
     static constexpr size_t alignment() { return size() * sizeof(value_t); }
 
