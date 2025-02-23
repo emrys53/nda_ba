@@ -300,4 +300,48 @@ namespace nda::simd {
   inline simd_cd1_d fma_nsub(const simd_cd1_d &x, const simd_cd1_d &y, const simd_cd1_d &z) {
     return -(x * y + z);
   }
+  // For int fma simulation
+  // FMA ADD
+  template <>
+  inline simd_i1 fma_add(const simd_i1 &x, const simd_i1 &y, const simd_i1 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_l1 fma_add(const simd_l1 &x, const simd_l1 &y, const simd_l1 &z) {
+    return x * y + z;
+  }
+
+  //FMA_SUB
+  template <>
+  inline simd_i1 fma_sub(const simd_i1 &x, const simd_i1 &y, const simd_i1 &z) {
+    return x * y - z;
+  }
+
+  template <>
+  inline simd_l1 fma_sub(const simd_l1 &x, const simd_l1 &y, const simd_l1 &z) {
+    return x * y - z;
+  }
+
+  //FMA_NADD
+  template <>
+  inline simd_i1 fma_nadd(const simd_i1 &x, const simd_i1 &y, const simd_i1 &z) {
+    return z - (x * y);
+  }
+
+  template <>
+  inline simd_l1 fma_nadd(const simd_l1 &x, const simd_l1 &y, const simd_l1 &z) {
+    return z - (x * y);
+  }
+
+  //FMA_NSUB
+  template <>
+  inline simd_i1 fma_nsub(const simd_i1 &x, const simd_i1 &y, const simd_i1 &z) {
+    return -(x * y + z);
+  }
+
+  template <>
+  inline simd_l1 fma_nsub(const simd_l1 &x, const simd_l1 &y, const simd_l1 &z) {
+    return -(x * y + z);
+  }
 } // namespace nda::simd

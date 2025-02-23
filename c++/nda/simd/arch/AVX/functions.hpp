@@ -502,6 +502,51 @@ namespace nda::simd {
     return -(x * y + z);
   }
 #endif
+  // FMA simulation for integral types.
+  // FMA ADD
+  template <>
+  inline simd_i8 fma_add(const simd_i8 &x, const simd_i8 &y, const simd_i8 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_l4 fma_add(const simd_l4 &x, const simd_l4 &y, const simd_l4 &z) {
+    return x * y + z;
+  }
+
+  // FMA SUB
+  template <>
+  inline simd_i8 fma_sub(const simd_i8 &x, const simd_i8 &y, const simd_i8 &z) {
+    return x * y - z;
+  }
+
+  template <>
+  inline simd_l4 fma_sub(const simd_l4 &x, const simd_l4 &y, const simd_l4 &z) {
+    return x * y - z;
+  }
+
+  // FMA NADD
+  template <>
+  inline simd_i8 fma_nadd(const simd_i8 &x, const simd_i8 &y, const simd_i8 &z) {
+    return z - (x * y);
+  }
+
+  template <>
+  inline simd_l4 fma_nadd(const simd_l4 &x, const simd_l4 &y, const simd_l4 &z) {
+    return z - (x * y);
+  }
+
+  // FMA NSUB
+  template <>
+  inline simd_i8 fma_nsub(const simd_i8 &x, const simd_i8 &y, const simd_i8 &z) {
+    return -(x * y + z);
+  }
+
+  template <>
+  inline simd_l4 fma_nsub(const simd_l4 &x, const simd_l4 &y, const simd_l4 &z) {
+    return -(x * y + z);
+  }
+
 
 } // namespace nda::simd
 #endif

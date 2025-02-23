@@ -282,7 +282,6 @@ namespace nda::simd {
     return reduce_mul(lo * hi);
   }
 
-#ifdef __FMA__
   // FMA ADD
   template <>
   inline simd_f16 fma_add(const simd_f16 &x, const simd_f16 &y, const simd_f16 &z) {
@@ -402,7 +401,51 @@ namespace nda::simd {
     __m512d result       = _mm512_fmsub_pd(x_odd, y_swap_conj, _mm512_fmadd_pd(x_even, y, z));
     return simd_cd4(result);
   }
-#endif
+  // FMA functions for integral types
+
+  // FMA ADD
+  template <>
+  inline simd_i16 fma_add(const simd_i16 &x, const simd_i16 &y, const simd_i16 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_l8 fma_add(const simd_l8 &x, const simd_l8 &y, const simd_l8 &z) {
+    return x * y + z;
+  }
+
+  // FMA SUB
+  template <>
+  inline simd_i16 fma_sub(const simd_i16 &x, const simd_i16 &y, const simd_i16 &z) {
+    return x * y - z;
+  }
+
+  template <>
+  inline simd_l8 fma_sub(const simd_l8 &x, const simd_l8 &y, const simd_l8 &z) {
+    return x * y - z;
+  }
+
+  // FMA NADD
+  template <>
+  inline simd_i16 fma_nadd(const simd_i16 &x, const simd_i16 &y, const simd_i16 &z) {
+    return z - (x * y);
+  }
+
+  template <>
+  inline simd_l8 fma_nadd(const simd_l8 &x, const simd_l8 &y, const simd_l8 &z) {
+    return z - (x * y);
+  }
+
+  // FMA NSUB
+  template <>
+  inline simd_i16 fma_nsub(const simd_i16 &x, const simd_i16 &y, const simd_i16 &z) {
+    return -(x * y + z);
+  }
+
+  template <>
+  inline simd_l8 fma_nsub(const simd_l8 &x, const simd_l8 &y, const simd_l8 &z) {
+    return -(x * y + z);
+  }
 
 } // namespace nda::simd
 #endif

@@ -10,6 +10,7 @@
 #include <bit>
 #include <ranges>
 #include <nda/simd/mock_simd.hpp>
+#include <nda/packed.hpp>
 
 using namespace nda;
 
@@ -1487,12 +1488,11 @@ TEST(NDA, SimdUnaryNegate) {
 }
 
 TEST(NDA, SimdFMAFunctions) {
-#ifdef __FMA__
   // Default SIMD types
   simd_fma_functions<float, 1, abi_tag::Default>();
   simd_fma_functions<double, 1, abi_tag::Default>();
-  // simd_fma_functions<int32_t, 1, abi_tag::Default>();
-  // simd_fma_functions<int64_t, 1, abi_tag::Default>();
+  simd_fma_functions<int32_t, 1, abi_tag::Default>();
+  simd_fma_functions<int64_t, 1, abi_tag::Default>();
   simd_fma_functions<std::complex<float>, 1, abi_tag::Default>();
   simd_fma_functions<std::complex<double>, 1, abi_tag::Default>();
 
@@ -1500,8 +1500,8 @@ TEST(NDA, SimdFMAFunctions) {
   // SSE SIMD types
   simd_fma_functions<float, 4, abi_tag::SSE>();
   simd_fma_functions<double, 2, abi_tag::SSE>();
-  // simd_fma_functions<int32_t, 4, abi_tag::SSE>();
-  // simd_fma_functions<int64_t, 2, abi_tag::SSE>();
+  simd_fma_functions<int32_t, 4, abi_tag::SSE>();
+  simd_fma_functions<int64_t, 2, abi_tag::SSE>();
   simd_fma_functions<std::complex<float>, 2, abi_tag::SSE>();
   simd_fma_functions<std::complex<double>, 1, abi_tag::SSE>();
 #endif
@@ -1510,8 +1510,8 @@ TEST(NDA, SimdFMAFunctions) {
   // AVX SIMD types
   simd_fma_functions<float, 8, abi_tag::AVX>();
   simd_fma_functions<double, 4, abi_tag::AVX>();
-  // simd_fma_functions<int32_t, 8, abi_tag::AVX>();
-  // simd_fma_functions<int64_t, 4, abi_tag::AVX>();
+  simd_fma_functions<int32_t, 8, abi_tag::AVX>();
+  simd_fma_functions<int64_t, 4, abi_tag::AVX>();
   simd_fma_functions<std::complex<float>, 4, abi_tag::AVX>();
   simd_fma_functions<std::complex<double>, 2, abi_tag::AVX>();
 #endif
@@ -1520,14 +1520,12 @@ TEST(NDA, SimdFMAFunctions) {
   // AVX512 SIMD types
   simd_fma_functions<float, 16, abi_tag::AVX512>();
   simd_fma_functions<double, 8, abi_tag::AVX512>();
-  // simd_fma_functions<int32_t, 16, abi_tag::AVX512>();
-  // simd_fma_functions<int64_t, 8, abi_tag::AVX512>();
+  simd_fma_functions<int32_t, 16, abi_tag::AVX512>();
+  simd_fma_functions<int64_t, 8, abi_tag::AVX512>();
   simd_fma_functions<std::complex<float>, 8, abi_tag::AVX512>();
   simd_fma_functions<std::complex<double>, 4, abi_tag::AVX512>();
 #endif
-#endif
 }
-
 
 template <Vectorizable T>
 struct adder : simd::mock_simd<adder<T>, T> {
@@ -1560,8 +1558,6 @@ struct adder_simd : simd::mock_simd<adder_simd<T>, T> {
   }
 };
 
-
-
 TEST(NDA, OurSIMD) {
   class add {
     public:
@@ -1591,19 +1587,27 @@ TEST(NDA, OurSIMD) {
   // alignas(32) std::array<int, 8> result_array;
   // hop5.store(result_array.data());
   // for (int i = 0; i < 8; ++i) { std::cout << result_array[i] << std::endl; }
-  // const long size1 = 13;
-  // const long size2 = 11;
-  // float k          = 1;
-  // const float xx   = 5;
-  // matrix_aligned<float> s({size1, size2});
-  // matrix_aligned<float> x({size1, size2});
-  // for (int i = 0; i < size1; ++i) {
-  //   for (int j = 0; j < size2; ++j) { s(i, j) = k++; }
-  // }
-  // for (int i = 0; i < size1; ++i) {
-  //   for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
-  // }
-  // //TODO: this doesnt work check.
+  const long size1 = 2;
+  const long size2 = 10;
+  float k          = 1;
+  const float xx   = 5;
+  matrix_aligned<float> s({size1, size2});
+  matrix_aligned<float> x({size1, size2});
+  for (int i = 0; i < size1; ++i) {
+    for (int j = 0; j < size2; ++j) { s(i, j) = k++; }
+  }
+  for (int i = 0; i < size1; ++i) {
+    for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
+  }
+  for (auto [simd, data] : packed(s)) {
+    using simd_t = native_simd<float>;
+    alignas(simd_t::alignment()) std::array<float, simd_t::size()> tmp;
+    simd.store(tmp.data());
+    for (int i = 0; i < simd_t::size(); ++i) { std::cout << tmp[i] << std::endl; }
+    simd += simd;
+    simd.store(data);
+    std::cout << "HOP" << std::endl;
+  }
   // auto single_add = [](float a, float b) { return a + b; };
   // auto test       = nda::map(add{})(s, x);
   // auto test2      = nda::map(add{})(test, test);

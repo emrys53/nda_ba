@@ -502,5 +502,49 @@ namespace nda::simd {
   }
 
 #endif
+  // Fma functions for integer simulations.
+  // FMA ADD
+  template <>
+  inline simd_i4 fma_add(const simd_i4 &x, const simd_i4 &y, const simd_i4 &z) {
+    return x * y + z;
+  }
+
+  template <>
+  inline simd_l2 fma_add(const simd_l2 &x, const simd_l2 &y, const simd_l2 &z) {
+    return x * y + z;
+  }
+
+  // FMA SUB
+  template <>
+  inline simd_i4 fma_sub(const simd_i4 &x, const simd_i4 &y, const simd_i4 &z) {
+    return x * y - z;
+  }
+
+  template <>
+  inline simd_l2 fma_sub(const simd_l2 &x, const simd_l2 &y, const simd_l2 &z) {
+    return x * y - z;
+  }
+
+  // FMA NADD
+  template <>
+  inline simd_i4 fma_nadd(const simd_i4 &x, const simd_i4 &y, const simd_i4 &z) {
+    return z - (x * y);
+  }
+
+  template <>
+  inline simd_l2 fma_nadd(const simd_l2 &x, const simd_l2 &y, const simd_l2 &z) {
+    return z - (x * y);
+  }
+
+  // FMA NSUB
+  template <>
+  inline simd_i4 fma_nsub(const simd_i4 &x, const simd_i4 &y, const simd_i4 &z) {
+    return -(x * y + z);
+  }
+
+  template <>
+  inline simd_l2 fma_nsub(const simd_l2 &x, const simd_l2 &y, const simd_l2 &z) {
+    return -(x * y + z);
+  }
 } // namespace nda::simd
 #endif
