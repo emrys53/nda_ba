@@ -40,6 +40,7 @@ var dir_913b60804e0ca3d36b328b721e405789 =
     [ "mem.hpp", "mem_8hpp.html", null ],
     [ "mpi.hpp", "mpi_8hpp.html", null ],
     [ "nda.hpp", "nda_8hpp.html", null ],
+    [ "packed.hpp", "packed_8hpp_source.html", null ],
     [ "print.hpp", "print_8hpp.html", "print_8hpp" ],
     [ "stdutil.hpp", "stdutil_8hpp.html", null ],
     [ "sym_grp.hpp", "sym__grp_8hpp.html", "sym__grp_8hpp" ],

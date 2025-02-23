@@ -615,8 +615,52 @@ $(function(){initNavTree('_s_s_e_2functions_8hpp_source.html',''); initResizable
 <div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>  }</div>
 <div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span> </div>
 <div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>} <span class="comment">// namespace nda::simd</span></div>
-<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>  <span class="comment">// Fma functions for integer simulations.</span></div>
+<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>  <span class="comment">// FMA ADD</span></div>
+<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>  <span class="keyword">inline</span> simd_i4 fma_add(<span class="keyword">const</span> simd_i4 &amp;x, <span class="keyword">const</span> simd_i4 &amp;y, <span class="keyword">const</span> simd_i4 &amp;z) {</div>
+<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>    <span class="keywordflow">return</span> x * y + z;</div>
+<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>  }</div>
+<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span> </div>
+<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>  <span class="keyword">inline</span> simd_l2 fma_add(<span class="keyword">const</span> simd_l2 &amp;x, <span class="keyword">const</span> simd_l2 &amp;y, <span class="keyword">const</span> simd_l2 &amp;z) {</div>
+<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>    <span class="keywordflow">return</span> x * y + z;</div>
+<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>  }</div>
+<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span> </div>
+<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>  <span class="comment">// FMA SUB</span></div>
+<div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>  <span class="keyword">inline</span> simd_i4 fma_sub(<span class="keyword">const</span> simd_i4 &amp;x, <span class="keyword">const</span> simd_i4 &amp;y, <span class="keyword">const</span> simd_i4 &amp;z) {</div>
+<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>    <span class="keywordflow">return</span> x * y - z;</div>
+<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>  }</div>
+<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span> </div>
+<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>  <span class="keyword">inline</span> simd_l2 fma_sub(<span class="keyword">const</span> simd_l2 &amp;x, <span class="keyword">const</span> simd_l2 &amp;y, <span class="keyword">const</span> simd_l2 &amp;z) {</div>
+<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>    <span class="keywordflow">return</span> x * y - z;</div>
+<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>  }</div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span> </div>
+<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>  <span class="comment">// FMA NADD</span></div>
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>  <span class="keyword">inline</span> simd_i4 fma_nadd(<span class="keyword">const</span> simd_i4 &amp;x, <span class="keyword">const</span> simd_i4 &amp;y, <span class="keyword">const</span> simd_i4 &amp;z) {</div>
+<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>    <span class="keywordflow">return</span> z - (x * y);</div>
+<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>  }</div>
+<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span> </div>
+<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>  <span class="keyword">inline</span> simd_l2 fma_nadd(<span class="keyword">const</span> simd_l2 &amp;x, <span class="keyword">const</span> simd_l2 &amp;y, <span class="keyword">const</span> simd_l2 &amp;z) {</div>
+<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>    <span class="keywordflow">return</span> z - (x * y);</div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>  }</div>
+<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span> </div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>  <span class="comment">// FMA NSUB</span></div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>  <span class="keyword">inline</span> simd_i4 fma_nsub(<span class="keyword">const</span> simd_i4 &amp;x, <span class="keyword">const</span> simd_i4 &amp;y, <span class="keyword">const</span> simd_i4 &amp;z) {</div>
+<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>    <span class="keywordflow">return</span> -(x * y + z);</div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>  }</div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span> </div>
+<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>  <span class="keyword">inline</span> simd_l2 fma_nsub(<span class="keyword">const</span> simd_l2 &amp;x, <span class="keyword">const</span> simd_l2 &amp;y, <span class="keyword">const</span> simd_l2 &amp;z) {</div>
+<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>    <span class="keywordflow">return</span> -(x * y + z);</div>
+<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>  }</div>
+<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>} <span class="comment">// namespace nda::simd</span></div>
+<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="amacros_8hpp_html"><div class="ttname"><a href="macros_8hpp.html">macros.hpp</a></div><div class="ttdoc">Macros used in the nda library.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
