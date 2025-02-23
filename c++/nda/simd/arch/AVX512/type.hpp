@@ -13,7 +13,8 @@ namespace nda {
     public:
     using intrinsic_t = __m512i;
     using value_t     = int32_t;
-	private:
+
+    private:
     intrinsic_t value{};
 
     public:
@@ -110,12 +111,9 @@ namespace nda {
       return *this;
     }
 
-
     operator intrinsic_t() const { return value; }
 
-    simd_type operator-() const {
-      return simd_type{}-*this;
-    }
+    simd_type operator-() const { return simd_type{} - *this; }
   };
 
   template <>
@@ -124,7 +122,7 @@ namespace nda {
     using intrinsic_t = __m512i;
     using value_t     = int64_t;
 
-	private:
+    private:
     intrinsic_t value{};
 
     public:
@@ -229,9 +227,7 @@ namespace nda {
 
     operator intrinsic_t() const { return value; }
 
-    simd_type operator-() const {
-      return simd_type{}-*this;
-    }
+    simd_type operator-() const { return simd_type{} - *this; }
   };
 
   template <>
@@ -240,7 +236,7 @@ namespace nda {
     using intrinsic_t = __m512;
     using value_t     = float;
 
-	private:
+    private:
     intrinsic_t value{};
 
     public:
@@ -362,7 +358,7 @@ namespace nda {
     using intrinsic_t = __m512d;
     using value_t     = double;
 
-	private:
+    private:
     intrinsic_t value{};
 
     public:
@@ -427,7 +423,7 @@ namespace nda {
 
     bool operator==(const simd_type &other) const {
       const int cmp = _mm512_cmp_pd_mask(value, other.value, 0x00);
-      return cmp == 0xF;
+      return cmp == 0xFF;
     }
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
@@ -472,7 +468,7 @@ namespace nda {
     operator intrinsic_t() const { return value; }
 
     simd_type operator-() const {
-     const intrinsic_t mask = _mm512_castsi512_pd(_mm512_set1_epi64(0x8000000000000000ULL));
+      const intrinsic_t mask = _mm512_castsi512_pd(_mm512_set1_epi64(0x8000000000000000ULL));
       return *this ^ simd_type { mask };
     }
   };
@@ -482,9 +478,9 @@ namespace nda {
     public:
     using intrinsic_t = __m512;
     using value_t     = std::complex<float>;
-    using scalar_t   = float;
+    using scalar_t    = float;
 
-	private:
+    private:
     intrinsic_t value;
 
     public:
@@ -550,10 +546,16 @@ namespace nda {
 
     simd_type operator/(const simd_type &other) const {
       // a+bi / c+di = (a+bi) * (c-di) = (ac+bd) (bc-bd)
-      const intrinsic_t mask = _mm512_setr_ps(0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f, 0.0f, -0.0f);
-      const simd_type conj   = simd_type{_mm512_xor_ps(other.value, mask)};
-      const simd_type upper  = (*this) * conj;
-      const intrinsic_t flip = _mm512_permute_ps(other.value, NDA_SHUFFLE_MASK4(1, 0, 3, 2));
+      const intrinsic_t mask =
+         _mm512_castsi512_ps(_mm512_setr_epi32(0x00000000, 0x80000000, 0x00000000, 0x80000000, 0x00000000, 0x80000000, 0x00000000, 0x80000000,
+                                               0x00000000, 0x80000000, 0x00000000, 0x80000000, 0x00000000, 0x80000000, 0x00000000, 0x80000000));
+#ifdef __AVX512DQ__
+      const simd_type conj(_mm512_xor_ps(other.value, mask));
+#else
+      const simd_type conj(_mm512_castsi512_ps(_mm512_xor_si512(_mm512_castps_si512(x), _mm512_castps_si512(mask))));
+#endif
+      const simd_type upper   = (*this) * conj;
+      const intrinsic_t flip  = _mm512_permute_ps(other.value, NDA_SHUFFLE_MASK4(1, 0, 3, 2));
       const intrinsic_t lower = _mm512_fmadd_ps(other.value, other.value, _mm512_mul_ps(flip, flip));
       return simd_type{_mm512_div_ps(upper.value, lower)};
     }
@@ -633,9 +635,9 @@ namespace nda {
     public:
     using intrinsic_t = __m512d;
     using value_t     = std::complex<double>;
-    using scalar_t   = double;
+    using scalar_t    = double;
 
-	private:
+    private:
     intrinsic_t value;
 
     public:
@@ -703,10 +705,15 @@ namespace nda {
     }
     simd_type operator/(const simd_type &other) const {
       // a+bi / c+di = (a+bi) * (c-di) = (ac+bd) (bc-ad)
-      const intrinsic_t mask  = _mm512_setr_pd(0.0, -0.0, 0.0, -0.0, 0.0, -0.0, 0.0, -0.0);
-      const simd_type conj    = simd_type{_mm512_xor_pd(other.value, mask)};
+      const intrinsic_t mask = _mm512_castsi512_pd(
+         _mm512_set_epi32(0x80000000, 0x0, 0x0, 0x0, 0x80000000, 0x0, 0x0, 0x0, 0x80000000, 0x0, 0x0, 0x0, 0x80000000, 0x0, 0x0, 0x0));
+#ifdef __AVX512DQ__
+      const simd_type conj(_mm512_xor_pd(other.value, mask));
+#else
+      const simd_type conj(_mm512_castsi512_pd(_mm512_xor_si512(_mm512_castps_si512(x), _mm512_castpd_si512(mask))));
+#endif
       const simd_type upper   = (*this) * conj;
-      const intrinsic_t flip  = _mm512_permute_pd(other.value, 0x5);
+      const intrinsic_t flip  = _mm512_permute_pd(other.value, 0x55);
       const intrinsic_t lower = _mm512_fmadd_pd(other.value, other.value, _mm512_mul_pd(flip, flip));
       return simd_type{_mm512_div_pd(upper.value, lower)};
     }
@@ -722,7 +729,7 @@ namespace nda {
     }
 
     simd_type &operator*=(const simd_type &other) {
-      value = (*this + other).value;
+      value = (*this * other).value;
       return *this;
     }
 
@@ -733,7 +740,7 @@ namespace nda {
 
     bool operator==(const simd_type &other) const {
       const int cmp = _mm512_cmp_pd_mask(value, other.value, 0x00);
-      return cmp == 0xF;
+      return cmp == 0xFF;
     }
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
@@ -779,7 +786,7 @@ namespace nda {
     operator intrinsic_t() const { return value; }
 
     simd_type operator-() const {
-     const intrinsic_t mask = _mm512_castsi512_pd(_mm512_set1_epi64(0x8000000000000000ULL));
+      const intrinsic_t mask = _mm512_castsi512_pd(_mm512_set1_epi64(0x8000000000000000ULL));
       return *this ^ simd_type { mask };
     }
   };
