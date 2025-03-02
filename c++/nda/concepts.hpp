@@ -159,6 +159,17 @@ namespace nda {
     } -> std::same_as<native_simd<T>>;
   } or std::is_base_of_v<simd::mock_simd<F, T>, F>;
 
+  /**
+   * @brief True iif T is same_as any of the Us
+   *
+   * @details See nda::is_any_of for implementation.
+   *
+   * @tparam T Type to check
+   * @tparam Us Types to check against
+   */
+  template <typename T, typename... Us>
+  concept AnyOf = is_any_of<T, Us...>;
+
   /** @} */
 
   namespace mem {
