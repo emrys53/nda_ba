@@ -22,11 +22,20 @@ namespace nda {
 
       pointer data;
 
-      std::size_t index;
+      size_t index;
+
+      size_t padding = array.indexmap().get_padding();
 
       packed_iterator(const pointer data_ptr, const std::size_t idx) : data(data_ptr), index(idx) {}
 
       std::pair<simd_t, pointer> operator*() const {
+        // Valid field counts= let j be the fastest dimension: let p be the padding. simd_size
+        // (index + simd_size) % lengths[j] (index = 0 lengths[j] = 10,  then valid_fields = 8;, index 8 lengtsah[j] = 10
+        // ((lengths[j] - (index + simd_size + (lengths[j] / (index))^-1 * padding) % lengths[j]) % lengths[j])
+        // index / (lengths[j] + padding) = row
+        // index + simd_size - (lengths[j]) * (row+1) - padding*row // if to check negative
+        // 8 + 8 - 10
+        // 16 + 8 - 10 * 2 - 6
         if constexpr (aligned_and_padded) {
           return {simd_t(data + index), data + index};
         } else {

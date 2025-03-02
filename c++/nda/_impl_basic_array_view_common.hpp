@@ -538,8 +538,8 @@ void assign_from_ndarray(RHS const &rhs) { // FIXME noexcept {
     NDA_RUNTIME_ERROR << "Error in assign_from_ndarray: Fallback to elementwise assignment not implemented for arrays/views on the GPU";
   }
   //TODO:check if their layout are compatible. And call the for_each with specific layout.
-  if constexpr (same_stride_order and Vectorizable<ValueType> and is_simd_enabled_v2_v<ValueType, RHS> and (get_layout_info<self_t>.stride_order == C_stride_order<Rank>) and (has_contiguous_layout<self_t> and has_contiguous_layout<RHS>)) {
-    nda::for_each(shape(),[this, &rhs](auto const &...args) {(*this).store(rhs.load(args...), args...); }, [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); }, native_simd<ValueType>::size());
+  if constexpr (same_stride_order and Vectorizable<ValueType> and is_simd_enabled_v2_v<ValueType, RHS> and (get_layout_info<self_t>.stride_order != 0 or get_layout_info<self_t>.stride_order != uint64_t(-1)) and (has_contiguous_layout<self_t> and has_contiguous_layout<RHS>)) {
+    nda::for_each_static<0, get_layout_info<self_t>.stride_order>(shape(),[this, &rhs](auto const &...args) {(*this).store(rhs.load(args...), args...); }, [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); }, native_simd<ValueType>::size());
   }
   else {
     nda::for_each(shape(), [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); });
@@ -551,7 +551,7 @@ template <typename Scalar>
 void fill_with_scalar(Scalar const &scalar) noexcept {
   // we make a special implementation if the array is strided in 1d or contiguous
   if constexpr (has_layout_strided_1d<self_t>) {
-    const long L             = size();
+    const long L             = indexmap().capacity();
     auto *__restrict const p = data(); // no alias possible here!
     if constexpr (has_contiguous_layout<self_t>) {
       for (long i = 0; i < L; ++i) p[i] = scalar;
