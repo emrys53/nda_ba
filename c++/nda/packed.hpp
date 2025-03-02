@@ -24,8 +24,6 @@ namespace nda {
 
       size_t index;
 
-      size_t padding = array.indexmap().get_padding();
-
       packed_iterator(const pointer data_ptr, const std::size_t idx) : data(data_ptr), index(idx) {}
 
       std::pair<simd_t, pointer> operator*() const {
