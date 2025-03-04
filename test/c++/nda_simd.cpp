@@ -1569,13 +1569,20 @@ TEST(NDA, OurSIMD) {
   const long size1 = 2;
   const long size2 = 10;
   float k          = 1;
-  array_aligned<float,2> s({size1, size2});
-  array_aligned<float,2> x({size1, size2});
+  array<float, 2> s({size1, size2});
+  array<float, 2> x({size1, size2});
   for (int i = 0; i < size1; ++i) {
     for (int j = 0; j < size2; ++j) { s(i, j) = k++; }
   }
   for (int i = 0; i < size1; ++i) {
     for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
+  }
+  for (auto [simd, pointer, valid_field] : packed(s)) {
+    using simd_t = native_simd<float>;
+    alignas(simd_t::alignment()) std::array<float, simd_t::size()> tmp;
+    simd.store(tmp.data());
+    std::cout << tmp << std::endl;
+    std::cout << valid_field << std::endl;
   }
   // s = array_aligned<float,2>::rand({size1, size2});
   auto hop = make_array_view(s);
@@ -1584,14 +1591,11 @@ TEST(NDA, OurSIMD) {
   std::cout << typeid(hop).name() << std::endl;
   std::cout << typeid(make_regular(hop)).name() << std::endl;
   std::cout << hop.indexmap().capacity() << std::endl;
-  for (int i= 0; i < hop.indexmap().capacity() ; ++i) {
-    std::cout << *(hop.data() + i) << " ";
-  }
+  for (int i = 0; i < hop.indexmap().capacity(); ++i) { std::cout << *(hop.data() + i) << " "; }
   std::cout << std::endl;
   auto aa = make_regular(hop);
   std::cout << aa.size() << std::endl;
   std::cout << aa.is_aligned << std::endl;
   bool a = s == hop;
   std::cout << (hop == s) << std::endl;
-
 }
