@@ -1577,13 +1577,30 @@ TEST(NDA, OurSIMD) {
   for (int i = 0; i < size1; ++i) {
     for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
   }
-  for (auto [simd, pointer, valid_field] : packed(s)) {
+  auto test    = make_const_view(s);
+  auto hoppala = test.load(0, 0);
+  std::array<float, 8> tmp{};
+  hoppala.store(tmp.data());
+  std::cout << tmp << std::endl;
+  for (auto q : packed(s)) {
     using simd_t = native_simd<float>;
     alignas(simd_t::alignment()) std::array<float, simd_t::size()> tmp;
-    simd.store(tmp.data());
+    q.value.store(tmp.data());
     std::cout << tmp << std::endl;
-    std::cout << valid_field << std::endl;
+    std::cout << q.valid_field << std::endl;
+    for (int i = 0; i < tmp.size() ; ++i) {
+      tmp[i] = 20.5f + i;
+    }
+    q.value.load(tmp.data());
+    q.store();
   }
+  for (auto q : packed(s)) {
+    using simd_t = native_simd<float>;
+    alignas(simd_t::alignment()) std::array<float, simd_t::size()> tmp;
+    q.value.store(tmp.data());
+    std::cout << tmp << std::endl;
+  }
+
   // s = array_aligned<float,2>::rand({size1, size2});
   auto hop = make_array_view(s);
   std::cout << hop << std::endl;

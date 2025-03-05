@@ -31,14 +31,7 @@ namespace nda {
 
       packed_iterator(const pointer data_ptr, const size_t idx, const size_t last_idx) : data(data_ptr), index(idx), last_index(last_idx) {}
 
-      std::tuple<simd_t, pointer, size_t> operator*() const noexcept {
-        // Valid field counts= let j be the fastest dimension: let p be the padding. simd_size
-        // (index + simd_size) % lengths[j] (index = 0 lengths[j] = 10,  then valid_fields = 8;, index 8 lengtsah[j] = 10
-        // ((lengths[j] - (index + simd_size + (lengths[j] / (index))^-1 * padding) % lengths[j]) % lengths[j])
-        // index / (lengths[j] + padding) = row
-        // index + simd_size - (lengths[j]) * (row+1) - padding*row // if to check negative
-        // 8 + 8 - 10
-        // 16 + 8 - 10 * 2 - 6
+      simd_block<value_type, aligned_and_padded> operator*() const noexcept {
         if constexpr (aligned_and_padded) {
           return {simd_t(data + index), data + index, std::min(simd_t::size(), last_index - index)};
         } else {
@@ -85,7 +78,7 @@ namespace nda {
       packed_iterator operator+(std::ptrdiff_t n) const noexcept { return packed_iterator(data, index + n * simd_t::size()); }
       packed_iterator operator-(std::ptrdiff_t n) const noexcept { return packed_iterator(data, index - n * simd_t::size()); }
       std::ptrdiff_t operator-(const packed_iterator &other) const noexcept { return (index - other.index) / simd_t::size(); }
-      std::tuple<simd_t, pointer, size_t> operator[](std::ptrdiff_t n) const noexcept {
+      simd_block<value_type, aligned_and_padded> operator[](std::ptrdiff_t n) const noexcept {
         return {simd_t(data + index + n * simd_t::size()), data + index + n * simd_t::size(),
                 std::min(simd_t::size(), last_index - index + n * simd_t::size())};
       }

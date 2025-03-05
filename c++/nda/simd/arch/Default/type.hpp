@@ -37,6 +37,7 @@ namespace nda {
 
     simd_type() : value(0) {}
 
+
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != size()) {
@@ -48,6 +49,7 @@ namespace nda {
     }
 
     explicit simd_type(const value_t *v) { load(v); }
+
 
     simd_type operator+(const simd_type &other) const { return simd_type{value + other.value}; }
 

@@ -97,7 +97,11 @@ namespace nda::mem {
      * @param s Size in bytes of the memory to allocate.
      * @return nda::mem::blk_t memory block.
      */
-    static blk_t allocate(size_t s, [[maybe_unused]] size_t a = 0) noexcept { return {(char *)malloc<AdrSp>(s), s}; }
+    static blk_t allocate(size_t s, size_t a = 0) noexcept {
+      const size_t prev_size = s;
+      if (a != 0) s = next_multiple(s, a);
+      return {.ptr = static_cast<char *>(malloc<AdrSp>(s)), .s = prev_size};
+    }
 
     /**
      * @brief Allocate memory and set it to zero.
@@ -109,13 +113,15 @@ namespace nda::mem {
      * @param s Size in bytes of the memory to allocate.
      * @return nda::mem::blk_t memory block.
      */
-    static blk_t allocate_zero(size_t s, [[maybe_unused]] size_t a = 0) noexcept {
+    static blk_t allocate_zero(size_t s, size_t a = 0) noexcept {
+      const size_t prev_size = s;
+      if (a != 0) s = next_multiple(s, a);
       if constexpr (AdrSp == mem::Host) {
-        return {(char *)std::calloc(s, 1 /* byte */), s}; // NOLINT (C-style cast is fine here)
+        return {(char *)std::calloc(s, 1 /* byte */), prev_size}; // NOLINT (C-style cast is fine here)
       } else {
         char *ptr = (char *)malloc<AdrSp>(s);
-        memset<AdrSp>(ptr, 0, s);
-        return {ptr, s};
+        memset<AdrSp>(ptr, 0, prev_size);
+        return {.ptr = ptr, .s = prev_size};
       }
     }
 
@@ -155,7 +161,11 @@ namespace nda::mem {
      * @param alignment Alignment in bytes.
      * @return nda::mem::blk_t memory block.
      */
-    static blk_t allocate(size_t s, size_t alignment) noexcept { return {(char *)aligned_alloc<AdrSp>(alignment, s), s}; }
+    static blk_t allocate(size_t s, size_t alignment) noexcept {
+      const size_t prev_size = s;
+      if (alignment != 0) s = next_multiple(s, alignment);
+      return {.ptr = static_cast<char *>(aligned_alloc<AdrSp>(alignment, s)), .s = prev_size};
+    }
     /**
      * @brief Allocate memory and set it to zero.
      *
@@ -167,9 +177,11 @@ namespace nda::mem {
      * @return nda::mem::blk_t memory block.
      */
     static blk_t allocate_zero(size_t s, size_t alignment) noexcept {
+      const size_t prev_size = s;
+      if (alignment != 0) s = next_multiple(s, alignment);
       auto blk = allocate(s, alignment);
-      memset<AdrSp>(blk.ptr, 0, blk.s);
-      return blk;
+      memset<AdrSp>(blk.ptr, 0, prev_size);
+      return {.ptr = blk.ptr, .s = prev_size};
     }
     /**
      * @brief Deallocate memory using nda::mem::aligned_free.
@@ -559,7 +571,6 @@ namespace nda::mem {
 #endif
       }
     }
-
     /**
      * @brief Allocate memory and update the total memory used.
      *
@@ -567,8 +578,10 @@ namespace nda::mem {
      * @return nda::mem::blk_t memory block.
      */
     blk_t allocate(size_t s, size_t a = 0) {
+      const size_t prev_size = s;
+      if (a != 0) s = next_multiple(s, a);
       blk_t b = A::allocate(s, a);
-      memory_used += b.s;
+      memory_used += prev_size;
       return b;
     }
 
@@ -579,8 +592,10 @@ namespace nda::mem {
      * @return nda::mem::blk_t memory block.
      */
     blk_t allocate_zero(size_t s, size_t a = 0) {
+      const size_t prev_size = s;
+      if (a != 0) s = next_multiple(s, a);
       blk_t b = A::allocate_zero(s, a);
-      memory_used += b.s;
+      memory_used += prev_size;
       return b;
     }
 

@@ -263,11 +263,7 @@ namespace nda::mem {
      */
     handle_heap(long size, do_not_initialize_t) {
       if (size == 0) return;
-      long new_size = size;
-      if constexpr(Vectorizable<T>) {
-        new_size = next_multiple(size, native_simd<T>::size());
-      }
-      auto b = allocator.allocate(new_size * sizeof(T), type_alignment_info<T>::required_alignment);
+      auto b = allocator.allocate(size * sizeof(T), type_alignment_info<T>::required_alignment);
       if (not b.ptr) throw std::bad_alloc{};
       _data = (T *)b.ptr;
       _size = size;
@@ -279,11 +275,7 @@ namespace nda::mem {
      */
     handle_heap(long size, init_zero_t) {
       if (size == 0) return;
-      long new_size = size;
-      if constexpr(Vectorizable<T>) {
-        new_size = next_multiple(size, native_simd<T>::size());
-      }
-      auto b = allocator.allocate_zero(new_size * sizeof(T), type_alignment_info<T>::required_alignment);
+      auto b = allocator.allocate_zero(size * sizeof(T), type_alignment_info<T>::required_alignment);
       if (not b.ptr) throw std::bad_alloc{};
       _data = (T *)b.ptr;
       _size = size;
@@ -303,14 +295,10 @@ namespace nda::mem {
     handle_heap(long size) {
       if (size == 0) return;
       blk_t b;
-      long new_size = size;
-      if constexpr(Vectorizable<T>) {
-        new_size = next_multiple(size, native_simd<T>::size());
-      }
       if constexpr (is_complex_v<T> && init_dcmplx)
-        b = allocator.allocate_zero(new_size * sizeof(T), type_alignment_info<T>::required_alignment);
+        b = allocator.allocate_zero(size * sizeof(T), type_alignment_info<T>::required_alignment);
       else
-        b = allocator.allocate(new_size * sizeof(T), type_alignment_info<T>::required_alignment);
+        b = allocator.allocate(size * sizeof(T), type_alignment_info<T>::required_alignment);
       if (not b.ptr) throw std::bad_alloc{};
       _data = (T *)b.ptr;
       _size = size;
