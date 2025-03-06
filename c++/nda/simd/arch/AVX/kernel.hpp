@@ -74,7 +74,7 @@ namespace nda::simd {
     simd_f8 c0c1c2c3c4c5c6c7 = simd_block[2];
     simd_f8 d0d1d2d3d4d5d6d7 = simd_block[3];
     simd_f8 e0e1e2e3e4e5e6e7 = simd_block[4];
-    simd_f8 f0f1f2f3f4f5f6f  = simd_block[5];
+    simd_f8 f0f1f2f3f4f5f6f7 = simd_block[5];
     simd_f8 g0g1g2g3g4g5g6g7 = simd_block[6];
     simd_f8 h0h1h2h3h4h5h6h7 = simd_block[7];
 
@@ -82,8 +82,8 @@ namespace nda::simd {
     __m256 a2b2a3b3a6b6a7b7 = _mm256_unpackhi_ps(a0a1a2a3a4a5a6a7, b0b1b2b3b4b5b6b7);
     __m256 c0d0c1d1c4d4c5d5 = _mm256_unpacklo_ps(c0c1c2c3c4c5c6c7, d0d1d2d3d4d5d6d7);
     __m256 c2d2c3d3c6d6c7d7 = _mm256_unpackhi_ps(c0c1c2c3c4c5c6c7, d0d1d2d3d4d5d6d7);
-    __m256 e0f0e1f1e4f4e5f5 = _mm256_unpacklo_ps(e0e1e2e3e4e5e6e7, f0f1f2f3f4f5f6f);
-    __m256 e2f2e3f3e6f6e7f7 = _mm256_unpackhi_ps(e0e1e2e3e4e5e6e7, f0f1f2f3f4f5f6f);
+    __m256 e0f0e1f1e4f4e5f5 = _mm256_unpacklo_ps(e0e1e2e3e4e5e6e7, f0f1f2f3f4f5f6f7);
+    __m256 e2f2e3f3e6f6e7f7 = _mm256_unpackhi_ps(e0e1e2e3e4e5e6e7, f0f1f2f3f4f5f6f7);
     __m256 g0h0g1h1g4h4g5h5 = _mm256_unpacklo_ps(g0g1g2g3g4g5g6g7, h0h1h2h3h4h5h6h7);
     __m256 g2h2g3h3g6h6g7h7 = _mm256_unpackhi_ps(g0g1g2g3g4g5g6g7, h0h1h2h3h4h5h6h7);
 
@@ -135,9 +135,9 @@ namespace nda::simd {
     simd_cf4 c0c1c2c3 = simd_block[2];
     simd_cf4 d0d1d2d3 = simd_block[3];
 
-    __m256d a0b0a2b2  = _mm256_unpacklo_pd(_mm256_castps_pd(a0a1a2a3), _mm256_castps_pd(b0b1b2b3));
+    __m256d a0b0a2b2 = _mm256_unpacklo_pd(_mm256_castps_pd(a0a1a2a3), _mm256_castps_pd(b0b1b2b3));
     __m256d a1b1a3b3 = _mm256_unpackhi_pd(_mm256_castps_pd(a0a1a2a3), _mm256_castps_pd(b0b1b2b3));
-    __m256d c0d0c2d2  = _mm256_unpacklo_pd(_mm256_castps_pd(c0c1c2c3), _mm256_castps_pd(d0d1d2d3));
+    __m256d c0d0c2d2 = _mm256_unpacklo_pd(_mm256_castps_pd(c0c1c2c3), _mm256_castps_pd(d0d1d2d3));
     __m256d c1d1c3d3 = _mm256_unpackhi_pd(_mm256_castps_pd(c0c1c2c3), _mm256_castps_pd(d0d1d2d3));
 
     simd_cf4 a0b0c0d0(_mm256_castpd_ps(_mm256_permute2f128_pd(a0b0a2b2, c0d0c2d2, 0x20)));

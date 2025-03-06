@@ -658,11 +658,11 @@ void simd_kernel_transpose() {
   std::array<simd_t, Width> simd_block;
   std::array<std::array<T, Width>, Width> array_block;
   for (int i = 0; i < Width; ++i) {
-    // std::array<T, Width> tmp = generate_random_array<T, Width>();
-    std::array<T, Width> tmp;
-    for (int j = 0; j < Width ; ++j) {
-      tmp[j] = Width * i + j;
-    }
+    std::array<T, Width> tmp = generate_random_array<T, Width>();
+    // std::array<T, Width> tmp;
+    // for (int j = 0; j < Width ; ++j) {
+      // tmp[j] = Width * i + j;
+    // }
     simd_block[i].load_unaligned(tmp.data());
     array_block[i] = tmp;
   }
@@ -1639,8 +1639,8 @@ TEST(NDA, SimdKernelTranspose) {
   // simd_kernel_transpose<double, 8, abi_tag::AVX512>();
   // simd_kernel_transpose<int32_t, 16, abi_tag::AVX512>();
   // simd_kernel_transpose<int64_t, 8, abi_tag::AVX512>();
-  // simd_kernel_transpose<std::complex<float>, 8, abi_tag::AVX512>();
-  // simd_kernel_transpose<std::complex<double>, 4, abi_tag::AVX512>();
+  simd_kernel_transpose<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_kernel_transpose<std::complex<double>, 4, abi_tag::AVX512>();
 #endif
 
 }
@@ -1685,11 +1685,6 @@ TEST(NDA, OurSIMD) {
   };
   using dcomplex = std::complex<double>;
   using simd_t   = native_simd<dcomplex>;
-  std::array<simd_t, 2> tests;
-  tests[0]     = simd_t({0, 1, 2, 3});
-  tests[1]     = simd_t({4, 5, 6, 7});
-  auto testing = simd::kernel_transpose(tests);
-  // auto testing = simd::transpose(tests);
 
   const long size1 = 2;
   const long size2 = 10;
