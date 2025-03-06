@@ -26,7 +26,7 @@
     </tr>
     <tr>
       <th scope="row">Date:</th>
-      <td>2025-03-05 18:57:35</td>
+      <td>2025-03-06 00:52:38</td>
     </tr>
   </table>
 </div>
@@ -102,9 +102,9 @@
     <tr><td><a href="#l636">nda::mem::leak_check&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt;::get_memory_used() const (line 636)</a></td><td>called 5 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l548">nda::mem::leak_check&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt;::leak_check() (line 548)</a></td><td>called 1 time</td><td>100.0%</td></tr>
     <tr><td><a href="#l566">nda::mem::leak_check&lt;nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt; &gt;::~leak_check() (line 566)</a></td><td>called 4 times</td><td>43.0%</td></tr>
-    <tr><td><a href="#l100">nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt;::allocate(unsigned long, unsigned long) (line 100)</a></td><td>called 3978338 times</td><td>100.0%</td></tr>
+    <tr><td><a href="#l100">nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt;::allocate(unsigned long, unsigned long) (line 100)</a></td><td>called 3978337 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l116">nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt;::allocate_zero(unsigned long, unsigned long) (line 116)</a></td><td>called 681 times</td><td>100.0%</td></tr>
-    <tr><td><a href="#l132">nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt;::deallocate(nda::mem::blk_t) (line 132)</a></td><td>called 3979019 times</td><td>100.0%</td></tr>
+    <tr><td><a href="#l132">nda::mem::mallocator&lt;(nda::mem::AddressSpace)1&gt;::deallocate(nda::mem::blk_t) (line 132)</a></td><td>called 3979018 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l164">nda::mem::mallocator_aligned&lt;(nda::mem::AddressSpace)1&gt;::allocate(unsigned long, unsigned long) (line 164)</a></td><td>called 2 times</td><td>100.0%</td></tr>
     <tr><td><a href="#l179">nda::mem::mallocator_aligned&lt;(nda::mem::AddressSpace)1&gt;::allocate_zero(unsigned long, unsigned long) (line 179)</a></td><td>called 1 time</td><td>100.0%</td></tr>
     <tr><td><a href="#l190">nda::mem::mallocator_aligned&lt;(nda::mem::AddressSpace)1&gt;::deallocate(nda::mem::blk_t) (line 190)</a></td><td>called 2 times</td><td>100.0%</td></tr>
@@ -839,14 +839,14 @@
       <td class="lineno"><a id="l100" href="#l100">100</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">3978338</td>
+      <td class="linecount coveredLine">3978337</td>
       <td class="src coveredLine"><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">blk_t</span><span class="w"> </span><span class="nf">allocate</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l101" href="#l101">101</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">3978338</td>
+      <td class="linecount coveredLine">3978337</td>
       <td class="src coveredLine"><span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">prev_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
@@ -855,19 +855,19 @@
         <details class="linebranchDetails">
           <summary class="linebranchSummary">2/2</summary>
           <div class="linebranchContents">
-            <div class="takenBranch">&check; Branch 0 taken 3978095 times.</div>
+            <div class="takenBranch">&check; Branch 0 taken 3978094 times.</div>
             <div class="takenBranch">&check; Branch 1 taken 243 times.</div>
           </div>
         </details>
       </td>
-      <td class="linecount coveredLine">3978338</td>
+      <td class="linecount coveredLine">3978337</td>
       <td class="src coveredLine"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">next_multiple</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l103" href="#l103">103</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">3978338</td>
+      <td class="linecount coveredLine">3978337</td>
       <td class="src coveredLine"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="p">{.</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="w"> </span><span class="o">*&gt;</span><span class="p">(</span><span class="n">malloc</span><span class="o">&lt;</span><span class="n">AdrSp</span><span class="o">&gt;</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span><span class="w"> </span><span class="p">.</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prev_size</span><span class="p">};</span></td>
     </tr>
     <tr class="source-line">
@@ -1077,7 +1077,7 @@
       <td class="lineno"><a id="l132" href="#l132">132</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">3979019</td>
+      <td class="linecount coveredLine">3979018</td>
       <td class="src coveredLine"><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">deallocate</span><span class="p">(</span><span class="n">blk_t</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">free</span><span class="o">&lt;</span><span class="n">AdrSp</span><span class="o">&gt;</span><span class="p">((</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">b</span><span class="p">.</span><span class="n">ptr</span><span class="p">);</span><span class="w"> </span><span class="p">}</span></td>
     </tr>
     <tr class="source-line">
