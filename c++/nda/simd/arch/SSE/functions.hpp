@@ -367,21 +367,21 @@ namespace nda::simd {
 
   template <>
   inline simd_cf2 fma_nadd(const simd_cf2 &x, const simd_cf2 &y, const simd_cf2 &z) {
-    __m128 x_odd  = _mm_movehdup_ps(x);
-    __m128 x_even = _mm_moveldup_ps(x);
-    __m128 y_swap = _mm_permute_ps(y, NDA_SHUFFLE_MASK4(1,0,3,2));
+    __m128 x_odd         = _mm_movehdup_ps(x);
+    __m128 x_even        = _mm_moveldup_ps(x);
+    __m128 y_swap        = _mm_permute_ps(y, NDA_SHUFFLE_MASK4(1, 0, 3, 2));
     simd_cf2 y_swap_conj = conj(simd_cf2(y_swap)); // TODO: Eigen bug create issue maybe in eigen.
-    __m128 result = _mm_fmsub_ps(x_odd, y_swap_conj, _mm_fmsub_ps(x_even, y, z));
+    __m128 result        = _mm_fmsub_ps(x_odd, y_swap_conj, _mm_fmsub_ps(x_even, y, z));
     return simd_cf2(result);
   }
 
   template <>
   inline simd_cd1 fma_nadd(const simd_cd1 &x, const simd_cd1 &y, const simd_cd1 &z) {
-    __m128d x_odd  = _mm_permute_pd(x, 0x3);
-    __m128d x_even = _mm_movedup_pd(x);
-    __m128d y_swap = _mm_permute_pd(y, 0x1);
+    __m128d x_odd        = _mm_permute_pd(x, 0x3);
+    __m128d x_even       = _mm_movedup_pd(x);
+    __m128d y_swap       = _mm_permute_pd(y, 0x1);
     simd_cd1 y_swap_conj = conj(simd_cd1(y_swap));
-    __m128d result = _mm_fmsub_pd(x_odd, y_swap_conj, _mm_fmsub_pd(x_even, y, z));
+    __m128d result       = _mm_fmsub_pd(x_odd, y_swap_conj, _mm_fmsub_pd(x_even, y, z));
     return simd_cd1(result);
   }
 
@@ -398,19 +398,19 @@ namespace nda::simd {
 
   template <>
   inline simd_cf2 fma_nsub(const simd_cf2 &x, const simd_cf2 &y, const simd_cf2 &z) {
-    __m128 x_odd  = _mm_movehdup_ps(x);
-    __m128 x_even = _mm_moveldup_ps(x);
-    __m128 y_swap = _mm_permute_ps(y, NDA_SHUFFLE_MASK4(1, 0, 3, 2));
+    __m128 x_odd         = _mm_movehdup_ps(x);
+    __m128 x_even        = _mm_moveldup_ps(x);
+    __m128 y_swap        = _mm_permute_ps(y, NDA_SHUFFLE_MASK4(1, 0, 3, 2));
     simd_cf2 y_swap_conj = conj(simd_cf2(y_swap));
-    __m128 result = _mm_fmsub_ps(x_odd, y_swap_conj, _mm_fmadd_ps(x_even, y, z));
+    __m128 result        = _mm_fmsub_ps(x_odd, y_swap_conj, _mm_fmadd_ps(x_even, y, z));
     return simd_cf2(result);
   }
 
   template <>
   inline simd_cd1 fma_nsub(const simd_cd1 &x, const simd_cd1 &y, const simd_cd1 &z) {
-    __m128d x_odd  = _mm_permute_pd(x, 0x3);
-    __m128d x_even = _mm_movedup_pd(x);
-    __m128d y_swap = _mm_permute_pd(y, 0x1);
+    __m128d x_odd        = _mm_permute_pd(x, 0x3);
+    __m128d x_even       = _mm_movedup_pd(x);
+    __m128d y_swap       = _mm_permute_pd(y, 0x1);
     simd_cd1 y_swap_conj = conj(simd_cd1(y_swap));
 
     __m128d result = _mm_fmsub_pd(x_odd, y_swap_conj, _mm_fmadd_pd(x_even, y, z));
@@ -546,5 +546,52 @@ namespace nda::simd {
   inline simd_l2 fma_nsub(const simd_l2 &x, const simd_l2 &y, const simd_l2 &z) {
     return -(x * y + z);
   }
+  // Gather Functions with given strides in vindex.
+#ifdef __AVX2__
+  template <>
+  inline simd_i4 gather(const simd_i4::value_t *from, const long stride) {
+    simd_i4 simd_stride(static_cast<int32_t>(stride));
+    const simd_i4 multiplier({0, 1, 2, 3});
+    simd_i4 vindex = simd_stride * multiplier;
+    return simd_i4(_mm_i32gather_epi32(from, vindex, sizeof(simd_i4::value_t)));
+  }
+
+  template <>
+  inline simd_l2 gather(const simd_l2::value_t * from, const long stride) {
+    simd_l2 simd_stride(stride);
+    const simd_l2 multiplier({0, 1});
+    simd_l2 vindex = simd_stride * multiplier;
+    return simd_l2(_mm_i64gather_epi64(reinterpret_cast<const long long int*>(from), vindex, sizeof(simd_l2::value_t)));
+  }
+
+  template <>
+  inline simd_f4 gather(const simd_f4::value_t *from, const long stride) {
+    simd_i4 simd_stride(static_cast<int32_t>(stride));
+    const simd_i4 multiplier({0, 1, 2, 3});
+    simd_i4 vindex = simd_stride * multiplier;
+    return simd_f4(_mm_i32gather_ps(from, vindex, sizeof(simd_f4::value_t)));
+  }
+
+  template <>
+  inline simd_d2 gather(const simd_d2::value_t *from, const long stride) {
+    simd_l2 simd_stride(stride);
+    const simd_l2 multiplier({0, 1});
+    simd_l2 vindex = simd_stride * multiplier;
+    return simd_d2(_mm_i64gather_pd(from, vindex, sizeof(simd_d2::value_t)));
+  }
+
+  template <>
+  inline simd_cf2 gather(const simd_cf2::value_t *from, const long stride) {
+    return simd_cf2(_mm_castpd_ps(gather<simd_d2>(reinterpret_cast<const simd_d2::value_t *>(from), stride)));
+  }
+
+  template <>
+  inline simd_cd1 gather(const simd_cd1::value_t *from, [[maybe_unused]] const long stride) {
+    simd_cd1 tmp;
+    tmp.load_unaligned(from);
+    return tmp;
+  }
+
+#endif
 } // namespace nda::simd
 #endif

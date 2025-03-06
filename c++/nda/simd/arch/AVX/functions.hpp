@@ -547,6 +547,48 @@ namespace nda::simd {
     return -(x * y + z);
   }
 
+  //Gather functions.
+  template <>
+  inline simd_i8 gather(const simd_i8::value_t *from, const long stride) {
+    simd_i8 simd_stride(static_cast<int32_t>(stride));
+    const simd_i8 multiplier({0, 1, 2, 3, 4, 5, 6, 7});
+    simd_i8 vindex = simd_stride * multiplier;
+    return simd_i8(_mm256_i32gather_epi32(from, vindex, sizeof(simd_i8::value_t)));
+  }
+
+  template <>
+  inline simd_l4 gather(const simd_l4::value_t *from, const long stride) {
+    simd_l4 simd_stride(stride);
+    const simd_l4 multiplier({0, 1, 2, 3});
+    simd_l4 vindex = simd_stride * multiplier;
+    return simd_l4(_mm256_i64gather_epi64(reinterpret_cast<const long long int*>(from), vindex, sizeof(simd_l4::value_t)));
+  }
+
+  template <>
+  inline simd_f8 gather(const simd_f8::value_t *from, const long stride) {
+    simd_i8 simd_stride(static_cast<int32_t>(stride));
+    const simd_i8 multiplier({0, 1, 2, 3, 4, 5, 6, 7});
+    simd_i8 vindex = simd_stride * multiplier;
+    return simd_f8(_mm256_i32gather_ps(from, vindex, sizeof(simd_f8::value_t)));
+  }
+
+  template <>
+  inline simd_d4 gather(const simd_d4::value_t *from, const long stride) {
+    simd_l4 simd_stride(stride);
+    const simd_l4 multiplier({0, 1, 2, 3});
+    simd_l4 vindex = simd_stride * multiplier;
+    return simd_d4(_mm256_i64gather_pd(from, vindex, sizeof(simd_d4::value_t)));
+  }
+
+  template <>
+  inline simd_cf4 gather(const simd_cf4::value_t *from, const long stride) {
+    return simd_cf4(_mm256_castpd_ps(gather<simd_d4>(reinterpret_cast<const simd_d4::value_t *>(from), stride)));
+  }
+
+  template <>
+  inline simd_cd2 gather(const simd_cd2::value_t *from, const long stride) {
+    return simd_cd2(_mm256_set_pd(from[stride].imag(), from[stride].real(), from[0].imag(), from[0].real()));
+  }
 
 } // namespace nda::simd
 #endif

@@ -639,6 +639,21 @@ void simd_fma_functions() {
   }
 }
 
+template <typename T, size_t Width, abi_tag ABI>
+void simd_gather_function() {
+  using simd_t   = simd_type<T, Width, ABI>;
+  std::array<T, Width * 10> tmp_array;
+  tmp_array =generate_random_array<T, Width * 10>();
+  for (long n = 0 ; n < 5 ; ++n) {
+    simd_t calculation = simd::gather<simd_t>(tmp_array.data(),n);
+    std::array<T, Width> correct;
+    for (int i = 0 ; i < simd_t::size(); ++i) {
+      correct[i] = tmp_array[n * i];
+    }
+    check_simd_array_equal(calculation, correct);
+  }
+}
+
 TEST(NDA, SimdDefaultConstructor) {
   // Default SIMD types
   simd_type_default_constructor<float, 1, abi_tag::Default>();
@@ -1527,6 +1542,47 @@ TEST(NDA, SimdFMAFunctions) {
 #endif
 }
 
+TEST(NDA, SimdGatherFunction) {
+  // Default SIMD types
+  simd_gather_function<float, 1, abi_tag::Default>();
+  simd_gather_function<double, 1, abi_tag::Default>();
+  simd_gather_function<int32_t, 1, abi_tag::Default>();
+  simd_gather_function<int64_t, 1, abi_tag::Default>();
+  simd_gather_function<std::complex<float>, 1, abi_tag::Default>();
+  simd_gather_function<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+   // SSE SIMD types
+   simd_gather_function<float, 4, abi_tag::SSE>();
+   simd_gather_function<double, 2, abi_tag::SSE>();
+   simd_gather_function<int32_t, 4, abi_tag::SSE>();
+   simd_gather_function<int64_t, 2, abi_tag::SSE>();
+   simd_gather_function<std::complex<float>, 2, abi_tag::SSE>();
+   simd_gather_function<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+   // AVX SIMD types
+   simd_gather_function<float, 8, abi_tag::AVX>();
+   simd_gather_function<double, 4, abi_tag::AVX>();
+   simd_gather_function<int32_t, 8, abi_tag::AVX>();
+   simd_gather_function<int64_t, 4, abi_tag::AVX>();
+   simd_gather_function<std::complex<float>, 4, abi_tag::AVX>();
+   simd_gather_function<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512F__
+   // AVX512 SIMD types
+   simd_gather_function<float, 16, abi_tag::AVX512>();
+   simd_gather_function<double, 8, abi_tag::AVX512>();
+   simd_gather_function<int32_t, 16, abi_tag::AVX512>();
+   simd_gather_function<int64_t, 8, abi_tag::AVX512>();
+   simd_gather_function<std::complex<float>, 8, abi_tag::AVX512>();
+   simd_gather_function<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+
+}
+
 template <Vectorizable T>
 struct adder : simd::mock_simd<adder<T>, T> {
   using value_t = T;
@@ -1577,42 +1633,6 @@ TEST(NDA, OurSIMD) {
   for (int i = 0; i < size1; ++i) {
     for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
   }
-  auto test    = make_const_view(s);
-  auto hoppala = test.load(0, 0);
-  std::array<float, 8> tmp{};
-  hoppala.store(tmp.data());
-  std::cout << tmp << std::endl;
-  for (auto q : packed(s)) {
-    using simd_t = native_simd<float>;
-    alignas(simd_t::alignment()) std::array<float, simd_t::size()> tmp;
-    q.value.store(tmp.data());
-    std::cout << tmp << std::endl;
-    std::cout << q.valid_field << std::endl;
-    for (int i = 0; i < tmp.size() ; ++i) {
-      tmp[i] = 20.5f + i;
-    }
-    q.value.load(tmp.data());
-    q.store();
-  }
-  for (auto q : packed(s)) {
-    using simd_t = native_simd<float>;
-    alignas(simd_t::alignment()) std::array<float, simd_t::size()> tmp;
-    q.value.store(tmp.data());
-    std::cout << tmp << std::endl;
-  }
 
-  // s = array_aligned<float,2>::rand({size1, size2});
-  auto hop = make_array_view(s);
-  std::cout << hop << std::endl;
-  std::cout << hop.is_aligned << std::endl;
-  std::cout << typeid(hop).name() << std::endl;
-  std::cout << typeid(make_regular(hop)).name() << std::endl;
-  std::cout << hop.indexmap().capacity() << std::endl;
-  for (int i = 0; i < hop.indexmap().capacity(); ++i) { std::cout << *(hop.data() + i) << " "; }
-  std::cout << std::endl;
-  auto aa = make_regular(hop);
-  std::cout << aa.size() << std::endl;
-  std::cout << aa.is_aligned << std::endl;
-  bool a = s == hop;
-  std::cout << (hop == s) << std::endl;
+
 }

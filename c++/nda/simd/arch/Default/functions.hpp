@@ -344,4 +344,36 @@ namespace nda::simd {
   inline simd_l1 fma_nsub(const simd_l1 &x, const simd_l1 &y, const simd_l1 &z) {
     return -(x * y + z);
   }
+
+  //Gather functions
+  template <>
+  inline simd_i1 gather(const simd_i1::value_t *from, [[maybe_unused]]const long stride) {
+    return simd_i1(from);
+  }
+
+  template <>
+  inline simd_l1 gather(const simd_l1::value_t *from, [[maybe_unused]]const long stride) {
+    return simd_l1(from);
+  }
+
+  template <>
+  inline simd_f1 gather(const simd_f1::value_t *from,[[maybe_unused]] const long stride) {
+    return simd_f1(from);
+  }
+
+  template <>
+  inline simd_d1 gather(const simd_d1::value_t *from, [[maybe_unused]] const long stride) {
+    return simd_d1(from);
+  }
+
+  template <>
+  inline simd_cf1 gather(const simd_cf1::value_t *from, [[maybe_unused]] const long stride) {
+    return simd_cf1(from);
+  }
+
+  template <>
+  inline simd_cd1_d gather(const simd_cd1_d::value_t *from,[[maybe_unused]] const long stride) {
+    return simd_cd1_d(from);
+  }
+
 } // namespace nda::simd
