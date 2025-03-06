@@ -641,16 +641,37 @@ void simd_fma_functions() {
 
 template <typename T, size_t Width, abi_tag ABI>
 void simd_gather_function() {
-  using simd_t   = simd_type<T, Width, ABI>;
+  using simd_t = simd_type<T, Width, ABI>;
   std::array<T, Width * 10> tmp_array;
-  tmp_array =generate_random_array<T, Width * 10>();
-  for (long n = 0 ; n < 5 ; ++n) {
-    simd_t calculation = simd::gather<simd_t>(tmp_array.data(),n);
+  tmp_array = generate_random_array<T, Width * 10>();
+  for (long n = 0; n < 5; ++n) {
+    simd_t calculation = simd::gather<simd_t>(tmp_array.data(), n);
     std::array<T, Width> correct;
-    for (int i = 0 ; i < simd_t::size(); ++i) {
-      correct[i] = tmp_array[n * i];
-    }
+    for (int i = 0; i < simd_t::size(); ++i) { correct[i] = tmp_array[n * i]; }
     check_simd_array_equal(calculation, correct);
+  }
+}
+
+template <typename T, size_t Width, abi_tag ABI>
+void simd_kernel_transpose() {
+  using simd_t = simd_type<T, Width, ABI>;
+  std::array<simd_t, Width> simd_block;
+  std::array<std::array<T, Width>, Width> array_block;
+  for (int i = 0; i < Width; ++i) {
+    // std::array<T, Width> tmp = generate_random_array<T, Width>();
+    std::array<T, Width> tmp;
+    for (int j = 0; j < Width ; ++j) {
+      tmp[j] = Width * i + j;
+    }
+    simd_block[i].load_unaligned(tmp.data());
+    array_block[i] = tmp;
+  }
+  for (int i = 0; i < Width; ++i) {
+    for (int j = i + 1; j < Width; ++j) { std::swap(array_block[i][j],array_block[j][i]); }
+  }
+  auto transposed = simd::kernel_transpose(simd_block);
+  for (int i = 0 ; i < Width ; ++i) {
+    check_simd_array_equal(transposed[i], array_block[i]);
   }
 }
 
@@ -1552,33 +1573,74 @@ TEST(NDA, SimdGatherFunction) {
   simd_gather_function<std::complex<double>, 1, abi_tag::Default>();
 
 #ifdef __SSE2__
-   // SSE SIMD types
-   simd_gather_function<float, 4, abi_tag::SSE>();
-   simd_gather_function<double, 2, abi_tag::SSE>();
-   simd_gather_function<int32_t, 4, abi_tag::SSE>();
-   simd_gather_function<int64_t, 2, abi_tag::SSE>();
-   simd_gather_function<std::complex<float>, 2, abi_tag::SSE>();
-   simd_gather_function<std::complex<double>, 1, abi_tag::SSE>();
+  // SSE SIMD types
+  simd_gather_function<float, 4, abi_tag::SSE>();
+  simd_gather_function<double, 2, abi_tag::SSE>();
+  simd_gather_function<int32_t, 4, abi_tag::SSE>();
+  simd_gather_function<int64_t, 2, abi_tag::SSE>();
+  simd_gather_function<std::complex<float>, 2, abi_tag::SSE>();
+  simd_gather_function<std::complex<double>, 1, abi_tag::SSE>();
 #endif
 
 #ifdef __AVX__
-   // AVX SIMD types
-   simd_gather_function<float, 8, abi_tag::AVX>();
-   simd_gather_function<double, 4, abi_tag::AVX>();
-   simd_gather_function<int32_t, 8, abi_tag::AVX>();
-   simd_gather_function<int64_t, 4, abi_tag::AVX>();
-   simd_gather_function<std::complex<float>, 4, abi_tag::AVX>();
-   simd_gather_function<std::complex<double>, 2, abi_tag::AVX>();
+  // AVX SIMD types
+  simd_gather_function<float, 8, abi_tag::AVX>();
+  simd_gather_function<double, 4, abi_tag::AVX>();
+  simd_gather_function<int32_t, 8, abi_tag::AVX>();
+  simd_gather_function<int64_t, 4, abi_tag::AVX>();
+  simd_gather_function<std::complex<float>, 4, abi_tag::AVX>();
+  simd_gather_function<std::complex<double>, 2, abi_tag::AVX>();
 #endif
 
 #ifdef __AVX512F__
-   // AVX512 SIMD types
-   simd_gather_function<float, 16, abi_tag::AVX512>();
-   simd_gather_function<double, 8, abi_tag::AVX512>();
-   simd_gather_function<int32_t, 16, abi_tag::AVX512>();
-   simd_gather_function<int64_t, 8, abi_tag::AVX512>();
-   simd_gather_function<std::complex<float>, 8, abi_tag::AVX512>();
-   simd_gather_function<std::complex<double>, 4, abi_tag::AVX512>();
+  // AVX512 SIMD types
+  simd_gather_function<float, 16, abi_tag::AVX512>();
+  simd_gather_function<double, 8, abi_tag::AVX512>();
+  simd_gather_function<int32_t, 16, abi_tag::AVX512>();
+  simd_gather_function<int64_t, 8, abi_tag::AVX512>();
+  simd_gather_function<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_gather_function<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+}
+
+TEST(NDA, SimdKernelTranspose) {
+
+  // Default SIMD types
+  simd_kernel_transpose<float, 1, abi_tag::Default>();
+  simd_kernel_transpose<double, 1, abi_tag::Default>();
+  simd_kernel_transpose<int32_t, 1, abi_tag::Default>();
+  simd_kernel_transpose<int64_t, 1, abi_tag::Default>();
+  simd_kernel_transpose<std::complex<float>, 1, abi_tag::Default>();
+  simd_kernel_transpose<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+  // SSE SIMD types
+  simd_kernel_transpose<float, 4, abi_tag::SSE>();
+  simd_kernel_transpose<double, 2, abi_tag::SSE>();
+  simd_kernel_transpose<int32_t, 4, abi_tag::SSE>();
+  simd_kernel_transpose<int64_t, 2, abi_tag::SSE>();
+  simd_kernel_transpose<std::complex<float>, 2, abi_tag::SSE>();
+  simd_kernel_transpose<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  // AVX SIMD types
+  simd_kernel_transpose<float, 8, abi_tag::AVX>();
+  simd_kernel_transpose<double, 4, abi_tag::AVX>();
+  simd_kernel_transpose<int32_t, 8, abi_tag::AVX>();
+  simd_kernel_transpose<int64_t, 4, abi_tag::AVX>();
+  simd_kernel_transpose<std::complex<float>, 4, abi_tag::AVX>();
+  simd_kernel_transpose<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512F__
+  // AVX512 SIMD types
+  // simd_kernel_transpose<float, 16, abi_tag::AVX512>();
+  // simd_kernel_transpose<double, 8, abi_tag::AVX512>();
+  // simd_kernel_transpose<int32_t, 16, abi_tag::AVX512>();
+  // simd_kernel_transpose<int64_t, 8, abi_tag::AVX512>();
+  // simd_kernel_transpose<std::complex<float>, 8, abi_tag::AVX512>();
+  // simd_kernel_transpose<std::complex<double>, 4, abi_tag::AVX512>();
 #endif
 
 }
@@ -1621,6 +1683,13 @@ TEST(NDA, OurSIMD) {
 
     native_simd<float> load(native_simd<float> a, native_simd<float> b) const { return a + b; }
   };
+  using dcomplex = std::complex<double>;
+  using simd_t   = native_simd<dcomplex>;
+  std::array<simd_t, 2> tests;
+  tests[0]     = simd_t({0, 1, 2, 3});
+  tests[1]     = simd_t({4, 5, 6, 7});
+  auto testing = simd::kernel_transpose(tests);
+  // auto testing = simd::transpose(tests);
 
   const long size1 = 2;
   const long size2 = 10;
@@ -1633,6 +1702,4 @@ TEST(NDA, OurSIMD) {
   for (int i = 0; i < size1; ++i) {
     for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
   }
-
-
 }
