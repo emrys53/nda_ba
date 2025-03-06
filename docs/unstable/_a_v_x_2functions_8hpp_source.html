@@ -660,9 +660,53 @@ $(function(){initNavTree('_a_v_x_2functions_8hpp_source.html',''); initResizable
 <div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>    <span class="keywordflow">return</span> -(x * y + z);</div>
 <div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>  }</div>
 <div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span> </div>
-<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span> </div>
-<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>} <span class="comment">// namespace nda::simd</span></div>
-<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>  <span class="comment">//Gather functions.</span></div>
+<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>  <span class="keyword">inline</span> simd_i8 gather(<span class="keyword">const</span> simd_i8::value_t *from, <span class="keyword">const</span> <span class="keywordtype">long</span> stride) {</div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>    simd_i8 simd_stride(<span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(stride));</div>
+<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>    <span class="keyword">const</span> simd_i8 multiplier({0, 1, 2, 3, 4, 5, 6, 7});</div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>    simd_i8 vindex = simd_stride * multiplier;</div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>    <span class="keywordflow">return</span> simd_i8(_mm256_i32gather_epi32(from, vindex, <span class="keyword">sizeof</span>(simd_i8::value_t)));</div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>  }</div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span> </div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>  <span class="keyword">inline</span> simd_l4 gather(<span class="keyword">const</span> simd_l4::value_t *from, <span class="keyword">const</span> <span class="keywordtype">long</span> stride) {</div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>    simd_l4 simd_stride(stride);</div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>    <span class="keyword">const</span> simd_l4 multiplier({0, 1, 2, 3});</div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>    simd_l4 vindex = simd_stride * multiplier;</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>    <span class="keywordflow">return</span> simd_l4(_mm256_i64gather_epi64(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(from), vindex, <span class="keyword">sizeof</span>(simd_l4::value_t)));</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>  }</div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span> </div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>  <span class="keyword">inline</span> simd_f8 gather(<span class="keyword">const</span> simd_f8::value_t *from, <span class="keyword">const</span> <span class="keywordtype">long</span> stride) {</div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>    simd_i8 simd_stride(<span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(stride));</div>
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>    <span class="keyword">const</span> simd_i8 multiplier({0, 1, 2, 3, 4, 5, 6, 7});</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>    simd_i8 vindex = simd_stride * multiplier;</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>    <span class="keywordflow">return</span> simd_f8(_mm256_i32gather_ps(from, vindex, <span class="keyword">sizeof</span>(simd_f8::value_t)));</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>  }</div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span> </div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>  <span class="keyword">inline</span> simd_d4 gather(<span class="keyword">const</span> simd_d4::value_t *from, <span class="keyword">const</span> <span class="keywordtype">long</span> stride) {</div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>    simd_l4 simd_stride(stride);</div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>    <span class="keyword">const</span> simd_l4 multiplier({0, 1, 2, 3});</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>    simd_l4 vindex = simd_stride * multiplier;</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>    <span class="keywordflow">return</span> simd_d4(_mm256_i64gather_pd(from, vindex, <span class="keyword">sizeof</span>(simd_d4::value_t)));</div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>  }</div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span> </div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>  <span class="keyword">inline</span> simd_cf4 gather(<span class="keyword">const</span> simd_cf4::value_t *from, <span class="keyword">const</span> <span class="keywordtype">long</span> stride) {</div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>    <span class="keywordflow">return</span> simd_cf4(_mm256_castpd_ps(gather&lt;simd_d4&gt;(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>simd_d4::value_t *<span class="keyword">&gt;</span>(from), stride)));</div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>  }</div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span> </div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>  <span class="keyword">inline</span> simd_cd2 gather(<span class="keyword">const</span> simd_cd2::value_t *from, <span class="keyword">const</span> <span class="keywordtype">long</span> stride) {</div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>    <span class="keywordflow">return</span> simd_cd2(_mm256_set_pd(from[stride].<a class="code hl_function" href="group__av__math.html#gaa337f00c9324d22f827b9759adb22f18">imag</a>(), from[stride].<a class="code hl_function" href="group__av__math.html#ga801930e88ab85629067870e91ab9f97f">real</a>(), from[0].<a class="code hl_function" href="group__av__math.html#gaa337f00c9324d22f827b9759adb22f18">imag</a>(), from[0].<a class="code hl_function" href="group__av__math.html#ga801930e88ab85629067870e91ab9f97f">real</a>()));</div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>  }</div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span> </div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>} <span class="comment">// namespace nda::simd</span></div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="agroup__av__math_html_ga801930e88ab85629067870e91ab9f97f"><div class="ttname"><a href="group__av__math.html#ga801930e88ab85629067870e91ab9f97f">nda::real</a></div><div class="ttdeci">auto real(A &amp;&amp;a)</div><div class="ttdoc">Function real for nda::ArrayOrScalar types (lazy and coefficient-wise for nda::Array types).</div><div class="ttdef"><b>Definition</b> <a href="mapped__functions_8hxx_source.html#l00138">mapped_functions.hxx:138</a></div></div>
+<div class="ttc" id="agroup__av__math_html_gaa337f00c9324d22f827b9759adb22f18"><div class="ttname"><a href="group__av__math.html#gaa337f00c9324d22f827b9759adb22f18">nda::imag</a></div><div class="ttdeci">auto imag(A &amp;&amp;a)</div><div class="ttdoc">Function imag for nda::ArrayOrScalar types (lazy and coefficient-wise for nda::Array types).</div><div class="ttdef"><b>Definition</b> <a href="mapped__functions_8hxx_source.html#l00110">mapped_functions.hxx:110</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
