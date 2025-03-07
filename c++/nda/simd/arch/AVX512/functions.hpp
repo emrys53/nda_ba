@@ -446,21 +446,22 @@ namespace nda::simd {
   inline simd_l8 fma_nsub(const simd_l8 &x, const simd_l8 &y, const simd_l8 &z) {
     return -(x * y + z);
   }
+
   //Gather functions.
   template <>
- inline simd_i16 gather(const simd_i16::value_t *from, const long stride) {
+  inline simd_i16 gather(const simd_i16::value_t *from, const long stride) {
     simd_i16 simd_stride(static_cast<int32_t>(stride));
     const simd_i16 multiplier({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15});
     simd_i16 vindex = simd_stride * multiplier;
-    return simd_l8(_mm512_i64gather_epi64(vindex, from, sizeof(simd_l8::value_t)));
+    return simd_i16(_mm512_i32gather_epi32(vindex, from, sizeof(simd_i16::value_t)));
   }
 
   template <>
   inline simd_l8 gather(const simd_l8::value_t *from, const long stride) {
-    simd_l8 simd_stride(stride);
-    const simd_l8 multiplier({0, 1, 2, 3, 4, 5, 6, 7});
-    simd_l8 vindex = simd_stride * multiplier;
-    return simd_l8(_mm512_i64gather_epi64(vindex, from, sizeof(simd_l8::value_t)));
+    simd_i8 simd_stride(stride);
+    const simd_i8 multiplier({0, 1, 2, 3, 4, 5, 6, 7});
+    simd_i8 vindex = simd_stride * multiplier;
+    return simd_l8(_mm512_i32gather_epi64(vindex, from, sizeof(simd_l8::value_t)));
   }
 
   template <>
@@ -473,28 +474,78 @@ namespace nda::simd {
 
   template <>
   inline simd_d8 gather(const simd_d8::value_t *from, const long stride) {
-    simd_l8 simd_stride(stride);
-    const simd_l8 multiplier({0, 1, 2, 3, 4, 5, 6, 7});
-    simd_l8 vindex = simd_stride * multiplier;
-    return simd_d8(_mm512_i64gather_pd(vindex, from, sizeof(simd_d8::value_t)));
+    simd_i8 simd_stride(stride);
+    const simd_i8 multiplier({0, 1, 2, 3, 4, 5, 6, 7});
+    simd_i8 vindex = simd_stride * multiplier;
+    return simd_d8(_mm512_i32gather_pd(vindex, from, sizeof(simd_d8::value_t)));
   }
 
   template <>
   inline simd_cf8 gather(const simd_cf8::value_t *from, const long stride) {
-    return simd_cf8(_mm512_castpd_ps(gather<simd_d8>(reinterpret_cast<const simd_d8::value_t*>(from), stride)));
+    return simd_cf8(_mm512_castpd_ps(gather<simd_d8>(reinterpret_cast<const simd_d8::value_t *>(from), stride)));
   }
 
   template <>
   inline simd_cd4 gather(const simd_cd4::value_t *from, const long stride) {
-    simd_cd1 a,b,c,d;
+    simd_cd1 a, b, c, d;
     a.load_unaligned(from);
     b.load_unaligned(from + stride);
     c.load_unaligned(from + 2 * stride);
     d.load_unaligned(from + 3 * stride);
     __m256d ab = _mm256_insertf128_pd(_mm256_castpd128_pd256(a), b, 1);
     __m256d cd = _mm256_insertf128_pd(_mm256_castpd128_pd256(c), d, 1);
-    return simd_cd4(_mm512_insertf64x4(_mm512_castpd256_pd512(ab), cd , 1))
+    return simd_cd4(_mm512_insertf64x4(_mm512_castpd256_pd512(ab), cd, 1));
+  }
 
+  //Scatter functions
+  template <>
+  inline void scatter(const simd_i16 &v, simd_i16::value_t *to, const long stride) {
+    simd_i16 simd_stride(stride);
+    const simd_i16 multiplier({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15});
+    simd_i16 vindex = simd_stride * multiplier;
+    _mm512_i32scatter_epi32(to, vindex, v, sizeof(simd_i16::value_t));
+  }
+
+  template <>
+  inline void scatter(const simd_l8 &v, simd_l8::value_t *to, const long stride) {
+    simd_i8 simd_stride(stride);
+    const simd_i8 multiplier({0, 1, 2, 3, 4, 5, 6, 7});
+    simd_i8 vindex = simd_stride * multiplier;
+    _mm512_i32scatter_epi64(to, vindex, v, sizeof(simd_l8::value_t));
+  }
+
+  template <>
+  inline void scatter(const simd_f16 &v, simd_f16::value_t *to, const long stride) {
+    simd_i16 simd_stride(stride);
+    const simd_i16 multiplier({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15});
+    simd_i16 vindex = simd_stride * multiplier;
+    _mm512_i32scatter_ps(to, vindex, v, sizeof(simd_f16::value_t));
+  }
+
+  template <>
+  inline void scatter(const simd_d8 &v, simd_d8::value_t *to, const long stride) {
+    simd_i8 simd_stride(stride);
+    simd_i8 multiplier({0, 1, 2, 3, 4, 5, 6, 7});
+    simd_i8 vindex = simd_stride * multiplier;
+    _mm512_i32scatter_pd(to, vindex, v, sizeof(simd_d8::value_t));
+  }
+
+  template <>
+  inline void scatter(const simd_cf8 &v, simd_cf8::value_t *to, const long stride) {
+    simd_i8 simd_stride(stride);
+    simd_i8 multiplier({0, 1, 2, 3, 4, 5, 6, 7});
+    simd_i8 vindex = simd_stride * multiplier;
+    _mm512_i32scatter_pd(reinterpret_cast<double *>(to), vindex, _mm512_castps_pd(v), sizeof(simd_d8::value_t));
+  }
+
+  template <>
+  inline void scatter(const simd_cd4 &v, simd_cd4::value_t *to, const long stride) {
+    simd_f16 x(_mm512_castpd_ps(v));
+    double *p = reinterpret_cast<double *>(to);
+    _mm_storeu_pd(p, _mm_castps_pd(_mm512_extractf32x4_ps(x, 0x0)));
+    _mm_storeu_pd(p + 2 * stride, _mm_castps_pd(_mm512_extractf32x4_ps(x, 0x1)));
+    _mm_storeu_pd(p + 4 * stride, _mm_castps_pd(_mm512_extractf32x4_ps(x, 0x2)));
+    _mm_storeu_pd(p + 6 * stride, _mm_castps_pd(_mm512_extractf32x4_ps(x, 0x3)));
   }
 
 } // namespace nda::simd

@@ -1,12 +1,8 @@
 #pragma once
 namespace nda {
-  enum class  abi_tag { Default, SSE, AVX, AVX512};
+  enum class abi_tag { Default, SSE, AVX, AVX512 };
   namespace abi {
-    // template <typename T>
-    // static constexpr abi_tag get_native_abi_tag() {
-    // return abi_tag::Default;
-    // }
-    static constexpr abi_tag get_native_abi_tag() {
+    inline static constexpr abi_tag get_native_abi_tag() {
 #ifdef __AVX512F__
       return abi_tag::AVX512;
 #else
@@ -23,13 +19,13 @@ namespace nda {
     }
 
     template <typename T>
-    static constexpr size_t get_native_width() {
+    inline static constexpr size_t get_native_width() {
       return 0;
     }
 
     template <typename T>
-    requires requires (T x) {sizeof(T);}
-    static constexpr size_t get_native_width() {
+      requires requires(T x) { sizeof(T); }
+    inline static constexpr size_t get_native_width() {
       constexpr abi_tag abi = get_native_abi_tag();
 
       constexpr auto is_abi = [](abi_tag lhs, abi_tag rhs) {
@@ -46,5 +42,5 @@ namespace nda {
       return 1;
     }
 
-  }
-}// namespace  nda
+  } // namespace abi
+} // namespace  nda

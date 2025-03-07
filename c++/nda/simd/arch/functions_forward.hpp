@@ -45,4 +45,7 @@ namespace nda::simd {
   template <typename T>
   T gather(const typename T::value_t *, const long);
 
+  template<typename T>
+  void scatter(const T&, typename T::value_t*, const long);
+
 } // namespace nda::simd

@@ -653,6 +653,24 @@ void simd_gather_function() {
 }
 
 template <typename T, size_t Width, abi_tag ABI>
+void simd_scatter_function() {
+  using simd_t = simd_type<T, Width, ABI>;
+  std::array<T, Width * 10> scattered_array;
+  std::array<T, Width> simd_array = generate_random_array<T, Width>();
+
+  for (long n = 1; n < 5; ++n) {
+    simd_t scatter, gather;
+    scatter.load_unaligned(simd_array.data());
+    std::array<T, Width> gather_array;
+    simd::scatter(scatter, scattered_array.data(), n);
+    gather = simd::gather<simd_t>(scattered_array.data(), n);
+    EXPECT_TRUE(gather == scatter);
+//    gather.store_unaligned(gather_array.data());
+//    check_simd_array_equal(scatter, gather_array);
+  }
+}
+
+template <typename T, size_t Width, abi_tag ABI>
 void simd_kernel_transpose() {
   using simd_t = simd_type<T, Width, ABI>;
   std::array<simd_t, Width> simd_block;
@@ -661,18 +679,16 @@ void simd_kernel_transpose() {
     std::array<T, Width> tmp = generate_random_array<T, Width>();
     // std::array<T, Width> tmp;
     // for (int j = 0; j < Width ; ++j) {
-      // tmp[j] = Width * i + j;
+    // tmp[j] = Width * i + j;
     // }
     simd_block[i].load_unaligned(tmp.data());
     array_block[i] = tmp;
   }
   for (int i = 0; i < Width; ++i) {
-    for (int j = i + 1; j < Width; ++j) { std::swap(array_block[i][j],array_block[j][i]); }
+    for (int j = i + 1; j < Width; ++j) { std::swap(array_block[i][j], array_block[j][i]); }
   }
   auto transposed = simd::kernel_transpose(simd_block);
-  for (int i = 0 ; i < Width ; ++i) {
-    check_simd_array_equal(transposed[i], array_block[i]);
-  }
+  for (int i = 0; i < Width; ++i) { check_simd_array_equal(transposed[i], array_block[i]); }
 }
 
 TEST(NDA, SimdDefaultConstructor) {
@@ -1642,6 +1658,46 @@ TEST(NDA, SimdKernelTranspose) {
   simd_kernel_transpose<std::complex<float>, 8, abi_tag::AVX512>();
   simd_kernel_transpose<std::complex<double>, 4, abi_tag::AVX512>();
 #endif
+}
+
+TEST(NDA, SimdScatterFunction) {
+  // Default SIMD types
+  simd_scatter_function<float, 1, abi_tag::Default>();
+  simd_scatter_function<double, 1, abi_tag::Default>();
+  simd_scatter_function<int32_t, 1, abi_tag::Default>();
+  simd_scatter_function<int64_t, 1, abi_tag::Default>();
+  simd_scatter_function<std::complex<float>, 1, abi_tag::Default>();
+  simd_scatter_function<std::complex<double>, 1, abi_tag::Default>();
+
+#ifdef __SSE2__
+  // SSE SIMD types
+  simd_scatter_function<float, 4, abi_tag::SSE>();
+  simd_scatter_function<double, 2, abi_tag::SSE>();
+  simd_scatter_function<int32_t, 4, abi_tag::SSE>();
+  simd_scatter_function<int64_t, 2, abi_tag::SSE>();
+  simd_scatter_function<std::complex<float>, 2, abi_tag::SSE>();
+  simd_scatter_function<std::complex<double>, 1, abi_tag::SSE>();
+#endif
+
+#ifdef __AVX__
+  // AVX SIMD types
+  simd_scatter_function<float, 8, abi_tag::AVX>();
+  simd_scatter_function<double, 4, abi_tag::AVX>();
+  simd_scatter_function<int32_t, 8, abi_tag::AVX>();
+  simd_scatter_function<int64_t, 4, abi_tag::AVX>();
+  simd_scatter_function<std::complex<float>, 4, abi_tag::AVX>();
+  simd_scatter_function<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512F__
+  // AVX512 SIMD types
+  simd_scatter_function<float, 16, abi_tag::AVX512>();
+  simd_scatter_function<double, 8, abi_tag::AVX512>();
+  simd_scatter_function<int32_t, 16, abi_tag::AVX512>();
+  simd_scatter_function<int64_t, 8, abi_tag::AVX512>();
+  simd_scatter_function<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_scatter_function<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
 
 }
 
@@ -1691,6 +1747,8 @@ TEST(NDA, OurSIMD) {
   float k          = 1;
   array<float, 2> s({size1, size2});
   array<float, 2> x({size1, size2});
+  std::cout << s.strides()[0] << std::endl;
+  std::cout << s.strides()[1] << std::endl;
   for (int i = 0; i < size1; ++i) {
     for (int j = 0; j < size2; ++j) { s(i, j) = k++; }
   }

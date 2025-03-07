@@ -347,17 +347,17 @@ namespace nda::simd {
 
   //Gather functions
   template <>
-  inline simd_i1 gather(const simd_i1::value_t *from, [[maybe_unused]]const long stride) {
+  inline simd_i1 gather(const simd_i1::value_t *from, [[maybe_unused]] const long stride) {
     return simd_i1(from);
   }
 
   template <>
-  inline simd_l1 gather(const simd_l1::value_t *from, [[maybe_unused]]const long stride) {
+  inline simd_l1 gather(const simd_l1::value_t *from, [[maybe_unused]] const long stride) {
     return simd_l1(from);
   }
 
   template <>
-  inline simd_f1 gather(const simd_f1::value_t *from,[[maybe_unused]] const long stride) {
+  inline simd_f1 gather(const simd_f1::value_t *from, [[maybe_unused]] const long stride) {
     return simd_f1(from);
   }
 
@@ -372,8 +372,39 @@ namespace nda::simd {
   }
 
   template <>
-  inline simd_cd1_d gather(const simd_cd1_d::value_t *from,[[maybe_unused]] const long stride) {
+  inline simd_cd1_d gather(const simd_cd1_d::value_t *from, [[maybe_unused]] const long stride) {
     return simd_cd1_d(from);
+  }
+
+  //Scatter functions:
+  template <>
+  inline void scatter(const simd_i1 &v, simd_i1::value_t *to, [[maybe_unused]] const long stride) {
+    to[0] = v;
+  }
+
+  template <>
+  inline void scatter(const simd_l1 &v, simd_l1::value_t *to, [[maybe_unused]] const long stride) {
+    to[0] = v;
+  }
+
+  template <>
+  inline void scatter(const simd_f1 &v, simd_f1::value_t *to, [[maybe_unused]] const long stride) {
+    to[0] = v;
+  }
+
+  template <>
+  inline void scatter(const simd_d1 &v, simd_d1::value_t *to, [[maybe_unused]] const long stride) {
+    to[0] = v;
+  }
+
+  template <>
+  inline void scatter(const simd_cf1 &v, simd_cf1::value_t *to, [[maybe_unused]] const long stride) {
+    to[0] = v;
+  }
+
+  template <>
+  inline void scatter(const simd_cd1_d &v, simd_cd1_d::value_t *to, [[maybe_unused]] const long stride) {
+    to[0] = v;
   }
 
 } // namespace nda::simd

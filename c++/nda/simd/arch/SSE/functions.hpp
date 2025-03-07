@@ -7,6 +7,8 @@
 #include "../../../macros.hpp"
 #include "immintrin.h"
 
+#include <concepts>
+
 namespace nda::simd {
 
   // Absolute value functions:
@@ -557,11 +559,11 @@ namespace nda::simd {
   }
 
   template <>
-  inline simd_l2 gather(const simd_l2::value_t * from, const long stride) {
+  inline simd_l2 gather(const simd_l2::value_t *from, const long stride) {
     simd_l2 simd_stride(stride);
     const simd_l2 multiplier({0, 1});
     simd_l2 vindex = simd_stride * multiplier;
-    return simd_l2(_mm_i64gather_epi64(reinterpret_cast<const long long int*>(from), vindex, sizeof(simd_l2::value_t)));
+    return simd_l2(_mm_i64gather_epi64(reinterpret_cast<const long long int *>(from), vindex, sizeof(simd_l2::value_t)));
   }
 
   template <>
@@ -591,7 +593,76 @@ namespace nda::simd {
     tmp.load_unaligned(from);
     return tmp;
   }
+#else
+  template <>
+  inline simd_i4 gather<simd_i4>(const simd_i4::value_t *from, const long stride) {
+    return simd_i4(_mm_set_epi32(from[3 * stride], from[2 * stride], from[stride], from[0]));
+  }
 
+  template <>
+  inline simd_l2 gather<simd_l2>(const simd_l2::value_t *from, const long stride) {
+    return simd_l2(_mm_set_epi64x(from[stride], from[0]));
+  }
+
+  template <>
+  inline simd_f4 gather<simd_f4>(const simd_f4::value_t *from, const long stride) {
+    return simd_f4(_mm_set_ps(from[3 * stride], from[2 * stride], from[stride], from[0]));
+  }
+
+  template <>
+  inline simd_d2 gather<simd_d2>(const simd_d2::value_t *from, const long stride) {
+    return simd_d2(_mm_set_pd(from[stride], from[0]));
+  }
+
+  template <>
+  inline simd_cf2 gather<simd_cf2>(const simd_cf2::value_t *from, const long stride) {
+    return simd_cf2(_mm_set_ps(from[stride].imag(), from[stride].real(), from[0].imag(), from[0].real()));
+  }
+
+  template <>
+  inline simd_cd1 gather<simd_cd1>(const simd_cd1::value_t *from, [[maybe_unused]] const long stride) {
+    simd_cd1 tmp;
+    tmp.load_unaligned(from);
+    return tmp;
+  }
 #endif
+  template <>
+  inline void scatter(const simd_i4 &v, simd_i4::value_t *to, const long stride) {
+    to[0]          = _mm_cvtsi128_si32(v);
+    to[stride]     = _mm_cvtsi128_si32(_mm_shuffle_epi32(v, 0x1));
+    to[2 * stride] = _mm_cvtsi128_si32(_mm_shuffle_epi32(v, 0x2));
+    to[3 * stride] = _mm_cvtsi128_si32(_mm_shuffle_epi32(v, 0x3));
+  }
+
+  template <>
+  inline void scatter(const simd_l2 &v, simd_l2::value_t *to, const long stride) {
+    to[0]      = _mm_cvtsi128_si64(v);
+    to[stride] = _mm_cvtsi128_si64(_mm_unpackhi_epi64(v, v));
+  }
+
+  template <>
+  inline void scatter(const simd_f4 &v, simd_f4::value_t *to, const long stride) {
+    to[0]          = _mm_cvtss_f32(v);
+    to[stride]     = _mm_cvtss_f32(_mm_shuffle_ps(v, v, 0x1));
+    to[2 * stride] = _mm_cvtss_f32(_mm_shuffle_ps(v, v, 0x2));
+    to[3 * stride] = _mm_cvtss_f32(_mm_shuffle_ps(v, v, 0x3));
+  }
+
+  template <>
+  inline void scatter(const simd_d2 &v, simd_d2::value_t *to, const long stride) {
+    to[0]      = _mm_cvtsd_f64(v);
+    to[stride] = _mm_cvtsd_f64(_mm_shuffle_pd(v, v, 0x1));
+  }
+
+  template <>
+  inline void scatter(const simd_cf2 &v, simd_cf2::value_t *to, const long stride) {
+    to[0]      = simd_cf2::value_t(_mm_cvtss_f32(v), _mm_cvtss_f32(_mm_shuffle_ps(v, v, 0x1)));
+    to[stride] = simd_cf2::value_t(_mm_cvtss_f32(_mm_shuffle_ps(v, v, 0x2)), _mm_cvtss_f32(_mm_shuffle_ps(v, v, 0x3)));
+  }
+
+  template <>
+  inline void scatter(const simd_cd1 &v, simd_cd1::value_t *to, [[maybe_unused]] const long stride) {
+    to[0] = simd_cd1::value_t(_mm_cvtsd_f64(v), _mm_cvtsd_f64(_mm_shuffle_pd(v, v, 0x1)));
+  }
 } // namespace nda::simd
 #endif

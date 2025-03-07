@@ -561,7 +561,7 @@ namespace nda::simd {
     simd_l4 simd_stride(stride);
     const simd_l4 multiplier({0, 1, 2, 3});
     simd_l4 vindex = simd_stride * multiplier;
-    return simd_l4(_mm256_i64gather_epi64(reinterpret_cast<const long long int*>(from), vindex, sizeof(simd_l4::value_t)));
+    return simd_l4(_mm256_i64gather_epi64(reinterpret_cast<const long long int *>(from), vindex, sizeof(simd_l4::value_t)));
   }
 
   template <>
@@ -588,6 +588,73 @@ namespace nda::simd {
   template <>
   inline simd_cd2 gather(const simd_cd2::value_t *from, const long stride) {
     return simd_cd2(_mm256_set_pd(from[stride].imag(), from[stride].real(), from[0].imag(), from[0].real()));
+  }
+  //Scatter functions:
+
+  template <>
+  inline void scatter(const simd_i8 &v, simd_i8::value_t *to, const long stride) {
+    __m128i low    = _mm256_extractf128_si256(v, 0);
+    __m128i high   = _mm256_extractf128_si256(v, 1);
+    to[0]          = _mm_extract_epi32(low, 0);
+    to[stride]     = _mm_extract_epi32(low, 1);
+    to[2 * stride] = _mm_extract_epi32(low, 2);
+    to[3 * stride] = _mm_extract_epi32(low, 3);
+    to[4 * stride] = _mm_extract_epi32(high, 0);
+    to[5 * stride] = _mm_extract_epi32(high, 1);
+    to[6 * stride] = _mm_extract_epi32(high, 2);
+    to[7 * stride] = _mm_extract_epi32(high, 3);
+  }
+
+  template <>
+  inline void scatter(const simd_l4 &v, simd_l4::value_t *to, const long stride) {
+    __m128i low    = _mm256_extractf128_si256(v, 0);
+    __m128i high   = _mm256_extractf128_si256(v, 1);
+    to[0]          = _mm_extract_epi64(low, 0);
+    to[stride]     = _mm_extract_epi64(low, 1);
+    to[2 * stride] = _mm_extract_epi64(high, 0);
+    to[3 * stride] = _mm_extract_epi64(high, 1);
+  }
+
+  template <>
+  inline void scatter(const simd_f8 &v, simd_f8::value_t *to, const long stride) {
+    __m128 low     = _mm256_extractf128_ps(v, 0);
+    __m128 high    = _mm256_extractf128_ps(v, 1);
+    to[0]          = _mm_cvtss_f32(low);
+    to[stride]     = _mm_cvtss_f32(_mm_shuffle_ps(low, low, 0x1));
+    to[2 * stride] = _mm_cvtss_f32(_mm_shuffle_ps(low, low, 0x2));
+    to[3 * stride] = _mm_cvtss_f32(_mm_shuffle_ps(low, low, 0x3));
+    to[4 * stride] = _mm_cvtss_f32(high);
+    to[5 * stride] = _mm_cvtss_f32(_mm_shuffle_ps(high, high, 0x1));
+    to[6 * stride] = _mm_cvtss_f32(_mm_shuffle_ps(high, high, 0x2));
+    to[7 * stride] = _mm_cvtss_f32(_mm_shuffle_ps(high, high, 0x3));
+  }
+
+  template <>
+  inline void scatter(const simd_d4 &v, simd_d4::value_t *to, const long stride) {
+    __m128d low    = _mm256_extractf128_pd(v, 0);
+    __m128d high   = _mm256_extractf128_pd(v, 1);
+    to[0]          = _mm_cvtsd_f64(low);
+    to[stride]     = _mm_cvtsd_f64(_mm_shuffle_pd(low, low, 0x1));
+    to[2 * stride] = _mm_cvtsd_f64(high);
+    to[3 * stride] = _mm_cvtsd_f64(_mm_shuffle_pd(high, high, 0x1));
+  }
+
+  template <>
+  inline void scatter(const simd_cf4 &v, simd_cf4::value_t *to, const long stride) {
+    __m128 low     = _mm256_extractf128_ps(v, 0);
+    __m128 high    = _mm256_extractf128_ps(v, 1);
+    to[0]          = simd_cf4::value_t(_mm_cvtss_f32(low), _mm_cvtss_f32(_mm_shuffle_ps(low, low, 0x1)));
+    to[stride]     = simd_cf4::value_t(_mm_cvtss_f32(_mm_shuffle_ps(low, low, 0x2)), _mm_cvtss_f32(_mm_shuffle_ps(low, low, 0x3)));
+    to[2 * stride] = simd_cf4::value_t(_mm_cvtss_f32(high), _mm_cvtss_f32(_mm_shuffle_ps(high, high, 0x1)));
+    to[3 * stride] = simd_cf4::value_t(_mm_cvtss_f32(_mm_shuffle_ps(high, high, 0x2)), _mm_cvtss_f32(_mm_shuffle_ps(high, high, 0x3)));
+  }
+
+  template <>
+  inline void scatter(const simd_cd2 &v, simd_cd2::value_t *to, const long stride) {
+    __m128d low  = _mm256_extractf128_pd(v, 0);
+    __m128d high = _mm256_extractf128_pd(v, 1);
+    to[0]        = simd_cd2::value_t(_mm_cvtsd_f64(low), _mm_cvtsd_f64(_mm_shuffle_pd(low, low, 0x1)));
+    to[stride]   = simd_cd2::value_t(_mm_cvtsd_f64(high), _mm_cvtsd_f64(_mm_shuffle_pd(high, high, 0x1)));
   }
 
 } // namespace nda::simd
