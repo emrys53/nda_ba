@@ -665,8 +665,6 @@ void simd_scatter_function() {
     simd::scatter(scatter, scattered_array.data(), n);
     gather = simd::gather<simd_t>(scattered_array.data(), n);
     EXPECT_TRUE(gather == scatter);
-//    gather.store_unaligned(gather_array.data());
-//    check_simd_array_equal(scatter, gather_array);
   }
 }
 
@@ -1652,7 +1650,7 @@ TEST(NDA, SimdKernelTranspose) {
 #ifdef __AVX512F__
   // AVX512 SIMD types
   // simd_kernel_transpose<float, 16, abi_tag::AVX512>();
-  // simd_kernel_transpose<double, 8, abi_tag::AVX512>();
+   simd_kernel_transpose<double, 8, abi_tag::AVX512>();
   // simd_kernel_transpose<int32_t, 16, abi_tag::AVX512>();
   // simd_kernel_transpose<int64_t, 8, abi_tag::AVX512>();
   simd_kernel_transpose<std::complex<float>, 8, abi_tag::AVX512>();
