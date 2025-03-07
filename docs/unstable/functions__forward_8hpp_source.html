@@ -158,7 +158,10 @@ $(function(){initNavTree('functions__forward_8hpp_source.html',''); initResizabl
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  T gather(<span class="keyword">const</span> <span class="keyword">typename</span> T::value_t *, <span class="keyword">const</span> <span class="keywordtype">long</span>);</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>} <span class="comment">// namespace nda::simd</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordtype">void</span> scatter(<span class="keyword">const</span> T&amp;, <span class="keyword">typename</span> T::value_t*, <span class="keyword">const</span> <span class="keywordtype">long</span>);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>} <span class="comment">// namespace nda::simd</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

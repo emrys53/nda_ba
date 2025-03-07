@@ -674,7 +674,7 @@ $(function(){initNavTree('_a_v_x_2functions_8hpp_source.html',''); initResizable
 <div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>    simd_l4 simd_stride(stride);</div>
 <div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>    <span class="keyword">const</span> simd_l4 multiplier({0, 1, 2, 3});</div>
 <div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>    simd_l4 vindex = simd_stride * multiplier;</div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>    <span class="keywordflow">return</span> simd_l4(_mm256_i64gather_epi64(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(from), vindex, <span class="keyword">sizeof</span>(simd_l4::value_t)));</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>    <span class="keywordflow">return</span> simd_l4(_mm256_i64gather_epi64(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> *<span class="keyword">&gt;</span>(from), vindex, <span class="keyword">sizeof</span>(simd_l4::value_t)));</div>
 <div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>  }</div>
 <div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span> </div>
 <div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>  <span class="keyword">template</span> &lt;&gt;</div>
@@ -702,9 +702,76 @@ $(function(){initNavTree('_a_v_x_2functions_8hpp_source.html',''); initResizable
 <div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>  <span class="keyword">inline</span> simd_cd2 gather(<span class="keyword">const</span> simd_cd2::value_t *from, <span class="keyword">const</span> <span class="keywordtype">long</span> stride) {</div>
 <div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>    <span class="keywordflow">return</span> simd_cd2(_mm256_set_pd(from[stride].<a class="code hl_function" href="group__av__math.html#gaa337f00c9324d22f827b9759adb22f18">imag</a>(), from[stride].<a class="code hl_function" href="group__av__math.html#ga801930e88ab85629067870e91ab9f97f">real</a>(), from[0].<a class="code hl_function" href="group__av__math.html#gaa337f00c9324d22f827b9759adb22f18">imag</a>(), from[0].<a class="code hl_function" href="group__av__math.html#ga801930e88ab85629067870e91ab9f97f">real</a>()));</div>
 <div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>  }</div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span> </div>
-<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>} <span class="comment">// namespace nda::simd</span></div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>  <span class="comment">//Scatter functions:</span></div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span> </div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>  <span class="keyword">inline</span> <span class="keywordtype">void</span> scatter(<span class="keyword">const</span> simd_i8 &amp;v, simd_i8::value_t *to, <span class="keyword">const</span> <span class="keywordtype">long</span> stride) {</div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>    __m128i low    = _mm256_extractf128_si256(v, 0);</div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>    __m128i high   = _mm256_extractf128_si256(v, 1);</div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>    to[0]          = _mm_extract_epi32(low, 0);</div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>    to[stride]     = _mm_extract_epi32(low, 1);</div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>    to[2 * stride] = _mm_extract_epi32(low, 2);</div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>    to[3 * stride] = _mm_extract_epi32(low, 3);</div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>    to[4 * stride] = _mm_extract_epi32(high, 0);</div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>    to[5 * stride] = _mm_extract_epi32(high, 1);</div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>    to[6 * stride] = _mm_extract_epi32(high, 2);</div>
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>    to[7 * stride] = _mm_extract_epi32(high, 3);</div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>  }</div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span> </div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>  <span class="keyword">inline</span> <span class="keywordtype">void</span> scatter(<span class="keyword">const</span> simd_l4 &amp;v, simd_l4::value_t *to, <span class="keyword">const</span> <span class="keywordtype">long</span> stride) {</div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>    __m128i low    = _mm256_extractf128_si256(v, 0);</div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>    __m128i high   = _mm256_extractf128_si256(v, 1);</div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>    to[0]          = _mm_extract_epi64(low, 0);</div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>    to[stride]     = _mm_extract_epi64(low, 1);</div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>    to[2 * stride] = _mm_extract_epi64(high, 0);</div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>    to[3 * stride] = _mm_extract_epi64(high, 1);</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>  }</div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span> </div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>  <span class="keyword">inline</span> <span class="keywordtype">void</span> scatter(<span class="keyword">const</span> simd_f8 &amp;v, simd_f8::value_t *to, <span class="keyword">const</span> <span class="keywordtype">long</span> stride) {</div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>    __m128 low     = _mm256_extractf128_ps(v, 0);</div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>    __m128 high    = _mm256_extractf128_ps(v, 1);</div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>    to[0]          = _mm_cvtss_f32(low);</div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>    to[stride]     = _mm_cvtss_f32(_mm_shuffle_ps(low, low, 0x1));</div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>    to[2 * stride] = _mm_cvtss_f32(_mm_shuffle_ps(low, low, 0x2));</div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>    to[3 * stride] = _mm_cvtss_f32(_mm_shuffle_ps(low, low, 0x3));</div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>    to[4 * stride] = _mm_cvtss_f32(high);</div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>    to[5 * stride] = _mm_cvtss_f32(_mm_shuffle_ps(high, high, 0x1));</div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>    to[6 * stride] = _mm_cvtss_f32(_mm_shuffle_ps(high, high, 0x2));</div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>    to[7 * stride] = _mm_cvtss_f32(_mm_shuffle_ps(high, high, 0x3));</div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>  }</div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span> </div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>  <span class="keyword">inline</span> <span class="keywordtype">void</span> scatter(<span class="keyword">const</span> simd_d4 &amp;v, simd_d4::value_t *to, <span class="keyword">const</span> <span class="keywordtype">long</span> stride) {</div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>    __m128d low    = _mm256_extractf128_pd(v, 0);</div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>    __m128d high   = _mm256_extractf128_pd(v, 1);</div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>    to[0]          = _mm_cvtsd_f64(low);</div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>    to[stride]     = _mm_cvtsd_f64(_mm_shuffle_pd(low, low, 0x1));</div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>    to[2 * stride] = _mm_cvtsd_f64(high);</div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>    to[3 * stride] = _mm_cvtsd_f64(_mm_shuffle_pd(high, high, 0x1));</div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>  }</div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span> </div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>  <span class="keyword">inline</span> <span class="keywordtype">void</span> scatter(<span class="keyword">const</span> simd_cf4 &amp;v, simd_cf4::value_t *to, <span class="keyword">const</span> <span class="keywordtype">long</span> stride) {</div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>    __m128 low     = _mm256_extractf128_ps(v, 0);</div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>    __m128 high    = _mm256_extractf128_ps(v, 1);</div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>    to[0]          = simd_cf4::value_t(_mm_cvtss_f32(low), _mm_cvtss_f32(_mm_shuffle_ps(low, low, 0x1)));</div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>    to[stride]     = simd_cf4::value_t(_mm_cvtss_f32(_mm_shuffle_ps(low, low, 0x2)), _mm_cvtss_f32(_mm_shuffle_ps(low, low, 0x3)));</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>    to[2 * stride] = simd_cf4::value_t(_mm_cvtss_f32(high), _mm_cvtss_f32(_mm_shuffle_ps(high, high, 0x1)));</div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>    to[3 * stride] = simd_cf4::value_t(_mm_cvtss_f32(_mm_shuffle_ps(high, high, 0x2)), _mm_cvtss_f32(_mm_shuffle_ps(high, high, 0x3)));</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>  }</div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span> </div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>  <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>  <span class="keyword">inline</span> <span class="keywordtype">void</span> scatter(<span class="keyword">const</span> simd_cd2 &amp;v, simd_cd2::value_t *to, <span class="keyword">const</span> <span class="keywordtype">long</span> stride) {</div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>    __m128d low  = _mm256_extractf128_pd(v, 0);</div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>    __m128d high = _mm256_extractf128_pd(v, 1);</div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>    to[0]        = simd_cd2::value_t(_mm_cvtsd_f64(low), _mm_cvtsd_f64(_mm_shuffle_pd(low, low, 0x1)));</div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>    to[stride]   = simd_cd2::value_t(_mm_cvtsd_f64(high), _mm_cvtsd_f64(_mm_shuffle_pd(high, high, 0x1)));</div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>  }</div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span> </div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>} <span class="comment">// namespace nda::simd</span></div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="agroup__av__math_html_ga801930e88ab85629067870e91ab9f97f"><div class="ttname"><a href="group__av__math.html#ga801930e88ab85629067870e91ab9f97f">nda::real</a></div><div class="ttdeci">auto real(A &amp;&amp;a)</div><div class="ttdoc">Function real for nda::ArrayOrScalar types (lazy and coefficient-wise for nda::Array types).</div><div class="ttdef"><b>Definition</b> <a href="mapped__functions_8hxx_source.html#l00138">mapped_functions.hxx:138</a></div></div>
 <div class="ttc" id="agroup__av__math_html_gaa337f00c9324d22f827b9759adb22f18"><div class="ttname"><a href="group__av__math.html#gaa337f00c9324d22f827b9759adb22f18">nda::imag</a></div><div class="ttdeci">auto imag(A &amp;&amp;a)</div><div class="ttdoc">Function imag for nda::ArrayOrScalar types (lazy and coefficient-wise for nda::Array types).</div><div class="ttdef"><b>Definition</b> <a href="mapped__functions_8hxx_source.html#l00110">mapped_functions.hxx:110</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
