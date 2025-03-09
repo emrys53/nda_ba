@@ -661,7 +661,6 @@ void simd_scatter_function() {
   for (long n = 1; n < 5; ++n) {
     simd_t scatter, gather;
     scatter.load_unaligned(simd_array.data());
-    std::array<T, Width> gather_array;
     simd::scatter(scatter, scattered_array.data(), n);
     gather = simd::gather<simd_t>(scattered_array.data(), n);
     EXPECT_TRUE(gather == scatter);
@@ -1698,6 +1697,7 @@ TEST(NDA, SimdScatterFunction) {
 #endif
 
 }
+
 
 template <Vectorizable T>
 struct adder : simd::mock_simd<adder<T>, T> {

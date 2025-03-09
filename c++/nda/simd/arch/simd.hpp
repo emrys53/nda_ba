@@ -22,6 +22,10 @@ namespace nda {
   using native_simd = simd_type<std::conditional_t<std::is_same_v<std::remove_cvref_t<T>, long long>, int64_t, std::remove_cvref_t<T>>,
                                 abi::get_native_width<T>(), abi::get_native_abi_tag()>;
 
+  template <typename T, size_t Width>
+  using fixed_size_simd = simd_type<std::conditional_t<std::is_same_v<std::remove_cvref_t<T>, long long>, int64_t, std::remove_cvref_t<T>>, Width,
+                                    abi::get_abi_tag_with_width<T, Width>()>;
+
   template <typename T, bool Aligned>
   struct simd_block {
     using simd_t = native_simd<T>;
@@ -44,5 +48,6 @@ namespace nda {
       }
     }
   };
+
 
 } // namespace nda
