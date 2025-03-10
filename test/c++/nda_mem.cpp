@@ -490,7 +490,7 @@ TEST(NDA, MemoryHandleShared) {
 }
 
 TEST(NDA, TypeAlignmentInfoAlignment) {
-#ifdef __AVX512__
+#ifdef __AVX512F__
   constexpr size_t correct_alignment = 64;
 #else
 #ifdef __AVX__
@@ -499,11 +499,7 @@ TEST(NDA, TypeAlignmentInfoAlignment) {
 #ifdef __SSE2__
   constexpr size_t correct_alignment = 16;
 #else
-// #ifdef __NEON__
-//   constexpr size_t correct_alignment = 16;
-// #else
   constexpr size_t correct_alignment = 0;
-// #endif
 #endif
 #endif
 #endif
@@ -528,7 +524,7 @@ TEST(NDA, TypeAlignmentInfoAlignment) {
 }
 
 TEST(NDA, TypeAlignmentInfoRequiredPadding) {
-#ifdef __AVX512__
+#ifdef __AVX512F__
   constexpr size_t correct_alignment = 64;
 #else
 #ifdef __AVX__
@@ -537,11 +533,7 @@ TEST(NDA, TypeAlignmentInfoRequiredPadding) {
 #ifdef __SSE2__
   constexpr size_t correct_alignment = 16;
 #else
-// #ifdef __NEON__
-   // constexpr size_t correct_alignment = 16;
-// #else
    constexpr size_t correct_alignment = 0;
-// #endif
 #endif
 #endif
 #endif
