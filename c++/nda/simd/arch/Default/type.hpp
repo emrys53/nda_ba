@@ -37,7 +37,6 @@ namespace nda {
 
     simd_type() : value(0) {}
 
-
     simd_type(std::initializer_list<value_t> l) {
 #ifdef NDA_ENFORCE_BOUNDCHECK
       if (l.size() != size()) {
@@ -49,7 +48,6 @@ namespace nda {
     }
 
     explicit simd_type(const value_t *v) { load(v); }
-
 
     simd_type operator+(const simd_type &other) const { return simd_type{value + other.value}; }
 
@@ -120,6 +118,58 @@ namespace nda {
 
     simd_type &operator|=(const simd_type &other) {
       *this = *this | other;
+      return *this;
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    simd_type operator+(const U &other) {
+      return simd_type(value + static_cast<T>(other));
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    simd_type operator-(const U &other) {
+      return simd_type(value - static_cast<T>(other));
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    simd_type operator*(const U &other) {
+      return simd_type(value * static_cast<T>(other));
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    simd_type operator/(const U &other) {
+      return simd_type(value / static_cast<T>(other));
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    simd_type &operator+=(const U &other) {
+      value = value + static_cast<T>(other);
+      return *this;
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    simd_type &operator-=(const U &other) {
+      value = value - static_cast<T>(other);
+      return *this;
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    simd_type &operator*=(const U &other) {
+      value = value * static_cast<T>(other);
+      return *this;
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    simd_type &operator/=(const U &other) {
+      value = value / static_cast<T>(other);
       return *this;
     }
 
@@ -273,6 +323,75 @@ namespace nda {
 
     simd_type &operator|=(const simd_type &other) {
       *this = *this | other;
+      return *this;
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    simd_type operator+(const U &other) {
+      if constexpr(is_complex_v<U>){
+        return simd_type(value + static_cast<value_t>(other));
+      }
+      else{
+        return simd_type(value + static_cast<scalar_t>(other));
+      }
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    simd_type operator-(const U &other) {
+      if constexpr(is_complex_v<U>){
+        return simd_type(value - static_cast<value_t>(other));
+      }
+      else{
+        return simd_type(value - static_cast<scalar_t>(other));
+      }    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    simd_type operator*(const U &other) {
+      if constexpr(is_complex_v<U>){
+        return simd_type(value * static_cast<value_t>(other));
+      }
+      else{
+        return simd_type(value * static_cast<scalar_t>(other));
+      }    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    simd_type operator/(const U &other) {
+      if constexpr(is_complex_v<U>){
+        return simd_type(value / static_cast<value_t>(other));
+      }
+      else{
+        return simd_type(value / static_cast<scalar_t>(other));
+      }    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    simd_type &operator+=(const U &other) {
+      *this = *this + other;
+      return *this;
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    simd_type &operator-=(const U &other) {
+      *this = *this - other;
+      return *this;
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    simd_type &operator*=(const U &other) {
+      *this = *this * other;
+      return *this;
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    simd_type &operator/=(const U &other) {
+      *this = *this / other;
       return *this;
     }
 

@@ -688,6 +688,52 @@ void simd_kernel_transpose() {
   for (int i = 0; i < Width; ++i) { check_simd_array_equal(transposed[i], array_block[i]); }
 }
 
+template <typename T, size_t Width, abi_tag ABI, typename U>
+void simd_scalar_operations(const U &value) {
+  using simd_t                                                = simd_type<T, Width, ABI>;
+  alignas(simd_t::alignment()) std::array<T, Width> tmp_array = generate_random_array<T, Width>();
+  simd_t tmp(tmp_array.data());
+  simd_t result;
+  result = tmp + value;
+  for (int i = 0; i < Width; ++i) { tmp_array[i] += static_cast<T>(value); }
+  check_simd_array_equal(result, tmp_array);
+
+  tmp.load(tmp_array.data());
+  result = tmp - value;
+  for (int i = 0; i < Width; ++i) { tmp_array[i] -= static_cast<T>(value); }
+  check_simd_array_equal(result, tmp_array);
+
+  tmp.load(tmp_array.data());
+  result = tmp * value;
+  for (int i = 0; i < Width; ++i) { tmp_array[i] *= static_cast<T>(value); }
+  check_simd_array_equal(result, tmp_array);
+
+  tmp.load(tmp_array.data());
+  result = tmp / value;
+  for (int i = 0; i < Width; ++i) { tmp_array[i] /= static_cast<T>(value); }
+  check_simd_array_equal(result, tmp_array);
+
+  result.store(tmp_array.data());
+  result += value;
+  for (int i = 0; i < Width; ++i) { tmp_array[i] += static_cast<T>(value); }
+  check_simd_array_equal(result, tmp_array);
+
+  result.store(tmp_array.data());
+  result -= value;
+  for (int i = 0; i < Width; ++i) { tmp_array[i] -= static_cast<T>(value); }
+  check_simd_array_equal(result, tmp_array);
+
+  result.store(tmp_array.data());
+  result *= value;
+  for (int i = 0; i < Width; ++i) { tmp_array[i] *= static_cast<T>(value); }
+  check_simd_array_equal(result, tmp_array);
+
+  result.store(tmp_array.data());
+  result /= value;
+  for (int i = 0; i < Width; ++i) { tmp_array[i] /= static_cast<T>(value); }
+  check_simd_array_equal(result, tmp_array);
+}
+
 TEST(NDA, SimdDefaultConstructor) {
   // Default SIMD types
   simd_type_default_constructor<float, 1, abi_tag::Default>();
@@ -1649,7 +1695,7 @@ TEST(NDA, SimdKernelTranspose) {
 #ifdef __AVX512F__
   // AVX512 SIMD types
   // simd_kernel_transpose<float, 16, abi_tag::AVX512>();
-   simd_kernel_transpose<double, 8, abi_tag::AVX512>();
+  simd_kernel_transpose<double, 8, abi_tag::AVX512>();
   // simd_kernel_transpose<int32_t, 16, abi_tag::AVX512>();
   // simd_kernel_transpose<int64_t, 8, abi_tag::AVX512>();
   simd_kernel_transpose<std::complex<float>, 8, abi_tag::AVX512>();
@@ -1695,9 +1741,186 @@ TEST(NDA, SimdScatterFunction) {
   simd_scatter_function<std::complex<float>, 8, abi_tag::AVX512>();
   simd_scatter_function<std::complex<double>, 4, abi_tag::AVX512>();
 #endif
-
 }
 
+TEST(NDA, SimdScalarOperator) {
+
+  // Default SIMD types
+  simd_scalar_operations<float, 1, abi_tag::Default, int32_t>(5);
+  simd_scalar_operations<double, 1, abi_tag::Default, int32_t>(5);
+  simd_scalar_operations<int32_t, 1, abi_tag::Default, int32_t>(5);
+  simd_scalar_operations<int64_t, 1, abi_tag::Default, int32_t>(5);
+  simd_scalar_operations<std::complex<float>, 1, abi_tag::Default, int32_t>(5);
+  simd_scalar_operations<std::complex<double>, 1, abi_tag::Default, int32_t>(5);
+
+  simd_scalar_operations<float, 1, abi_tag::Default>(5.5f);
+  simd_scalar_operations<double, 1, abi_tag::Default>(5.5f);
+  simd_scalar_operations<int32_t, 1, abi_tag::Default>(5.5f);
+  simd_scalar_operations<int64_t, 1, abi_tag::Default>(5.5f);
+  simd_scalar_operations<std::complex<float>, 1, abi_tag::Default>(5.5f);
+  simd_scalar_operations<std::complex<double>, 1, abi_tag::Default>(5.5f);
+
+  simd_scalar_operations<float, 1, abi_tag::Default>(11.3);
+  simd_scalar_operations<double, 1, abi_tag::Default>(11.3);
+  simd_scalar_operations<int32_t, 1, abi_tag::Default>(11.3);
+  simd_scalar_operations<int64_t, 1, abi_tag::Default>(11.3);
+  simd_scalar_operations<std::complex<float>, 1, abi_tag::Default>(11.3);
+  simd_scalar_operations<std::complex<double>, 1, abi_tag::Default>(11.3);
+
+  simd_scalar_operations<float, 1, abi_tag::Default, int64_t>(11);
+  simd_scalar_operations<double, 1, abi_tag::Default, int64_t>(11);
+  simd_scalar_operations<int32_t, 1, abi_tag::Default, int64_t>(11);
+  simd_scalar_operations<int64_t, 1, abi_tag::Default, int64_t>(11);
+  simd_scalar_operations<std::complex<float>, 1, abi_tag::Default, int64_t>(11);
+  simd_scalar_operations<std::complex<double>, 1, abi_tag::Default, int64_t>(11);
+
+  simd_scalar_operations<std::complex<float>, 1, abi_tag::Default, std::complex<float>>({11.5f, 13.7f});
+  simd_scalar_operations<std::complex<double>, 1, abi_tag::Default, std::complex<float>>({11.5f, 13.7f});
+
+  simd_scalar_operations<std::complex<float>, 1, abi_tag::Default, std::complex<double>>({12.3, 16.6});
+  simd_scalar_operations<std::complex<double>, 1, abi_tag::Default, std::complex<double>>({12.3, 16.6});
+
+#ifdef __SSE2__
+  // SSE types: simd_f4, simd_d2, simd_i4, simd_l2, simd_cf2, simd_cd1
+  simd_scalar_operations<float, 4, abi_tag::SSE, int32_t>(5);
+  simd_scalar_operations<double, 2, abi_tag::SSE, int32_t>(5);
+  simd_scalar_operations<int32_t, 4, abi_tag::SSE, int32_t>(5);
+  simd_scalar_operations<int64_t, 2, abi_tag::SSE, int32_t>(5);
+  simd_scalar_operations<std::complex<float>, 2, abi_tag::SSE, int32_t>(5);
+  simd_scalar_operations<std::complex<double>, 1, abi_tag::SSE, int32_t>(5);
+
+  simd_scalar_operations<float, 4, abi_tag::SSE>(5.5f);
+  simd_scalar_operations<double, 2, abi_tag::SSE>(5.5f);
+  simd_scalar_operations<int32_t, 4, abi_tag::SSE>(5.5f);
+  simd_scalar_operations<int64_t, 2, abi_tag::SSE>(5.5f);
+  simd_scalar_operations<std::complex<float>, 2, abi_tag::SSE>(5.5f);
+  simd_scalar_operations<std::complex<double>, 1, abi_tag::SSE>(5.5f);
+
+  simd_scalar_operations<float, 4, abi_tag::SSE>(11.3);
+  simd_scalar_operations<double, 2, abi_tag::SSE>(11.3);
+  simd_scalar_operations<int32_t, 4, abi_tag::SSE>(11.3);
+  simd_scalar_operations<int64_t, 2, abi_tag::SSE>(11.3);
+  simd_scalar_operations<std::complex<float>, 2, abi_tag::SSE>(11.3);
+  simd_scalar_operations<std::complex<double>, 1, abi_tag::SSE>(11.3);
+
+  simd_scalar_operations<float, 4, abi_tag::SSE, int64_t>(11);
+  simd_scalar_operations<double, 2, abi_tag::SSE, int64_t>(11);
+  simd_scalar_operations<int32_t, 4, abi_tag::SSE, int64_t>(11);
+  simd_scalar_operations<int64_t, 2, abi_tag::SSE, int64_t>(11);
+  simd_scalar_operations<std::complex<float>, 2, abi_tag::SSE, int64_t>(11);
+  simd_scalar_operations<std::complex<double>, 1, abi_tag::SSE, int64_t>(11);
+
+  simd_scalar_operations<std::complex<float>, 2, abi_tag::SSE, std::complex<float>>({11.5f, 13.7f});
+  simd_scalar_operations<std::complex<double>, 1, abi_tag::SSE, std::complex<float>>({11.5f, 13.7f});
+
+  simd_scalar_operations<std::complex<float>, 2, abi_tag::SSE, std::complex<double>>({12.3, 16.6});
+  simd_scalar_operations<std::complex<double>, 1, abi_tag::SSE, std::complex<double>>({12.3, 16.6});
+#endif
+
+#ifdef __AVX__
+  // AVX types: simd_f8, simd_d4, simd_i8, simd_l4, simd_cf4, simd_cd2
+  simd_scalar_operations<float, 8, abi_tag::AVX, int32_t>(5);
+  simd_scalar_operations<double, 4, abi_tag::AVX, int32_t>(5);
+  simd_scalar_operations<int32_t, 8, abi_tag::AVX, int32_t>(5);
+  simd_scalar_operations<int64_t, 4, abi_tag::AVX, int32_t>(5);
+  simd_scalar_operations<std::complex<float>, 4, abi_tag::AVX, int32_t>(5);
+  simd_scalar_operations<std::complex<double>, 2, abi_tag::AVX, int32_t>(5);
+
+  simd_scalar_operations<float, 8, abi_tag::AVX>(5.5f);
+  simd_scalar_operations<double, 4, abi_tag::AVX>(5.5f);
+  simd_scalar_operations<int32_t, 8, abi_tag::AVX>(5.5f);
+  simd_scalar_operations<int64_t, 4, abi_tag::AVX>(5.5f);
+  simd_scalar_operations<std::complex<float>, 4, abi_tag::AVX>(5.5f);
+  simd_scalar_operations<std::complex<double>, 2, abi_tag::AVX>(5.5f);
+
+  simd_scalar_operations<float, 8, abi_tag::AVX>(11.3);
+  simd_scalar_operations<double, 4, abi_tag::AVX>(11.3);
+  simd_scalar_operations<int32_t, 8, abi_tag::AVX>(11.3);
+  simd_scalar_operations<int64_t, 4, abi_tag::AVX>(11.3);
+  simd_scalar_operations<std::complex<float>, 4, abi_tag::AVX>(11.3);
+  simd_scalar_operations<std::complex<double>, 2, abi_tag::AVX>(11.3);
+
+  simd_scalar_operations<float, 8, abi_tag::AVX, int64_t>(11);
+  simd_scalar_operations<double, 4, abi_tag::AVX, int64_t>(11);
+  simd_scalar_operations<int32_t, 8, abi_tag::AVX, int64_t>(11);
+  simd_scalar_operations<int64_t, 4, abi_tag::AVX, int64_t>(11);
+  simd_scalar_operations<std::complex<float>, 4, abi_tag::AVX, int64_t>(11);
+  simd_scalar_operations<std::complex<double>, 2, abi_tag::AVX, int64_t>(11);
+
+  simd_scalar_operations<std::complex<float>, 4, abi_tag::AVX, std::complex<float>>({11.5f, 13.7f});
+  simd_scalar_operations<std::complex<double>, 2, abi_tag::AVX, std::complex<float>>({11.5f, 13.7f});
+
+  simd_scalar_operations<std::complex<float>, 4, abi_tag::AVX, std::complex<double>>({12.3, 16.6});
+  simd_scalar_operations<std::complex<double>, 2, abi_tag::AVX, std::complex<double>>({12.3, 16.6});
+#endif
+
+#ifdef __AVX512F__
+  // AVX512 types: simd_f16, simd_d8, simd_i16, simd_l8, simd_cf8, simd_cd4
+  simd_scalar_operations<float, 16, abi_tag::AVX512, int32_t>(5);
+  simd_scalar_operations<double, 8, abi_tag::AVX512, int32_t>(5);
+  simd_scalar_operations<int32_t, 16, abi_tag::AVX512, int32_t>(5);
+  simd_scalar_operations<int64_t, 8, abi_tag::AVX512, int32_t>(5);
+  simd_scalar_operations<std::complex<float>, 8, abi_tag::AVX512, int32_t>(5);
+  simd_scalar_operations<std::complex<double>, 4, abi_tag::AVX512, int32_t>(5);
+
+  simd_scalar_operations<float, 16, abi_tag::AVX512>(5.5f);
+  simd_scalar_operations<double, 8, abi_tag::AVX512>(5.5f);
+  simd_scalar_operations<int32_t, 16, abi_tag::AVX512>(5.5f);
+  simd_scalar_operations<int64_t, 8, abi_tag::AVX512>(5.5f);
+  simd_scalar_operations<std::complex<float>, 8, abi_tag::AVX512>(5.5f);
+  simd_scalar_operations<std::complex<double>, 4, abi_tag::AVX512>(5.5f);
+
+  simd_scalar_operations<float, 16, abi_tag::AVX512>(11.3);
+  simd_scalar_operations<double, 8, abi_tag::AVX512>(11.3);
+  simd_scalar_operations<int32_t, 16, abi_tag::AVX512>(11.3);
+  simd_scalar_operations<int64_t, 8, abi_tag::AVX512>(11.3);
+  simd_scalar_operations<std::complex<float>, 8, abi_tag::AVX512>(11.3);
+  simd_scalar_operations<std::complex<double>, 4, abi_tag::AVX512>(11.3);
+
+  simd_scalar_operations<float, 16, abi_tag::AVX512, int64_t>(11);
+  simd_scalar_operations<double, 8, abi_tag::AVX512, int64_t>(11);
+  simd_scalar_operations<int32_t, 16, abi_tag::AVX512, int64_t>(11);
+  simd_scalar_operations<int64_t, 8, abi_tag::AVX512, int64_t>(11);
+  simd_scalar_operations<std::complex<float>, 8, abi_tag::AVX512, int64_t>(11);
+  simd_scalar_operations<std::complex<double>, 4, abi_tag::AVX512, int64_t>(11);
+
+  simd_scalar_operations<std::complex<float>, 8, abi_tag::AVX512, std::complex<float>>({11.5f, 13.7f});
+  simd_scalar_operations<std::complex<double>, 4, abi_tag::AVX512, std::complex<float>>({11.5f, 13.7f});
+
+  simd_scalar_operations<std::complex<float>, 8, abi_tag::AVX512, std::complex<double>>({12.3, 16.6});
+  simd_scalar_operations<std::complex<double>, 4, abi_tag::AVX512, std::complex<double>>({12.3, 16.6});
+#endif
+
+#ifdef __SSE2__
+  // SSE SIMD types
+//  simd_scalar_operations<float, 4, abi_tag::SSE>();
+//  simd_scalar_operations<double, 2, abi_tag::SSE>();
+//  simd_scalar_operations<int32_t, 4, abi_tag::SSE>();
+//  simd_scalar_operations<int64_t, 2, abi_tag::SSE>();
+//  simd_scalar_operations<std::complex<float>, 2, abi_tag::SSE>();
+//  simd_scalar_operations<std::complex<double>, 1, abi_tag::SSE>();
+//#endif
+//
+//#ifdef __AVX__
+//  // AVX SIMD types
+//  simd_scalar_operations<float, 8, abi_tag::AVX>();
+//  simd_scalar_operations<double, 4, abi_tag::AVX>();
+//  simd_scalar_operations<int32_t, 8, abi_tag::AVX>();
+//  simd_scalar_operations<int64_t, 4, abi_tag::AVX>();
+//  simd_scalar_operations<std::complex<float>, 4, abi_tag::AVX>();
+//  simd_scalar_operations<std::complex<double>, 2, abi_tag::AVX>();
+#endif
+
+#ifdef __AVX512F__
+  // AVX512 SIMD types
+  simd_scalar_operations<float, 16, abi_tag::AVX512>();
+  simd_scalar_operations<double, 8, abi_tag::AVX512>();
+  simd_scalar_operations<int32_t, 16, abi_tag::AVX512>();
+  simd_scalar_operations<int64_t, 8, abi_tag::AVX512>();
+  simd_scalar_operations<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_scalar_operations<std::complex<double>, 4, abi_tag::AVX512>();
+#endif
+}
 
 template <Vectorizable T>
 struct adder : simd::mock_simd<adder<T>, T> {
@@ -1737,20 +1960,15 @@ TEST(NDA, OurSIMD) {
 
     native_simd<float> load(native_simd<float> a, native_simd<float> b) const { return a + b; }
   };
-  using dcomplex = std::complex<double>;
-  using simd_t   = native_simd<dcomplex>;
-
-  const long size1 = 2;
-  const long size2 = 10;
-  float k          = 1;
-  array<float, 2> s({size1, size2});
-  array<float, 2> x({size1, size2});
-  std::cout << s.strides()[0] << std::endl;
-  std::cout << s.strides()[1] << std::endl;
-  for (int i = 0; i < size1; ++i) {
-    for (int j = 0; j < size2; ++j) { s(i, j) = k++; }
-  }
-  for (int i = 0; i < size1; ++i) {
-    for (int j = 0; j < size2; ++j) { x(i, j) = k++; }
-  }
+  using dcomplex              = std::complex<double>;
+  using simd_t                = native_simd<dcomplex>;
+  std::array<dcomplex, 2> tmp = generate_random_array<dcomplex, 2>();
+  native_simd<float> test2;
+  std::array<float, 8> tmp2 = generate_random_array<float, 8>();
+  test2.load_unaligned(tmp2.data());
+  tmp[0] = {1, 2};
+  tmp[1] = {3, 4};
+  simd_t test;
+  test.load_unaligned(tmp.data());
+  volatile auto result = test * std::complex<float>{5.0f, 10.0f};
 }

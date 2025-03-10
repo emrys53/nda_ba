@@ -2,6 +2,7 @@
 #include <complex>
 #include "abi.hpp"
 #include "../../macros.hpp"
+#include "../../traits.hpp"
 
 namespace nda {
 

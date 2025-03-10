@@ -212,7 +212,6 @@ namespace nda {
   template <ArrayOfRank<2> A>
   double frobenius_norm(A const &a) {
     if constexpr (vectorizable_array<A> and not is_complex_v<get_value_t<A>>) {
-      std::cout << "VECTORIZED" << std::endl;
       using value_t = get_value_t<A>;
       using simd_t  = native_simd<value_t>;
       simd_t r_simd(value_t(0));

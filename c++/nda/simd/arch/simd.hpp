@@ -1,5 +1,5 @@
 #pragma once
-#include "type.hpp"
+#include "./type.hpp"
 #include "./Default/functions.hpp"
 #include "./Default/kernel.hpp"
 #ifdef __SSE2__
