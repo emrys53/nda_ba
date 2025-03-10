@@ -1744,8 +1744,6 @@ TEST(NDA, SimdScatterFunction) {
 }
 
 TEST(NDA, SimdScalarOperator) {
-
-  // Default SIMD types
   simd_scalar_operations<float, 1, abi_tag::Default, int32_t>(5);
   simd_scalar_operations<double, 1, abi_tag::Default, int32_t>(5);
   simd_scalar_operations<int32_t, 1, abi_tag::Default, int32_t>(5);
@@ -1781,7 +1779,6 @@ TEST(NDA, SimdScalarOperator) {
   simd_scalar_operations<std::complex<double>, 1, abi_tag::Default, std::complex<double>>({12.3, 16.6});
 
 #ifdef __SSE2__
-  // SSE types: simd_f4, simd_d2, simd_i4, simd_l2, simd_cf2, simd_cd1
   simd_scalar_operations<float, 4, abi_tag::SSE, int32_t>(5);
   simd_scalar_operations<double, 2, abi_tag::SSE, int32_t>(5);
   simd_scalar_operations<int32_t, 4, abi_tag::SSE, int32_t>(5);
@@ -1818,7 +1815,6 @@ TEST(NDA, SimdScalarOperator) {
 #endif
 
 #ifdef __AVX__
-  // AVX types: simd_f8, simd_d4, simd_i8, simd_l4, simd_cf4, simd_cd2
   simd_scalar_operations<float, 8, abi_tag::AVX, int32_t>(5);
   simd_scalar_operations<double, 4, abi_tag::AVX, int32_t>(5);
   simd_scalar_operations<int32_t, 8, abi_tag::AVX, int32_t>(5);
@@ -1855,7 +1851,6 @@ TEST(NDA, SimdScalarOperator) {
 #endif
 
 #ifdef __AVX512F__
-  // AVX512 types: simd_f16, simd_d8, simd_i16, simd_l8, simd_cf8, simd_cd4
   simd_scalar_operations<float, 16, abi_tag::AVX512, int32_t>(5);
   simd_scalar_operations<double, 8, abi_tag::AVX512, int32_t>(5);
   simd_scalar_operations<int32_t, 16, abi_tag::AVX512, int32_t>(5);
@@ -1889,36 +1884,6 @@ TEST(NDA, SimdScalarOperator) {
 
   simd_scalar_operations<std::complex<float>, 8, abi_tag::AVX512, std::complex<double>>({12.3, 16.6});
   simd_scalar_operations<std::complex<double>, 4, abi_tag::AVX512, std::complex<double>>({12.3, 16.6});
-#endif
-
-#ifdef __SSE2__
-  // SSE SIMD types
-//  simd_scalar_operations<float, 4, abi_tag::SSE>();
-//  simd_scalar_operations<double, 2, abi_tag::SSE>();
-//  simd_scalar_operations<int32_t, 4, abi_tag::SSE>();
-//  simd_scalar_operations<int64_t, 2, abi_tag::SSE>();
-//  simd_scalar_operations<std::complex<float>, 2, abi_tag::SSE>();
-//  simd_scalar_operations<std::complex<double>, 1, abi_tag::SSE>();
-//#endif
-//
-//#ifdef __AVX__
-//  // AVX SIMD types
-//  simd_scalar_operations<float, 8, abi_tag::AVX>();
-//  simd_scalar_operations<double, 4, abi_tag::AVX>();
-//  simd_scalar_operations<int32_t, 8, abi_tag::AVX>();
-//  simd_scalar_operations<int64_t, 4, abi_tag::AVX>();
-//  simd_scalar_operations<std::complex<float>, 4, abi_tag::AVX>();
-//  simd_scalar_operations<std::complex<double>, 2, abi_tag::AVX>();
-#endif
-
-#ifdef __AVX512F__
-  // AVX512 SIMD types
-  simd_scalar_operations<float, 16, abi_tag::AVX512>();
-  simd_scalar_operations<double, 8, abi_tag::AVX512>();
-  simd_scalar_operations<int32_t, 16, abi_tag::AVX512>();
-  simd_scalar_operations<int64_t, 8, abi_tag::AVX512>();
-  simd_scalar_operations<std::complex<float>, 8, abi_tag::AVX512>();
-  simd_scalar_operations<std::complex<double>, 4, abi_tag::AVX512>();
 #endif
 }
 
