@@ -791,12 +791,12 @@ TEST(NDA, SimdDefaultConstructor) {
 
 #ifdef __AVX512F__
   // AVX512 SIMD types
-  simd_type_default_constructor<float, 16, abi_tag::AVX512>();
-  simd_type_default_constructor<double, 8, abi_tag::AVX512>();
-  simd_type_default_constructor<int32_t, 16, abi_tag::AVX512>();
-  simd_type_default_constructor<int64_t, 8, abi_tag::AVX512>();
-  simd_type_default_constructor<std::complex<float>, 8, abi_tag::AVX512>();
-  simd_type_default_constructor<std::complex<double>, 4, abi_tag::AVX512>();
+  simd_zero_initialization<float, 16, abi_tag::AVX512>();
+  simd_zero_initialization<double, 8, abi_tag::AVX512>();
+  simd_zero_initialization<int32_t, 16, abi_tag::AVX512>();
+  simd_zero_initialization<int64_t, 8, abi_tag::AVX512>();
+  simd_zero_initialization<std::complex<float>, 8, abi_tag::AVX512>();
+  simd_zero_initialization<std::complex<double>, 4, abi_tag::AVX512>();
 #endif
 }
 
@@ -1680,10 +1680,10 @@ TEST(NDA, SimdKernelTranspose) {
 
 #ifdef __AVX512F__
   // AVX512 SIMD types
-  // simd_kernel_transpose<float, 16, abi_tag::AVX512>();
+  simd_kernel_transpose<float, 16, abi_tag::AVX512>();
   simd_kernel_transpose<double, 8, abi_tag::AVX512>();
-  // simd_kernel_transpose<int32_t, 16, abi_tag::AVX512>();
-  // simd_kernel_transpose<int64_t, 8, abi_tag::AVX512>();
+  simd_kernel_transpose<int32_t, 16, abi_tag::AVX512>();
+  simd_kernel_transpose<int64_t, 8, abi_tag::AVX512>();
   simd_kernel_transpose<std::complex<float>, 8, abi_tag::AVX512>();
   simd_kernel_transpose<std::complex<double>, 4, abi_tag::AVX512>();
 #endif

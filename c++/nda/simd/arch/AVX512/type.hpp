@@ -24,7 +24,7 @@ namespace nda {
 
     simd_type(const value_t *v, simd_aligned_memory) : value(_mm512_load_epi32(v)) {}
 
-    simd_type(const value_t *v, simd_unaligned_memory) : value(_mm512_load_epi64(v)) {}
+    simd_type(const value_t *v, simd_unaligned_memory) : value(_mm512_loadu_epi64(v)) {}
 
     simd_type(simd_zero_initialize) : value(_mm512_setzero_epi32()) {}
 
@@ -55,7 +55,7 @@ namespace nda {
       const simd_i8 hi_2(_mm512_extracti64x4_epi64(rhs.value, 1));
       const simd_i8 lo = lo_1 / lo_2;
       const simd_i8 hi = hi_1 / hi_2;
-      return simd_type{_mm512_inserti64x4(_mm512_castsi256_si512(lo.value), hi.value, 1)};
+      return simd_type{_mm512_inserti64x4(_mm512_castsi256_si512(lo), hi, 1)};
     }
 
     simd_type &operator+=(const simd_type &other) {
@@ -233,15 +233,6 @@ namespace nda {
       lhs.store(x.data());
       rhs.store(y.data());
       for (int i = 0; i < static_cast<int>(size()); i++) { x[i] = x[i] / y[i]; }
-      return simd_type{x.data(), 0};
-    }
-
-    simd_type operator/(const simd_type &other) const {
-      alignas(alignment()) std::array<value_t, size()> x{};
-      alignas(alignment()) std::array<value_t, size()> y{};
-      this->store(x.data());
-      other.store(y.data());
-      for (int i = 0; i < size(); i++) { x[i] = x[i] / y[i]; }
       return simd_type{x.data(), simd_aligned_memory_t};
     }
 
@@ -757,17 +748,17 @@ namespace nda {
 
     explicit simd_type(const intrinsic_t &v) : value(v) {}
 
-    simd_type(const value_t *v, simd_aligned_memory) : value(_mm512_load_ps(reinterpret_cast<const scalar_t *>(v))) {}
+    simd_type(const value_t *v, simd_aligned_memory) : value(_mm512_load_ps(v)) {}
 
     simd_type(const scalar_t *v, simd_aligned_memory) : value(_mm512_load_ps(v)) {}
 
-    simd_type(const value_t *v, simd_unaligned_memory) : value(_mm512_loadu_ps(reinterpret_cast<const scalar_t *>(v))) {}
+    simd_type(const value_t *v, simd_unaligned_memory) : value(_mm512_loadu_ps(v)) {}
 
     simd_type(const scalar_t *v, simd_unaligned_memory) : value(_mm512_loadu_ps(v)) {}
 
     simd_type(simd_zero_initialize) : value(_mm512_setzero_ps()) {}
 
-    simd_type(const std::array<value_t, 8> &v) : value(_mm512_loadu_ps(reinterpret_cast<const scalar_t *>(v.data()))) {}
+    simd_type(const std::array<value_t, 8> &v) : value(_mm512_loadu_ps(v.data())) {}
 
     simd_type(const std::array<scalar_t, 16> &v) : value(_mm512_loadu_ps(v.data())) {}
 
