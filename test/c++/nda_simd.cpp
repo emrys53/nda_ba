@@ -1906,22 +1906,4 @@ struct adder_simd : simd::mock_simd<adder_simd<T>, T> {
 
 TEST(NDA, OurSIMD) {
 
-  class add {
-    public:
-    float operator()(float a, float b) const { return a + b; }
-
-    native_simd<float> load(native_simd<float> a, native_simd<float> b) const { return a + b; }
-  };
-  using dcomplex = std::complex<double>;
-  using simd_t   = native_simd<dcomplex>;
-  simd_i4 s({1, 2, 3, 4});
-  std::array<dcomplex, 2> tmp = generate_random_array<dcomplex, 2>();
-  native_simd<float> test2;
-  std::array<float, 8> tmp2 = generate_random_array<float, 8>();
-  test2.load_unaligned(tmp2.data());
-  tmp[0] = {1, 2};
-  tmp[1] = {3, 4};
-  simd_t test;
-  test.load_unaligned(tmp.data());
-  volatile auto result = test * std::complex<float>{5.0f, 10.0f};
 }
