@@ -155,12 +155,10 @@ $(function(){initNavTree('mock__simd_8hpp_source.html',''); initResizable(true);
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="keyword">auto</span> array_tuple                  = make_array_tuple(std::make_index_sequence&lt;args_size&gt;{}, args_tuple);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      <span class="keyword">alignas</span>(simd_t::alignment()) std::array&lt;value_t, simd_t::size()&gt; result_array;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      result_array = apply_function(std::make_index_sequence&lt;args_size&gt;{}, array_tuple);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      simd_t result;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      result.load(result_array.data());</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    }</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  };</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>} <span class="comment">// namespace nda::simd</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      <span class="keywordflow">return</span> simd_t(result_array.data(), simd_aligned_memory_t);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  };</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>} <span class="comment">// namespace nda::simd</span></div>
 <div class="ttc" id="aconcepts_8hpp_html"><div class="ttname"><a href="concepts_8hpp.html">concepts.hpp</a></div><div class="ttdoc">Provides concepts for the nda library.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
