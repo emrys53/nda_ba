@@ -279,9 +279,9 @@ namespace nda {
             alignas(simd_t::alignment()) std::array<L_t, simd_t::size()> tmp{};
             tmp[diff] = l;
             if constexpr (OP == '+') {
-              return r.load(i, j) + simd_t(tmp.data());
+              return r.load(i, j) + simd_t(tmp.data(), simd_aligned_memory_t);
             } else {
-              return r.load(i, j) - simd_t(tmp.data());
+              return r.load(i, j) - simd_t(tmp.data(), simd_aligned_memory_t);
             }
           } else if constexpr (r_is_scalar) {
             using simd_t = native_simd<R_t>;
@@ -289,9 +289,9 @@ namespace nda {
             alignas(simd_t::alignment()) std::array<R_t, simd_t::size()> tmp{};
             tmp[diff] = r;
             if constexpr (OP == '+') {
-              return l.load(i, j) + simd_t(tmp.data());
+              return l.load(i, j) + simd_t(tmp.data(), simd_aligned_memory_t);
             } else {
-              return l.load(i, j) - simd_t(tmp.data());
+              return l.load(i, j) - simd_t(tmp.data(), simd_aligned_memory_t);
             }
           }
         }

@@ -979,9 +979,9 @@ TEST_F(NDAArrayAndView, ArrayAligned) {
   //   }
   //   std::cout << std::endl;
   // }
-  nda::native_simd<int> x(&M(0,0));
-  nda::native_simd<int> y(&M(1,0));
-  nda::native_simd<int> z(&M(2,0));
+  nda::native_simd<int> x(&M(0,0), nda::simd_aligned_memory_t);
+  nda::native_simd<int> y(&M(1,0), nda::simd_aligned_memory_t);
+  nda::native_simd<int> z(&M(2,0), nda::simd_aligned_memory_t);
   alignas(x.alignment()) std::array<int,x.size()> test;
   x.store(test.data());
 

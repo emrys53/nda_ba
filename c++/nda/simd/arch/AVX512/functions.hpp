@@ -31,23 +31,24 @@ namespace nda::simd {
   // Conjugate functions
   template <>
   inline simd_i16 conj(const simd_i16 &x) {
-    return simd_i16(x);
+    return x;
   }
 
   template <>
   inline simd_l8 conj(const simd_l8 &x) {
-    return simd_l8(x);
+    return x;
   }
 
   template <>
   inline simd_f16 conj(const simd_f16 &x) {
-    return simd_f16(x);
+    return x;
   }
 
   template <>
   inline simd_d8 conj(const simd_d8 &x) {
-    return simd_d8(x);
+    return x;
   }
+
   template <>
   inline simd_cf8 conj(const simd_cf8 &x) {
     const __m512 mask =
@@ -59,6 +60,7 @@ namespace nda::simd {
     return simd_cf8(_mm512_castsi512_ps(_mm512_xor_si512(_mm512_castps_si512(x), _mm512_castps_si512(mask))));
 #endif
   }
+
   template <>
   inline simd_cd4 conj(const simd_cd4 &x) {
     const __m512d mask = _mm512_castsi512_pd(

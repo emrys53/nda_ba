@@ -113,8 +113,8 @@ std::array<T, N> generate_initialized_array(const T &value) {
 }
 
 template <typename T, size_t Width, abi_tag ABI>
-void simd_type_default_constructor() {
-  simd_type<T, Width, ABI> tmp{};
+void simd_zero_initialization() {
+  simd_type<T, Width, ABI> tmp(simd_zero_initialize_t);
 
   auto initialized_array = generate_initialized_array<T, Width>(T{0});
   check_simd_array_equal(tmp, initialized_array);
@@ -135,8 +135,12 @@ void simd_type_value_constructor(T value) {
 template <typename T, size_t Width, abi_tag ABI>
 void simd_pointer_constructor() {
   alignas(simd_type<T, Width, ABI>::alignment()) auto random_array = generate_random_array<T, Width>();
-  simd_type<T, Width, ABI> tmp(random_array.data());
+  auto random_array2                                               = generate_random_array<T, Width>();
+
+  simd_type<T, Width, ABI> tmp(random_array.data(), simd_aligned_memory_t);
   check_simd_array_equal(tmp, random_array);
+  simd_type<T, Width, ABI> tmp2(random_array2.data(), simd_unaligned_memory_t);
+  check_simd_array_equal(tmp2, random_array2);
 }
 
 template <typename T, size_t Width, abi_tag ABI>
@@ -208,7 +212,7 @@ void simd_compound_binary_operators() {
 }
 
 template <typename T, size_t Width, abi_tag ABI>
-void simd_initializer_list_constructor(std::initializer_list<T> l) {
+void simd_initializer_list_constructor(std::array<T, Width> l) {
   simd_type<T, Width, ABI> tmp(l);
   std::array<T, Width> tmp_array{};
   std::copy(l.begin(), l.end(), tmp_array.begin());
@@ -300,10 +304,10 @@ void simd_check_nan_inf() {
       mix2[i] = 1;
       mix3[i] = 1;
     }
-    simd_type<T, Width, ABI> simd_mix(mix.data());
-    simd_type<T, Width, ABI> simd_mix2(mix2.data());
-    simd_type<T, Width, ABI> simd_mix3(mix3.data());
-    simd_type<T, Width, ABI> simd_mix4(mix4.data());
+    simd_type<T, Width, ABI> simd_mix(mix.data(), simd_aligned_memory_t);
+    simd_type<T, Width, ABI> simd_mix2(mix2.data(), simd_aligned_memory_t);
+    simd_type<T, Width, ABI> simd_mix3(mix3.data(), simd_aligned_memory_t);
+    simd_type<T, Width, ABI> simd_mix4(mix4.data(), simd_aligned_memory_t);
     check_simd_array_equal(simd_mix + simd_mix, mix + mix);
     check_simd_array_equal(simd_mix + simd_mix2, mix + mix2);
     check_simd_array_equal(simd_mix + simd_mix3, mix + mix3);
@@ -360,10 +364,10 @@ void simd_check_nan_inf() {
       mix2[i] = {1, 1};
       mix3[i] = {1, 1};
     }
-    simd_type<T, Width, ABI> simd_mix(mix.data());
-    simd_type<T, Width, ABI> simd_mix2(mix2.data());
-    simd_type<T, Width, ABI> simd_mix3(mix3.data());
-    simd_type<T, Width, ABI> simd_mix4(mix4.data());
+    simd_type<T, Width, ABI> simd_mix(mix.data(), simd_aligned_memory_t);
+    simd_type<T, Width, ABI> simd_mix2(mix2.data(), simd_aligned_memory_t);
+    simd_type<T, Width, ABI> simd_mix3(mix3.data(), simd_aligned_memory_t);
+    simd_type<T, Width, ABI> simd_mix4(mix4.data(), simd_aligned_memory_t);
     check_simd_array_equal(simd_mix + simd_mix, mix + mix);
     check_simd_array_equal(simd_mix + simd_mix2, mix + mix2);
     check_simd_array_equal(simd_mix + simd_mix3, mix + mix3);
@@ -684,15 +688,15 @@ void simd_kernel_transpose() {
   for (int i = 0; i < Width; ++i) {
     for (int j = i + 1; j < Width; ++j) { std::swap(array_block[i][j], array_block[j][i]); }
   }
-  auto transposed = simd::kernel_transpose(simd_block);
-  for (int i = 0; i < Width; ++i) { check_simd_array_equal(transposed[i], array_block[i]); }
+  simd::kernel_transpose(simd_block);
+  for (int i = 0; i < Width; ++i) { check_simd_array_equal(simd_block[i], array_block[i]); }
 }
 
 template <typename T, size_t Width, abi_tag ABI, typename U>
 void simd_scalar_operations(const U &value) {
   using simd_t                                                = simd_type<T, Width, ABI>;
   alignas(simd_t::alignment()) std::array<T, Width> tmp_array = generate_random_array<T, Width>();
-  simd_t tmp(tmp_array.data());
+  simd_t tmp(tmp_array.data(), simd_aligned_memory_t);
   simd_t result;
   result = tmp + value;
   for (int i = 0; i < Width; ++i) { tmp_array[i] += static_cast<T>(value); }
@@ -732,35 +736,57 @@ void simd_scalar_operations(const U &value) {
   result /= value;
   for (int i = 0; i < Width; ++i) { tmp_array[i] /= static_cast<T>(value); }
   check_simd_array_equal(result, tmp_array);
+
+  tmp = generate_random_array<T, Width>();
+  // Left Scalar
+  tmp.load(tmp_array.data());
+  result = value + tmp;
+  for (int i = 0; i < Width; ++i) { tmp_array[i] = static_cast<T>(value) + tmp_array[i]; }
+  check_simd_array_equal(result, tmp_array);
+
+  tmp.load(tmp_array.data());
+  result = value - tmp;
+  for (int i = 0; i < Width; ++i) { tmp_array[i] = static_cast<T>(value) - tmp_array[i]; }
+  check_simd_array_equal(result, tmp_array);
+
+  tmp.load(tmp_array.data());
+  result = value * tmp;
+  for (int i = 0; i < Width; ++i) { tmp_array[i] = static_cast<T>(value) * tmp_array[i]; }
+  check_simd_array_equal(result, tmp_array);
+
+  tmp.load(tmp_array.data());
+  result = value / tmp;
+  for (int i = 0; i < Width; ++i) { tmp_array[i] = static_cast<T>(value) / tmp_array[i]; }
+  check_simd_array_equal(result, tmp_array);
 }
 
 TEST(NDA, SimdDefaultConstructor) {
   // Default SIMD types
-  simd_type_default_constructor<float, 1, abi_tag::Default>();
-  simd_type_default_constructor<double, 1, abi_tag::Default>();
-  simd_type_default_constructor<int32_t, 1, abi_tag::Default>();
-  simd_type_default_constructor<int64_t, 1, abi_tag::Default>();
-  simd_type_default_constructor<std::complex<float>, 1, abi_tag::Default>();
-  simd_type_default_constructor<std::complex<double>, 1, abi_tag::Default>();
+  simd_zero_initialization<float, 1, abi_tag::Default>();
+  simd_zero_initialization<double, 1, abi_tag::Default>();
+  simd_zero_initialization<int32_t, 1, abi_tag::Default>();
+  simd_zero_initialization<int64_t, 1, abi_tag::Default>();
+  simd_zero_initialization<std::complex<float>, 1, abi_tag::Default>();
+  simd_zero_initialization<std::complex<double>, 1, abi_tag::Default>();
 
 #ifdef __SSE2__
   // SSE SIMD types
-  simd_type_default_constructor<float, 4, abi_tag::SSE>();
-  simd_type_default_constructor<double, 2, abi_tag::SSE>();
-  simd_type_default_constructor<int32_t, 4, abi_tag::SSE>();
-  simd_type_default_constructor<int64_t, 2, abi_tag::SSE>();
-  simd_type_default_constructor<std::complex<float>, 2, abi_tag::SSE>();
-  simd_type_default_constructor<std::complex<double>, 1, abi_tag::SSE>();
+  simd_zero_initialization<float, 4, abi_tag::SSE>();
+  simd_zero_initialization<double, 2, abi_tag::SSE>();
+  simd_zero_initialization<int32_t, 4, abi_tag::SSE>();
+  simd_zero_initialization<int64_t, 2, abi_tag::SSE>();
+  simd_zero_initialization<std::complex<float>, 2, abi_tag::SSE>();
+  simd_zero_initialization<std::complex<double>, 1, abi_tag::SSE>();
 #endif
 
 #ifdef __AVX__
   // AVX SIMD types
-  simd_type_default_constructor<float, 8, abi_tag::AVX>();
-  simd_type_default_constructor<double, 4, abi_tag::AVX>();
-  simd_type_default_constructor<int32_t, 8, abi_tag::AVX>();
-  simd_type_default_constructor<int64_t, 4, abi_tag::AVX>();
-  simd_type_default_constructor<std::complex<float>, 4, abi_tag::AVX>();
-  simd_type_default_constructor<std::complex<double>, 2, abi_tag::AVX>();
+  simd_zero_initialization<float, 8, abi_tag::AVX>();
+  simd_zero_initialization<double, 4, abi_tag::AVX>();
+  simd_zero_initialization<int32_t, 8, abi_tag::AVX>();
+  simd_zero_initialization<int64_t, 4, abi_tag::AVX>();
+  simd_zero_initialization<std::complex<float>, 4, abi_tag::AVX>();
+  simd_zero_initialization<std::complex<double>, 2, abi_tag::AVX>();
 #endif
 
 #ifdef __AVX512F__
@@ -976,16 +1002,16 @@ TEST(NDA, SimdInitializerListConstructor) {
   simd_initializer_list_constructor<double, 1, abi_tag::Default>({1.0});
   simd_initializer_list_constructor<int32_t, 1, abi_tag::Default>({1});
   simd_initializer_list_constructor<int64_t, 1, abi_tag::Default>({1});
-  simd_initializer_list_constructor<std::complex<float>, 1, abi_tag::Default>({{1.0f, 2.0f}});
-  simd_initializer_list_constructor<std::complex<double>, 1, abi_tag::Default>({{1.0, 2.0}});
+  simd_initializer_list_constructor<std::complex<float>, 1, abi_tag::Default>({std::complex<float>{1.0f, 2.0f}});
+  simd_initializer_list_constructor<std::complex<double>, 1, abi_tag::Default>({std::complex<double>{1.0, 2.0}});
 
 #ifdef __SSE2__
   simd_initializer_list_constructor<float, 4, abi_tag::SSE>({1.0f, 2.0f, 3.0f, 4.0f});
   simd_initializer_list_constructor<double, 2, abi_tag::SSE>({1.0, 2.0});
   simd_initializer_list_constructor<int32_t, 4, abi_tag::SSE>({1, 2, 3, 4});
   simd_initializer_list_constructor<int64_t, 2, abi_tag::SSE>({1, 2});
-  simd_initializer_list_constructor<std::complex<float>, 2, abi_tag::SSE>({{1.0f, 2.0f}, {3.0f, 4.0f}});
-  simd_initializer_list_constructor<std::complex<double>, 1, abi_tag::SSE>({{1.0, 2.0}});
+  simd_initializer_list_constructor<std::complex<float>, 2, abi_tag::SSE>({std::complex<float>{1.0f, 2.0f}, {3.0f, 4.0f}});
+  simd_initializer_list_constructor<std::complex<double>, 1, abi_tag::SSE>({std::complex<double>{1.0, 2.0}});
 #endif
 
 #ifdef __AVX__
@@ -993,8 +1019,9 @@ TEST(NDA, SimdInitializerListConstructor) {
   simd_initializer_list_constructor<double, 4, abi_tag::AVX>({1.0, 2.0, 3.0, 4.0});
   simd_initializer_list_constructor<int32_t, 8, abi_tag::AVX>({1, 2, 3, 4, 5, 6, 7, 8});
   simd_initializer_list_constructor<int64_t, 4, abi_tag::AVX>({1, 2, 3, 4});
-  simd_initializer_list_constructor<std::complex<float>, 4, abi_tag::AVX>({{1.0f, 2.0f}, {3.0f, 4.0f}, {5.0f, 6.0f}, {7.0f, 8.0f}});
-  simd_initializer_list_constructor<std::complex<double>, 2, abi_tag::AVX>({{1.0, 2.0}, {3.0, 4.0}});
+  simd_initializer_list_constructor<std::complex<float>, 4, abi_tag::AVX>(
+     {std::complex<float>{1.0f, 2.0f}, {3.0f, 4.0f}, {5.0f, 6.0f}, {7.0f, 8.0f}});
+  simd_initializer_list_constructor<std::complex<double>, 2, abi_tag::AVX>({std::complex<double>{1.0, 2.0}, {3.0, 4.0}});
 #endif
 
 #ifdef __AVX512F__
@@ -1004,49 +1031,8 @@ TEST(NDA, SimdInitializerListConstructor) {
   simd_initializer_list_constructor<int32_t, 16, abi_tag::AVX512>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16});
   simd_initializer_list_constructor<int64_t, 8, abi_tag::AVX512>({1, 2, 3, 4, 5, 6, 7, 8});
   simd_initializer_list_constructor<std::complex<float>, 8, abi_tag::AVX512>(
-     {{1.0f, 2.0f}, {3.0f, 4.0f}, {5.0f, 6.0f}, {7.0f, 8.0f}, {9.0f, 10.0f}, {11.0f, 12.0f}, {13.0f, 14.0f}, {15.0f, 16.0f}});
-  simd_initializer_list_constructor<std::complex<double>, 4, abi_tag::AVX512>({{1.0, 2.0}, {3.0, 4.0}, {5.0, 6.0}, {7.0, 8.0}});
-#endif
-  // Now extra argument should cause it to throw an error.
-  EXPECT_THROW((simd_type<float, 1, abi_tag::Default>{1.0f, 2.0f}), std::runtime_error);
-  EXPECT_THROW((simd_type<double, 1, abi_tag::Default>{1.0, 2.0}), std::runtime_error);
-  EXPECT_THROW((simd_type<int32_t, 1, abi_tag::Default>{1, 2}), std::runtime_error);
-  EXPECT_THROW((simd_type<int64_t, 1, abi_tag::Default>{1, 2}), std::runtime_error);
-  EXPECT_THROW((simd_type<std::complex<float>, 1, abi_tag::Default>{{1.0f, 2.0f}, {3.0f, 4.0f}}), std::runtime_error);
-  EXPECT_THROW((simd_type<std::complex<double>, 1, abi_tag::Default>{{1.0, 2.0}, {3.0, 4.0}}), std::runtime_error);
-
-#ifdef __SSE2__
-  EXPECT_THROW((simd_type<float, 4, abi_tag::SSE>{1.0f, 2.0f, 3.0f, 4.0f, 5.0f}), std::runtime_error);
-  EXPECT_THROW((simd_type<double, 2, abi_tag::SSE>{1.0, 2.0, 3.0}), std::runtime_error);
-  EXPECT_THROW((simd_type<int32_t, 4, abi_tag::SSE>{1, 2, 3, 4, 5}), std::runtime_error);
-  EXPECT_THROW((simd_type<int64_t, 2, abi_tag::SSE>{1, 2, 3}), std::runtime_error);
-  EXPECT_THROW((simd_type<std::complex<float>, 2, abi_tag::SSE>{{1.0f, 2.0f}, {3.0f, 4.0f}, {5.0f, 6.0f}}), std::runtime_error);
-  EXPECT_THROW((simd_type<std::complex<double>, 1, abi_tag::SSE>{{1.0, 2.0}, {3.0, 4.0}}), std::runtime_error);
-#endif
-
-#ifdef __AVX__
-  EXPECT_THROW((simd_type<float, 8, abi_tag::AVX>{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f}), std::runtime_error);
-  EXPECT_THROW((simd_type<double, 4, abi_tag::AVX>{1.0, 2.0, 3.0, 4.0, 5.0}), std::runtime_error);
-  EXPECT_THROW((simd_type<int32_t, 8, abi_tag::AVX>{1, 2, 3, 4, 5, 6, 7, 8, 9}), std::runtime_error);
-  EXPECT_THROW((simd_type<int64_t, 4, abi_tag::AVX>{1, 2, 3, 4, 5}), std::runtime_error);
-  EXPECT_THROW((simd_type<std::complex<float>, 4, abi_tag::AVX>{{1.0f, 2.0f}, {3.0f, 4.0f}, {5.0f, 6.0f}, {7.0f, 8.0f}, {9.0f, 10.0f}}),
-               std::runtime_error);
-  EXPECT_THROW((simd_type<std::complex<double>, 2, abi_tag::AVX>{{1.0, 2.0}, {3.0, 4.0}, {5.0, 6.0}}), std::runtime_error);
-#endif
-
-#ifdef __AVX512F__
-  EXPECT_THROW((simd_type<float, 16, abi_tag::AVX512>{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f,
-                                                      16.0f, 17.0f}),
-               std::runtime_error);
-  EXPECT_THROW((simd_type<double, 8, abi_tag::AVX512>{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0}), std::runtime_error);
-  EXPECT_THROW((simd_type<int32_t, 16, abi_tag::AVX512>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17}), std::runtime_error);
-  EXPECT_THROW((simd_type<int64_t, 8, abi_tag::AVX512>{1, 2, 3, 4, 5, 6, 7, 8, 9}), std::runtime_error);
-  EXPECT_THROW(
-     (simd_type<std::complex<float>, 8, abi_tag::AVX512>{
-        {1.0f, 2.0f}, {3.0f, 4.0f}, {5.0f, 6.0f}, {7.0f, 8.0f}, {9.0f, 10.0f}, {11.0f, 12.0f}, {13.0f, 14.0f}, {15.0f, 16.0f}, {17.0f, 18.0f}}),
-     std::runtime_error);
-  EXPECT_THROW((simd_type<std::complex<double>, 4, abi_tag::AVX512>{{1.0, 2.0}, {3.0, 4.0}, {5.0, 6.0}, {7.0, 8.0}, {9.0, 10.0}}),
-               std::runtime_error);
+     {std::complex<float>{1.0f, 2.0f}, {3.0f, 4.0f}, {5.0f, 6.0f}, {7.0f, 8.0f}, {9.0f, 10.0f}, {11.0f, 12.0f}, {13.0f, 14.0f}, {15.0f, 16.0f}});
+  simd_initializer_list_constructor<std::complex<double>, 4, abi_tag::AVX512>({std::complex<double>{1.0, 2.0}, {3.0, 4.0}, {5.0, 6.0}, {7.0, 8.0}});
 #endif
 }
 
@@ -1919,14 +1905,16 @@ struct adder_simd : simd::mock_simd<adder_simd<T>, T> {
 };
 
 TEST(NDA, OurSIMD) {
+
   class add {
     public:
     float operator()(float a, float b) const { return a + b; }
 
     native_simd<float> load(native_simd<float> a, native_simd<float> b) const { return a + b; }
   };
-  using dcomplex              = std::complex<double>;
-  using simd_t                = native_simd<dcomplex>;
+  using dcomplex = std::complex<double>;
+  using simd_t   = native_simd<dcomplex>;
+  simd_i4 s({1, 2, 3, 4});
   std::array<dcomplex, 2> tmp = generate_random_array<dcomplex, 2>();
   native_simd<float> test2;
   std::array<float, 8> tmp2 = generate_random_array<float, 8>();

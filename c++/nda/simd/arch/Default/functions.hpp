@@ -32,22 +32,22 @@ namespace nda::simd {
   // Conj functions
   template <>
   inline simd_i1 conj(const simd_i1 &x) {
-    return simd_i1(x);
+    return x;
   }
 
   template <>
   inline simd_f1 conj(const simd_f1 &x) {
-    return simd_f1(x);
+    return x;
   }
 
   template <>
   inline simd_l1 conj(const simd_l1 &x) {
-    return simd_l1(x);
+    return x;
   }
 
   template <>
   inline simd_d1 conj(const simd_d1 &x) {
-    return simd_d1(x);
+    return x;
   }
 
   template <>
@@ -348,32 +348,32 @@ namespace nda::simd {
   //Gather functions
   template <>
   inline simd_i1 gather(const simd_i1::value_t *from, [[maybe_unused]] const long stride) {
-    return simd_i1(from);
+    return simd_i1(from, simd_unaligned_memory_t);
   }
 
   template <>
   inline simd_l1 gather(const simd_l1::value_t *from, [[maybe_unused]] const long stride) {
-    return simd_l1(from);
+    return simd_l1(from,simd_unaligned_memory_t);
   }
 
   template <>
   inline simd_f1 gather(const simd_f1::value_t *from, [[maybe_unused]] const long stride) {
-    return simd_f1(from);
+    return simd_f1(from,simd_unaligned_memory_t);
   }
 
   template <>
   inline simd_d1 gather(const simd_d1::value_t *from, [[maybe_unused]] const long stride) {
-    return simd_d1(from);
+    return simd_d1(from, simd_unaligned_memory_t);
   }
 
   template <>
   inline simd_cf1 gather(const simd_cf1::value_t *from, [[maybe_unused]] const long stride) {
-    return simd_cf1(from);
+    return simd_cf1(from, simd_unaligned_memory_t);
   }
 
   template <>
   inline simd_cd1_d gather(const simd_cd1_d::value_t *from, [[maybe_unused]] const long stride) {
-    return simd_cd1_d(from);
+    return simd_cd1_d(from,simd_unaligned_memory_t );
   }
 
   //Scatter functions:

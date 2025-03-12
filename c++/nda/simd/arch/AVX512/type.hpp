@@ -15,72 +15,66 @@ namespace nda {
     using value_t     = int32_t;
 
     private:
-    intrinsic_t value{};
+    intrinsic_t value;
 
     public:
-    explicit simd_type(intrinsic_t v) : value(v) {}
+    simd_type() {} //NOLINT
+
+    explicit simd_type(const intrinsic_t &v) : value(v) {}
+
+    simd_type(const value_t *v, simd_aligned_memory) : value(_mm512_load_epi32(v)) {}
+
+    simd_type(const value_t *v, simd_unaligned_memory) : value(_mm512_load_epi64(v)) {}
+
+    simd_type(simd_zero_initialize) : value(_mm512_setzero_epi32()) {}
+
+    simd_type(const std::array<value_t, 16> &v) : value(_mm512_loadu_epi32(v.data())) {}
+
+    simd_type(const value_t v) : value(_mm512_set1_epi32(v)) {}
+
+    operator intrinsic_t() const { return value; }
 
     static constexpr size_t size() { return 16UL; };
     static constexpr size_t alignment() { return size() * sizeof(value_t); };
-
-    simd_type(const simd_type &other)            = default;
-    simd_type &operator=(const simd_type &other) = default;
-    simd_type(simd_type &&other)                 = default;
-    simd_type &operator=(simd_type &&other)      = default;
 
     void load(const value_t *from) { value = _mm512_load_epi32(from); }
     void load_unaligned(const value_t *from) { value = _mm512_loadu_epi32(from); }
     void store(value_t *to) const { _mm512_store_epi32(to, value); }
     void store_unaligned(value_t *to) const { _mm512_storeu_epi32(to, value); }
 
-    simd_type() : value(_mm512_setzero_epi32()) {}
+    friend simd_type operator+(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_add_epi32(lhs.value, rhs.value)}; }
 
-    simd_type(const value_t v) : value(_mm512_set1_epi32(v)) {}
+    friend simd_type operator-(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_sub_epi32(lhs.value, rhs.value)}; }
 
-    simd_type(std::initializer_list<value_t> l) {
-#ifdef NDA_ENFORCE_BOUNDCHECK
-      if (l.size() != size()) {
-        throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
-                                 + " is not equal to size of register: " + std::to_string(size()));
-      }
-#endif
-      load_unaligned(l.begin());
-    }
-    explicit simd_type(const value_t *v) { load(v); }
+    friend simd_type operator*(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_mullo_epi32(lhs.value, rhs.value)}; }
 
-    simd_type operator+(const simd_type &other) const { return simd_type{_mm512_add_epi32(value, other.value)}; }
-
-    simd_type operator-(const simd_type &other) const { return simd_type{_mm512_sub_epi32(value, other.value)}; }
-
-    simd_type operator*(const simd_type &other) const { return simd_type{_mm512_mullo_epi32(value, other.value)}; }
-
-    simd_type operator/(const simd_type &other) const {
-      const simd_i8 lo_1(_mm512_extracti64x4_epi64(value, 0));
-      const simd_i8 hi_1(_mm512_extracti64x4_epi64(value, 1));
-      const simd_i8 lo_2(_mm512_extracti64x4_epi64(other.value, 0));
-      const simd_i8 hi_2(_mm512_extracti64x4_epi64(other.value, 1));
+    friend simd_type operator/(const simd_type &lhs, const simd_type &rhs) {
+      const simd_i8 lo_1(_mm512_extracti64x4_epi64(lhs.value, 0));
+      const simd_i8 hi_1(_mm512_extracti64x4_epi64(lhs.value, 1));
+      const simd_i8 lo_2(_mm512_extracti64x4_epi64(rhs.value, 0));
+      const simd_i8 hi_2(_mm512_extracti64x4_epi64(rhs.value, 1));
       const simd_i8 lo = lo_1 / lo_2;
       const simd_i8 hi = hi_1 / hi_2;
-      return simd_type{_mm512_inserti64x4(_mm512_castsi256_si512(lo), hi, 1)};
+      return simd_type{_mm512_inserti64x4(_mm512_castsi256_si512(lo.value), hi.value, 1)};
     }
 
     simd_type &operator+=(const simd_type &other) {
-      value = (*this + other).value;
+      *this = *this + other;
       return *this;
     }
 
     simd_type &operator-=(const simd_type &other) {
-      value = (*this - other).value;
+      *this = *this - other;
       return *this;
     }
 
     simd_type &operator*=(const simd_type &other) {
-      value = (*this * other).value;
+      *this = *this * other;
       return *this;
     }
 
     simd_type &operator/=(const simd_type &other) {
-      value = (*this / other).value;
+      *this = *this / other;
       return *this;
     }
 
@@ -92,9 +86,11 @@ namespace nda {
     bool operator!=(const simd_type &other) const { return not(*this == other); }
 
     // Bitwise operators
-    simd_type operator^(const simd_type &other) const { return simd_type{_mm512_xor_si512(value, other.value)}; }
-    simd_type operator&(const simd_type &other) const { return simd_type{_mm512_and_si512(value, other.value)}; }
-    simd_type operator|(const simd_type &other) const { return simd_type{_mm512_or_si512(value, other.value)}; }
+    friend simd_type operator^(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_xor_si512(lhs.value, rhs.value)}; }
+
+    friend simd_type operator&(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_and_si512(lhs.value, rhs.value)}; }
+
+    friend simd_type operator|(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_or_si512(lhs.value, rhs.value)}; }
 
     simd_type &operator^=(const simd_type &other) {
       *this = *this ^ other;
@@ -111,61 +107,78 @@ namespace nda {
       return *this;
     }
 
+    // Friend functions for mixed arithmetic: scalar on the right.
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator+(const U &other) {
-      return *this + simd_type(static_cast<value_t>(other));
+    friend simd_type operator+(const simd_type &lhs, const U &rhs) {
+      return lhs + simd_type(static_cast<value_t>(rhs));
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator-(const simd_type &lhs, const U &rhs) {
+      return lhs - simd_type(static_cast<value_t>(rhs));
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator*(const simd_type &lhs, const U &rhs) {
+      return lhs * simd_type(static_cast<value_t>(rhs));
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator/(const simd_type &lhs, const U &rhs) {
+      return lhs / simd_type(static_cast<value_t>(rhs));
     }
 
+    // Friend functions for mixed arithmetic: scalar on the left.
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator-(const U &other) {
-      return *this - simd_type(static_cast<value_t>(other));
+    friend simd_type operator+(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) + rhs;
     }
-
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator*(const U &other) {
-      return *this * simd_type(static_cast<value_t>(other));
+    friend simd_type operator-(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) - rhs;
     }
-
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator/(const U &other) {
-      return *this / simd_type(static_cast<value_t>(other));
+    friend simd_type operator*(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) * rhs;
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator/(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) / rhs;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator+=(const U &other) {
-      *this = *this + simd_type(static_cast<value_t>(other));
+      *this = *this + other;
       return *this;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator-=(const U &other) {
-      *this = *this - simd_type(static_cast<value_t>(other));
+      *this = *this - other;
       return *this;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator*=(const U &other) {
-      *this = *this * simd_type(static_cast<value_t>(other));
+      *this = *this * other;
       return *this;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator/=(const U &other) {
-      *this = *this / simd_type(static_cast<value_t>(other));
+      *this = *this / other;
       return *this;
     }
-
-    operator intrinsic_t() const { return value; }
-
-    simd_type operator-() const { return simd_type{} - *this; }
+    simd_type operator-() const { return simd_type{simd_zero_initialize_t} - *this; }
   };
 
   template <>
@@ -175,50 +188,52 @@ namespace nda {
     using value_t     = int64_t;
 
     private:
-    intrinsic_t value{};
+    intrinsic_t value;
 
     public:
-    explicit simd_type(intrinsic_t v) : value(v) {}
+    simd_type() {} //NOLINT
+
+    explicit simd_type(const intrinsic_t &v) : value(v) {}
+
+    simd_type(const value_t *v, simd_aligned_memory) : value(_mm512_load_epi64(v)) {}
+
+    simd_type(const value_t *v, simd_unaligned_memory) : value(_mm512_loadu_epi64(v)) {}
+
+    simd_type(simd_zero_initialize) : value(_mm512_setzero_si512()) {}
+
+    simd_type(const std::array<value_t, 8> &v) : value(_mm512_loadu_epi64(v.data())) {}
+
+    simd_type(const value_t v) : value(_mm512_set1_epi64(v)) {}
+
+    operator intrinsic_t() const { return value; }
 
     static constexpr size_t size() { return 8UL; };
     static constexpr size_t alignment() { return size() * sizeof(value_t); };
-
-    simd_type(const simd_type &other)            = default;
-    simd_type &operator=(const simd_type &other) = default;
-    simd_type(simd_type &&other)                 = default;
-    simd_type &operator=(simd_type &&other)      = default;
 
     void load(const value_t *from) { value = _mm512_load_epi64(from); }
     void load_unaligned(const value_t *from) { value = _mm512_loadu_epi64(from); }
     void store(value_t *to) const { _mm512_store_epi64(to, value); }
     void store_unaligned(value_t *to) const { _mm512_storeu_epi64(to, value); }
 
-    simd_type() : value(_mm512_setzero_si512()) {}
+    friend simd_type operator+(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_add_epi64(lhs.value, rhs.value)}; }
 
-    simd_type(const value_t v) : value(_mm512_set1_epi64(v)) {}
+    friend simd_type operator-(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_sub_epi64(lhs.value, rhs.value)}; }
 
-    simd_type(std::initializer_list<value_t> l) {
-#ifdef NDA_ENFORCE_BOUNDCHECK
-      if (l.size() != size()) {
-        throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
-                                 + " is not equal to size of register: " + std::to_string(size()));
-      }
+    friend simd_type operator*(const simd_type &lhs, const simd_type &rhs) {
+#ifdef __AVX512DQ__
+      return simd_type{_mm512_mullo_epi64(lhs.value, rhs.value)};
+#else
+      return simd_type{_mm512_mullox_epi64(lhs.value, rhs.value)};
 #endif
-      load_unaligned(l.begin());
     }
 
-    explicit simd_type(const value_t *v) { load(v); }
-
-    simd_type operator+(const simd_type &other) const { return simd_type{_mm512_add_epi64(value, other.value)}; }
-
-    simd_type operator-(const simd_type &other) const { return simd_type{_mm512_sub_epi64(value, other.value)}; }
-
-    simd_type operator*(const simd_type &other) const {
-#ifdef __AVX512DQ__
-      return simd_type{_mm512_mullo_epi64(value, other.value)};
-#else
-      return simd_type{_mm512_mullox_epi64(value, other.value)};
-#endif
+    friend simd_type operator/(const simd_type &lhs, const simd_type &rhs) {
+      alignas(alignment()) std::array<value_t, size()> x{};
+      alignas(alignment()) std::array<value_t, size()> y{};
+      lhs.store(x.data());
+      rhs.store(y.data());
+      for (int i = 0; i < static_cast<int>(size()); i++) { x[i] = x[i] / y[i]; }
+      return simd_type{x.data(), 0};
     }
 
     simd_type operator/(const simd_type &other) const {
@@ -227,26 +242,26 @@ namespace nda {
       this->store(x.data());
       other.store(y.data());
       for (int i = 0; i < size(); i++) { x[i] = x[i] / y[i]; }
-      return simd_type{x.data()};
+      return simd_type{x.data(), simd_aligned_memory_t};
     }
 
     simd_type &operator+=(const simd_type &other) {
-      value = (*this + other).value;
+      *this = *this + other;
       return *this;
     }
 
     simd_type &operator-=(const simd_type &other) {
-      value = (*this - other).value;
+      *this = *this - other;
       return *this;
     }
 
     simd_type &operator*=(const simd_type &other) {
-      value = (*this * other).value;
+      *this = *this * other;
       return *this;
     }
 
     simd_type &operator/=(const simd_type &other) {
-      value = (*this / other).value;
+      *this = *this / other;
       return *this;
     }
 
@@ -258,9 +273,11 @@ namespace nda {
     bool operator!=(const simd_type &other) const { return not(*this == other); }
 
     // Bitwise operators
-    simd_type operator^(const simd_type &other) const { return simd_type{_mm512_xor_si512(value, other.value)}; }
-    simd_type operator&(const simd_type &other) const { return simd_type{_mm512_and_si512(value, other.value)}; }
-    simd_type operator|(const simd_type &other) const { return simd_type{_mm512_or_si512(value, other.value)}; }
+    friend simd_type operator^(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_xor_si512(lhs.value, rhs.value)}; }
+
+    friend simd_type operator&(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_and_si512(lhs.value, rhs.value)}; }
+
+    friend simd_type operator|(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_or_si512(lhs.value, rhs.value)}; }
 
     simd_type &operator^=(const simd_type &other) {
       *this = *this ^ other;
@@ -277,61 +294,79 @@ namespace nda {
       return *this;
     }
 
+    // Friend functions for mixed arithmetic: scalar on the right.
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator+(const U &other) {
-      return *this + simd_type(static_cast<value_t>(other));
+    friend simd_type operator+(const simd_type &lhs, const U &rhs) {
+      return lhs + simd_type(static_cast<value_t>(rhs));
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator-(const simd_type &lhs, const U &rhs) {
+      return lhs - simd_type(static_cast<value_t>(rhs));
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator*(const simd_type &lhs, const U &rhs) {
+      return lhs * simd_type(static_cast<value_t>(rhs));
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator/(const simd_type &lhs, const U &rhs) {
+      return lhs / simd_type(static_cast<value_t>(rhs));
     }
 
+    // Friend functions for mixed arithmetic: scalar on the left.
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator-(const U &other) {
-      return *this - simd_type(static_cast<value_t>(other));
+    friend simd_type operator+(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) + rhs;
     }
-
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator*(const U &other) {
-      return *this * simd_type(static_cast<value_t>(other));
+    friend simd_type operator-(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) - rhs;
     }
-
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator/(const U &other) {
-      return *this / simd_type(static_cast<value_t>(other));
+    friend simd_type operator*(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) * rhs;
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator/(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) / rhs;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator+=(const U &other) {
-      *this = *this + simd_type(static_cast<value_t>(other));
+      *this = *this + other;
       return *this;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator-=(const U &other) {
-      *this = *this - simd_type(static_cast<value_t>(other));
+      *this = *this - other;
       return *this;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator*=(const U &other) {
-      *this = *this * simd_type(static_cast<value_t>(other));
+      *this = *this * other;
       return *this;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator/=(const U &other) {
-      *this = *this / simd_type(static_cast<value_t>(other));
+      *this = *this / other;
       return *this;
     }
 
-    operator intrinsic_t() const { return value; }
-
-    simd_type operator-() const { return simd_type{} - *this; }
+    simd_type operator-() const { return simd_type{simd_zero_initialize_t} - *this; }
   };
 
   template <>
@@ -341,65 +376,58 @@ namespace nda {
     using value_t     = float;
 
     private:
-    intrinsic_t value{};
+    intrinsic_t value;
 
     public:
-    explicit simd_type(intrinsic_t v) : value(v) {}
+    simd_type() {} //NOLINT
+
+    explicit simd_type(const intrinsic_t &v) : value(v) {}
+
+    simd_type(const value_t *v, simd_aligned_memory) : value(_mm512_load_ps(v)) {}
+
+    simd_type(const value_t *v, simd_unaligned_memory) : value(_mm512_loadu_ps(v)) {}
+
+    simd_type(simd_zero_initialize) : value(_mm512_setzero_ps()) {}
+
+    simd_type(const std::array<value_t, 16> &v) : value(_mm512_loadu_ps(v.data())) {}
+
+    simd_type(const value_t v) : value(_mm512_set1_ps(v)) {}
+
+    operator intrinsic_t() const { return value; }
 
     static constexpr size_t size() { return 16UL; };
     static constexpr size_t alignment() { return size() * sizeof(value_t); };
-
-    simd_type(const simd_type &other)            = default;
-    simd_type &operator=(const simd_type &other) = default;
-    simd_type(simd_type &&other)                 = default;
-    simd_type &operator=(simd_type &&other)      = default;
 
     void load(const value_t *from) { value = _mm512_load_ps(from); }
     void load_unaligned(const value_t *from) { value = _mm512_loadu_ps(from); }
     void store(value_t *to) const { _mm512_store_ps(to, value); }
     void store_unaligned(value_t *to) const { _mm512_storeu_ps(to, value); }
 
-    simd_type() : value(_mm512_setzero_ps()) {}
+    friend simd_type operator+(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_add_ps(lhs.value, rhs.value)}; }
 
-    simd_type(const value_t v) : value(_mm512_set1_ps(v)) {}
+    friend simd_type operator-(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_sub_ps(lhs.value, rhs.value)}; }
 
-    simd_type(std::initializer_list<value_t> l) {
-#ifdef NDA_ENFORCE_BOUNDCHECK
-      if (l.size() != size()) {
-        throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
-                                 + " is not equal to size of register: " + std::to_string(size()));
-      }
-#endif
-      load_unaligned(l.begin());
-    }
+    friend simd_type operator*(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_mul_ps(lhs.value, rhs.value)}; }
 
-    explicit simd_type(const value_t *v) { load(v); }
-
-    simd_type operator+(const simd_type &other) const { return simd_type{_mm512_add_ps(value, other.value)}; }
-
-    simd_type operator-(const simd_type &other) const { return simd_type{_mm512_sub_ps(value, other.value)}; }
-
-    simd_type operator*(const simd_type &other) const { return simd_type{_mm512_mul_ps(value, other.value)}; }
-
-    simd_type operator/(const simd_type &other) const { return simd_type{_mm512_div_ps(value, other.value)}; }
+    friend simd_type operator/(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_div_ps(lhs.value, rhs.value)}; }
 
     simd_type &operator+=(const simd_type &other) {
-      value = (*this + other).value;
+      *this = *this + other;
       return *this;
     }
 
     simd_type &operator-=(const simd_type &other) {
-      value = (*this - other).value;
+      *this = *this - other;
       return *this;
     }
 
     simd_type &operator*=(const simd_type &other) {
-      value = (*this * other).value;
+      *this = *this * other;
       return *this;
     }
 
     simd_type &operator/=(const simd_type &other) {
-      value = (*this / other).value;
+      *this = *this / other;
       return *this;
     }
 
@@ -410,26 +438,27 @@ namespace nda {
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
 
-    // Bitwise operators
-    simd_type operator^(const simd_type &other) const {
+    friend simd_type operator^(const simd_type &lhs, const simd_type &rhs) {
 #ifdef __AVX512DQ__
-      return simd_type{_mm512_xor_ps(value, other.value)};
+      return simd_type{_mm512_xor_ps(lhs.value, rhs.value)};
 #else
-      return simd_type{_mm512_castsi512_ps(_mm512_xor_si512(_mm512_castps_si512(value), _mm512_castps_si512(other.value)))};
+      return simd_type{_mm512_castsi512_ps(_mm512_xor_si512(_mm512_castps_si512(lhs.value), _mm512_castps_si512(rhs.value)))};
 #endif
     }
-    simd_type operator&(const simd_type &other) const {
+
+    friend simd_type operator&(const simd_type &lhs, const simd_type &rhs) {
 #ifdef __AVX512DQ__
-      return simd_type{_mm512_and_ps(value, other.value)};
+      return simd_type{_mm512_and_ps(lhs.value, rhs.value)};
 #else
-      return simd_type{_mm512_castsi512_ps(_mm512_and_si512(_mm512_castps_si512(value), _mm512_castps_si512(other.value)))};
+      return simd_type{_mm512_castsi512_ps(_mm512_and_si512(_mm512_castps_si512(lhs.value), _mm512_castps_si512(rhs.value)))};
 #endif
     }
-    simd_type operator|(const simd_type &other) const {
+
+    friend simd_type operator|(const simd_type &lhs, const simd_type &rhs) {
 #ifdef __AVX512DQ__
-      return simd_type{_mm512_or_ps(value, other.value)};
+      return simd_type{_mm512_or_ps(lhs.value, rhs.value)};
 #else
-      return simd_type{_mm512_castsi512_ps(_mm512_or_si512(_mm512_castps_si512(value), _mm512_castps_si512(other.value)))};
+      return simd_type{_mm512_castsi512_ps(_mm512_or_si512(_mm512_castps_si512(lhs.value), _mm512_castps_si512(rhs.value)))};
 #endif
     }
 
@@ -448,59 +477,77 @@ namespace nda {
       return *this;
     }
 
+    // Friend functions for mixed arithmetic: scalar on the right.
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator+(const U &other) {
-      return *this + simd_type(static_cast<value_t>(other));
+    friend simd_type operator+(const simd_type &lhs, const U &rhs) {
+      return lhs + simd_type(static_cast<value_t>(rhs));
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator-(const simd_type &lhs, const U &rhs) {
+      return lhs - simd_type(static_cast<value_t>(rhs));
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator*(const simd_type &lhs, const U &rhs) {
+      return lhs * simd_type(static_cast<value_t>(rhs));
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator/(const simd_type &lhs, const U &rhs) {
+      return lhs / simd_type(static_cast<value_t>(rhs));
     }
 
+    // Friend functions for mixed arithmetic: scalar on the left.
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator-(const U &other) {
-      return *this - simd_type(static_cast<value_t>(other));
+    friend simd_type operator+(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) + rhs;
     }
-
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator*(const U &other) {
-      return *this * simd_type(static_cast<value_t>(other));
+    friend simd_type operator-(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) - rhs;
     }
-
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator/(const U &other) {
-      return *this / simd_type(static_cast<value_t>(other));
+    friend simd_type operator*(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) * rhs;
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator/(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) / rhs;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator+=(const U &other) {
-      *this = *this + simd_type(static_cast<value_t>(other));
+      *this = *this + other;
       return *this;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator-=(const U &other) {
-      *this = *this - simd_type(static_cast<value_t>(other));
+      *this = *this - other;
       return *this;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator*=(const U &other) {
-      *this = *this * simd_type(static_cast<value_t>(other));
+      *this = *this * other;
       return *this;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator/=(const U &other) {
-      *this = *this / simd_type(static_cast<value_t>(other));
+      *this = *this / other;
       return *this;
     }
-
-    operator intrinsic_t() const { return value; }
 
     simd_type operator-() const {
       const intrinsic_t mask = _mm512_castsi512_ps(_mm512_set1_epi32(0x80000000));
@@ -515,65 +562,58 @@ namespace nda {
     using value_t     = double;
 
     private:
-    intrinsic_t value{};
+    intrinsic_t value;
 
     public:
-    explicit simd_type(intrinsic_t v) : value(v) {}
+    simd_type() {} //NOLINT
+
+    explicit simd_type(const intrinsic_t &v) : value(v) {}
+
+    simd_type(const value_t *v, simd_aligned_memory) : value(_mm512_load_pd(v)) {}
+
+    simd_type(const value_t *v, simd_unaligned_memory) : value(_mm512_loadu_pd(v)) {}
+
+    simd_type(simd_zero_initialize) : value(_mm512_setzero_pd()) {}
+
+    simd_type(const std::array<value_t, 8> &v) : value(_mm512_loadu_pd(v.data())) {}
+
+    simd_type(const value_t v) : value(_mm512_set1_pd(v)) {}
+
+    operator intrinsic_t() const { return value; }
 
     static constexpr size_t size() { return 8UL; }
     static constexpr size_t alignment() { return size() * sizeof(value_t); }
-
-    simd_type(const simd_type &other)            = default;
-    simd_type &operator=(const simd_type &other) = default;
-    simd_type(simd_type &&other)                 = default;
-    simd_type &operator=(simd_type &&other)      = default;
 
     void load(const value_t *from) { value = _mm512_load_pd(from); }
     void load_unaligned(const value_t *from) { value = _mm512_loadu_pd(from); }
     void store(value_t *to) const { _mm512_store_pd(to, value); }
     void store_unaligned(value_t *to) const { _mm512_storeu_pd(to, value); }
 
-    simd_type() : value(_mm512_setzero_pd()) {}
+    friend simd_type operator+(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_add_pd(lhs.value, rhs.value)}; }
 
-    simd_type(const value_t v) : value(_mm512_set1_pd(v)) {}
+    friend simd_type operator-(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_sub_pd(lhs.value, rhs.value)}; }
 
-    simd_type(std::initializer_list<value_t> l) {
-#ifdef NDA_ENFORCE_BOUNDCHECK
-      if (l.size() != size()) {
-        throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
-                                 + " is not equal to size of register: " + std::to_string(size()));
-      }
-#endif
-      load_unaligned(l.begin());
-    }
+    friend simd_type operator*(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_mul_pd(lhs.value, rhs.value)}; }
 
-    explicit simd_type(const value_t *v) { load(v); }
-
-    simd_type operator+(const simd_type &other) const { return simd_type{_mm512_add_pd(value, other.value)}; }
-
-    simd_type operator-(const simd_type &other) const { return simd_type{_mm512_sub_pd(value, other.value)}; }
-
-    simd_type operator*(const simd_type &other) const { return simd_type{_mm512_mul_pd(value, other.value)}; }
-
-    simd_type operator/(const simd_type &other) const { return simd_type{_mm512_div_pd(value, other.value)}; }
+    friend simd_type operator/(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_div_pd(lhs.value, rhs.value)}; }
 
     simd_type &operator+=(const simd_type &other) {
-      value = (*this + other).value;
+      *this = *this + other;
       return *this;
     }
 
     simd_type &operator-=(const simd_type &other) {
-      value = (*this - other).value;
+      *this = *this - other;
       return *this;
     }
 
     simd_type &operator*=(const simd_type &other) {
-      value = (*this * other).value;
+      *this = *this * other;
       return *this;
     }
 
     simd_type &operator/=(const simd_type &other) {
-      value = (*this / other).value;
+      *this = *this / other;
       return *this;
     }
 
@@ -585,25 +625,27 @@ namespace nda {
     bool operator!=(const simd_type &other) const { return not(*this == other); }
 
     // Bitwise operators
-    simd_type operator^(const simd_type &other) const {
+    friend simd_type operator^(const simd_type &lhs, const simd_type &rhs) {
 #ifdef __AVX512DQ__
-      return simd_type{_mm512_xor_pd(value, other.value)};
+      return simd_type{_mm512_xor_pd(lhs.value, rhs.value)};
 #else
-      return simd_type{_mm512_castsi512_pd(_mm512_xor_si512(_mm512_castpd_si512(value), _mm512_castpd_si512(other.value)))};
+      return simd_type{_mm512_castsi512_pd(_mm512_xor_si512(_mm512_castpd_si512(lhs.value), _mm512_castpd_si512(rhs.value)))};
 #endif
     }
-    simd_type operator&(const simd_type &other) const {
+
+    friend simd_type operator&(const simd_type &lhs, const simd_type &rhs) {
 #ifdef __AVX512DQ__
-      return simd_type{_mm512_and_pd(value, other.value)};
+      return simd_type{_mm512_and_pd(lhs.value, rhs.value)};
 #else
-      return simd_type{_mm512_castsi512_pd(_mm512_and_si512(_mm512_castpd_si512(value), _mm512_castpd_si512(other.value)))};
+      return simd_type{_mm512_castsi512_pd(_mm512_and_si512(_mm512_castpd_si512(lhs.value), _mm512_castpd_si512(rhs.value)))};
 #endif
     }
-    simd_type operator|(const simd_type &other) const {
+
+    friend simd_type operator|(const simd_type &lhs, const simd_type &rhs) {
 #ifdef __AVX512DQ__
-      return simd_type{_mm512_or_pd(value, other.value)};
+      return simd_type{_mm512_or_pd(lhs.value, rhs.value)};
 #else
-      return simd_type{_mm512_castsi512_pd(_mm512_or_si512(_mm512_castpd_si512(value), _mm512_castpd_si512(other.value)))};
+      return simd_type{_mm512_castsi512_pd(_mm512_or_si512(_mm512_castpd_si512(lhs.value), _mm512_castpd_si512(rhs.value)))};
 #endif
     }
 
@@ -622,59 +664,77 @@ namespace nda {
       return *this;
     }
 
+    // Friend functions for mixed arithmetic: scalar on the right.
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator+(const U &other) {
-      return *this + simd_type(static_cast<value_t>(other));
+    friend simd_type operator+(const simd_type &lhs, const U &rhs) {
+      return lhs + simd_type(static_cast<value_t>(rhs));
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator-(const simd_type &lhs, const U &rhs) {
+      return lhs - simd_type(static_cast<value_t>(rhs));
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator*(const simd_type &lhs, const U &rhs) {
+      return lhs * simd_type(static_cast<value_t>(rhs));
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator/(const simd_type &lhs, const U &rhs) {
+      return lhs / simd_type(static_cast<value_t>(rhs));
     }
 
+    // Friend functions for mixed arithmetic: scalar on the left.
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator-(const U &other) {
-      return *this - simd_type(static_cast<value_t>(other));
+    friend simd_type operator+(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) + rhs;
     }
-
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator*(const U &other) {
-      return *this * simd_type(static_cast<value_t>(other));
+    friend simd_type operator-(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) - rhs;
     }
-
     template <typename U>
       requires std::is_arithmetic_v<U>
-    simd_type operator/(const U &other) {
-      return *this / simd_type(static_cast<value_t>(other));
+    friend simd_type operator*(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) * rhs;
+    }
+    template <typename U>
+      requires std::is_arithmetic_v<U>
+    friend simd_type operator/(const U &lhs, const simd_type &rhs) {
+      return simd_type(static_cast<value_t>(lhs)) / rhs;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator+=(const U &other) {
-      *this = *this + simd_type(static_cast<value_t>(other));
+      *this = *this + other;
       return *this;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator-=(const U &other) {
-      *this = *this - simd_type(static_cast<value_t>(other));
+      *this = *this - other;
       return *this;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator*=(const U &other) {
-      *this = *this * simd_type(static_cast<value_t>(other));
+      *this = *this * other;
       return *this;
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U>
     simd_type &operator/=(const U &other) {
-      *this = *this / simd_type(static_cast<value_t>(other));
+      *this = *this / other;
       return *this;
     }
-
-    operator intrinsic_t() const { return value; }
 
     simd_type operator-() const {
       const intrinsic_t mask = _mm512_castsi512_pd(_mm512_set1_epi64(0x8000000000000000ULL));
@@ -693,15 +753,34 @@ namespace nda {
     intrinsic_t value;
 
     public:
-    simd_type(intrinsic_t v) : value(v) {}
+    simd_type() {} //NOLINT
+
+    explicit simd_type(const intrinsic_t &v) : value(v) {}
+
+    simd_type(const value_t *v, simd_aligned_memory) : value(_mm512_load_ps(reinterpret_cast<const scalar_t *>(v))) {}
+
+    simd_type(const scalar_t *v, simd_aligned_memory) : value(_mm512_load_ps(v)) {}
+
+    simd_type(const value_t *v, simd_unaligned_memory) : value(_mm512_loadu_ps(reinterpret_cast<const scalar_t *>(v))) {}
+
+    simd_type(const scalar_t *v, simd_unaligned_memory) : value(_mm512_loadu_ps(v)) {}
+
+    simd_type(simd_zero_initialize) : value(_mm512_setzero_ps()) {}
+
+    simd_type(const std::array<value_t, 8> &v) : value(_mm512_loadu_ps(reinterpret_cast<const scalar_t *>(v.data()))) {}
+
+    simd_type(const std::array<scalar_t, 16> &v) : value(_mm512_loadu_ps(v.data())) {}
+
+    explicit simd_type(const value_t v)
+       : value(_mm512_set_ps(v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(),
+                             v.imag(), v.real(), v.imag(), v.real())) {}
+
+    simd_type(const scalar_t v) : value(_mm512_set1_ps(v)) {}
+
+    operator intrinsic_t() const { return value; }
 
     static constexpr size_t size() { return 8UL; };
     static constexpr size_t alignment() { return size() * sizeof(value_t); }
-
-    simd_type(const simd_type &other)            = default;
-    simd_type &operator=(const simd_type &other) = default;
-    simd_type(simd_type &&other)                 = default;
-    simd_type &operator=(simd_type &&other)      = default;
 
     void load(const scalar_t *from) { value = _mm512_load_ps(from); }
     void load(const value_t *from) { value = _mm512_load_ps(from); }
@@ -713,76 +792,49 @@ namespace nda {
     void store_unaligned(scalar_t *to) const { _mm512_storeu_ps(to, value); }
     void store_unaligned(value_t *to) const { _mm512_storeu_ps(to, value); }
 
-    simd_type() : value(_mm512_setzero_ps()) {}
+    friend simd_type operator+(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_add_ps(lhs.value, rhs.value)}; }
 
-    explicit simd_type(const value_t v)
-       : value(_mm512_set_ps(v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(),
-                             v.imag(), v.real(), v.imag(), v.real())) {}
+    friend simd_type operator-(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_sub_ps(lhs.value, rhs.value)}; }
 
-    explicit simd_type(const scalar_t v) : value(_mm512_set1_ps(v)) {}
-
-    explicit simd_type(const value_t *v) { load(v); }
-
-    explicit simd_type(const scalar_t *v) { load(v); }
-
-    simd_type(std::initializer_list<value_t> l) {
-#ifdef NDA_ENFORCE_BOUNDCHECK
-      if (l.size() != size()) {
-        throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
-                                 + " is not equal to size of register: " + std::to_string(size()));
-      }
-#endif
-      load_unaligned(l.begin());
-    }
-
-    simd_type(std::initializer_list<scalar_t> l) {
-#ifdef NDA_ENFORCE_BOUNDCHECK
-      if (l.size() != 2 * size()) {
-        throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
-                                 + " is not equal to size of register: " + std::to_string(size() * 2));
-      }
-#endif
-      load_unaligned(l.begin());
-    }
-
-    simd_type operator+(const simd_type &other) const { return simd_type{_mm512_add_ps(value, other.value)}; }
-    simd_type operator-(const simd_type &other) const { return simd_type{_mm512_sub_ps(value, other.value)}; }
-    simd_type operator*(const simd_type &other) const {
-      const intrinsic_t tmp2   = _mm512_mul_ps(_mm512_movehdup_ps(value), _mm512_permute_ps(other.value, NDA_SHUFFLE_MASK4(1, 0, 3, 2)));
-      const intrinsic_t result = _mm512_fmaddsub_ps(_mm512_moveldup_ps(value), other.value, tmp2);
+    friend simd_type operator*(const simd_type &lhs, const simd_type &rhs) {
+      const intrinsic_t tmp2   = _mm512_mul_ps(_mm512_movehdup_ps(lhs.value), _mm512_permute_ps(rhs.value, NDA_SHUFFLE_MASK4(1, 0, 3, 2)));
+      const intrinsic_t result = _mm512_fmaddsub_ps(_mm512_moveldup_ps(lhs.value), rhs.value, tmp2);
       return simd_type{result};
     }
 
-    simd_type operator/(const simd_type &other) const {
-      // a+bi / c+di = (a+bi) * (c-di) = (ac+bd) (bc-bd)
+    friend simd_type operator/(const simd_type &lhs, const simd_type &rhs) {
       const intrinsic_t mask =
          _mm512_castsi512_ps(_mm512_setr_epi32(0x00000000, 0x80000000, 0x00000000, 0x80000000, 0x00000000, 0x80000000, 0x00000000, 0x80000000,
                                                0x00000000, 0x80000000, 0x00000000, 0x80000000, 0x00000000, 0x80000000, 0x00000000, 0x80000000));
 #ifdef __AVX512DQ__
-      const simd_type conj(_mm512_xor_ps(other.value, mask));
+      const simd_type conj(_mm512_xor_ps(rhs.value, mask));
 #else
-      const simd_type conj(_mm512_castsi512_ps(_mm512_xor_si512(_mm512_castps_si512(x), _mm512_castps_si512(mask))));
+      const simd_type conj(_mm512_castsi512_ps(_mm512_xor_si512(_mm512_castps_si512(rhs.value), _mm512_castps_si512(mask))));
 #endif
-      const simd_type upper   = (*this) * conj;
-      const intrinsic_t flip  = _mm512_permute_ps(other.value, NDA_SHUFFLE_MASK4(1, 0, 3, 2));
-      const intrinsic_t lower = _mm512_fmadd_ps(other.value, other.value, _mm512_mul_ps(flip, flip));
+      const simd_type upper  = lhs * conj;
+      const intrinsic_t flip = _mm512_permute_ps(rhs.value, NDA_SHUFFLE_MASK4(1, 0, 3, 2));
+#ifdef __FMA__
+      const intrinsic_t lower = _mm512_fmadd_ps(rhs.value, rhs.value, _mm512_mul_ps(flip, flip));
+#else
+      const intrinsic_t lower = _mm512_add_ps(_mm512_mul_ps(rhs.value, rhs.value), _mm512_mul_ps(flip, flip));
+#endif
       return simd_type{_mm512_div_ps(upper.value, lower)};
     }
 
     simd_type &operator+=(const simd_type &other) {
-      value = (*this + other).value;
+      *this = *this + other;
       return *this;
     }
     simd_type &operator-=(const simd_type &other) {
-      value = (*this - other).value;
+      *this = *this - other;
       return *this;
     }
     simd_type &operator*=(const simd_type &other) {
-      value = (*this * other).value;
+      *this = *this * other;
       return *this;
     }
     simd_type &operator/=(const simd_type &other) {
-      value = (*this / other).value;
+      *this = *this / other;
       return *this;
     }
 
@@ -793,26 +845,27 @@ namespace nda {
 
     bool operator!=(const simd_type &other) const { return not(*this == other); }
 
-    // Bitwise operators
-    simd_type operator^(const simd_type &other) const {
+    friend simd_type operator^(const simd_type &lhs, const simd_type &rhs) {
 #ifdef __AVX512DQ__
-      return simd_type{_mm512_xor_ps(value, other.value)};
+      return simd_type{_mm512_xor_ps(lhs.value, rhs.value)};
 #else
-      return simd_type{_mm512_castsi512_ps(_mm512_xor_si512(_mm512_castps_si512(value), _mm512_castps_si512(other.value)))};
+      return simd_type{_mm512_castsi512_ps(_mm512_xor_si512(_mm512_castps_si512(lhs.value), _mm512_castps_si512(rhs.value)))};
 #endif
     }
-    simd_type operator&(const simd_type &other) const {
+
+    friend simd_type operator&(const simd_type &lhs, const simd_type &rhs) {
 #ifdef __AVX512DQ__
-      return simd_type{_mm512_and_ps(value, other.value)};
+      return simd_type{_mm512_and_ps(lhs.value, rhs.value)};
 #else
-      return simd_type{_mm512_castsi512_ps(_mm512_and_si512(_mm512_castps_si512(value), _mm512_castps_si512(other.value)))};
+      return simd_type{_mm512_castsi512_ps(_mm512_and_si512(_mm512_castps_si512(lhs.value), _mm512_castps_si512(rhs.value)))};
 #endif
     }
-    simd_type operator|(const simd_type &other) const {
+
+    friend simd_type operator|(const simd_type &lhs, const simd_type &rhs) {
 #ifdef __AVX512DQ__
-      return simd_type{_mm512_or_ps(value, other.value)};
+      return simd_type{_mm512_or_ps(lhs.value, rhs.value)};
 #else
-      return simd_type{_mm512_castsi512_ps(_mm512_or_si512(_mm512_castps_si512(value), _mm512_castps_si512(other.value)))};
+      return simd_type{_mm512_castsi512_ps(_mm512_or_si512(_mm512_castps_si512(lhs.value), _mm512_castps_si512(rhs.value)))};
 #endif
     }
 
@@ -833,41 +886,81 @@ namespace nda {
 
     template <typename U>
       requires std::is_arithmetic_v<U> or is_complex_v<U>
-    simd_type operator+(const U &other) {
+    friend simd_type operator+(const simd_type &lhs, const U &rhs) {
       if constexpr (std::is_arithmetic_v<U>) {
-        return *this + simd_type(value_t(other, U{}));
+        return lhs + simd_type(value_t(rhs, U{}));
       } else {
-        return *this + simd_type(static_cast<value_t>(other));
+        return lhs + simd_type(static_cast<value_t>(rhs));
       }
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U> or is_complex_v<U>
-    simd_type operator-(const U &other) {
+    friend simd_type operator+(const U &lhs, const simd_type &rhs) {
       if constexpr (std::is_arithmetic_v<U>) {
-        return *this - simd_type(value_t(other, U{}));
+        return simd_type(value_t(lhs, U{})) + rhs;
       } else {
-        return *this - simd_type(static_cast<value_t>(other));
+        return simd_type(static_cast<value_t>(lhs)) + rhs;
       }
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U> or is_complex_v<U>
-    simd_type operator*(const U &other) {
+    friend simd_type operator-(const simd_type &lhs, const U &rhs) {
       if constexpr (std::is_arithmetic_v<U>) {
-        return simd_type(_mm512_mul_ps(value, _mm512_set1_ps(static_cast<scalar_t>(other))));
+        return lhs - simd_type(value_t(rhs, U{}));
       } else {
-        return *this * simd_type(static_cast<value_t>(other));
+        return lhs - simd_type(static_cast<value_t>(rhs));
       }
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U> or is_complex_v<U>
-    simd_type operator/(const U &other) {
+    friend simd_type operator-(const U &lhs, const simd_type &rhs) {
       if constexpr (std::is_arithmetic_v<U>) {
-        return simd_type(_mm512_div_ps(value, _mm512_set1_ps(static_cast<scalar_t>(other))));
+        return simd_type(value_t(lhs, U{})) - rhs;
       } else {
-        return *this / simd_type(static_cast<value_t>(other));
+        return simd_type(static_cast<value_t>(lhs)) - rhs;
+      }
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    friend simd_type operator*(const simd_type &lhs, const U &rhs) {
+      if constexpr (std::is_arithmetic_v<U>) {
+        return simd_type(_mm512_mul_ps(lhs.value, _mm512_set1_ps(static_cast<scalar_t>(rhs))));
+      } else {
+        return lhs * simd_type(static_cast<value_t>(rhs));
+      }
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    friend simd_type operator*(const U &lhs, const simd_type &rhs) {
+      if constexpr (std::is_arithmetic_v<U>) {
+        return simd_type(_mm512_mul_ps(_mm512_set1_ps(static_cast<scalar_t>(lhs)), rhs.value));
+      } else {
+        return simd_type(static_cast<value_t>(lhs)) * rhs;
+      }
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    friend simd_type operator/(const simd_type &lhs, const U &rhs) {
+      if constexpr (std::is_arithmetic_v<U>) {
+        return simd_type(_mm512_div_ps(lhs.value, _mm512_set1_ps(static_cast<scalar_t>(rhs))));
+      } else {
+        return lhs / simd_type(static_cast<value_t>(rhs));
+      }
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    friend simd_type operator/(const U &lhs, const simd_type &rhs) {
+      if constexpr (std::is_arithmetic_v<U>) {
+        return simd_type(value_t(lhs, U{})) / rhs;
+      } else {
+        return simd_type(static_cast<value_t>(lhs)) / rhs;
       }
     }
 
@@ -898,8 +991,6 @@ namespace nda {
       *this = *this / other;
       return *this;
     }
-
-    operator intrinsic_t() const { return value; }
 
     simd_type operator-() const {
       const intrinsic_t mask = _mm512_castsi512_ps(_mm512_set1_epi32(0x80000000));
@@ -918,15 +1009,32 @@ namespace nda {
     intrinsic_t value;
 
     public:
-    simd_type(intrinsic_t v) : value(v) {}
+    simd_type() {} //NOLINT
+
+    explicit simd_type(const intrinsic_t &v) : value(v) {}
+
+    simd_type(const value_t *v, simd_aligned_memory) : value(_mm512_load_pd(v)) {}
+
+    simd_type(const scalar_t *v, simd_aligned_memory) : value(_mm512_load_pd(v)) {}
+
+    simd_type(const value_t *v, simd_unaligned_memory) : value(_mm512_loadu_pd(v)) {}
+
+    simd_type(const scalar_t *v, simd_unaligned_memory) : value(_mm512_loadu_pd(v)) {}
+
+    simd_type(simd_zero_initialize) : value(_mm512_setzero_pd()) {}
+
+    simd_type(const std::array<value_t, 4> &v) : value(_mm512_loadu_pd(v.data())) {}
+
+    simd_type(const std::array<scalar_t, 8> &v) : value(_mm512_loadu_pd(v.data())) {}
+
+    simd_type(const value_t v) : value(_mm512_set_pd(v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real())) {}
+
+    simd_type(const scalar_t v) : value(_mm512_set1_pd(v)) {}
+
+    operator intrinsic_t() const { return value; }
 
     static constexpr size_t size() { return 4UL; };
     static constexpr size_t alignment() { return size() * sizeof(value_t); }
-
-    simd_type(const simd_type &other)            = default;
-    simd_type &operator=(const simd_type &other) = default;
-    simd_type(simd_type &&other)                 = default;
-    simd_type &operator=(simd_type &&other)      = default;
 
     void load(const scalar_t *from) { value = _mm512_load_pd(from); }
     void load(const value_t *from) { value = _mm512_load_pd(from); }
@@ -940,78 +1048,54 @@ namespace nda {
     void store_unaligned(scalar_t *to) const { _mm512_storeu_pd(to, value); }
     void store_unaligned(value_t *to) const { _mm512_storeu_pd(to, value); }
 
-    simd_type() : value(_mm512_setzero_pd()) {}
+    friend simd_type operator+(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_add_pd(lhs.value, rhs.value)}; }
 
-    explicit simd_type(const value_t v) : value(_mm512_set_pd(v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real(), v.imag(), v.real())) {}
+    friend simd_type operator-(const simd_type &lhs, const simd_type &rhs) { return simd_type{_mm512_sub_pd(lhs.value, rhs.value)}; }
 
-    explicit simd_type(const scalar_t v) : value(_mm512_set1_pd(v)) {}
-
-    explicit simd_type(const value_t *v) { load(v); }
-
-    explicit simd_type(const scalar_t *v) { load(v); }
-
-    simd_type(std::initializer_list<value_t> l) {
-#ifdef NDA_ENFORCE_BOUNDCHECK
-      if (l.size() != size()) {
-        throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
-                                 + " is not equal to size of register: " + std::to_string(size()));
-      }
-#endif
-      load_unaligned(l.begin());
-    }
-
-    simd_type(std::initializer_list<scalar_t> l) {
-#ifdef NDA_ENFORCE_BOUNDCHECK
-      if (l.size() != 2 * size()) {
-        throw std::runtime_error("Size of the initializer list: " + std::to_string(l.size())
-                                 + " is not equal to size of register: " + std::to_string(size() * 2));
-      }
-#endif
-      load_unaligned(l.begin());
-    }
-
-    simd_type operator+(const simd_type &other) const { return simd_type{_mm512_add_pd(value, other.value)}; }
-    simd_type operator-(const simd_type &other) const { return simd_type{_mm512_sub_pd(value, other.value)}; }
-    simd_type operator*(const simd_type &other) const {
-      const intrinsic_t tmp1   = _mm512_shuffle_pd(value, value, 0x0);
-      const intrinsic_t tmp2   = _mm512_shuffle_pd(value, value, 0xFF);
-      const intrinsic_t tmp3   = _mm512_shuffle_pd(other.value, other.value, 0x55);
+    friend simd_type operator*(const simd_type &lhs, const simd_type &rhs) {
+      const intrinsic_t tmp1   = _mm512_shuffle_pd(lhs.value, lhs.value, 0x0);
+      const intrinsic_t tmp2   = _mm512_shuffle_pd(lhs.value, lhs.value, 0xFF);
+      const intrinsic_t tmp3   = _mm512_shuffle_pd(rhs.value, rhs.value, 0x55);
       const intrinsic_t odd    = _mm512_mul_pd(tmp2, tmp3);
-      const intrinsic_t result = _mm512_fmaddsub_pd(tmp1, other.value, odd);
+      const intrinsic_t result = _mm512_fmaddsub_pd(tmp1, rhs.value, odd);
       return simd_type{result};
     }
-    simd_type operator/(const simd_type &other) const {
-      // a+bi / c+di = (a+bi) * (c-di) = (ac+bd) (bc-ad)
+
+    friend simd_type operator/(const simd_type &lhs, const simd_type &rhs) {
       const intrinsic_t mask = _mm512_castsi512_pd(
          _mm512_set_epi32(0x80000000, 0x0, 0x0, 0x0, 0x80000000, 0x0, 0x0, 0x0, 0x80000000, 0x0, 0x0, 0x0, 0x80000000, 0x0, 0x0, 0x0));
 #ifdef __AVX512DQ__
-      const simd_type conj(_mm512_xor_pd(other.value, mask));
+      const simd_type conj(_mm512_xor_pd(rhs.value, mask));
 #else
-      const simd_type conj(_mm512_castsi512_pd(_mm512_xor_si512(_mm512_castps_si512(x), _mm512_castpd_si512(mask))));
+      const simd_type conj(_mm512_castsi512_pd(_mm512_xor_si512(_mm512_castps_si512(rhs.value), _mm512_castpd_si512(mask))));
 #endif
-      const simd_type upper   = (*this) * conj;
-      const intrinsic_t flip  = _mm512_permute_pd(other.value, 0x55);
-      const intrinsic_t lower = _mm512_fmadd_pd(other.value, other.value, _mm512_mul_pd(flip, flip));
+      const simd_type upper  = lhs * conj;
+      const intrinsic_t flip = _mm512_permute_pd(rhs.value, 0x55);
+#ifdef __FMA__
+      const intrinsic_t lower = _mm512_fmadd_pd(rhs.value, rhs.value, _mm512_mul_pd(flip, flip));
+#else
+      const intrinsic_t lower = _mm512_add_pd(_mm512_mul_pd(rhs.value, rhs.value), _mm512_mul_pd(flip, flip));
+#endif
       return simd_type{_mm512_div_pd(upper.value, lower)};
     }
 
     simd_type &operator+=(const simd_type &other) {
-      value = (*this + other).value;
+      *this = *this + other;
       return *this;
     }
 
     simd_type &operator-=(const simd_type &other) {
-      value = (*this - other).value;
+      *this = *this - other;
       return *this;
     }
 
     simd_type &operator*=(const simd_type &other) {
-      value = (*this * other).value;
+      *this = *this * other;
       return *this;
     }
 
     simd_type &operator/=(const simd_type &other) {
-      value = (*this / other).value;
+      *this = *this / other;
       return *this;
     }
 
@@ -1023,25 +1107,27 @@ namespace nda {
     bool operator!=(const simd_type &other) const { return not(*this == other); }
 
     // Bitwise operators
-    simd_type operator^(const simd_type &other) const {
+    friend simd_type operator^(const simd_type &lhs, const simd_type &rhs) {
 #ifdef __AVX512DQ__
-      return simd_type{_mm512_xor_pd(value, other.value)};
+      return simd_type{_mm512_xor_pd(lhs.value, rhs.value)};
 #else
-      return simd_type{_mm512_castsi512_pd(_mm512_xor_si512(_mm512_castpd_si512(value), _mm512_castpd_si512(other.value)))};
+      return simd_type{_mm512_castsi512_pd(_mm512_xor_si512(_mm512_castpd_si512(lhs.value), _mm512_castpd_si512(rhs.value)))};
 #endif
     }
-    simd_type operator&(const simd_type &other) const {
+
+    friend simd_type operator&(const simd_type &lhs, const simd_type &rhs) {
 #ifdef __AVX512DQ__
-      return simd_type{_mm512_and_pd(value, other.value)};
+      return simd_type{_mm512_and_pd(lhs.value, rhs.value)};
 #else
-      return simd_type{_mm512_castsi512_pd(_mm512_and_si512(_mm512_castpd_si512(value), _mm512_castpd_si512(other.value)))};
+      return simd_type{_mm512_castsi512_pd(_mm512_and_si512(_mm512_castpd_si512(lhs.value), _mm512_castpd_si512(rhs.value)))};
 #endif
     }
-    simd_type operator|(const simd_type &other) const {
+
+    friend simd_type operator|(const simd_type &lhs, const simd_type &rhs) {
 #ifdef __AVX512DQ__
-      return simd_type{_mm512_or_pd(value, other.value)};
+      return simd_type{_mm512_or_pd(lhs.value, rhs.value)};
 #else
-      return simd_type{_mm512_castsi512_pd(_mm512_or_si512(_mm512_castpd_si512(value), _mm512_castpd_si512(other.value)))};
+      return simd_type{_mm512_castsi512_pd(_mm512_or_si512(_mm512_castpd_si512(lhs.value), _mm512_castpd_si512(rhs.value)))};
 #endif
     }
 
@@ -1061,42 +1147,82 @@ namespace nda {
     }
 
     template <typename U>
-      requires std::is_arithmetic_v<U> or is_complex_v<U>
-    simd_type operator+(const U &other) {
+      requires(std::is_arithmetic_v<U> || is_complex_v<U>)
+    friend simd_type operator+(const simd_type &lhs, const U &rhs) {
       if constexpr (std::is_arithmetic_v<U>) {
-        return *this + simd_type(value_t(other, U{}));
+        return lhs + simd_type(value_t(rhs, U{}));
       } else {
-        return *this + simd_type(static_cast<value_t>(other));
+        return lhs + simd_type(static_cast<value_t>(rhs));
       }
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U> or is_complex_v<U>
-    simd_type operator-(const U &other) {
+    friend simd_type operator+(const U &lhs, const simd_type &rhs) {
       if constexpr (std::is_arithmetic_v<U>) {
-        return *this - simd_type(value_t(other, U{}));
+        return simd_type(value_t(lhs, U{})) + rhs;
       } else {
-        return *this - simd_type(static_cast<value_t>(other));
+        return simd_type(static_cast<value_t>(lhs)) + rhs;
       }
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U> or is_complex_v<U>
-    simd_type operator*(const U &other) {
+    friend simd_type operator-(const simd_type &lhs, const U &rhs) {
       if constexpr (std::is_arithmetic_v<U>) {
-        return simd_type(_mm512_mul_pd(value, _mm512_set1_pd(static_cast<scalar_t>(other))));
+        return lhs - simd_type(value_t(rhs, U{}));
       } else {
-        return *this * simd_type(static_cast<value_t>(other));
+        return lhs - simd_type(static_cast<value_t>(rhs));
       }
     }
 
     template <typename U>
       requires std::is_arithmetic_v<U> or is_complex_v<U>
-    simd_type operator/(const U &other) {
+    friend simd_type operator-(const U &lhs, const simd_type &rhs) {
       if constexpr (std::is_arithmetic_v<U>) {
-        return simd_type(_mm512_div_pd(value, _mm512_set1_pd(static_cast<scalar_t>(other))));
+        return simd_type(value_t(lhs, U{})) - rhs;
       } else {
-        return *this / simd_type(static_cast<value_t>(other));
+        return simd_type(static_cast<value_t>(lhs)) - rhs;
+      }
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    friend simd_type operator*(const simd_type &lhs, const U &rhs) {
+      if constexpr (std::is_arithmetic_v<U>) {
+        return simd_type(_mm512_mul_pd(lhs.value, _mm512_set1_pd(static_cast<scalar_t>(rhs))));
+      } else {
+        return lhs * simd_type(static_cast<value_t>(rhs));
+      }
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    friend simd_type operator*(const U &lhs, const simd_type &rhs) {
+      if constexpr (std::is_arithmetic_v<U>) {
+        return simd_type(_mm512_mul_pd(_mm512_set1_pd(static_cast<scalar_t>(lhs)), rhs.value));
+      } else {
+        return simd_type(static_cast<value_t>(lhs)) * rhs;
+      }
+    }
+
+    template <typename U>
+      requires std::is_arithmetic_v<U> or is_complex_v<U>
+    friend simd_type operator/(const simd_type &lhs, const U &rhs) {
+      if constexpr (std::is_arithmetic_v<U>) {
+        return simd_type(_mm512_div_pd(lhs.value, _mm512_set1_pd(static_cast<scalar_t>(rhs))));
+      } else {
+        return lhs / simd_type(static_cast<value_t>(rhs));
+      }
+    }
+
+    template <typename U>
+      requires(std::is_arithmetic_v<U> || is_complex_v<U>)
+    friend simd_type operator/(const U &lhs, const simd_type &rhs) {
+      if constexpr (std::is_arithmetic_v<U>) {
+        return simd_type(value_t(lhs, U{})) / rhs;
+      } else {
+        return simd_type(static_cast<value_t>(lhs)) / rhs;
       }
     }
 
@@ -1127,8 +1253,6 @@ namespace nda {
       *this = *this / other;
       return *this;
     }
-
-    operator intrinsic_t() const { return value; }
 
     simd_type operator-() const {
       const intrinsic_t mask = _mm512_castsi512_pd(_mm512_set1_epi64(0x8000000000000000ULL));

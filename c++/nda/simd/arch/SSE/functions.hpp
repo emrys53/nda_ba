@@ -44,22 +44,22 @@ namespace nda::simd {
   // Conj functions
   template <>
   inline simd_i4 conj(const simd_i4 &x) {
-    return simd_i4(x);
+    return x;
   }
 
   template <>
   inline simd_f4 conj(const simd_f4 &x) {
-    return simd_f4(x);
+    return x;
   }
 
   template <>
   inline simd_l2 conj(const simd_l2 &x) {
-    return simd_l2(x);
+    return x;
   }
 
   template <>
   inline simd_d2 conj(const simd_d2 &x) {
-    return simd_d2(x);
+    return x;
   }
 
   template <>
@@ -103,7 +103,7 @@ namespace nda::simd {
     y.store(b.data());
     c[0] = std::min(a[0], b[0]);
     c[1] = std::min(a[1], b[1]);
-    return simd_l2{c.data()};
+    return simd_l2{c.data(), simd_aligned_memory_t};
   }
 
   template <>
@@ -135,7 +135,7 @@ namespace nda::simd {
     y.store(b.data());
     c[0] = std::max(a[0], b[0]);
     c[1] = std::max(a[1], b[1]);
-    return simd_l2{c.data()};
+    return simd_l2{c.data(), simd_aligned_memory_t};
   }
 
   template <>

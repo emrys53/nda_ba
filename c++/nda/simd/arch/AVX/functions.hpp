@@ -38,22 +38,22 @@ namespace nda::simd {
   // Conjugate functions
   template <>
   inline simd_i8 conj(const simd_i8 &x) {
-    return simd_i8(x);
+    return x;
   }
 
   template <>
   inline simd_l4 conj(const simd_l4 &x) {
-    return simd_l4(x);
+    return x;
   }
 
   template <>
   inline simd_f8 conj(const simd_f8 &x) {
-    return simd_f8(x);
+    return x;
   }
 
   template <>
   inline simd_d4 conj(const simd_d4 &x) {
-    return simd_d4(x);
+    return x;
   }
   template <>
   inline simd_cf4 conj(const simd_cf4 &x) {

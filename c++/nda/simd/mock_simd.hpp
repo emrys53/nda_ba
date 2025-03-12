@@ -42,9 +42,7 @@ namespace nda::simd {
       auto array_tuple                  = make_array_tuple(std::make_index_sequence<args_size>{}, args_tuple);
       alignas(simd_t::alignment()) std::array<value_t, simd_t::size()> result_array;
       result_array = apply_function(std::make_index_sequence<args_size>{}, array_tuple);
-      simd_t result;
-      result.load(result_array.data());
-      return result;
+      return simd_t(result_array.data(), simd_aligned_memory_t);
     }
   };
 } // namespace nda::simd

@@ -9,6 +9,14 @@ namespace nda {
   template <typename T, size_t Width, abi_tag ABI>
   class simd_type;
 
+  struct simd_aligned_memory {};
+  struct simd_unaligned_memory {};
+  struct simd_zero_initialize {};
+
+  static constexpr inline simd_aligned_memory simd_aligned_memory_t;
+  static constexpr inline simd_unaligned_memory simd_unaligned_memory_t;
+  static constexpr inline simd_zero_initialize simd_zero_initialize_t;
+
   using simd_f1    = simd_type<float, 1, abi_tag::Default>;
   using simd_d1    = simd_type<double, 1, abi_tag::Default>;
   using simd_i1    = simd_type<int32_t, 1, abi_tag::Default>;

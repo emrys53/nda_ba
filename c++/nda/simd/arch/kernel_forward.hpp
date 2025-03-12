@@ -3,5 +3,5 @@
 #include <array>
 namespace nda::simd {
   template <typename T>
-  inline std::array<T, T::size()> kernel_transpose(const std::array<T, T::size()> &simd_block);
+  inline void kernel_transpose(std::array<T, T::size()> &simd_block);
 }

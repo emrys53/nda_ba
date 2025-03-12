@@ -281,12 +281,11 @@ FORCEINLINE  native_simd<ValueType> load(Args... idx) const {
   static_assert(Vectorizable<ValueType>, "Load function is called with a type that is not a vectorizable type");
   const long offset = lay(idx...);
   if constexpr(is_aligned and is_padded) {
-    return native_simd<ValueType>(data()+offset);
+    return native_simd<ValueType>(data()+offset, simd_aligned_memory_t);
   }
   else {
-    native_simd<ValueType> tmp;
-    tmp.load_unaligned(data()+offset);
-    return tmp;
+    return native_simd<ValueType>(data()+offset, simd_unaligned_memory_t);
+
   }
 }
 
