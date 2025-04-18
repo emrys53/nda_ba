@@ -1905,5 +1905,4 @@ struct adder_simd : simd::mock_simd<adder_simd<T>, T> {
 };
 
 TEST(NDA, OurSIMD) {
-
 }
