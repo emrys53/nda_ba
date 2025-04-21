@@ -26,7 +26,7 @@
     </tr>
     <tr>
       <th scope="row">Date:</th>
-      <td>2025-03-12 01:13:01</td>
+      <td>2025-04-21 15:11:28</td>
     </tr>
   </table>
 </div>
@@ -78,105 +78,105 @@
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">// Copyright (c) 2019-2024 Simons Foundation</span></td>
+      <td class="src "><span class="c1">// Copyright (c) 2019--present, The Simons Foundation</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l2" href="#l2">2</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">//</span></td>
+      <td class="src "><span class="c1">// This file is part of TRIQS/nda and is licensed under the Apache License, Version 2.0.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l3" href="#l3">3</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></td>
+      <td class="src "><span class="c1">// SPDX-License-Identifier: Apache-2.0</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l4" href="#l4">4</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">// you may not use this file except in compliance with the License.</span></td>
+      <td class="src "><span class="c1">// See LICENSE in the root of this distribution for details.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l5" href="#l5">5</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">// You may obtain a copy of the License at</span></td>
+      <td class="src "></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l6" href="#l6">6</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">//</span></td>
+      <td class="src "><span class="cm">/**</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l7" href="#l7">7</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">//     http://www.apache.org/licenses/LICENSE-2.0.txt</span></td>
+      <td class="src "><span class="cm"> * @file</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l8" href="#l8">8</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">//</span></td>
+      <td class="src "><span class="cm"> * @brief Defines accessors for nda::array objects (cf. std::default_accessor).</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l9" href="#l9">9</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">// Unless required by applicable law or agreed to in writing, software</span></td>
+      <td class="src "><span class="cm"> */</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l10" href="#l10">10</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">// distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></td>
+      <td class="src "></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l11" href="#l11">11</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></td>
+      <td class="src "><span class="cp">#pragma once</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l12" href="#l12">12</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">// See the License for the specific language governing permissions and</span></td>
+      <td class="src "></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l13" href="#l13">13</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">// limitations under the License.</span></td>
+      <td class="src "><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;./macros.hpp&quot;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l14" href="#l14">14</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">//</span></td>
+      <td class="src "></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l15" href="#l15">15</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="c1">// Authors: Thomas Hahn, Olivier Parcollet, Nils Wentzell</span></td>
+      <td class="src "><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstddef&gt;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l16" href="#l16">16</a></td>
@@ -190,42 +190,42 @@
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">/**</span></td>
+      <td class="src "><span class="k">namespace</span><span class="w"> </span><span class="nn">nda</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l18" href="#l18">18</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm"> * @file</span></td>
+      <td class="src "></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l19" href="#l19">19</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm"> * @brief Defines accessors for nda::array objects (cf. std::default_accessor).</span></td>
+      <td class="src "><span class="w">  </span><span class="cm">/**</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l20" href="#l20">20</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm"> */</span></td>
+      <td class="src "><span class="cm">   * @addtogroup av_utils</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l21" href="#l21">21</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "></td>
+      <td class="src "><span class="cm">   * @{</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l22" href="#l22">22</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cp">#pragma once</span></td>
+      <td class="src "><span class="cm">   */</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l23" href="#l23">23</a></td>
@@ -239,70 +239,70 @@
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;./macros.hpp&quot;</span></td>
+      <td class="src "><span class="w">  </span><span class="c1">/// Default accessor for various array and view types.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l25" href="#l25">25</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "></td>
+      <td class="src "><span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">default_accessor</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l26" href="#l26">26</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstddef&gt;</span></td>
+      <td class="src "><span class="w">    </span><span class="cm">/**</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l27" href="#l27">27</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "></td>
+      <td class="src "><span class="cm">     * @brief Accessor type of the nda::default_accessor.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l28" href="#l28">28</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="k">namespace</span><span class="w"> </span><span class="nn">nda</span><span class="w"> </span><span class="p">{</span></td>
+      <td class="src "><span class="cm">     * @tparam T Value type of the data.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l29" href="#l29">29</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "></td>
+      <td class="src "><span class="cm">     */</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l30" href="#l30">30</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="cm">/**</span></td>
+      <td class="src "><span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l31" href="#l31">31</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   * @addtogroup av_utils</span></td>
+      <td class="src "><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">accessor</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l32" href="#l32">32</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   * @{</span></td>
+      <td class="src "><span class="w">      </span><span class="c1">/// Value type of the data.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l33" href="#l33">33</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">   */</span></td>
+      <td class="src "><span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">element_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l34" href="#l34">34</a></td>
@@ -316,186 +316,109 @@
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="c1">/// Default accessor for various array and view types.</span></td>
+      <td class="src "><span class="w">      </span><span class="c1">/// Pointer type to the data.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l36" href="#l36">36</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">default_accessor</span><span class="w"> </span><span class="p">{</span></td>
+      <td class="src "><span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">*</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l37" href="#l37">37</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">    </span><span class="cm">/**</span></td>
+      <td class="src "></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l38" href="#l38">38</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">     * @brief Accessor type of the nda::default_accessor.</span></td>
+      <td class="src "><span class="w">      </span><span class="c1">/// Reference type to the data.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l39" href="#l39">39</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">     * @tparam T Value type of the data.</span></td>
+      <td class="src "><span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">reference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">&amp;</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l40" href="#l40">40</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">     */</span></td>
+      <td class="src "></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l41" href="#l41">41</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span></td>
+      <td class="src "><span class="w">      </span><span class="cm">/**</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l42" href="#l42">42</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">accessor</span><span class="w"> </span><span class="p">{</span></td>
+      <td class="src "><span class="cm">       * @brief Access a specific element of the data.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l43" href="#l43">43</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="c1">/// Value type of the data.</span></td>
+      <td class="src "><span class="cm">       *</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l44" href="#l44">44</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">element_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="p">;</span></td>
+      <td class="src "><span class="cm">       * @param p Pointer to the data.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l45" href="#l45">45</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "></td>
+      <td class="src "><span class="cm">       * @param i Index of the element to access.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l46" href="#l46">46</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="c1">/// Pointer type to the data.</span></td>
+      <td class="src "><span class="cm">       * @return Reference to the element.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l47" href="#l47">47</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">*</span><span class="p">;</span></td>
+      <td class="src "><span class="cm">       */</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l48" href="#l48">48</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l49" href="#l49">49</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="c1">/// Reference type to the data.</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l50" href="#l50">50</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">reference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">&amp;</span><span class="p">;</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l51" href="#l51">51</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l52" href="#l52">52</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="cm">/**</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l53" href="#l53">53</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @brief Access a specific element of the data.</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l54" href="#l54">54</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="cm">       *</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l55" href="#l55">55</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @param p Pointer to the data.</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l56" href="#l56">56</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @param i Index of the element to access.</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l57" href="#l57">57</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @return Reference to the element.</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l58" href="#l58">58</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="cm">       */</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l59" href="#l59">59</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
       <td class="src "><span class="w">      </span><span class="n">FORCEINLINE</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">reference</span><span class="w"> </span><span class="n">access</span><span class="p">(</span><span class="n">pointer</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
-      <td class="lineno"><a id="l60" href="#l60">60</a></td>
+      <td class="lineno"><a id="l49" href="#l49">49</a></td>
       <td class="linebranch">
         <details class="linebranchDetails">
           <summary class="linebranchSummary">478/974</summary>
           <div class="linebranchContents">
             <div class="notTakenBranch">&cross; Branch 0 not taken.</div>
-            <div class="takenBranch">&check; Branch 1 taken 2092 times.</div>
+            <div class="takenBranch">&check; Branch 1 taken 3100 times.</div>
             <div class="notTakenBranch">&cross; Branch 10 not taken.</div>
-            <div class="takenBranch">&check; Branch 11 taken 1920 times.</div>
+            <div class="takenBranch">&check; Branch 11 taken 2928 times.</div>
             <div class="notTakenBranch">&cross; Branch 20 not taken.</div>
             <div class="takenBranch">&check; Branch 21 taken 1866 times.</div>
             <div class="notTakenBranch">&cross; Branch 30 not taken.</div>
@@ -511,27 +434,27 @@
             <div class="notTakenBranch">&cross; Branch 80 not taken.</div>
             <div class="takenBranch">&check; Branch 81 taken 164788 times.</div>
             <div class="notTakenBranch">&cross; Branch 90 not taken.</div>
-            <div class="takenBranch">&check; Branch 91 taken 1760 times.</div>
+            <div class="takenBranch">&check; Branch 91 taken 2432 times.</div>
             <div class="notTakenBranch">&cross; Branch 100 not taken.</div>
-            <div class="takenBranch">&check; Branch 101 taken 2439 times.</div>
+            <div class="takenBranch">&check; Branch 101 taken 2775 times.</div>
             <div class="notTakenBranch">&cross; Branch 110 not taken.</div>
-            <div class="takenBranch">&check; Branch 111 taken 2164 times.</div>
+            <div class="takenBranch">&check; Branch 111 taken 2548 times.</div>
             <div class="notTakenBranch">&cross; Branch 120 not taken.</div>
             <div class="takenBranch">&check; Branch 121 taken 1609 times.</div>
             <div class="notTakenBranch">&cross; Branch 130 not taken.</div>
             <div class="takenBranch">&check; Branch 131 taken 1710 times.</div>
             <div class="notTakenBranch">&cross; Branch 140 not taken.</div>
-            <div class="takenBranch">&check; Branch 141 taken 2045 times.</div>
+            <div class="takenBranch">&check; Branch 141 taken 1949 times.</div>
             <div class="notTakenBranch">&cross; Branch 150 not taken.</div>
-            <div class="takenBranch">&check; Branch 151 taken 1851 times.</div>
+            <div class="takenBranch">&check; Branch 151 taken 1755 times.</div>
             <div class="notTakenBranch">&cross; Branch 160 not taken.</div>
             <div class="takenBranch">&check; Branch 161 taken 1522 times.</div>
             <div class="notTakenBranch">&cross; Branch 170 not taken.</div>
-            <div class="takenBranch">&check; Branch 171 taken 1289 times.</div>
+            <div class="takenBranch">&check; Branch 171 taken 1521 times.</div>
             <div class="notTakenBranch">&cross; Branch 180 not taken.</div>
-            <div class="takenBranch">&check; Branch 181 taken 1090 times.</div>
+            <div class="takenBranch">&check; Branch 181 taken 1106 times.</div>
             <div class="notTakenBranch">&cross; Branch 190 not taken.</div>
-            <div class="takenBranch">&check; Branch 191 taken 977 times.</div>
+            <div class="takenBranch">&check; Branch 191 taken 761 times.</div>
             <div class="notTakenBranch">&cross; Branch 200 not taken.</div>
             <div class="takenBranch">&check; Branch 201 taken 780 times.</div>
             <div class="notTakenBranch">&cross; Branch 210 not taken.</div>
@@ -541,21 +464,21 @@
             <div class="notTakenBranch">&cross; Branch 230 not taken.</div>
             <div class="takenBranch">&check; Branch 231 taken 794 times.</div>
             <div class="notTakenBranch">&cross; Branch 240 not taken.</div>
-            <div class="takenBranch">&check; Branch 241 taken 882 times.</div>
+            <div class="takenBranch">&check; Branch 241 taken 978 times.</div>
             <div class="notTakenBranch">&cross; Branch 250 not taken.</div>
-            <div class="takenBranch">&check; Branch 251 taken 751 times.</div>
+            <div class="takenBranch">&check; Branch 251 taken 847 times.</div>
             <div class="notTakenBranch">&cross; Branch 260 not taken.</div>
             <div class="takenBranch">&check; Branch 261 taken 365 times.</div>
             <div class="notTakenBranch">&cross; Branch 270 not taken.</div>
             <div class="takenBranch">&check; Branch 271 taken 309 times.</div>
             <div class="notTakenBranch">&cross; Branch 280 not taken.</div>
-            <div class="takenBranch">&check; Branch 281 taken 957 times.</div>
+            <div class="takenBranch">&check; Branch 281 taken 1149 times.</div>
             <div class="notTakenBranch">&cross; Branch 290 not taken.</div>
-            <div class="takenBranch">&check; Branch 291 taken 1059 times.</div>
+            <div class="takenBranch">&check; Branch 291 taken 1251 times.</div>
             <div class="notTakenBranch">&cross; Branch 300 not taken.</div>
-            <div class="takenBranch">&check; Branch 301 taken 3625 times.</div>
+            <div class="takenBranch">&check; Branch 301 taken 4633 times.</div>
             <div class="notTakenBranch">&cross; Branch 310 not taken.</div>
-            <div class="takenBranch">&check; Branch 311 taken 3619 times.</div>
+            <div class="takenBranch">&check; Branch 311 taken 4627 times.</div>
             <div class="notTakenBranch">&cross; Branch 320 not taken.</div>
             <div class="takenBranch">&check; Branch 321 taken 320 times.</div>
             <div class="notTakenBranch">&cross; Branch 330 not taken.</div>
@@ -573,31 +496,31 @@
             <div class="notTakenBranch">&cross; Branch 390 not taken.</div>
             <div class="takenBranch">&check; Branch 391 taken 351 times.</div>
             <div class="notTakenBranch">&cross; Branch 400 not taken.</div>
-            <div class="takenBranch">&check; Branch 401 taken 206 times.</div>
+            <div class="takenBranch">&check; Branch 401 taken 170 times.</div>
             <div class="notTakenBranch">&cross; Branch 410 not taken.</div>
-            <div class="takenBranch">&check; Branch 411 taken 206 times.</div>
+            <div class="takenBranch">&check; Branch 411 taken 170 times.</div>
             <div class="notTakenBranch">&cross; Branch 420 not taken.</div>
-            <div class="takenBranch">&check; Branch 421 taken 367 times.</div>
+            <div class="takenBranch">&check; Branch 421 taken 365 times.</div>
             <div class="notTakenBranch">&cross; Branch 430 not taken.</div>
-            <div class="takenBranch">&check; Branch 431 taken 381 times.</div>
+            <div class="takenBranch">&check; Branch 431 taken 377 times.</div>
             <div class="notTakenBranch">&cross; Branch 440 not taken.</div>
-            <div class="takenBranch">&check; Branch 441 taken 373 times.</div>
+            <div class="takenBranch">&check; Branch 441 taken 357 times.</div>
             <div class="notTakenBranch">&cross; Branch 450 not taken.</div>
-            <div class="takenBranch">&check; Branch 451 taken 496 times.</div>
+            <div class="takenBranch">&check; Branch 451 taken 352 times.</div>
             <div class="notTakenBranch">&cross; Branch 460 not taken.</div>
-            <div class="takenBranch">&check; Branch 461 taken 561 times.</div>
+            <div class="takenBranch">&check; Branch 461 taken 641 times.</div>
             <div class="notTakenBranch">&cross; Branch 470 not taken.</div>
-            <div class="takenBranch">&check; Branch 471 taken 395 times.</div>
+            <div class="takenBranch">&check; Branch 471 taken 307 times.</div>
             <div class="notTakenBranch">&cross; Branch 480 not taken.</div>
-            <div class="takenBranch">&check; Branch 481 taken 219 times.</div>
+            <div class="takenBranch">&check; Branch 481 taken 243 times.</div>
             <div class="notTakenBranch">&cross; Branch 490 not taken.</div>
-            <div class="takenBranch">&check; Branch 491 taken 436 times.</div>
+            <div class="takenBranch">&check; Branch 491 taken 1108 times.</div>
             <div class="notTakenBranch">&cross; Branch 500 not taken.</div>
-            <div class="takenBranch">&check; Branch 501 taken 677 times.</div>
+            <div class="takenBranch">&check; Branch 501 taken 565 times.</div>
             <div class="notTakenBranch">&cross; Branch 510 not taken.</div>
-            <div class="takenBranch">&check; Branch 511 taken 253 times.</div>
+            <div class="takenBranch">&check; Branch 511 taken 557 times.</div>
             <div class="notTakenBranch">&cross; Branch 520 not taken.</div>
-            <div class="takenBranch">&check; Branch 521 taken 228 times.</div>
+            <div class="takenBranch">&check; Branch 521 taken 452 times.</div>
             <div class="notTakenBranch">&cross; Branch 530 not taken.</div>
             <div class="takenBranch">&check; Branch 531 taken 228 times.</div>
             <div class="notTakenBranch">&cross; Branch 540 not taken.</div>
@@ -607,63 +530,63 @@
             <div class="notTakenBranch">&cross; Branch 560 not taken.</div>
             <div class="takenBranch">&check; Branch 561 taken 255 times.</div>
             <div class="notTakenBranch">&cross; Branch 570 not taken.</div>
-            <div class="takenBranch">&check; Branch 571 taken 1327 times.</div>
+            <div class="takenBranch">&check; Branch 571 taken 239 times.</div>
             <div class="notTakenBranch">&cross; Branch 580 not taken.</div>
-            <div class="takenBranch">&check; Branch 581 taken 1618 times.</div>
+            <div class="takenBranch">&check; Branch 581 taken 530 times.</div>
             <div class="notTakenBranch">&cross; Branch 590 not taken.</div>
-            <div class="takenBranch">&check; Branch 591 taken 313 times.</div>
+            <div class="takenBranch">&check; Branch 591 taken 1735 times.</div>
             <div class="notTakenBranch">&cross; Branch 600 not taken.</div>
-            <div class="takenBranch">&check; Branch 601 taken 249 times.</div>
+            <div class="takenBranch">&check; Branch 601 taken 1671 times.</div>
             <div class="notTakenBranch">&cross; Branch 610 not taken.</div>
-            <div class="takenBranch">&check; Branch 611 taken 203 times.</div>
+            <div class="takenBranch">&check; Branch 611 taken 200 times.</div>
             <div class="notTakenBranch">&cross; Branch 620 not taken.</div>
-            <div class="takenBranch">&check; Branch 621 taken 197 times.</div>
+            <div class="takenBranch">&check; Branch 621 taken 194 times.</div>
             <div class="notTakenBranch">&cross; Branch 630 not taken.</div>
-            <div class="takenBranch">&check; Branch 631 taken 163988 times.</div>
+            <div class="takenBranch">&check; Branch 631 taken 164072 times.</div>
             <div class="notTakenBranch">&cross; Branch 640 not taken.</div>
-            <div class="takenBranch">&check; Branch 641 taken 180 times.</div>
+            <div class="takenBranch">&check; Branch 641 taken 248 times.</div>
             <div class="notTakenBranch">&cross; Branch 650 not taken.</div>
-            <div class="takenBranch">&check; Branch 651 taken 338 times.</div>
+            <div class="takenBranch">&check; Branch 651 taken 322 times.</div>
             <div class="notTakenBranch">&cross; Branch 660 not taken.</div>
-            <div class="takenBranch">&check; Branch 661 taken 141 times.</div>
+            <div class="takenBranch">&check; Branch 661 taken 129 times.</div>
             <div class="notTakenBranch">&cross; Branch 670 not taken.</div>
-            <div class="takenBranch">&check; Branch 671 taken 153 times.</div>
+            <div class="takenBranch">&check; Branch 671 taken 149 times.</div>
             <div class="notTakenBranch">&cross; Branch 680 not taken.</div>
-            <div class="takenBranch">&check; Branch 681 taken 79 times.</div>
+            <div class="takenBranch">&check; Branch 681 taken 81 times.</div>
             <div class="notTakenBranch">&cross; Branch 690 not taken.</div>
-            <div class="takenBranch">&check; Branch 691 taken 99 times.</div>
+            <div class="takenBranch">&check; Branch 691 taken 111 times.</div>
             <div class="notTakenBranch">&cross; Branch 700 not taken.</div>
-            <div class="takenBranch">&check; Branch 701 taken 238 times.</div>
+            <div class="takenBranch">&check; Branch 701 taken 114 times.</div>
             <div class="notTakenBranch">&cross; Branch 710 not taken.</div>
-            <div class="takenBranch">&check; Branch 711 taken 90 times.</div>
+            <div class="takenBranch">&check; Branch 711 taken 130 times.</div>
             <div class="notTakenBranch">&cross; Branch 720 not taken.</div>
-            <div class="takenBranch">&check; Branch 721 taken 155 times.</div>
+            <div class="takenBranch">&check; Branch 721 taken 157 times.</div>
             <div class="notTakenBranch">&cross; Branch 730 not taken.</div>
-            <div class="takenBranch">&check; Branch 731 taken 135 times.</div>
+            <div class="takenBranch">&check; Branch 731 taken 143 times.</div>
             <div class="notTakenBranch">&cross; Branch 740 not taken.</div>
-            <div class="takenBranch">&check; Branch 741 taken 153 times.</div>
+            <div class="takenBranch">&check; Branch 741 taken 169 times.</div>
             <div class="notTakenBranch">&cross; Branch 750 not taken.</div>
-            <div class="takenBranch">&check; Branch 751 taken 161 times.</div>
+            <div class="takenBranch">&check; Branch 751 taken 173 times.</div>
             <div class="notTakenBranch">&cross; Branch 760 not taken.</div>
-            <div class="takenBranch">&check; Branch 761 taken 201 times.</div>
+            <div class="takenBranch">&check; Branch 761 taken 213 times.</div>
             <div class="notTakenBranch">&cross; Branch 770 not taken.</div>
-            <div class="takenBranch">&check; Branch 771 taken 164050 times.</div>
+            <div class="takenBranch">&check; Branch 771 taken 164062 times.</div>
             <div class="notTakenBranch">&cross; Branch 780 not taken.</div>
-            <div class="takenBranch">&check; Branch 781 taken 210 times.</div>
+            <div class="takenBranch">&check; Branch 781 taken 222 times.</div>
             <div class="notTakenBranch">&cross; Branch 790 not taken.</div>
-            <div class="takenBranch">&check; Branch 791 taken 384 times.</div>
+            <div class="takenBranch">&check; Branch 791 taken 392 times.</div>
             <div class="notTakenBranch">&cross; Branch 800 not taken.</div>
-            <div class="takenBranch">&check; Branch 801 taken 273 times.</div>
+            <div class="takenBranch">&check; Branch 801 taken 288 times.</div>
             <div class="notTakenBranch">&cross; Branch 810 not taken.</div>
-            <div class="takenBranch">&check; Branch 811 taken 151 times.</div>
+            <div class="takenBranch">&check; Branch 811 taken 158 times.</div>
             <div class="notTakenBranch">&cross; Branch 820 not taken.</div>
-            <div class="takenBranch">&check; Branch 821 taken 159 times.</div>
+            <div class="takenBranch">&check; Branch 821 taken 166 times.</div>
             <div class="notTakenBranch">&cross; Branch 830 not taken.</div>
-            <div class="takenBranch">&check; Branch 831 taken 154 times.</div>
+            <div class="takenBranch">&check; Branch 831 taken 162 times.</div>
             <div class="notTakenBranch">&cross; Branch 840 not taken.</div>
-            <div class="takenBranch">&check; Branch 841 taken 291 times.</div>
+            <div class="takenBranch">&check; Branch 841 taken 299 times.</div>
             <div class="notTakenBranch">&cross; Branch 850 not taken.</div>
-            <div class="takenBranch">&check; Branch 851 taken 189 times.</div>
+            <div class="takenBranch">&check; Branch 851 taken 187 times.</div>
             <div class="notTakenBranch">&cross; Branch 860 not taken.</div>
             <div class="takenBranch">&check; Branch 861 taken 185 times.</div>
             <div class="notTakenBranch">&cross; Branch 870 not taken.</div>
@@ -685,95 +608,95 @@
             <div class="notTakenBranch">&cross; Branch 950 not taken.</div>
             <div class="takenBranch">&check; Branch 951 taken 70 times.</div>
             <div class="notTakenBranch">&cross; Branch 960 not taken.</div>
-            <div class="takenBranch">&check; Branch 961 taken 312 times.</div>
+            <div class="takenBranch">&check; Branch 961 taken 272 times.</div>
             <div class="notTakenBranch">&cross; Branch 970 not taken.</div>
-            <div class="takenBranch">&check; Branch 971 taken 595 times.</div>
+            <div class="takenBranch">&check; Branch 971 taken 591 times.</div>
             <div class="notTakenBranch">&cross; Branch 980 not taken.</div>
-            <div class="takenBranch">&check; Branch 981 taken 583 times.</div>
+            <div class="takenBranch">&check; Branch 981 taken 579 times.</div>
             <div class="notTakenBranch">&cross; Branch 990 not taken.</div>
-            <div class="takenBranch">&check; Branch 991 taken 635 times.</div>
+            <div class="takenBranch">&check; Branch 991 taken 619 times.</div>
             <div class="notTakenBranch">&cross; Branch 1000 not taken.</div>
-            <div class="takenBranch">&check; Branch 1001 taken 894 times.</div>
+            <div class="takenBranch">&check; Branch 1001 taken 579 times.</div>
             <div class="notTakenBranch">&cross; Branch 1010 not taken.</div>
-            <div class="takenBranch">&check; Branch 1011 taken 684 times.</div>
+            <div class="takenBranch">&check; Branch 1011 taken 579 times.</div>
             <div class="notTakenBranch">&cross; Branch 1020 not taken.</div>
-            <div class="takenBranch">&check; Branch 1021 taken 685 times.</div>
+            <div class="takenBranch">&check; Branch 1021 taken 580 times.</div>
             <div class="notTakenBranch">&cross; Branch 1030 not taken.</div>
-            <div class="takenBranch">&check; Branch 1031 taken 594 times.</div>
+            <div class="takenBranch">&check; Branch 1031 taken 580 times.</div>
             <div class="notTakenBranch">&cross; Branch 1040 not taken.</div>
-            <div class="takenBranch">&check; Branch 1041 taken 15861619 times.</div>
+            <div class="takenBranch">&check; Branch 1041 taken 15861615 times.</div>
             <div class="notTakenBranch">&cross; Branch 1050 not taken.</div>
-            <div class="takenBranch">&check; Branch 1051 taken 123 times.</div>
+            <div class="takenBranch">&check; Branch 1051 taken 71 times.</div>
             <div class="notTakenBranch">&cross; Branch 1060 not taken.</div>
-            <div class="takenBranch">&check; Branch 1061 taken 87 times.</div>
+            <div class="takenBranch">&check; Branch 1061 taken 89 times.</div>
             <div class="notTakenBranch">&cross; Branch 1070 not taken.</div>
-            <div class="takenBranch">&check; Branch 1071 taken 187 times.</div>
+            <div class="takenBranch">&check; Branch 1071 taken 139 times.</div>
             <div class="notTakenBranch">&cross; Branch 1080 not taken.</div>
-            <div class="takenBranch">&check; Branch 1081 taken 375 times.</div>
+            <div class="takenBranch">&check; Branch 1081 taken 688 times.</div>
             <div class="notTakenBranch">&cross; Branch 1090 not taken.</div>
-            <div class="takenBranch">&check; Branch 1091 taken 493 times.</div>
+            <div class="takenBranch">&check; Branch 1091 taken 502 times.</div>
             <div class="notTakenBranch">&cross; Branch 1100 not taken.</div>
-            <div class="takenBranch">&check; Branch 1101 taken 246 times.</div>
+            <div class="takenBranch">&check; Branch 1101 taken 288 times.</div>
             <div class="notTakenBranch">&cross; Branch 1110 not taken.</div>
-            <div class="takenBranch">&check; Branch 1111 taken 228 times.</div>
+            <div class="takenBranch">&check; Branch 1111 taken 127 times.</div>
             <div class="notTakenBranch">&cross; Branch 1120 not taken.</div>
-            <div class="takenBranch">&check; Branch 1121 taken 204 times.</div>
+            <div class="takenBranch">&check; Branch 1121 taken 218 times.</div>
             <div class="notTakenBranch">&cross; Branch 1130 not taken.</div>
-            <div class="takenBranch">&check; Branch 1131 taken 231 times.</div>
+            <div class="takenBranch">&check; Branch 1131 taken 212 times.</div>
             <div class="notTakenBranch">&cross; Branch 1140 not taken.</div>
-            <div class="takenBranch">&check; Branch 1141 taken 255 times.</div>
+            <div class="takenBranch">&check; Branch 1141 taken 298 times.</div>
             <div class="notTakenBranch">&cross; Branch 1150 not taken.</div>
-            <div class="takenBranch">&check; Branch 1151 taken 491 times.</div>
+            <div class="takenBranch">&check; Branch 1151 taken 472 times.</div>
             <div class="notTakenBranch">&cross; Branch 1160 not taken.</div>
-            <div class="takenBranch">&check; Branch 1161 taken 443 times.</div>
+            <div class="takenBranch">&check; Branch 1161 taken 518 times.</div>
             <div class="notTakenBranch">&cross; Branch 1170 not taken.</div>
-            <div class="takenBranch">&check; Branch 1171 taken 294 times.</div>
+            <div class="takenBranch">&check; Branch 1171 taken 309 times.</div>
             <div class="notTakenBranch">&cross; Branch 1180 not taken.</div>
-            <div class="takenBranch">&check; Branch 1181 taken 191 times.</div>
+            <div class="takenBranch">&check; Branch 1181 taken 291 times.</div>
             <div class="notTakenBranch">&cross; Branch 1190 not taken.</div>
-            <div class="takenBranch">&check; Branch 1191 taken 76251 times.</div>
+            <div class="takenBranch">&check; Branch 1191 taken 76288 times.</div>
             <div class="notTakenBranch">&cross; Branch 1200 not taken.</div>
-            <div class="takenBranch">&check; Branch 1201 taken 76166 times.</div>
+            <div class="takenBranch">&check; Branch 1201 taken 76184 times.</div>
             <div class="notTakenBranch">&cross; Branch 1210 not taken.</div>
-            <div class="takenBranch">&check; Branch 1211 taken 52 times.</div>
+            <div class="takenBranch">&check; Branch 1211 taken 70 times.</div>
             <div class="notTakenBranch">&cross; Branch 1220 not taken.</div>
-            <div class="takenBranch">&check; Branch 1221 taken 81 times.</div>
+            <div class="takenBranch">&check; Branch 1221 taken 99 times.</div>
             <div class="notTakenBranch">&cross; Branch 1230 not taken.</div>
-            <div class="takenBranch">&check; Branch 1231 taken 135 times.</div>
+            <div class="takenBranch">&check; Branch 1231 taken 153 times.</div>
             <div class="notTakenBranch">&cross; Branch 1240 not taken.</div>
-            <div class="takenBranch">&check; Branch 1241 taken 142 times.</div>
+            <div class="takenBranch">&check; Branch 1241 taken 153 times.</div>
             <div class="notTakenBranch">&cross; Branch 1250 not taken.</div>
-            <div class="takenBranch">&check; Branch 1251 taken 113 times.</div>
+            <div class="takenBranch">&check; Branch 1251 taken 124 times.</div>
             <div class="notTakenBranch">&cross; Branch 1260 not taken.</div>
-            <div class="takenBranch">&check; Branch 1261 taken 263 times.</div>
+            <div class="takenBranch">&check; Branch 1261 taken 124 times.</div>
             <div class="notTakenBranch">&cross; Branch 1270 not taken.</div>
-            <div class="takenBranch">&check; Branch 1271 taken 336 times.</div>
+            <div class="takenBranch">&check; Branch 1271 taken 117 times.</div>
             <div class="notTakenBranch">&cross; Branch 1280 not taken.</div>
-            <div class="takenBranch">&check; Branch 1281 taken 864 times.</div>
+            <div class="takenBranch">&check; Branch 1281 taken 114 times.</div>
             <div class="notTakenBranch">&cross; Branch 1290 not taken.</div>
-            <div class="takenBranch">&check; Branch 1291 taken 156 times.</div>
+            <div class="takenBranch">&check; Branch 1291 taken 210 times.</div>
             <div class="notTakenBranch">&cross; Branch 1300 not taken.</div>
-            <div class="takenBranch">&check; Branch 1301 taken 155 times.</div>
+            <div class="takenBranch">&check; Branch 1301 taken 347 times.</div>
             <div class="notTakenBranch">&cross; Branch 1310 not taken.</div>
-            <div class="takenBranch">&check; Branch 1311 taken 459 times.</div>
+            <div class="takenBranch">&check; Branch 1311 taken 1419 times.</div>
             <div class="notTakenBranch">&cross; Branch 1320 not taken.</div>
-            <div class="takenBranch">&check; Branch 1321 taken 1095 times.</div>
+            <div class="takenBranch">&check; Branch 1321 taken 171 times.</div>
             <div class="notTakenBranch">&cross; Branch 1330 not taken.</div>
-            <div class="takenBranch">&check; Branch 1331 taken 1183 times.</div>
+            <div class="takenBranch">&check; Branch 1331 taken 139 times.</div>
             <div class="notTakenBranch">&cross; Branch 1340 not taken.</div>
-            <div class="takenBranch">&check; Branch 1341 taken 127 times.</div>
+            <div class="takenBranch">&check; Branch 1341 taken 367 times.</div>
             <div class="notTakenBranch">&cross; Branch 1350 not taken.</div>
-            <div class="takenBranch">&check; Branch 1351 taken 91 times.</div>
+            <div class="takenBranch">&check; Branch 1351 taken 1771 times.</div>
             <div class="notTakenBranch">&cross; Branch 1360 not taken.</div>
-            <div class="takenBranch">&check; Branch 1361 taken 161 times.</div>
+            <div class="takenBranch">&check; Branch 1361 taken 176 times.</div>
             <div class="notTakenBranch">&cross; Branch 1370 not taken.</div>
-            <div class="takenBranch">&check; Branch 1371 taken 197 times.</div>
+            <div class="takenBranch">&check; Branch 1371 taken 212 times.</div>
             <div class="notTakenBranch">&cross; Branch 1380 not taken.</div>
-            <div class="takenBranch">&check; Branch 1381 taken 197 times.</div>
+            <div class="takenBranch">&check; Branch 1381 taken 212 times.</div>
             <div class="notTakenBranch">&cross; Branch 1390 not taken.</div>
-            <div class="takenBranch">&check; Branch 1391 taken 111 times.</div>
+            <div class="takenBranch">&check; Branch 1391 taken 351 times.</div>
             <div class="notTakenBranch">&cross; Branch 1400 not taken.</div>
-            <div class="takenBranch">&check; Branch 1401 taken 97 times.</div>
+            <div class="takenBranch">&check; Branch 1401 taken 1537 times.</div>
             <div class="notTakenBranch">&cross; Branch 1410 not taken.</div>
             <div class="takenBranch">&check; Branch 1411 taken 138 times.</div>
             <div class="notTakenBranch">&cross; Branch 1420 not taken.</div>
@@ -1469,22 +1392,99 @@
           </div>
         </details>
       </td>
-      <td class="linecount partialCoveredLine">17093844</td>
+      <td class="linecount partialCoveredLine">17103060</td>
       <td class="src partialCoveredLine"><span class="w">        </span><span class="n">EXPECTS</span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l50" href="#l50">50</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount coveredLine">17103060</td>
+      <td class="src coveredLine"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">];</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l51" href="#l51">51</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "><span class="w">      </span><span class="p">}</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l52" href="#l52">52</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l53" href="#l53">53</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "><span class="w">      </span><span class="cm">/**</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l54" href="#l54">54</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "><span class="cm">       * @brief Offset the pointer by a certain number of elements.</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l55" href="#l55">55</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "><span class="cm">       *</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l56" href="#l56">56</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "><span class="cm">       * @param p Pointer to the data.</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l57" href="#l57">57</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "><span class="cm">       * @param i Number of elements to offset the pointer by.</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l58" href="#l58">58</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "><span class="cm">       * @return Pointer after applying the offset.</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l59" href="#l59">59</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "><span class="cm">       */</span></td>
+    </tr>
+    <tr class="source-line">
+      <td class="lineno"><a id="l60" href="#l60">60</a></td>
+      <td class="linebranch">
+      </td>
+      <td class="linecount "></td>
+      <td class="src "><span class="w">      </span><span class="n">FORCEINLINE</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">*</span><span class="n">offset</span><span class="p">(</span><span class="n">pointer</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="p">}</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l61" href="#l61">61</a></td>
       <td class="linebranch">
       </td>
-      <td class="linecount coveredLine">17093844</td>
-      <td class="src coveredLine"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">];</span></td>
+      <td class="linecount "></td>
+      <td class="src "><span class="w">    </span><span class="p">};</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l62" href="#l62">62</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="p">}</span></td>
+      <td class="src "><span class="w">  </span><span class="p">};</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l63" href="#l63">63</a></td>
@@ -1498,70 +1498,70 @@
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="cm">/**</span></td>
+      <td class="src "><span class="w">  </span><span class="c1">/// Accessor for array and view types with no aliasing.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l65" href="#l65">65</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @brief Offset the pointer by a certain number of elements.</span></td>
+      <td class="src "><span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">no_alias_accessor</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l66" href="#l66">66</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       *</span></td>
+      <td class="src "><span class="w">    </span><span class="cm">/**</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l67" href="#l67">67</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @param p Pointer to the data.</span></td>
+      <td class="src "><span class="cm">     * @brief Accessor type of the nda::no_alias_accessor.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l68" href="#l68">68</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @param i Number of elements to offset the pointer by.</span></td>
+      <td class="src "><span class="cm">     * @tparam T Value type of the data.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l69" href="#l69">69</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @return Pointer after applying the offset.</span></td>
+      <td class="src "><span class="cm">     */</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l70" href="#l70">70</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       */</span></td>
+      <td class="src "><span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l71" href="#l71">71</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="n">FORCEINLINE</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">*</span><span class="n">offset</span><span class="p">(</span><span class="n">pointer</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="p">}</span></td>
+      <td class="src "><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">accessor</span><span class="w"> </span><span class="p">{</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l72" href="#l72">72</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">    </span><span class="p">};</span></td>
+      <td class="src "><span class="w">      </span><span class="c1">/// Value type of the data.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l73" href="#l73">73</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="p">};</span></td>
+      <td class="src "><span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">element_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l74" href="#l74">74</a></td>
@@ -1575,175 +1575,175 @@
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="c1">/// Accessor for array and view types with no aliasing.</span></td>
+      <td class="src "><span class="w">      </span><span class="c1">/// Restricted pointer type to the data.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l76" href="#l76">76</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">no_alias_accessor</span><span class="w"> </span><span class="p">{</span></td>
+      <td class="src "><span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">*</span><span class="k">__restrict</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l77" href="#l77">77</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">    </span><span class="cm">/**</span></td>
+      <td class="src "></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l78" href="#l78">78</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">     * @brief Accessor type of the nda::no_alias_accessor.</span></td>
+      <td class="src "><span class="w">      </span><span class="c1">/// Reference type to the data.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l79" href="#l79">79</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">     * @tparam T Value type of the data.</span></td>
+      <td class="src "><span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">reference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">&amp;</span><span class="p">;</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l80" href="#l80">80</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">     */</span></td>
+      <td class="src "></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l81" href="#l81">81</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span></td>
+      <td class="src "><span class="w">      </span><span class="cm">/**</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l82" href="#l82">82</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">accessor</span><span class="w"> </span><span class="p">{</span></td>
+      <td class="src "><span class="cm">       * @brief Access a specific element of the data.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l83" href="#l83">83</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="c1">/// Value type of the data.</span></td>
+      <td class="src "><span class="cm">       *</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l84" href="#l84">84</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">element_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="p">;</span></td>
+      <td class="src "><span class="cm">       * @param p Pointer to the data.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l85" href="#l85">85</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "></td>
+      <td class="src "><span class="cm">       * @param i Index of the element to access.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l86" href="#l86">86</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="c1">/// Restricted pointer type to the data.</span></td>
+      <td class="src "><span class="cm">       * @return Reference to the element.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l87" href="#l87">87</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">*</span><span class="k">__restrict</span><span class="p">;</span></td>
+      <td class="src "><span class="cm">       */</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l88" href="#l88">88</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "></td>
+      <td class="src "><span class="w">      </span><span class="n">FORCEINLINE</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">reference</span><span class="w"> </span><span class="n">access</span><span class="p">(</span><span class="n">pointer</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"> </span><span class="p">}</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l89" href="#l89">89</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="c1">/// Reference type to the data.</span></td>
+      <td class="src "></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l90" href="#l90">90</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="k">using</span><span class="w"> </span><span class="n">reference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">&amp;</span><span class="p">;</span></td>
+      <td class="src "><span class="w">      </span><span class="cm">/**</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l91" href="#l91">91</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "></td>
+      <td class="src "><span class="cm">       * @brief Offset the pointer by a certain number of elements.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l92" href="#l92">92</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="cm">/**</span></td>
+      <td class="src "><span class="cm">       *</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l93" href="#l93">93</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @brief Access a specific element of the data.</span></td>
+      <td class="src "><span class="cm">       * @param p Pointer to the data.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l94" href="#l94">94</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       *</span></td>
+      <td class="src "><span class="cm">       * @param i Number of elements to offset the pointer by.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l95" href="#l95">95</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @param p Pointer to the data.</span></td>
+      <td class="src "><span class="cm">       * @return Pointer after applying the offset.</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l96" href="#l96">96</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @param i Index of the element to access.</span></td>
+      <td class="src "><span class="cm">       */</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l97" href="#l97">97</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @return Reference to the element.</span></td>
+      <td class="src "><span class="w">      </span><span class="n">FORCEINLINE</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">*</span><span class="n">offset</span><span class="p">(</span><span class="n">pointer</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="p">}</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l98" href="#l98">98</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       */</span></td>
+      <td class="src "><span class="w">    </span><span class="p">};</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l99" href="#l99">99</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="n">FORCEINLINE</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">reference</span><span class="w"> </span><span class="n">access</span><span class="p">(</span><span class="n">pointer</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"> </span><span class="p">}</span></td>
+      <td class="src "><span class="w">  </span><span class="p">};</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l100" href="#l100">100</a></td>
@@ -1757,101 +1757,24 @@
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="cm">/**</span></td>
+      <td class="src "><span class="w">  </span><span class="cm">/** @} */</span></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l102" href="#l102">102</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @brief Offset the pointer by a certain number of elements.</span></td>
+      <td class="src "></td>
     </tr>
     <tr class="source-line">
       <td class="lineno"><a id="l103" href="#l103">103</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
-      <td class="src "><span class="cm">       *</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l104" href="#l104">104</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @param p Pointer to the data.</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l105" href="#l105">105</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @param i Number of elements to offset the pointer by.</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l106" href="#l106">106</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="cm">       * @return Pointer after applying the offset.</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l107" href="#l107">107</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="cm">       */</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l108" href="#l108">108</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="w">      </span><span class="n">FORCEINLINE</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">*</span><span class="n">offset</span><span class="p">(</span><span class="n">pointer</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="p">}</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l109" href="#l109">109</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="w">    </span><span class="p">};</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l110" href="#l110">110</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="p">};</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l111" href="#l111">111</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l112" href="#l112">112</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "><span class="w">  </span><span class="cm">/** @} */</span></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l113" href="#l113">113</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
-      <td class="src "></td>
-    </tr>
-    <tr class="source-line">
-      <td class="lineno"><a id="l114" href="#l114">114</a></td>
-      <td class="linebranch">
-      </td>
-      <td class="linecount "></td>
       <td class="src "><span class="p">}</span><span class="w"> </span><span class="c1">// namespace nda</span></td>
     </tr>
     <tr class="source-line">
-      <td class="lineno"><a id="l115" href="#l115">115</a></td>
+      <td class="lineno"><a id="l104" href="#l104">104</a></td>
       <td class="linebranch">
       </td>
       <td class="linecount "></td>
