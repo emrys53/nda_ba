@@ -54,10 +54,9 @@ float dot_product_avx512(const float *a, const float *b, size_t size) {
   //  for (; i < size; ++i) dot += a[i] * b[i]; // handle tail
   //  return dot;
 }
-template <nda::Vectorizable T> // Vectorizable is a concept where it checks whether native_simd<T>() is constructible
-T dot_product_generic(const T *a, const T *b, size_t size) {
+float dot_product_generic(const float *a, const float *b, size_t size) {
   using namespace nda;
-  using simd_t           = native_simd<T>;
+  using simd_t           = native_simd<float>;
   constexpr size_t width = simd_t::size();
   simd_t acc(simd_zero_initialize_t);
   size_t i = 0;
@@ -67,7 +66,7 @@ T dot_product_generic(const T *a, const T *b, size_t size) {
     acc = simd::fma_add(va, vb, acc); // Or acc += va * vb;
   }
 
-  T sum = simd::reduce_sum(acc); // Horizontal sum of SIMD register
+  float sum = simd::reduce_sum(acc); // Horizontal sum of SIMD register
   for (; i < size; ++i) { sum += a[i] * b[i]; }
   return sum;
 }

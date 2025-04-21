@@ -142,6 +142,16 @@ namespace nda {
     return fold([](bool r, auto const &x) -> bool { return r and bool(x); }, a, true);
   }
 
+  template <Array A>
+   auto max_element2(A const &a) {
+    return fold(
+       [](auto const &x, auto const &y) {
+         using std::max;
+         return max(x, y);
+       },
+       a, get_first_element(a));
+  }
+
   /**
    * @brief Find the maximum element of an array.
    *
@@ -239,6 +249,17 @@ namespace nda {
        },
        a, double(0)));
   }
+  template <Array A, typename Value = get_value_t<A>>
+  auto sum2(A const &a)
+    requires(nda::Scalar<Value> or nda::Array<Value>)
+  {
+    if constexpr (nda::Scalar<Value>) {
+      return fold(std::plus<>{}, a);
+    } else { // Array<Value>
+      return fold(std::plus<>{}, a, Value::zeros(get_first_element(a).shape()));
+    }
+  }
+
 
   /**
    * @brief Sum all the elements of an nda::Array object.
