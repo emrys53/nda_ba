@@ -479,22 +479,8 @@ TEST(NDA, MemoryHandleShared) {
 }
 
 TEST(NDA, TypeAlignmentInfoAlignment) {
-#ifdef __AVX512F__
-  constexpr size_t correct_alignment = 64;
-#else
-#ifdef __AVX__
-  constexpr size_t correct_alignment = 32;
-#else
-#ifdef __SSE2__
-  constexpr size_t correct_alignment = 16;
-#else
-  constexpr size_t correct_alignment = 0;
-#endif
-#endif
-#endif
-
   auto x = mem::type_alignment_info<int>::required_alignment;
-  EXPECT_EQ(x, correct_alignment);
+  EXPECT_EQ(x, native_simd<int>::arch_type::alignment());
 
   x = mem::type_alignment_info<int *>::required_alignment;
   EXPECT_EQ(x, 0);
@@ -503,44 +489,30 @@ TEST(NDA, TypeAlignmentInfoAlignment) {
   EXPECT_EQ(x, 0);
 
   x = mem::type_alignment_info<std::complex<float>>::required_alignment;
-  EXPECT_EQ(x, correct_alignment);
+  EXPECT_EQ(x, native_simd<std::complex<float>>::arch_type::alignment());
 
   x = mem::type_alignment_info<std::complex<double>>::required_alignment;
-  EXPECT_EQ(x, correct_alignment);
+  EXPECT_EQ(x, native_simd<std::complex<double>>::arch_type::alignment());
 
   x = mem::type_alignment_info<array<int, 4>>::required_alignment;
   EXPECT_EQ(x, 0);
 }
 
 TEST(NDA, TypeAlignmentInfoRequiredPadding) {
-#ifdef __AVX512F__
-  constexpr size_t correct_alignment = 64;
-#else
-#ifdef __AVX__
-  constexpr size_t correct_alignment = 32;
-#else
-#ifdef __SSE2__
-  constexpr size_t correct_alignment = 16;
-#else
-   constexpr size_t correct_alignment = 0;
-#endif
-#endif
-#endif
-
   auto x = mem::type_alignment_info<int>::required_padding;
-  EXPECT_EQ(x, correct_alignment / sizeof(int));
+  EXPECT_EQ(x, native_simd<int>::size);
 
   x = mem::type_alignment_info<long>::required_padding;
-  EXPECT_EQ(x, correct_alignment / sizeof(long));
+  EXPECT_EQ(x, native_simd<long>::size);
 
   x = mem::type_alignment_info<void>::required_padding;
   EXPECT_EQ(x, 0);
 
-  // x = mem::type_alignment_info<std::complex<float>>::required_padding;
-  // EXPECT_EQ(x, correct_alignment / sizeof(std::complex<float>));
-  //
-  // x = mem::type_alignment_info<std::complex<double>>::required_padding;
-  // EXPECT_EQ(x, correct_alignment / sizeof(std::complex<double>));
+  x = mem::type_alignment_info<std::complex<float>>::required_padding;
+  EXPECT_EQ(x, native_simd<std::complex<float>>::size);
+
+  x = mem::type_alignment_info<std::complex<double>>::required_padding;
+  EXPECT_EQ(x, native_simd<std::complex<double>>::size);
 
   x = mem::type_alignment_info<array<int, 4>>::required_padding;
   EXPECT_EQ(x, 0);
