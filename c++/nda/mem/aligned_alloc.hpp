@@ -52,6 +52,9 @@ namespace nda::mem {
 
     void *ptr = nullptr;
     if constexpr (AdrSp == Host) {
+      if (alignment != 0) {
+        size = next_multiple(size, alignment);
+      }
       if (alignment >= 8UL) {
         ptr = std::aligned_alloc(alignment, size);
       } else {

@@ -960,33 +960,6 @@ TEST_F(NDAArrayAndView, StrideOrderOfArrays) {
  */
 TEST_F(NDAArrayAndView, ArrayAligned) {
   nda::array_aligned<int,2,nda::C_layout> M = {{1, 2}, {3, 4}, {5, 6}};
-  // EXPECT_EQ(M.shape(), (shape_t<2>{3, 2}));
-  // for (int i = 1; auto x : M) EXPECT_EQ(x, i++);
-  // for (int i = 0 ; i < 2; ++i) {
-  //   for (int j = 0 ;j < 2; ++j) {
-  //     std::cout << M(i, j) << " ";
-  //   }
-  //   std::cout << std::endl;
-  // }
-  // nda::native_simd<int> x(&M(0,0), xsimd::aligned_mode());
-  // nda::native_simd<int> y(&M(1,0), xsimd::aligned_mode());
-  // nda::native_simd<int> z(&M(2,0), xsimd::aligned_mode());
-  // alignas(x.alignment()) std::array<int,x.size()> test;
-  // x.store(test.data());
-  //
-  // for (int i = 0 ; i < 8 ; ++i) {
-  // std::cout << "x: " << test[i] << std::endl;
-  // }
-  // y.store(test.data());
-  //
-  // for (int i = 0 ; i < 8 ; ++i) {
-  // std::cout << "y: " << test[i] << std::endl;
-  // }
-  // z.store(test.data());
-  // for (int i = 0 ; i < 8 ; ++i) {
-  // std::cout << "z: " << test[i] << std::endl;
-  // }
-
 }
 
 #if defined(__has_feature)
