@@ -513,7 +513,7 @@ void assign_from_ndarray(RHS const &rhs) { // FIXME noexcept {
   if constexpr (mem::on_device<self_t> || mem::on_device<RHS>) {
     NDA_RUNTIME_ERROR << "Error in assign_from_ndarray: Fallback to elementwise assignment not implemented for arrays/views on the GPU";
   }
-  if constexpr (same_stride_order and Vectorizable<ValueType> and is_simd_enabled_v2_v<ValueType, RHS> and (get_layout_info<self_t>.stride_order != 0 or get_layout_info<self_t>.stride_order != uint64_t(-1)) and (has_contiguous_layout<self_t> and has_contiguous_layout<RHS>)) {
+  if constexpr (same_stride_order and Vectorizable<ValueType> and is_simd_enabled_v<ValueType, RHS> and (get_layout_info<self_t>.stride_order != 0 or get_layout_info<self_t>.stride_order != uint64_t(-1)) and (has_contiguous_layout<self_t> and has_contiguous_layout<RHS>)) {
     nda::for_each_static<0, get_layout_info<self_t>.stride_order, native_simd<ValueType>::size>(shape(),[this, &rhs](auto const &...args) {(*this).store(rhs.load(args...), args...); }, [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); });
   }
   else {

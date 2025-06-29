@@ -280,7 +280,7 @@ namespace nda {
         product_simd.store_aligned(tmp.data());
         for (value_t x : tmp) product_scalar *= x;
         return product_scalar;
-        // return product_scalar * xsimd::reduce_add(product_simd);
+        // return product_scalar * xsimd::reduce_mul(product_simd);
       }
       return fold(std::multiplies<>{}, a, get_value_t<A>{1});
     } else { // Array<Value>

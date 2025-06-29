@@ -127,10 +127,6 @@ namespace nda {
     /// Number of dimensions of the array.
     static constexpr int rank = Rank;
 
-    // TODO: Right now for loading operations we require exact same values. Can be improved later on.
-    template <typename T>
-    static constexpr bool simd_enabled = Vectorizable<ValueType> and std::is_same_v<T, ValueType>;
-
     // Compile-time check.
     static_assert(has_contiguous(layout_t::layout_prop), "Error in nda::basic_array: Memory layout has to be contiguous");
 

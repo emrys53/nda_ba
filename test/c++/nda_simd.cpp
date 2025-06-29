@@ -28,12 +28,10 @@ TEST(NDA, OurSIMD) {
     A[i] = i+1;
   }
   using simd_t = nda::native_simd<float>;
+  nda::native_simd<int> a(1);
   auto result1 = nda::map(log_scalar{})(A);  // Scalar evaluation
   auto result2 = nda::map(log_emulated{})(A);    // Evaluates vectorized with mock_simd fallback
   std::cout << result2.load(0) << std::endl;
-  for (int i = 0 ; i < simd_t::size; ++i) {
-    std::cout << result1[i] << std::endl;
-  }
-
+  std::cout << result2.load(0) + xsimd::batch_cast<float>(a) << std::endl;
 
 }

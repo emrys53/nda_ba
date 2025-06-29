@@ -139,9 +139,6 @@ namespace nda {
     /// Type of the memory handle (see @ref mem_handles).
     using storage_t = typename OwningPolicy::template handle<ValueType>;
 
-    template <typename T>
-    static constexpr bool simd_enabled = Vectorizable<ValueType> and std::is_same_v<T, ValueType>;
-
     /// The associated regular (nda::basic_array) type.
     using regular_type = basic_array<std::remove_const_t<ValueType>, Rank, C_layout, Algebra, heap<mem::get_addr_space<storage_t>>>;
 
