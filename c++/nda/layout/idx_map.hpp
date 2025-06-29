@@ -98,13 +98,6 @@ namespace nda {
     // Strides of all dimensions.
     std::array<long, Rank> str{};
 
-    std::array<long, Rank> default_str{};
-
-    std::array<long, Rank> padded_str{};
-
-    //TODO: make this constexpr at least. To do so change template structure of idx_map
-    mem::stride_padding padding{0};
-
     public:
     /// Encoded static extents.
     static constexpr uint64_t static_extents_encoded = StaticExtents;
@@ -154,15 +147,6 @@ namespace nda {
      */
     [[nodiscard]] long size() const noexcept { return std::accumulate(len.cbegin(), len.cend(), 1L, std::multiplies<>{}); }
 
-    [[nodiscard]] long capacity() const noexcept {
-      size_t required_padding = padding.get_padding();
-      if (required_padding == 0) { return size(); }
-      long cap = mem::next_multiple(len[stride_order[Rank - 1]], required_padding);
-      for (int i = Rank - 2; i >= 0; --i) { cap *= len[stride_order[i]]; }
-      return cap;
-
-    }
-
     /**
      * @brief Get the size known at compile-time.
      * @return Zero if it has at least one dynamic dimension, otherwise the product of the static extents.
@@ -185,19 +169,13 @@ namespace nda {
      * @brief Get the strides of all dimensions.
      * @return `std::array<long, Rank>` containing the stride of each dimension.
      */
-    [[nodiscard]] std::array<long, Rank> const &strides() const noexcept { return default_str; }
-
-    /**
-     * @brief Get the padding of idx_map.
-     * @return `size_t` the padding of idx_map.
-     */
-    [[nodiscard]] size_t const &get_padding() const noexcept { return padding.get_padding(); }
+    [[nodiscard]] std::array<long, Rank> const &strides() const noexcept { return str; }
 
     /**
      * @brief Get the value of the smallest stride (positive or negative).
      * @return Stride of the fastest varying dimension.
      */
-    [[nodiscard]] long min_stride() const noexcept { return default_str[stride_order[Rank - 1]]; }
+    [[nodiscard]] long min_stride() const noexcept { return str[stride_order[Rank - 1]]; }
 
     /**
      * @brief Is the data contiguous in memory?
@@ -218,7 +196,7 @@ namespace nda {
      * @brief Are all strides positive?
      * @return True if all strides are positive, false otherwise.
      */
-    [[nodiscard]] bool has_positive_strides() const noexcept { return (*std::min_element(default_str.cbegin(), default_str.cend()) >= 0); }
+    [[nodiscard]] bool has_positive_strides() const noexcept { return (*std::min_element(str.cbegin(), str.cend()) >= 0); }
 
     /**
      * @brief Is the data strided in memory with a constant stride?
@@ -313,24 +291,6 @@ namespace nda {
       for (int u = 0, v = 0; u < Rank; ++u) extents[u] = (static_extents[u] == 0 ? dynamic_extents[v++] : static_extents[u]);
       return extents;
     }
-
-    void init_default_str() {
-      // If padding is not 0, that means we need padding. Pad the fastest dimension array and default_stride should be padded_str to access memory.
-      // Else there is no padding default_str is just the original str.
-      if (get_padding() != 0) {
-        // Padding exists only in aligned memory layout therefor minimum stride has to be 1.
-        padded_str[stride_order[Rank - 1]] = 1;
-        long init                          = mem::next_multiple(len[stride_order[Rank - 1]], padding.get_padding());
-        for (int i = rank() - 2; i >= 0; --i) {
-          padded_str[stride_order[i]] = init;
-          init *= len[stride_order[i]];
-        }
-        default_str = padded_str;
-      } else {
-        default_str = str;
-      }
-    }
-
     // FIXME ADD A CHECK layout_prop_e ... compare to stride and
 
     public:
@@ -347,19 +307,6 @@ namespace nda {
         for (int u = 0; u < Rank; ++u) len[u] = static_extents[u];
         compute_strides_contiguous();
       }
-      init_default_str();
-    }
-    //TODO: implementing this causes many problem because sometimes layout constructor is called like with value {100}. Instead of converting this
-    // to std::array<long,1> and calling it with shape constructoor compiler tries to call this constructor which breaks down the code. Ask what to do
-    // Tried adding a constructor with initializer list and broke down too many codes. Decided to just fix the test that called the constructor with
-    // just {100} by writing std::array{100}.
-
-    explicit idx_map(mem::stride_padding padding) : padding(padding) {
-      if constexpr (n_dynamic_extents == 0) {
-        for (int u = 0; u < Rank; ++u) len[u] = static_extents[u];
-        compute_strides_contiguous();
-        init_default_str();
-      }
     }
 
     /**
@@ -370,7 +317,7 @@ namespace nda {
      */
     template <layout_prop_e LP>
     idx_map(idx_map<Rank, StaticExtents, StrideOrder, LP> const &idxm) noexcept
-       : len(idxm.lengths()), str(idxm.strides()), padding(idxm.get_padding()) {
+       : len(idxm.lengths()), str(idxm.strides()) {
       // check strides and stride order of the constructed map
       EXPECTS(is_stride_order_valid());
 
@@ -383,7 +330,6 @@ namespace nda {
           EXPECTS_WITH_MESSAGE(idxm.is_strided_1d(), "Error in nda::idx_map: Constructing a strided_1d from a non-strided_1d layout");
         }
       }
-      init_default_str();
     }
 
     /**
@@ -394,7 +340,7 @@ namespace nda {
      * @param idxm Other nda::idx_map object.
      */
     template <uint64_t SE, layout_prop_e LP>
-    idx_map(idx_map<Rank, SE, StrideOrder, LP> const &idxm) noexcept(false) : len(idxm.lengths()), str(idxm.strides()), padding(idxm.get_padding()) {
+    idx_map(idx_map<Rank, SE, StrideOrder, LP> const &idxm) noexcept(false) : len(idxm.lengths()), str(idxm.strides()) {
       // check strides and stride order
       EXPECTS(is_stride_order_valid());
 
@@ -410,7 +356,6 @@ namespace nda {
 
       // check that the static extents and the shape are compatible
       assert_static_extents_and_len_are_compatible();
-      init_default_str();
     }
 
     /**
@@ -426,24 +371,6 @@ namespace nda {
       if constexpr (check_stride_order) {
         if (not is_stride_order_valid()) throw std::runtime_error("Error in nda::idx_map: Incompatible strides, shape and stride order");
       }
-      init_default_str();
-    }
-
-    /**
-     * @brief Construct a new map from a given shape and strides.
-     *
-     * @param shape Shape of the new map.
-     * @param strides Strides of the new map.
-     * @param padding Alignment requirement for fastest dimension.
-     */
-    idx_map(std::array<long, Rank> const &shape, // NOLINT (only throws if check_stride_order is true)
-            std::array<long, Rank> const &strides, mem::stride_padding padding) noexcept(!check_stride_order)
-       : len(shape), str(strides), padding(padding) {
-      EXPECTS(std::all_of(shape.cbegin(), shape.cend(), [](auto const &i) { return i >= 0; }));
-      if constexpr (check_stride_order) {
-        if (not is_stride_order_valid()) throw std::runtime_error("Error in nda::idx_map: Incompatible strides, shape and stride order");
-      }
-      init_default_str();
     }
 
     /**
@@ -457,22 +384,6 @@ namespace nda {
       EXPECTS(std::all_of(shape.cbegin(), shape.cend(), [](auto const &i) { return i >= 0; }));
       assert_static_extents_and_len_are_compatible();
       compute_strides_contiguous();
-      init_default_str();
-    }
-
-    /**
-     * @brief Construct a new map from a given shape and with contiguous strides.
-     *
-     * @tparam Int Integer type.
-     * @param shape Shape of the new map.
-     * @param padding Alignment requirement for fastest dimension.
-     */
-    template <std::integral Int = long>
-    idx_map(std::array<Int, Rank> const &shape, mem::stride_padding padding) noexcept : len(stdutil::make_std_array<long>(shape)), padding(padding) {
-      EXPECTS(std::all_of(shape.cbegin(), shape.cend(), [](auto const &i) { return i >= 0; }));
-      assert_static_extents_and_len_are_compatible();
-      compute_strides_contiguous();
-      init_default_str();
     }
 
     /**
@@ -487,18 +398,6 @@ namespace nda {
       requires((n_dynamic_extents != Rank) and (n_dynamic_extents != 0))
        : idx_map(merge_static_and_dynamic_extents(shape)) {}
 
-    /**
-     * @brief Construct a new map from an array with its dynamic extents.
-     *
-     * @details The missing extents are taken from the static extents, i.e. if a static extent is zero, it is replaced
-     * by the corresponding dynamic extent.
-     *
-     * @param shape std::array with the dynamic extents only.
-     * @param padding Padding required for the fastest dimension.
-     */
-    idx_map(std::array<long, n_dynamic_extents> const &shape, mem::stride_padding padding) noexcept
-      requires((n_dynamic_extents != Rank) and (n_dynamic_extents != 0))
-       : idx_map(merge_static_and_dynamic_extents(shape), padding) {}
 
     /**
      * @brief Construct a new map from an existing map with a different stride order.
@@ -576,7 +475,7 @@ namespace nda {
           return (myget<true, Is>(static_cast<long>(args)) + ...);
         } else {
           // arbitrary layouts
-          return ((args * std::get<Is>(default_str)) + ...);
+          return ((args * std::get<Is>(str)) + ...);
         }
       } else {
         // empty ellipsis is present and needs to be skipped
@@ -640,12 +539,12 @@ namespace nda {
       // compute residues starting from slowest index
       std::array<long, Rank> residues;
       residues[0] = lin_idx;
-      for (auto i : range(1, Rank)) { residues[i] = residues[i - 1] % default_str[stride_order[i - 1]]; }
+      for (auto i : range(1, Rank)) { residues[i] = residues[i - 1] % str[stride_order[i - 1]]; }
 
       // convert residues to indices, ordered from slowest to fastest
       std::array<long, Rank> idx;
-      idx[Rank - 1] = residues[Rank - 1] / default_str[stride_order[Rank - 1]];
-      for (auto i : range(Rank - 2, -1, -1)) { idx[i] = (residues[i] - residues[i + 1]) / default_str[stride_order[i]]; }
+      idx[Rank - 1] = residues[Rank - 1] / str[stride_order[Rank - 1]];
+      for (auto i : range(Rank - 2, -1, -1)) { idx[i] = (residues[i] - residues[i + 1]) / str[stride_order[i]]; }
 
       // reorder indices according to stride order
       return permutations::apply_inverse(stride_order, idx);
@@ -743,7 +642,7 @@ namespace nda {
       static constexpr std::array<int, Rank> new_stride_order   = permutations::compose(permu, stride_order);
       static constexpr std::array<int, Rank> new_static_extents = permutations::apply_inverse(permu, static_extents);
       return idx_map<Rank, encode(new_static_extents), encode(new_stride_order), LayoutProp>{permutations::apply_inverse(permu, lengths()),
-                                                                                             permutations::apply_inverse(permu, strides()), mem::stride_padding(get_padding())};
+                                                                                             permutations::apply_inverse(permu, strides())};
     }
   };
 

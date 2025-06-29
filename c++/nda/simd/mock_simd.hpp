@@ -1,5 +1,4 @@
 #pragma once
-#include "./arch/simd.hpp"
 #include "../concepts.hpp"
 
 namespace nda::simd {
@@ -15,9 +14,9 @@ namespace nda::simd {
     }
 
     private:
-    [[gnu::always_inline]] std::array<value_t, simd_t::size()> convert_simd_to_array(const simd_t &a) const  {
-      alignas(simd_t::alignment()) std::array<T, simd_t::size()> result;
-      a.store(result.data());
+    [[gnu::always_inline]] std::array<value_t, simd_t::size> convert_simd_to_array(const simd_t &a) const  {
+      alignas(simd_t::arch_type::alignment()) std::array<T, simd_t::size> result;
+      a.store_aligned(result.data());
       return result;
     }
 
@@ -28,8 +27,8 @@ namespace nda::simd {
 
     template <size_t... Is, typename... Args>
     [[gnu::always_inline]] auto apply_function(std::index_sequence<Is...>, const std::tuple<Args...> &array_tuple) const {
-      alignas(simd_t::alignment()) std::array<T, simd_t::size()> result_array;
-      for (int i = 0; i < simd_t::size(); ++i) { result_array[i] = static_cast<const Derived *>(this)->operator()(std::get<Is>(array_tuple)[i]...); }
+      alignas(simd_t::arch_type::alignment()) std::array<T, simd_t::size> result_array;
+      for (int i = 0; i < simd_t::size; ++i) { result_array[i] = static_cast<const Derived *>(this)->operator()(std::get<Is>(array_tuple)[i]...); }
       return result_array;
     }
 
@@ -40,9 +39,9 @@ namespace nda::simd {
       constexpr size_t args_size        = sizeof...(Args);
       std::tuple<Args &&...> args_tuple = std::forward_as_tuple(std::forward<Args>(args)...);
       auto array_tuple                  = make_array_tuple(std::make_index_sequence<args_size>{}, args_tuple);
-      alignas(simd_t::alignment()) std::array<value_t, simd_t::size()> result_array;
+      alignas(simd_t::arch_type::alignment()) std::array<value_t, simd_t::size> result_array;
       result_array = apply_function(std::make_index_sequence<args_size>{}, array_tuple);
-      return simd_t(result_array.data(), simd_aligned_memory_t);
+      return simd_t::load_aligned(result_array.data());
     }
   };
 } // namespace nda::simd

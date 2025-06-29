@@ -96,7 +96,12 @@ external_dependency(mpi
   VERSION 1.3
   GIT_TAG unstable
 )
-
+# -- XSIMD --
+external_dependency(xsimd
+        GIT_REPO https://github.com/xtensor-stack/xsimd
+        GIT_TAG 13.2.0
+        BUILD_ALWAYS
+)
 ## Pybind 11
 #find_package(Python)
 #add_subdirectory(pybind11)

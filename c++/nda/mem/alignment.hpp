@@ -52,26 +52,9 @@ namespace nda::mem {
   template <Vectorizable T>
   struct type_alignment_info<T> {
     // Required Alignment in bytes.
-    static constexpr std::size_t required_alignment = native_simd<T>::alignment();
+    static constexpr std::size_t required_alignment = native_simd<T>::arch_type::alignment();
     // Required padding.
-    static constexpr std::size_t required_padding = native_simd<T>::size() > 1 ? native_simd<T>::size() : 0;
+    static constexpr std::size_t required_padding = native_simd<T>::size > 1 ? native_simd<T>::size : 0;
   };
 
-  struct stride_padding {
-    public:
-    size_t padding;
-    explicit stride_padding(size_t padding) : padding(padding) {};
-
-    explicit stride_padding() : padding(0) {};
-
-    const size_t &get_padding() const { return padding; }
-
-    void set_padding(size_t value) { padding = value; }
-
-    stride_padding(const stride_padding &)                = default;
-    stride_padding &operator=(const stride_padding &)     = default;
-    stride_padding(stride_padding &&) noexcept            = default;
-    stride_padding &operator=(stride_padding &&) noexcept = default;
-    ~stride_padding()                                     = default;
-  };
 } // namespace nda::mem

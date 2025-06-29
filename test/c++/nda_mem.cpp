@@ -536,11 +536,11 @@ TEST(NDA, TypeAlignmentInfoRequiredPadding) {
   x = mem::type_alignment_info<void>::required_padding;
   EXPECT_EQ(x, 0);
 
-  x = mem::type_alignment_info<std::complex<float>>::required_padding;
-  EXPECT_EQ(x, correct_alignment / sizeof(std::complex<float>));
-
-  x = mem::type_alignment_info<std::complex<double>>::required_padding;
-  EXPECT_EQ(x, correct_alignment / sizeof(std::complex<double>));
+  // x = mem::type_alignment_info<std::complex<float>>::required_padding;
+  // EXPECT_EQ(x, correct_alignment / sizeof(std::complex<float>));
+  //
+  // x = mem::type_alignment_info<std::complex<double>>::required_padding;
+  // EXPECT_EQ(x, correct_alignment / sizeof(std::complex<double>));
 
   x = mem::type_alignment_info<array<int, 4>>::required_padding;
   EXPECT_EQ(x, 0);

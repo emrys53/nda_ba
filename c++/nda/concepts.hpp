@@ -113,8 +113,7 @@ namespace nda {
    * @tparam S Type to check.
    */
   template <typename S>
-  concept Vectorizable = requires { nda::native_simd<S>(); };
-
+  concept Vectorizable = xsimd::has_simd_register<S>::value;
   /**
    * @brief Check if a given type is either a double or complex type.
    * @tparam S Type to check.

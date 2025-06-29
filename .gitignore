@@ -10,3 +10,4 @@ doc/html
 /cmake-build-debug/
 /cmake-build-release-benchmark/
 /cmake-build-debug-coverage/
+/cmake-build-release/

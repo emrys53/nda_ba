@@ -264,23 +264,23 @@ namespace nda {
           }
           if constexpr (l_is_scalar) {
             using simd_t = native_simd<L_t>;
-            if (diff < 0 or diff > simd_t::size() - 1) return r.load(i, j);
-            alignas(simd_t::alignment()) std::array<L_t, simd_t::size()> tmp{};
+            if (diff < 0 or diff > simd_t::size - 1) return r.load(i, j);
+            alignas(simd_t::arch_type::alignment()) std::array<L_t, simd_t::size> tmp{};
             tmp[diff] = l;
             if constexpr (OP == '+') {
-              return r.load(i, j) + simd_t(tmp.data(), simd_aligned_memory_t);
+              return r.load(i, j) + simd_t::load_aligned(tmp.data());
             } else {
-              return r.load(i, j) - simd_t(tmp.data(), simd_aligned_memory_t);
+              return r.load(i, j) - simd_t::load_aligned(tmp.data());
             }
           } else if constexpr (r_is_scalar) {
             using simd_t = native_simd<R_t>;
-            if (diff < 0 or diff > simd_t::size() - 1) return l.load(i, j);
-            alignas(simd_t::alignment()) std::array<R_t, simd_t::size()> tmp{};
+            if (diff < 0 or diff > simd_t::size - 1) return l.load(i, j);
+            alignas(simd_t::arch_type::alignment()) std::array<R_t, simd_t::size> tmp{};
             tmp[diff] = r;
             if constexpr (OP == '+') {
-              return l.load(i, j) + simd_t(tmp.data(), simd_aligned_memory_t);
+              return l.load(i, j) + simd_t::load_aligned(tmp.data());
             } else {
-              return l.load(i, j) - simd_t(tmp.data(), simd_aligned_memory_t);
+              return l.load(i, j) - simd_t::load_aligned(tmp.data());
             }
           }
         }
