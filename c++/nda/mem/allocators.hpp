@@ -14,6 +14,8 @@
 #include "./aligned_alloc.hpp"
 #include "./malloc.hpp"
 #include "./memset.hpp"
+#include "./memcpy.hpp"
+#include "./fill.hpp"
 #include "../macros.hpp"
 
 #include <algorithm>
