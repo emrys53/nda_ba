@@ -76,19 +76,13 @@ namespace nda::mem {
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = AdrSp;
 
-    static constexpr bool is_aligned = false;
-
     /**
      * @brief Allocate memory using nda::mem::malloc.
      *
      * @param s Size in bytes of the memory to allocate.
      * @return nda::mem::blk_t memory block.
      */
-    static blk_t allocate(size_t s, size_t a = 0) noexcept {
-      const size_t prev_size = s;
-      if (a != 0) s = next_multiple(s, a);
-      return {.ptr = static_cast<char *>(malloc<AdrSp>(s)), .s = prev_size};
-    }
+    static blk_t allocate(size_t s, [[maybe_unused]] size_t a = 0) noexcept { return {.ptr = static_cast<char *>(malloc<AdrSp>(s)), .s = s}; }
 
     /**
      * @brief Allocate memory and set it to zero.
@@ -100,15 +94,13 @@ namespace nda::mem {
      * @param s Size in bytes of the memory to allocate.
      * @return nda::mem::blk_t memory block.
      */
-    static blk_t allocate_zero(size_t s, size_t a = 0) noexcept {
-      const size_t prev_size = s;
-      if (a != 0) s = next_multiple(s, a);
+    static blk_t allocate_zero(size_t s, [[maybe_unused]] size_t a = 0) noexcept {
       if constexpr (AdrSp == mem::Host) {
-        return {(char *)std::calloc(s, 1 /* byte */), prev_size}; // NOLINT (C-style cast is fine here)
+        return {(char *)std::calloc(s, 1 /* byte */), s}; // NOLINT (C-style cast is fine here)
       } else {
         char *ptr = (char *)malloc<AdrSp>(s);
-        memset<AdrSp>(ptr, 0, prev_size);
-        return {.ptr = ptr, .s = prev_size};
+        memset<AdrSp>(ptr, 0, s);
+        return {.ptr = ptr, .s = s};
       }
     }
 
@@ -139,8 +131,6 @@ namespace nda::mem {
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = AdrSp;
 
-    static constexpr bool is_aligned = true;
-
     /**
      * @brief Allocate memory using nda::mem::malloc.
      *
@@ -148,11 +138,7 @@ namespace nda::mem {
      * @param alignment Alignment in bytes.
      * @return nda::mem::blk_t memory block.
      */
-    static blk_t allocate(size_t s, size_t alignment) noexcept {
-      const size_t prev_size = s;
-      if (alignment != 0) s = next_multiple(s, alignment);
-      return {.ptr = static_cast<char *>(aligned_alloc<AdrSp>(alignment, s)), .s = prev_size};
-    }
+    static blk_t allocate(size_t s, size_t alignment) noexcept { return {.ptr = static_cast<char *>(aligned_alloc<AdrSp>(alignment, s)), .s = s}; }
     /**
      * @brief Allocate memory and set it to zero.
      *
@@ -164,11 +150,9 @@ namespace nda::mem {
      * @return nda::mem::blk_t memory block.
      */
     static blk_t allocate_zero(size_t s, size_t alignment) noexcept {
-      const size_t prev_size = s;
-      if (alignment != 0) s = next_multiple(s, alignment);
       auto blk = allocate(s, alignment);
-      memset<AdrSp>(blk.ptr, 0, prev_size);
-      return {.ptr = blk.ptr, .s = prev_size};
+      memset<AdrSp>(blk.ptr, 0, s);
+      return {.ptr = blk.ptr, .s = s};
     }
     /**
      * @brief Deallocate memory using nda::mem::aligned_free.
@@ -204,8 +188,6 @@ namespace nda::mem {
 
     /// Only `Host` nda::mem::AddressSpace is supported for this allocator.
     static constexpr auto address_space = Host;
-
-    static constexpr bool is_aligned = false;
 
 #ifdef NDA_USE_ASAN
     bucket() { __asan_poison_memory_region(p, TotalChunkSize); }
@@ -255,7 +237,7 @@ namespace nda::mem {
      * @param s Size in bytes of the returned memory block (has to be < `ChunkSize`).
      * @return nda::mem::blk_t memory block.
      */
-    blk_t allocate_zero(size_t s, size_t a = 0) noexcept {
+    blk_t allocate_zero(size_t s, [[maybe_unused]] size_t a = 0) noexcept {
       auto blk = allocate(s, a);
       std::memset(blk.ptr, 0, s);
       return blk;
@@ -340,8 +322,6 @@ namespace nda::mem {
     /// Only `Host` nda::mem::AddressSpace is supported for this allocator.
     static constexpr auto address_space = Host;
 
-    static constexpr bool is_aligned = false;
-
     /// Default constructor.
     multi_bucket() : bu_vec(1), bu(bu_vec.begin()) {}
 
@@ -363,7 +343,7 @@ namespace nda::mem {
      * @param s Size in bytes of the returned memory block (has to be < `ChunkSize`).
      * @return nda::mem::blk_t memory block.
      */
-    blk_t allocate(size_t s, size_t a = 0) noexcept {
+    blk_t allocate(size_t s, [[maybe_unused]] size_t a = 0) noexcept {
       if ((bu == bu_vec.end()) or (bu->is_full())) find_non_full_bucket();
       return bu->allocate(s, a);
     }
@@ -375,7 +355,7 @@ namespace nda::mem {
      * @param s Size in bytes of the returned memory block (has to be < `ChunkSize`).
      * @return nda::mem::blk_t memory block.
      */
-    blk_t allocate_zero(size_t s, size_t a = 0) noexcept {
+    blk_t allocate_zero(size_t s, [[maybe_unused]]size_t a = 0) noexcept {
       auto blk = allocate(s, a);
       std::memset(blk.ptr, 0, s);
       return blk;
@@ -459,8 +439,6 @@ namespace nda::mem {
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = A::address_space;
 
-    static constexpr auto is_aligned = A::is_aligned and B::is_aligned;
-
     /// Default constructor.
     segregator() = default;
 
@@ -483,7 +461,7 @@ namespace nda::mem {
      * @param s Size in bytes of the memory to allocate.
      * @return nda::mem::blk_t memory block.
      */
-    blk_t allocate(size_t s, size_t a = 0) noexcept { return s <= Threshold ? small.allocate(s, a) : big.allocate(s, a); }
+    blk_t allocate(size_t s, [[maybe_unused]] size_t a = 0) noexcept { return s <= Threshold ? small.allocate(s, a) : big.allocate(s, a); }
 
     /**
      * @brief Allocate memory and set the memory to zero using the small allocator if the size is less than or equal to
@@ -492,7 +470,7 @@ namespace nda::mem {
      * @param s Size in bytes of the memory to allocate.
      * @return nda::mem::blk_t memory block.
      */
-    blk_t allocate_zero(size_t s, size_t a = 0) noexcept { return s <= Threshold ? small.allocate_zero(s, a) : big.allocate_zero(s, a); }
+    blk_t allocate_zero(size_t s, [[maybe_unused]] size_t a = 0) noexcept { return s <= Threshold ? small.allocate_zero(s, a) : big.allocate_zero(s, a); }
 
     /**
      * @brief Deallocate memory using the small allocator if the size is less than or equal to the `Threshold`,
@@ -529,8 +507,6 @@ namespace nda::mem {
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = A::address_space;
 
-    static constexpr bool is_aligned = A::is_aligned;
-
     /// Default constructor.
     leak_check() = default;
 
@@ -564,11 +540,9 @@ namespace nda::mem {
      * @param s Size in bytes of the memory to allocate.
      * @return nda::mem::blk_t memory block.
      */
-    blk_t allocate(size_t s, size_t a = 0) {
-      const size_t prev_size = s;
-      if (a != 0) s = next_multiple(s, a);
+    blk_t allocate(size_t s, [[maybe_unused]] size_t a = 0) {
       blk_t b = A::allocate(s, a);
-      memory_used += prev_size;
+      memory_used += s;
       return b;
     }
 
@@ -578,11 +552,9 @@ namespace nda::mem {
      * @param s Size in bytes of the memory to allocate.
      * @return nda::mem::blk_t memory block.
      */
-    blk_t allocate_zero(size_t s, size_t a = 0) {
-      const size_t prev_size = s;
-      if (a != 0) s = next_multiple(s, a);
+    blk_t allocate_zero(size_t s, [[maybe_unused]] size_t a = 0) {
       blk_t b = A::allocate_zero(s, a);
-      memory_used += prev_size;
+      memory_used += s;
       return b;
     }
 
@@ -640,8 +612,6 @@ namespace nda::mem {
     public:
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = A::address_space;
-
-    static constexpr bool is_aligned = A::is_aligned;
 
     /// Default constructor.
     stats() = default;

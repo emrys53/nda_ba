@@ -269,25 +269,14 @@ template <typename... Args>
 FORCEINLINE  native_simd<ValueType> load(Args... idx) const {
   static_assert(Vectorizable<ValueType>, "Load function is called with a type that is not a vectorizable type");
   const long offset = lay(idx...);
-  if constexpr(is_aligned and is_padded) {
-    return native_simd<ValueType>::load_aligned(data()+offset);
-  }
-  else {
-    return native_simd<ValueType>::load_unaligned  (data()+offset);
-
-  }
+  return native_simd<ValueType>::load_unaligned(data()+offset);
 }
 
 template <typename... Args>
 FORCEINLINE void store(const native_simd<ValueType> &value, Args... idx) {
   static_assert(Vectorizable<ValueType>, "Store function is called with a type that is not a vectorizable type");
   const long offset = lay(idx...);
-  if constexpr(is_aligned and is_padded) {
-    value.store_aligned(data()+offset);
-  }
-  else {
-    value.store_unaligned(data()+offset);
-  }
+  value.store_unaligned(data()+offset);
 }
 
 /**
@@ -327,8 +316,8 @@ decltype(auto) operator[](T const &x) && noexcept(has_no_boundcheck) {
   return call<Algebra, true>(*this, x);
 }
 
-/// Rank of the nda::array_iterator for the view/array. // TODO: Optimize it better in the future for aligned/padded arrays.
-static constexpr int iterator_rank = (has_strided_1d(layout_t::layout_prop) and not(is_aligned and is_padded) ? 1 : Rank);
+/// Rank of the nda::array_iterator for the view/array.
+static constexpr int iterator_rank = (has_strided_1d(layout_t::layout_prop) ? 1 : Rank);
 
 /// Const iterator type of the view/array.
 using const_iterator = array_iterator<iterator_rank, ValueType const, typename AccessorPolicy::template accessor<ValueType>::pointer>;
@@ -488,7 +477,6 @@ void assign_from_ndarray(RHS const &rhs) { // FIXME noexcept {
     static constexpr bool both_1d_strided = has_layout_strided_1d<self_t> and has_layout_strided_1d<RHS>;
     if constexpr (mem::on_host<self_t, RHS> and both_1d_strided) {
       // vectorizable copy on host
-//TODO:: assignment of lazy
       for (long i = 0; i < size(); ++i) (*this)(_linear_index_t{i}) = rhs(_linear_index_t{i});
       return;
     } else if constexpr (!mem::on_host<self_t, RHS> and have_same_value_type_v<self_t, RHS>) {
@@ -525,7 +513,6 @@ void assign_from_ndarray(RHS const &rhs) { // FIXME noexcept {
   if constexpr (mem::on_device<self_t> || mem::on_device<RHS>) {
     NDA_RUNTIME_ERROR << "Error in assign_from_ndarray: Fallback to elementwise assignment not implemented for arrays/views on the GPU";
   }
-  //TODO:check if their layout are compatible. And call the for_each with specific layout.
   if constexpr (same_stride_order and Vectorizable<ValueType> and is_simd_enabled_v2_v<ValueType, RHS> and (get_layout_info<self_t>.stride_order != 0 or get_layout_info<self_t>.stride_order != uint64_t(-1)) and (has_contiguous_layout<self_t> and has_contiguous_layout<RHS>)) {
     nda::for_each_static<0, get_layout_info<self_t>.stride_order, native_simd<ValueType>::size>(shape(),[this, &rhs](auto const &...args) {(*this).store(rhs.load(args...), args...); }, [this, &rhs](auto const &...args) { (*this)(args...) = rhs(args...); });
   }

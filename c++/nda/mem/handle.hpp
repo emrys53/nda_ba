@@ -136,8 +136,6 @@ namespace nda::mem {
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = allocator_type::address_space;
 
-    static constexpr bool is_aligned = allocator_type::is_aligned;
-
     /**
      * @brief Get a shared pointer to the memory block.
      * @return A copy of the shared pointer stored in the current handle.
@@ -361,8 +359,6 @@ namespace nda::mem {
     /// nda::mem::AddressSpace in which the memory is allocated (always on `Host`).
     static constexpr auto address_space = Host;
 
-    static constexpr bool is_aligned = false;
-
     /**
      * @brief Destructor for the handle.
      * @details For non-trivial objects, it explicitly calls their destructors. Otherwise, it does nothing.
@@ -514,8 +510,6 @@ namespace nda::mem {
 
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = Host;
-
-    static constexpr bool is_aligned = false;
 
     /// Default constructor.
     handle_sso() {}; // NOLINT (user-defined constructor to avoid value initialization of the buffer)
@@ -768,9 +762,6 @@ namespace nda::mem {
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = AdrSp;
 
-    // TODO: Maybe later change this.
-    static constexpr bool is_aligned = false;
-
     /// Default constructor leaves the handle in a null state (`nullptr` and size 0).
     handle_shared() = default;
 
@@ -869,8 +860,6 @@ namespace nda::mem {
 
     /// nda::mem::AddressSpace in which the memory is allocated.
     static constexpr auto address_space = AdrSp;
-
-    static constexpr bool is_aligned = A::is_aligned;
 
     /// Default constructor leaves the handle in a null state (nullptr).
     handle_borrowed() = default;

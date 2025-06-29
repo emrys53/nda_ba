@@ -127,12 +127,6 @@ namespace nda {
     /// Number of dimensions of the array.
     static constexpr int rank = Rank;
 
-    static constexpr bool is_aligned = storage_t::is_aligned;
-
-    static constexpr bool is_padded = NDA_PADDING;
-
-    static constexpr size_t padding = (is_aligned and is_padded) ? mem::type_alignment_info<ValueType>::required_padding : 0;
-
     // TODO: Right now for loading operations we require exact same values. Can be improved later on.
     template <typename T>
     static constexpr bool simd_enabled = Vectorizable<ValueType> and std::is_same_v<T, ValueType>;
@@ -211,7 +205,6 @@ namespace nda {
      * @tparam CP Container policy of the other array.
      * @param a Other array.
      */
-    // TODO: Think more whether it is ok to pass padding in lay initialization.
     template <char A, typename CP>
     explicit basic_array(basic_array<ValueType, Rank, LayoutPolicy, A, CP> a) noexcept : lay(a.indexmap()), sto(std::move(a.storage())) {}
 
@@ -403,7 +396,6 @@ namespace nda {
     {
       return basic_array{stdutil::make_std_array<long>(shape), mem::init_zero};
     }
-    //TODO: These functions only work for non-padded arrays.
     /**
      * @brief Make a zero-initialized array with the given dimensions.
      *

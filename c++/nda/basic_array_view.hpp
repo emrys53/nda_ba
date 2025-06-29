@@ -139,10 +139,6 @@ namespace nda {
     /// Type of the memory handle (see @ref mem_handles).
     using storage_t = typename OwningPolicy::template handle<ValueType>;
 
-    static constexpr bool is_aligned = storage_t::is_aligned;
-
-    static constexpr bool is_padded = NDA_PADDING;
-
     template <typename T>
     static constexpr bool simd_enabled = Vectorizable<ValueType> and std::is_same_v<T, ValueType>;
 

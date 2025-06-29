@@ -534,7 +534,6 @@ namespace nda {
      * @param lin_idx Linear/Flat index.
      * @return Multi-dimensional index.
      */
-    //TODO: fix this to work with padded/unpadded. Maybe add a struct for it with info idx and strides.
     std::array<long, Rank> to_idx(long lin_idx) const {
       // compute residues starting from slowest index
       std::array<long, Rank> residues;

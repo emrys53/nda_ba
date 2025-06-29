@@ -101,7 +101,6 @@ namespace nda {
       return f(std::get<Is>(a)[arg]...);
     }
 
-    //TODO: implement fake_simd in functors to fallback to scalar version of simd operations.
     template <size_t... Is, typename... Args>
     [[gnu::always_inline]] auto _call_load(std::index_sequence<Is...>, Args const &...args) const {
       return f.load(std::get<Is>(a).load(args...)...);

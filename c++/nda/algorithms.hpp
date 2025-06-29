@@ -55,9 +55,6 @@ namespace nda {
    * @param r Initial value.
    * @return Result of the fold operation.
    */
-  //TODO: Try to vectorize all these. If Array A is also MemoryArray do vectorize otherwise use default versions.
-  // TODO: Survey how other libraries do these operations.
-  // TODO: try basic_array_view with aligned memory.
   template <Array A, typename F, typename R>
   auto fold(F f, A const &a, R r) {
     // cast the initial value to the return type of f to avoid narrowing
