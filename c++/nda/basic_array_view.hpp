@@ -28,7 +28,6 @@
 #include "./mem/fill.hpp"
 #include "./mem/policies.hpp"
 #include "./traits.hpp"
-#include "./config.hpp"
 
 #include <itertools/itertools.hpp>
 

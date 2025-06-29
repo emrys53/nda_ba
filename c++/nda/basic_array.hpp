@@ -26,7 +26,6 @@
 #include "./mem/policies.hpp"
 #include "./stdutil/array.hpp"
 #include "./traits.hpp"
-#include "./config.hpp"
 
 #include <algorithm>
 #include <array>
